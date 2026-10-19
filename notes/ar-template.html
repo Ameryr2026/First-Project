@@ -18,7 +18,8 @@
      أوامر جاهزة: \nha (نهــا)، \ja (جا)، \jta (جتا)، \zha (ظا)، \zta (ظتا)،
      \qa (قا)، \qta (قتا)، \lo (لو)، \norm{..}، \abs{..}، \R (ℝ للأعداد الحقيقية)، \N، \Z، \Q، \C،
      \mathbb{ص} لأي حرف مزدوج الخطوط (عدا ا، ك، ه)،
-     \pd{ص}{س} (دص على دس)، \pd[2]{ص}{س} (المشتقة الثانية)، \partial يظهر د،
+     \pd{ص}{س} (دص على دس)، \pd[2]{ص}{س} (المشتقة الثانية)، 
+     \ppd{ع}{ز} مشتقة جزئية بـ ∂ معكوسة، \ppd[2]{ع}{س}، و \partial_ز ع،
      \nas{نص} لكتابة كلمة عربية داخل معادلة.
 
      رموزك الخاصة لهذه الصفحة: أضفها في ArabicMathMacros أدناه، مثلًا
@@ -32,7 +33,7 @@
     mjal: '\\Omega'
   };
 </script>
-<script src="arabic-math.js?v=4"></script>
+<script src="arabic-math.js?v=5"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>
@@ -116,7 +117,7 @@
     حيث $\mjal$ منطقة محدودة، ومعادلة مرقّمة:
   </p>
   \begin{equation}\label{eq:sample}
-    \pd{ع}{ز} - \Delta ع = د \nas{في} \mjal \times (0، ن)
+    \ppd{ع}{ز} - \Delta ع = د \nas{في} \mjal \times (0، ن)
   \end{equation}
   <p>ويمكن الإشارة إليها لاحقًا هكذا: \eqref{eq:sample}.</p>
 
@@ -140,7 +141,7 @@
     \[
       \begin{aligned}
         \frac{د}{دز} \, \frac12 \int_\mjal ع^2 \, دس
-          &= \int_\mjal ع \, \pd{ع}{ز} \, دس \\
+          &= \int_\mjal ع \, \ppd{ع}{ز} \, دس \\
           &= \cdots
       \end{aligned}
     \]
@@ -154,7 +155,7 @@
   <!-- جدول بكل رمز اخترعته ومعناه، حتى يرجع إليه القارئ -->
   <table class="glossary">
     <tr><td>$\mjal$</td><td>EDIT: معنى الرمز</td></tr>
-    <tr><td>$\pd{ع}{ز}$</td><td>EDIT: معنى الرمز</td></tr>
+    <tr><td>$\ppd{ع}{ز}$</td><td>EDIT: معنى الرمز</td></tr>
   </table>
 
   <h2>المراجع</h2>
