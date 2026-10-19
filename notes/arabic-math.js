@@ -1,68 +1,112 @@
 /*
- * arabic-math.js — right-to-left Arabic mathematics on top of MathJax 3 (SVG output).
+ * arabic-math.js — Arabic mathematics on top of MathJax 3 (SVG output), with a reader switch
+ * between two notations:
+ *
+ *   "ar"     Arabic notation: equations read right to left, Arabic letters (س، ص، ق)،
+ *            Arabic function names (جا، نهــا)، Arabic-Indic digits, mirrored ∫ ∑ √ ∂.
+ *   "latin"  Latin notation inside Arabic text, as in current Jordanian schools: equations
+ *            left to right, Latin letters (x, y, f), sin, lim, Western digits.
  *
  * Load this file BEFORE MathJax:
- *   <script src="arabic-math.js"></script>
+ *   <script src="arabic-math.js?v=N"></script>
  *   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
  *
- * What it does:
- *   1. Every equation is mirrored as a whole, so it reads right to left. Operators and
- *      structural symbols (∫ ∑ √, brackets, arrows, < >) come out mirrored, as in Arabic notation.
- *   2. Letters, numbers and words are mirrored back, so they read normally.
- *   3. Western digits become Arabic-Indic digits (12.5 → ١٢٫٥), the comma becomes ، and ; becomes ؛.
- *   4. Arabic letters are set upright (not slanted).
- *   5. \mathbb{ص} gives a double-struck Arabic letter (needs the "Noto Sans Math" font on the page).
+ * Authors always write the Arabic form ($ق(س) = س^2$). For the Latin view, each page says
+ * which Latin letter each Arabic letter becomes, before loading this file:
+ *   window.ArabicMathLatin = { 'س': 'x', 'ص': 'y', 'ق': 'f' };
+ * Function names (جا → sin, نهــا → lim, ...) are converted automatically.
  *
- * Your own symbols: before loading this file, define
- *   window.ArabicMathMacros = { name: 'TeX definition', ... };
- * Each entry becomes a command \name usable in any equation on that page.
+ * Your own commands: window.ArabicMathMacros = { name: 'TeX', ... } (Arabic view), and
+ * optionally window.ArabicMathMacrosLatin = { name: 'TeX', ... } (Latin view).
+ *
+ * The switch is added to the page's <nav> automatically. The reader's choice is remembered
+ * in their browser; ?math=latin or ?math=ar in the address also selects a view.
  */
 (function () {
   'use strict';
 
-  var ARABIC = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF\u{1EE00}-\u{1EEFF}]/u;
-  var LETTER = /[A-Za-z\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF\u{1EE00}-\u{1EEFF}]/u;
+  var ARABIC = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿\u{1EE00}-\u{1EEFF}]/u;
+  var LETTER = /[A-Za-z؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿\u{1EE00}-\u{1EEFF}]/u;
   var DIGITS = '٠١٢٣٤٥٦٧٨٩';
+
   // Double-struck Arabic letters (Unicode Arabic Mathematical Alphabetic Symbols).
   // Unicode has no double-struck form for ا, ك, ه.
-  var DOUBLE = {"ب": "\u{1EEA1}", "ج": "\u{1EEA2}", "د": "\u{1EEA3}", "و": "\u{1EEA5}", "ز": "\u{1EEA6}",
-    "ح": "\u{1EEA7}", "ط": "\u{1EEA8}", "ي": "\u{1EEA9}", "ل": "\u{1EEAB}", "م": "\u{1EEAC}", "ن": "\u{1EEAD}",
-    "س": "\u{1EEAE}", "ع": "\u{1EEAF}", "ف": "\u{1EEB0}", "ص": "\u{1EEB1}", "ق": "\u{1EEB2}", "ر": "\u{1EEB3}",
-    "ش": "\u{1EEB4}", "ت": "\u{1EEB5}", "ث": "\u{1EEB6}", "خ": "\u{1EEB7}", "ذ": "\u{1EEB8}", "ض": "\u{1EEB9}",
-    "ظ": "\u{1EEBA}", "غ": "\u{1EEBB}"};
+  var DOUBLE = {'ب': '\u{1EEA1}', 'ج': '\u{1EEA2}', 'د': '\u{1EEA3}', 'و': '\u{1EEA5}', 'ز': '\u{1EEA6}',
+    'ح': '\u{1EEA7}', 'ط': '\u{1EEA8}', 'ي': '\u{1EEA9}', 'ل': '\u{1EEAB}', 'م': '\u{1EEAC}', 'ن': '\u{1EEAD}',
+    'س': '\u{1EEAE}', 'ع': '\u{1EEAF}', 'ف': '\u{1EEB0}', 'ص': '\u{1EEB1}', 'ق': '\u{1EEB2}', 'ر': '\u{1EEB3}',
+    'ش': '\u{1EEB4}', 'ت': '\u{1EEB5}', 'ث': '\u{1EEB6}', 'خ': '\u{1EEB7}', 'ذ': '\u{1EEB8}', 'ض': '\u{1EEB9}',
+    'ظ': '\u{1EEBA}', 'غ': '\u{1EEBB}'};
 
-  // Default commands (Arabic school notation). Extend or override per page.
-  var macros = {
-    // Number sets (\\R is the real numbers: double-struck ح)
+  // Latin view: number sets written with double-struck Arabic letters.
+  var DOUBLE_LATIN = {'ح': 'R', 'ط': 'N', 'ص': 'Z', 'ن': 'Q', 'ع': 'C'};
+  // Latin view: Arabic words that appear inside equations.
+  var WORDS_LATIN = {'نهــا': 'lim', 'نها': 'lim', 'جا': 'sin', 'جتا': 'cos', 'ظا': 'tan', 'ظتا': 'cot',
+    'قا': 'sec', 'قتا': 'csc', 'لو': 'log', 'أثر': 'tr'};
+
+  // ---------- Which view? ----------
+  var MODE = 'ar';
+  try {
+    var q = new URLSearchParams(location.search).get('math');
+    var saved = localStorage.getItem('arabic-math-mode');
+    if (q === 'latin' || q === 'ar') MODE = q;
+    else if (saved === 'latin' || saved === 'ar') MODE = saved;
+  } catch (e) { /* storage unavailable: default view */ }
+
+  function setMode(m) {
+    try { localStorage.setItem('arabic-math-mode', m); } catch (e) {}
+    var url = location.href.replace(/([?&])math=(ar|latin)&?/, '$1').replace(/[?&]$/, '');
+    location.href = url;
+  }
+
+  // Letter map for the Latin view. د defaults to d (as in دص/دس); pages override anything.
+  var LATIN = {'د': 'd'};
+  var pageMap = window.ArabicMathLatin || {};
+  for (var a in pageMap) { if (Object.prototype.hasOwnProperty.call(pageMap, a)) LATIN[a] = pageMap[a]; }
+
+  // ---------- Commands ----------
+  var macrosAr = {
+    // Number sets (\R is the real numbers: double-struck ح)
     R: '\\mathbb{ح}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
-    // Limit
     nha: '\\mathop{\\text{نهــا}}\\limits',
-    // Trigonometric functions
     ja: '\\mathop{\\text{جا}}\\nolimits', jta: '\\mathop{\\text{جتا}}\\nolimits',
     zha: '\\mathop{\\text{ظا}}\\nolimits', zta: '\\mathop{\\text{ظتا}}\\nolimits',
     qa: '\\mathop{\\text{قا}}\\nolimits', qta: '\\mathop{\\text{قتا}}\\nolimits',
-    // Logarithm
     lo: '\\mathop{\\text{لو}}\\nolimits',
+    tr: '\\mathop{\\text{أثر}}\\nolimits',
     // Ordinary derivative: \pd{ص}{س} gives دص/دس, \pd[2]{ص}{س} gives د²ص/دس²
     pd: ['\\frac{\\mathrm{د}^{#1} #2}{\\mathrm{د} #3^{#1}}', 3, ''],
     // Partial derivative, with ∂ mirrored like ∫ and ∑: \ppd{ع}{ز}, \ppd[2]{ع}{س}
     ppd: ['\\frac{\\partial^{#1} #2}{\\partial #3^{#1}}', 3, ''],
-    // Norm and absolute value
     norm: ['\\left\\lVert #1 \\right\\rVert', 1],
     abs: ['\\left\\lvert #1 \\right\\rvert', 1],
-    // Arabic text inside math, e.g. \nas{حيث}
+    // Arabic word inside an equation, e.g. \nas{في}
     nas: ['\\;\\text{#1}\\;', 1]
   };
-  var extra = window.ArabicMathMacros || {};
-  for (var k in extra) { if (Object.prototype.hasOwnProperty.call(extra, k)) macros[k] = extra[k]; }
+  var macrosLatin = {
+    R: '\\mathbb{R}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
+    nha: '\\lim', ja: '\\sin', jta: '\\cos', zha: '\\tan', zta: '\\cot', qa: '\\sec', qta: '\\csc',
+    lo: '\\log', tr: '\\operatorname{tr}',
+    pd: ['\\frac{d^{#1} #2}{d #3^{#1}}', 3, ''],
+    ppd: ['\\frac{\\partial^{#1} #2}{\\partial #3^{#1}}', 3, ''],
+    norm: macrosAr.norm, abs: macrosAr.abs, nas: macrosAr.nas
+  };
+  var macros = MODE === 'latin' ? macrosLatin : macrosAr;
+  function addMacros(src) {
+    for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) macros[k] = src[k]; }
+  }
+  addMacros(window.ArabicMathMacros || {});
+  if (MODE === 'latin') addMacros(window.ArabicMathMacrosLatin || {});
 
   function toArabicDigits(s, decimal) {
     s = s.replace(/[0-9]/g, function (d) { return DIGITS[+d]; });
     if (decimal) s = s.replace(/\./g, '٫');
     return s;
   }
+  function toWesternDigits(s) {
+    return s.replace(/[٠-٩]/g, function (d) { return String(DIGITS.indexOf(d)); }).replace(/٫/g, '.');
+  }
 
-  // Runs on the MathML tree after TeX is parsed, before anything is drawn.
+  // ---------- Arabic view: rewrite the MathML before drawing ----------
   function arabize(args) {
     (args.data.root || args.math.root).walkTree(function (node) {
       if (!node.isToken) return;
@@ -84,8 +128,7 @@
         var mv = node.attributes.getExplicit('mathvariant');
         if (!mv || mv === 'italic' || mv === 'double-struck') node.attributes.set('mathvariant', 'normal');
       }
-      // Tokens that must read normally (not mirrored). ∂ is the exception: it stays
-      // mirrored, like ∫ and ∑.
+      // Tokens that must read normally (not mirrored). ∂ stays mirrored, like ∫ and ∑.
       if (kind === 'mi' && text === '∂') return;
       if (kind === 'mi' || kind === 'mn' || kind === 'mtext' ||
           (kind === 'mo' && LETTER.test(text))) {
@@ -94,7 +137,55 @@
     });
   }
 
-  // Runs on the drawn SVG: mirror the whole equation, then mirror readable tokens back.
+  // ---------- Latin view: swap Arabic letters for Latin ones ----------
+  function latinize(args) {
+    (args.data.root || args.math.root).walkTree(function (node) {
+      if (!node.isToken) return;
+      var kind = node.kind;
+      var mv = node.attributes.getExplicit('mathvariant');
+      node.childNodes.forEach(function (child) {
+        if (!child.isKind('text')) return;
+        var t = child.getText();
+        var word = t.trim();
+        if (WORDS_LATIN[word]) {
+          t = WORDS_LATIN[word];
+        } else if (mv === 'double-struck') {
+          t = t.replace(/./gu, function (c) { return DOUBLE_LATIN[c] || LATIN[c] || c; });
+        } else if (kind !== 'mtext') {
+          t = t.replace(/./gu, function (c) { return LATIN[c] || c; });
+        }
+        t = toWesternDigits(t).replace(/،/g, ',').replace(/؛/g, ';');
+        child.setText(t);
+      });
+    });
+  }
+
+  // Latin view, step 1: convert the TeX source itself, so Arabic letters become ordinary
+  // TeX letters (italic variables). Arabic words inside \text{} and \nas{} are kept.
+  function latinizeSource(args) {
+    var src = args.math.math;
+    // \mathbb{ح} → \mathbb{R}, etc.
+    src = src.replace(/\\mathbb\s*\{([^{}]*)\}/g, function (m, inner) {
+      return '\\mathbb{' + inner.replace(/./gu, function (c) { return DOUBLE_LATIN[c] || LATIN[c] || c; }) + '}';
+    });
+    // Convert everything outside \text{...} / \nas{...}.
+    var out = '', i = 0, re = /\\(?:text|nas|mbox|textrm)\s*\{/g, m;
+    function conv(s) {
+      return toWesternDigits(s).replace(/،/g, ',').replace(/؛/g, ';')
+        .replace(/./gu, function (c) { return LATIN[c] || c; });
+    }
+    while ((m = re.exec(src))) {
+      out += conv(src.slice(i, m.index));
+      var depth = 1, j = re.lastIndex;
+      while (j < src.length && depth) { if (src[j] === '{') depth++; else if (src[j] === '}') depth--; j++; }
+      out += src.slice(m.index, j);
+      i = re.lastIndex = j;
+    }
+    out += conv(src.slice(i));
+    args.math.math = out;
+  }
+
+  // ---------- Arabic view: mirror the drawn equation ----------
   function mirror(container) {
     var svg = container.querySelector('svg');
     if (!svg || svg.getAttribute('data-ar-done')) return;
@@ -109,18 +200,50 @@
       g.setAttribute('transform', (t + ' translate(' + (2 * cx) + ',0) scale(-1,1)').trim());
     }
   }
-
   function mirrorAll(root) {
+    if (MODE !== 'ar') return;
     var list = (root || document).querySelectorAll('mjx-container');
     for (var i = 0; i < list.length; i++) mirror(list[i]);
   }
 
-  // MathJax sizes equations by the surrounding font's letter height. Arabic fonts report
-  // unusual heights that make the math far too big, so measure against a Latin serif instead.
-  var css = document.createElement('style');
-  css.textContent = 'mjx-container[jax="SVG"], mjx-test { font-family: "Times New Roman", "Liberation Serif", serif; }';
-  document.head.appendChild(css);
+  // ---------- The switch ----------
+  function addSwitch() {
+    var box = document.createElement('span');
+    box.className = 'math-switch';
+    box.setAttribute('role', 'group');
+    box.setAttribute('aria-label', 'طريقة كتابة الرموز');
+    [['ar', 'رموز عربية'], ['latin', 'رموز لاتينية']].forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = opt[1];
+      b.setAttribute('aria-pressed', MODE === opt[0] ? 'true' : 'false');
+      if (MODE !== opt[0]) b.addEventListener('click', function () { setMode(opt[0]); });
+      box.appendChild(b);
+    });
+    var nav = document.querySelector('nav .inner') || document.querySelector('nav');
+    if (nav) nav.appendChild(box);
+    else { box.classList.add('floating'); document.body.appendChild(box); }
+  }
 
+  var css = document.createElement('style');
+  css.textContent =
+    // MathJax sizes equations by the surrounding font's letter height. Arabic fonts report
+    // unusual heights that make the math far too big, so measure against a Latin serif.
+    'mjx-container[jax="SVG"], mjx-test { font-family: "Times New Roman", "Liberation Serif", serif; }' +
+    // Wide equations scroll inside their own box on small screens instead of widening the page.
+    'mjx-container[jax="SVG"][display="true"] { min-width: 0 !important; max-width: 100%;' +
+    ' overflow-x: auto; overflow-y: hidden; }' +
+    'mjx-container[jax="SVG"] { position: relative; }' +
+    '.math-switch { display: inline-flex; border: 1px solid currentColor; border-radius: 999px; overflow: hidden;' +
+    ' font-size: 13px; opacity: .85; margin-inline-start: 4px; }' +
+    '.math-switch button { font: inherit; color: inherit; background: none; border: 0; padding: 2px 10px; cursor: pointer; }' +
+    '.math-switch button[aria-pressed="true"] { background: var(--text, #1f2328); color: var(--bg, #fff);' +
+    ' cursor: default; }' +
+    '.math-switch.floating { position: fixed; top: 10px; left: 10px; z-index: 50; background: var(--bg, #fff); }';
+  document.head.appendChild(css);
+  document.documentElement.setAttribute('data-math-mode', MODE);
+
+  // ---------- MathJax configuration ----------
   window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -139,10 +262,17 @@
       typeset: false,
       ready: function () {
         MathJax.startup.defaultReady();
-        MathJax.startup.document.inputJax[0].postFilters.add(arabize, 100);
+        var tex = MathJax.startup.document.inputJax[0];
+        if (MODE === 'latin') {
+          tex.preFilters.add(latinizeSource, 100);
+          tex.postFilters.add(latinize, 100);   // catches Arabic coming from page commands
+        } else {
+          tex.postFilters.add(arabize, 100);
+        }
       },
       pageReady: function () {
-        // Wait for the Arabic font so MathJax measures letters with the right widths.
+        addSwitch();
+        // Wait for the fonts so MathJax measures letters with the right widths.
         var fontsReady = Promise.resolve();
         if (document.fonts && document.fonts.load) {
           fontsReady = Promise.all([
@@ -160,6 +290,8 @@
 
   // For content added later: ArabicMath.typeset(element)
   window.ArabicMath = {
+    mode: MODE,
+    setMode: setMode,
     typeset: function (el) {
       return MathJax.typesetPromise(el ? [el] : undefined).then(function () { mirrorAll(el); });
     }

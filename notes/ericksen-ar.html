@@ -29,12 +29,14 @@
 <script>
   window.ArabicMathMacros = {
     // الموجِّه (director): م بخط عريض
-    nn: '\\mathbf{م}',
-    // الأثر (trace)
-    tr: '\\mathop{\\text{أثر}}\\nolimits'
+    nn: '\\mathbf{م}'
+  };
+  // الرموز اللاتينية المقابلة (للعرض بالرموز اللاتينية)
+  window.ArabicMathLatin = {
+    'ت': 's', 'س': 'x', 'ز': 't', 'م': 'n', 'ط': 'W', 'ق': 'f', 'ك': 'K', 'ج': 'c', 'ي': 'i'
   };
 </script>
-<script src="arabic-math.js?v=5"></script>
+<script src="arabic-math.js?v=6"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>
@@ -138,7 +140,8 @@
     \nabla \cdot \nn = \varphi_س \jta \varphi،
     \qquad
     \nabla \nn = \begin{bmatrix} \varphi_س \jta \varphi & 0 & 0 \\ 0 & 0 & 0 \\ -\varphi_س \ja \varphi & 0 & 0 \end{bmatrix}،
-    \qquad
+  \]
+  \[
     (\nabla \nn)^{\top} = \begin{bmatrix} \varphi_س \jta \varphi & 0 & -\varphi_س \ja \varphi \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}،
   \]
   \[

@@ -25,6 +25,10 @@
      رموزك الخاصة لهذه الصفحة: أضفها في ArabicMathMacros أدناه، مثلًا
        tdrj: '\\mathop{\\text{تدرج}}\\nolimits'   ثم اكتب \tdrj ع
      (اسم الأمر بحروف إنجليزية فقط)
+
+     زر «رموز عربية / رموز لاتينية» يظهر تلقائيًا أعلى الصفحة. للعرض اللاتيني:
+     حدّد في ArabicMathLatin الحرف اللاتيني المقابل لكل حرف عربي تستخدمه.
+     الدوال (جا، جتا، نهــا، لو، ...) تتحول تلقائيًا.
      عند تعديل arabic-math.js غيّر رقم ?v= في سطر تحميله، حتى لا يستخدم المتصفح نسخة قديمة.
      ============================================================ -->
 <script>
@@ -32,8 +36,12 @@
     // EDIT: رموزك الخاصة هنا (هذا مثال: \\mjal للمجال)
     mjal: '\\Omega'
   };
+  // EDIT: الحرف اللاتيني المقابل لكل حرف عربي في هذه الصفحة (للعرض بالرموز اللاتينية)
+  window.ArabicMathLatin = {
+    'س': 'x', 'ص': 'y', 'ع': 'u', 'ز': 't', 'ق': 'f', 'ن': 'T', 'ط': 'n'
+  };
 </script>
-<script src="arabic-math.js?v=5"></script>
+<script src="arabic-math.js?v=6"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>
@@ -117,7 +125,7 @@
     حيث $\mjal$ منطقة محدودة، ومعادلة مرقّمة:
   </p>
   \begin{equation}\label{eq:sample}
-    \ppd{ع}{ز} - \Delta ع = د \nas{في} \mjal \times (0، ن)
+    \ppd{ع}{ز} - \Delta ع = ق \nas{في} \mjal \times (0، ن)
   \end{equation}
   <p>ويمكن الإشارة إليها لاحقًا هكذا: \eqref{eq:sample}.</p>
 
