@@ -6,6 +6,19 @@
 <title>محوّل المعادلات · عامر الرواشدة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Math&display=swap" rel="stylesheet">
+<script>
+  // Latin view: turn the Arabic letters back into the Latin ones from the mapping box.
+  (function () {
+    var text = 'x=س y=ص z=ل t=ز u=ع f=ق g=ه a=أ b=ب c=ج d=د k=ك m=م n=ن r=ر';
+    try { text = localStorage.getItem('converter-map') || text; } catch (e) {}
+    var back = {};
+    text.split(/\s+/).forEach(function (p) {
+      var kv = p.split('=');
+      if (kv.length === 2 && kv[0] && kv[1]) back[kv[1]] = kv[0];
+    });
+    window.ArabicMathLatin = back;
+  })();
+</script>
 <script src="arabic-math.js?v=10"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
@@ -79,6 +92,8 @@
   <textarea id="ar" class="ar" spellcheck="false" readonly></textarea>
   <div class="row">
     <button type="button" id="copy">نسخ النتيجة</button>
+    <button type="button" id="png">حفظ كصورة PNG</button>
+    <button type="button" id="svgdl">حفظ كـ SVG</button>
     <a href="editor.html" id="toEditor">فتح في المحرر</a>
     <span class="status" id="status"></span>
   </div>
@@ -229,7 +244,103 @@
     });
   });
 
+  // ---------- Save the rendered equation as an image ----------
+  // An image cannot load web fonts, so the Arabic and math fonts are embedded into it.
+  var FONT_CSS = 'https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Sans+Math&display=swap';
+  var fontCssPromise = null;
+  function embeddedFonts() {
+    if (!fontCssPromise) {
+      fontCssPromise = fetch(FONT_CSS).then(function (r) { return r.text(); }).then(function (css) {
+        var urls = css.match(/url\((https:[^)]+)\)/g) || [];
+        return Promise.all(urls.map(function (u) {
+          var url = u.slice(4, -1);
+          return fetch(url).then(function (r) { return r.blob(); }).then(function (b) {
+            return new Promise(function (res) {
+              var fr = new FileReader(); fr.onload = function () { res([url, fr.result]); }; fr.readAsDataURL(b);
+            });
+          });
+        })).then(function (pairs) {
+          pairs.forEach(function (p) { css = css.split(p[0]).join(p[1]); });
+          return css;
+        });
+      }).catch(function () { fontCssPromise = null; return ''; });
+    }
+    return fontCssPromise;
+  }
+
+  // Build a standalone copy of the equation's SVG: mirrored for the Arabic view, black on white.
+  function standaloneSVG() {
+    var svg = preview.querySelector('mjx-container svg');
+    if (!svg) return Promise.reject(new Error('no equation'));
+    var box = svg.getBoundingClientRect();
+    var clone = svg.cloneNode(true);
+    var mirrored = svg.style.transform.indexOf('scaleX(-1)') >= 0;
+    clone.removeAttribute('style');
+    clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
+    clone.setAttribute('width', box.width);
+    clone.setAttribute('height', box.height);
+    clone.setAttribute('color', '#000000');
+    if (mirrored) {
+      var vb = clone.getAttribute('viewBox').split(/\s+/).map(Number);
+      var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('transform', 'translate(' + (2 * vb[0] + vb[2]) + ',0) scale(-1,1)');
+      Array.prototype.slice.call(clone.childNodes).forEach(function (n) {
+        if (n.nodeName.toLowerCase() !== 'defs') g.appendChild(n);
+      });
+      clone.appendChild(g);
+    }
+    return embeddedFonts().then(function (css) {
+      if (css) {
+        var style = document.createElementNS('http://www.w3.org/2000/svg', 'style');
+        style.textContent = css;
+        clone.insertBefore(style, clone.firstChild);
+      }
+      return { text: new XMLSerializer().serializeToString(clone), w: box.width, h: box.height, fonts: !!css };
+    });
+  }
+
+  function download(blob, name) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+  }
+
+  function saveSVG() {
+    status.textContent = 'جارٍ التجهيز...';
+    standaloneSVG().then(function (s) {
+      download(new Blob([s.text], { type: 'image/svg+xml' }), 'equation.svg');
+      status.textContent = s.fonts ? '' : 'حُفظت الصورة دون الخطوط المضمّنة';
+    }).catch(function () { status.textContent = 'لا توجد معادلة لحفظها'; });
+  }
+
+  function savePNG() {
+    status.textContent = 'جارٍ التجهيز...';
+    standaloneSVG().then(function (s) {
+      var scale = 3, pad = 12;
+      var img = new Image();
+      img.onload = function () {
+        var c = document.createElement('canvas');
+        c.width = Math.ceil((s.w + 2 * pad) * scale); c.height = Math.ceil((s.h + 2 * pad) * scale);
+        var ctx = c.getContext('2d');
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, c.width, c.height);
+        ctx.drawImage(img, pad * scale, pad * scale, s.w * scale, s.h * scale);
+        c.toBlob(function (b) {
+          download(b, 'equation.png');
+          status.textContent = s.fonts ? '' : 'حُفظت الصورة دون الخطوط المضمّنة';
+        }, 'image/png');
+      };
+      img.onerror = function () { status.textContent = 'تعذّر إنشاء الصورة'; };
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(s.text);
+    }).catch(function () { status.textContent = 'لا توجد معادلة لحفظها'; });
+  }
+
+  document.getElementById('png').addEventListener('click', savePNG);
+  document.getElementById('svgdl').addEventListener('click', saveSVG);
+
   window.ArabicConvert = convert;   // for testing
+  window.ArabicStandaloneSVG = standaloneSVG;
   (function waitReady() {
     if (document.documentElement.getAttribute('data-math-ready')) update();
     else setTimeout(waitReady, 100);
