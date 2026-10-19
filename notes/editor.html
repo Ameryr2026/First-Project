@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>محرر الرياضيات العربية · عامر الرواشدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Math&display=swap" rel="stylesheet">
+
+<script>
+  // The Latin letter for each Arabic letter (Latin view). Editable on the page; kept in this browser.
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('editor-latin-map'); } catch (e) {}
+    var text = saved || 'س=x ص=y ع=z ق=f ز=t ن=n ل=l م=m ك=k ر=r';
+    var map = {};
+    text.split(/\s+/).forEach(function (pair) {
+      var p = pair.split('=');
+      if (p.length === 2 && p[0] && p[1]) map[p[0]] = p[1];
+    });
+    window.ArabicMathLatin = map;
+    window.EditorLatinMapText = text;
+  })();
+</script>
+<script src="arabic-math.js?v=8"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<style>
+  :root {
+    --bg: #fbfaf7; --text: #1f2328; --muted: #5b6470;
+    --accent: #0c4a6e; --rule: #e3e0d8; --box: #f2f0ea; --field: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171b; --text: #e6e6e3; --muted: #a0a7b0;
+            --accent: #7cc4ec; --rule: #2a2f36; --box: #1c2026; --field: #101317; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Noto Naskh Arabic", "Amiri", serif; font-size: 19px; line-height: 1.9;
+         display: flex; flex-direction: column; }
+  a { color: var(--accent); text-decoration: none; }
+  nav { border-bottom: 1px solid var(--rule); font-size: 15px; flex: none; }
+  nav .inner { padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
+  nav .home { font-weight: 700; color: var(--text); }
+  nav .title { color: var(--muted); margin-left: auto; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 16px;
+           border-bottom: 1px solid var(--rule); font-size: 14px; flex: none; }
+  .tools button { font: inherit; color: var(--text); background: var(--box); border: 1px solid var(--rule);
+                  border-radius: 6px; padding: 2px 12px; cursor: pointer; }
+  .tools button:hover { border-color: var(--accent); }
+  .tools label { color: var(--muted); }
+  .tools input { font: inherit; color: var(--text); background: var(--field); border: 1px solid var(--rule);
+                 border-radius: 6px; padding: 2px 8px; width: min(420px, 100%); }
+  .status { color: var(--muted); margin-right: auto; }
+  .panes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
+  textarea { width: 100%; height: 100%; resize: none; border: 0; border-left: 1px solid var(--rule);
+             padding: 16px; background: var(--field); color: var(--text);
+             font-family: "Noto Naskh Arabic", "Amiri", serif; font-size: 19px; line-height: 1.9; outline: none; }
+  #preview { padding: 16px 24px 60px; overflow: auto; }
+  #preview p { margin: 0 0 14px; }
+  .help { font-size: 15px; color: var(--muted); }
+  .help code { direction: rtl; unicode-bidi: isolate; background: var(--box); padding: 0 4px; border-radius: 4px; }
+  @media (max-width: 760px) {
+    body { height: auto; }
+    .panes { grid-template-columns: 1fr; }
+    textarea { height: 45vh; border-left: 0; border-bottom: 1px solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../index.html">عامر الرواشدة</a>
+    <span class="title">محرر الرياضيات العربية</span>
+  </div>
+</nav>
+
+<div class="tools">
+  <button type="button" id="copy">نسخ النص</button>
+  <button type="button" id="example">مثال</button>
+  <button type="button" id="clear">مسح</button>
+  <label for="map">الحروف اللاتينية:</label>
+  <input id="map" dir="rtl" spellcheck="false" aria-label="الحرف اللاتيني المقابل لكل حرف عربي">
+  <span class="status" id="status"></span>
+</div>
+
+<div class="panes">
+  <textarea id="src" dir="rtl" spellcheck="false" aria-label="النص"></textarea>
+  <div id="preview" aria-live="polite"></div>
+</div>
+
+<script>
+(function () {
+  var src = document.getElementById('src');
+  var preview = document.getElementById('preview');
+  var status = document.getElementById('status');
+  var mapBox = document.getElementById('map');
+
+  var EXAMPLE =
+    'إذا كانت $ق(س) = س^2 + 3$ فإن $ق(2) = 7$.\n\n' +
+    'نهاية دالة:\n' +
+    '$$\\نها_{س \\الى 3} \\كسر{س^2 - 9}{س - 3} = 6$$\n\n' +
+    'تكامل ومجموع:\n' +
+    '$$\\تكامل_0^1 س^2 \\, دس = \\كسر{1}{3}, \\qquad \\مجموع_{ن=1}^{\\لانهاية} \\كسر{1}{ن^2} = \\كسر{\\باي^2}{6}$$\n\n' +
+    'مشتقة جزئية:\n' +
+    '$$\\جزئية{ع}{ز} - \\لابلاس ع = 0$$';
+
+  function load() {
+    try { return localStorage.getItem('editor-text'); } catch (e) { return null; }
+  }
+  function save(t) {
+    try { localStorage.setItem('editor-text', t); } catch (e) {}
+  }
+
+  // Paragraphs are separated by blank lines. Text is inserted as text (never as HTML).
+  function render() {
+    var text = src.value;
+    save(text);
+    if (!window.ArabicMath || !window.MathJax || !MathJax.typesetClear) return;
+    MathJax.typesetClear([preview]);
+    preview.textContent = '';
+    text.split(/\n\s*\n/).forEach(function (para) {
+      if (!para.trim()) return;
+      var p = document.createElement('p');
+      p.textContent = para;
+      preview.appendChild(p);
+    });
+    if (!text.trim()) {
+      var h = document.createElement('p');
+      h.className = 'help';
+      h.textContent = 'اكتب في المربع. الرياضيات بين $...$ داخل السطر، أو $$...$$ في سطر مستقل. ' +
+        'الأوامر بأسماء عربية: \\كسر{أ}{ب}، \\جذر{س}، \\نها_{س \\الى 0}، \\تكامل، \\مجموع ...';
+      preview.appendChild(h);
+    }
+    ArabicMath.typeset(preview).then(function () {
+      var errs = preview.querySelectorAll('[data-mjx-error]');
+      status.textContent = errs.length ? ('خطأ: ' + errs[0].getAttribute('data-mjx-error')) : '';
+    }).catch(function (e) { status.textContent = 'خطأ: ' + e.message; });
+  }
+
+  var timer = null;
+  src.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(render, 350);
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var done = function () { status.textContent = 'تم النسخ'; setTimeout(function () { status.textContent = ''; }, 1500); };
+    if (navigator.clipboard) navigator.clipboard.writeText(src.value).then(done, function () { src.select(); });
+    else { src.select(); document.execCommand('copy'); done(); }
+  });
+  document.getElementById('example').addEventListener('click', function () { src.value = EXAMPLE; render(); });
+  document.getElementById('clear').addEventListener('click', function () { src.value = ''; render(); src.focus(); });
+
+  // Letter map: changing it reloads the page so the Latin view uses the new letters.
+  mapBox.value = window.EditorLatinMapText || '';
+  mapBox.addEventListener('change', function () {
+    try { localStorage.setItem('editor-latin-map', mapBox.value.trim()); } catch (e) {}
+    if (window.ArabicMath && ArabicMath.mode === 'latin') location.reload();
+  });
+
+  src.value = load();
+  if (src.value === null || src.value === '') src.value = EXAMPLE;
+
+  // First render once MathJax and the Arabic math layer are ready.
+  (function waitReady() {
+    if (document.documentElement.getAttribute('data-math-ready')) { render(); src.focus(); }
+    else setTimeout(waitReady, 100);
+  })();
+})();
+</script>
+</body>
+</html>
