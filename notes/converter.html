@@ -19,7 +19,7 @@
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=10"></script>
+<script src="arabic-math.js?v=11"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -108,7 +108,7 @@
 
   // English LaTeX command → Arabic command name (no backslash). Anything not listed is kept.
   var ENG = {
-    frac: 'كسر', dfrac: 'كسر', tfrac: 'كسر', sqrt: 'جذر', quad: 'مسافة',
+    frac: 'كسر', dfrac: 'كسر', tfrac: 'كسر', sqrt: 'جذر', quad: 'مسافة', left: 'افتح', right: 'اغلق',
     lim: 'نها', to: 'الى', rightarrow: 'الى', int: 'تكامل', sum: 'مجموع', prod: 'جداء', infty: 'لانهاية',
     partial: 'جزء', nabla: 'تدرج',
     sin: 'جا', cos: 'جتا', tan: 'ظا', cot: 'ظتا', sec: 'قا', csc: 'قتا', log: 'لو',
@@ -118,7 +118,10 @@
     Leftrightarrow: 'يكافئ', iff: 'يكافئ', forall: 'لكل', exists: 'يوجد',
     alpha: 'الفا', beta: 'بيتا', gamma: 'جاما', delta: 'دلتا', epsilon: 'ابسلون', varepsilon: 'ابسلون',
     theta: 'ثيتا', lambda: 'لامدا', mu: 'ميو', pi: 'باي', sigma: 'سيجما', phi: 'فاي', varphi: 'فاي',
-    omega: 'اوميجا', Omega: 'اوميجاكبيرة'
+    omega: 'اوميجا', zeta: 'زيتا', eta: 'ايتا', iota: 'يوتا', kappa: 'كابا', nu: 'نيو', xi: 'كساي',
+    rho: 'رو', tau: 'تاو', upsilon: 'اوبسيلون', chi: 'كاي', psi: 'بساي',
+    Gamma: 'جاماكبيرة', Theta: 'ثيتاكبيرة', Lambda: 'لامداكبيرة', Xi: 'كسايكبيرة', Pi: 'بايكبيرة',
+    Sigma: 'سيجماكبيرة', Upsilon: 'اوبسيلونكبيرة', Phi: 'فايكبيرة', Psi: 'بسايكبيرة', Omega: 'اوميجاكبيرة'
   };
   var SETS = { R: 'حقيقية', N: 'طبيعية', Z: 'صحيحة', Q: 'نسبية', C: 'مركبة' };
   // Commands whose {argument} is a name or text, copied without changing letters.

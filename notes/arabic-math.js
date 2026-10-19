@@ -167,6 +167,8 @@
   var COMMANDS = {
     // Structure
     'كسر': '\\frac', 'جذر': '\\sqrt', 'نص': '\\text', 'مسافة': '\\quad',
+    // Stretchy brackets: \افتح( ... \اغلق)  and  \افتح\{ ... \اغلق.  (named by meaning, not side)
+    'افتح': '\\left', 'اغلق': '\\right',
     // Calculus
     'نها': '\\nha', 'نهاية': '\\nha', 'الى': '\\to', 'يؤول': '\\to',
     'تكامل': '\\int', 'مجموع': '\\sum', 'جداء': '\\prod', 'لانهاية': '\\infty',
@@ -184,7 +186,13 @@
     // Greek letters
     'الفا': '\\alpha', 'بيتا': '\\beta', 'جاما': '\\gamma', 'دلتا': '\\delta', 'ابسلون': '\\varepsilon',
     'ثيتا': '\\theta', 'لامدا': '\\lambda', 'ميو': '\\mu', 'باي': '\\pi', 'سيجما': '\\sigma',
-    'فاي': '\\varphi', 'اوميجا': '\\omega', 'اوميجاكبيرة': '\\Omega'
+    'فاي': '\\varphi', 'اوميجا': '\\omega',
+    'زيتا': '\\zeta', 'ايتا': '\\eta', 'يوتا': '\\iota', 'كابا': '\\kappa', 'نيو': '\\nu', 'كساي': '\\xi',
+    'رو': '\\rho', 'تاو': '\\tau', 'اوبسيلون': '\\upsilon', 'كاي': '\\chi', 'بساي': '\\psi',
+    // Capital Greek letters: the name + كبيرة (only those that differ from Latin capitals)
+    'جاماكبيرة': '\\Gamma', 'دلتاكبيرة': '\\Delta', 'ثيتاكبيرة': '\\Theta', 'لامداكبيرة': '\\Lambda',
+    'كسايكبيرة': '\\Xi', 'بايكبيرة': '\\Pi', 'سيجماكبيرة': '\\Sigma', 'اوبسيلونكبيرة': '\\Upsilon',
+    'فايكبيرة': '\\Phi', 'بسايكبيرة': '\\Psi', 'اوميجاكبيرة': '\\Omega'
   };
   function normalizeName(w) { return w.replace(/[أإآ]/g, 'ا').replace(/ـ/g, ''); }
   var CMD = {};
