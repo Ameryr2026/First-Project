@@ -33,8 +33,8 @@
 
   // Default commands (Arabic school notation). Extend or override per page.
   var macros = {
-    // Number sets (standard double-struck Latin letters: \\R is ℝ)
-    R: '\\mathbb{R}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
+    // Number sets (\\R is the real numbers: double-struck ح)
+    R: '\\mathbb{ح}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
     // Limit
     nha: '\\mathop{\\text{نهــا}}\\limits',
     // Trigonometric functions
