@@ -160,6 +160,55 @@
     });
   }
 
+  // ---------- Arabic command names ----------
+  // Write \كسر{أ}{ب} instead of \frac{أ}{ب}. The same names are meant to work in LuaLaTeX,
+  // so one source serves both the website and PDFs. "/" also works on the website, but only
+  // before a known name, so س/ص is still division. Add your own:
+  //   window.ArabicMathCommands = { 'اسم': '\\texcommand' };
+  var COMMANDS = {
+    // Structure
+    'كسر': '\\frac', 'جذر': '\\sqrt', 'نص': '\\text', 'مسافة': '\\quad',
+    // Calculus
+    'نها': '\\nha', 'نهاية': '\\nha', 'الى': '\\to', 'يؤول': '\\to',
+    'تكامل': '\\int', 'مجموع': '\\sum', 'جداء': '\\prod', 'لانهاية': '\\infty',
+    'مشتقة': '\\pd', 'جزئية': '\\ppd', 'تدرج': '\\nabla', 'لابلاس': '\\Delta',
+    // Functions
+    'جا': '\\ja', 'جتا': '\\jta', 'ظا': '\\zha', 'ظتا': '\\zta', 'قا': '\\qa', 'قتا': '\\qta', 'لو': '\\lo',
+    // Relations and operations
+    'لايزيد': '\\le', 'لايقل': '\\ge', 'لايساوي': '\\ne', 'تقريبا': '\\approx',
+    'ينتمي': '\\in', 'لاينتمي': '\\notin', 'محتواة': '\\subset', 'اتحاد': '\\cup', 'تقاطع': '\\cap',
+    'ضرب': '\\times', 'نقطة': '\\cdot', 'زائدناقص': '\\pm', 'يستلزم': '\\Rightarrow', 'يكافئ': '\\Leftrightarrow',
+    'لكل': '\\forall', 'يوجد': '\\exists',
+    // Sets and norms
+    'حقيقية': '\\R', 'طبيعية': '\\N', 'صحيحة': '\\Z', 'نسبية': '\\Q', 'مركبة': '\\C',
+    'نظيم': '\\norm', 'مطلق': '\\abs',
+    // Greek letters
+    'الفا': '\\alpha', 'بيتا': '\\beta', 'جاما': '\\gamma', 'دلتا': '\\delta', 'ابسلون': '\\varepsilon',
+    'ثيتا': '\\theta', 'لامدا': '\\lambda', 'ميو': '\\mu', 'باي': '\\pi', 'سيجما': '\\sigma',
+    'فاي': '\\varphi', 'اوميجا': '\\omega', 'اوميجاكبيرة': '\\Omega'
+  };
+  function normalizeName(w) { return w.replace(/[أإآ]/g, 'ا').replace(/ـ/g, ''); }
+  var CMD = {};
+  function addCommands(src) {
+    for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) CMD[normalizeName(k)] = src[k]; }
+  }
+  addCommands(COMMANDS);
+  addCommands(window.ArabicMathCommands || {});
+
+  // Replace \اسم and /اسم with the TeX command. Longest known name wins, so \جاس reads as \جا س.
+  function arabicCommands(args) {
+    args.math.math = args.math.math.replace(/([\\\/])([ء-يـ]+)/g, function (m, mark, word) {
+      for (var n = word.length; n > 0; n--) {
+        var tex = CMD[normalizeName(word.slice(0, n))];
+        if (tex) {
+          var rest = word.slice(n);
+          return tex + (rest ? ' ' + rest : ' ');
+        }
+      }
+      return m;   // unknown: \ left as is (MathJax will report it); / stays division
+    });
+  }
+
   // Latin view, step 1: convert the TeX source itself, so Arabic letters become ordinary
   // TeX letters (italic variables). Arabic words inside \text{} and \nas{} are kept.
   function latinizeSource(args) {
@@ -263,6 +312,7 @@
       ready: function () {
         MathJax.startup.defaultReady();
         var tex = MathJax.startup.document.inputJax[0];
+        tex.preFilters.add(arabicCommands, 50);   // runs before the Latin conversion
         if (MODE === 'latin') {
           tex.preFilters.add(latinizeSource, 100);
           tex.postFilters.add(latinize, 100);   // catches Arabic coming from page commands
