@@ -25,8 +25,8 @@
 
   // Default commands (Arabic school notation). Extend or override per page.
   var macros = {
-    // Number sets
-    R: '\\mathbb{R}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
+    // Number sets (\\R is the real numbers: bold ح)
+    R: '\\mathbf{ح}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
     // Limit
     nha: '\\mathop{\\text{نهــا}}\\limits',
     // Trigonometric functions
@@ -66,7 +66,8 @@
         text += t;
       });
       if (ARABIC.test(text) && (kind === 'mi' || kind === 'mo')) {
-        node.attributes.set('mathvariant', 'normal');
+        var mv = node.attributes.getExplicit('mathvariant');
+        if (!mv || mv === 'italic') node.attributes.set('mathvariant', 'normal');
       }
       // Tokens that must read normally (not mirrored).
       if (kind === 'mi' || kind === 'mn' || kind === 'mtext' ||
