@@ -11,7 +11,7 @@
  *   2. Letters, numbers and words are mirrored back, so they read normally.
  *   3. Western digits become Arabic-Indic digits (12.5 → ١٢٫٥), the comma becomes ، and ; becomes ؛.
  *   4. Arabic letters are set upright (not slanted).
- *   5. \mathbb{ح} gives a double-struck Arabic letter (needs the "Noto Sans Math" font on the page).
+ *   5. \mathbb{ص} gives a double-struck Arabic letter (needs the "Noto Sans Math" font on the page).
  *
  * Your own symbols: before loading this file, define
  *   window.ArabicMathMacros = { name: 'TeX definition', ... };
@@ -33,8 +33,8 @@
 
   // Default commands (Arabic school notation). Extend or override per page.
   var macros = {
-    // Number sets (\\R is the real numbers: double-struck ح)
-    R: '\\mathbb{ح}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
+    // Number sets (standard double-struck Latin letters: \\R is ℝ)
+    R: '\\mathbb{R}', N: '\\mathbb{N}', Z: '\\mathbb{Z}', Q: '\\mathbb{Q}', C: '\\mathbb{C}',
     // Limit
     nha: '\\mathop{\\text{نهــا}}\\limits',
     // Trigonometric functions
