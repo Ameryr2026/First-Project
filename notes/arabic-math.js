@@ -162,8 +162,7 @@
 
   // ---------- Arabic command names ----------
   // Write \كسر{أ}{ب} instead of \frac{أ}{ب}. The same names are meant to work in LuaLaTeX,
-  // so one source serves both the website and PDFs. "/" also works on the website, but only
-  // before a known name, so س/ص is still division. Add your own:
+  // so one source serves both the website and PDFs. "/" is always division. Add your own:
   //   window.ArabicMathCommands = { 'اسم': '\\texcommand' };
   var COMMANDS = {
     // Structure
@@ -195,9 +194,9 @@
   addCommands(COMMANDS);
   addCommands(window.ArabicMathCommands || {});
 
-  // Replace \اسم and /اسم with the TeX command. Longest known name wins, so \جاس reads as \جا س.
+  // Replace \اسم with the TeX command. Longest known name wins, so \جاس reads as \جا س.
   function arabicCommands(args) {
-    args.math.math = args.math.math.replace(/([\\\/])([ء-يـ]+)/g, function (m, mark, word) {
+    args.math.math = args.math.math.replace(/\\([ء-يـ]+)/g, function (m, word) {
       for (var n = word.length; n > 0; n--) {
         var tex = CMD[normalizeName(word.slice(0, n))];
         if (tex) {
@@ -205,7 +204,7 @@
           return tex + (rest ? ' ' + rest : ' ');
         }
       }
-      return m;   // unknown: \ left as is (MathJax will report it); / stays division
+      return m;   // unknown name: left as is, and MathJax reports it
     });
   }
 
