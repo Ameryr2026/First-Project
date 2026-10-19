@@ -19,7 +19,7 @@
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=11"></script>
+<script src="arabic-math.js?v=12"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -109,13 +109,14 @@
   // English LaTeX command → Arabic command name (no backslash). Anything not listed is kept.
   var ENG = {
     frac: 'كسر', dfrac: 'كسر', tfrac: 'كسر', sqrt: 'جذر', quad: 'مسافة', left: 'افتح', right: 'اغلق',
-    lim: 'نها', to: 'الى', rightarrow: 'الى', int: 'تكامل', sum: 'مجموع', prod: 'جداء', infty: 'لانهاية',
+    lim: 'نها', to: 'الى', rightarrow: 'سهم', leftarrow: 'سهمعكسي', leftrightarrow: 'سهمان',
+    longrightarrow: 'سهمطويل', Leftarrow: 'سهممزدوجعكسي', Leftrightarrow: 'سهممزدوجان', impliedby: 'يستلزممن', mapsto: 'يرسل', int: 'تكامل', sum: 'مجموع', prod: 'جداء', infty: 'لانهاية',
     partial: 'جزء', nabla: 'تدرج',
     sin: 'جا', cos: 'جتا', tan: 'ظا', cot: 'ظتا', sec: 'قا', csc: 'قتا', log: 'لو',
     le: 'لايزيد', leq: 'لايزيد', ge: 'لايقل', geq: 'لايقل', ne: 'لايساوي', neq: 'لايساوي', approx: 'تقريبا',
     in: 'ينتمي', notin: 'لاينتمي', subset: 'محتواة', cup: 'اتحاد', cap: 'تقاطع',
-    times: 'ضرب', cdot: 'نقطة', pm: 'زائدناقص', Rightarrow: 'يستلزم', implies: 'يستلزم',
-    Leftrightarrow: 'يكافئ', iff: 'يكافئ', forall: 'لكل', exists: 'يوجد',
+    times: 'ضرب', cdot: 'نقطة', pm: 'زائدناقص', Rightarrow: 'سهممزدوج', implies: 'يستلزم',
+    iff: 'يكافئ', forall: 'لكل', exists: 'يوجد',
     alpha: 'الفا', beta: 'بيتا', gamma: 'جاما', delta: 'دلتا', epsilon: 'ابسلون', varepsilon: 'ابسلون',
     theta: 'ثيتا', lambda: 'لامدا', mu: 'ميو', pi: 'باي', sigma: 'سيجما', phi: 'فاي', varphi: 'فاي',
     omega: 'اوميجا', zeta: 'زيتا', eta: 'ايتا', iota: 'يوتا', kappa: 'كابا', nu: 'نيو', xi: 'كساي',

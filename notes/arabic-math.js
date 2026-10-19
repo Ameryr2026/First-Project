@@ -178,7 +178,13 @@
     // Relations and operations
     'لايزيد': '\\le', 'لايقل': '\\ge', 'لايساوي': '\\ne', 'تقريبا': '\\approx',
     'ينتمي': '\\in', 'لاينتمي': '\\notin', 'محتواة': '\\subset', 'اتحاد': '\\cup', 'تقاطع': '\\cap',
-    'ضرب': '\\times', 'نقطة': '\\cdot', 'زائدناقص': '\\pm', 'يستلزم': '\\Rightarrow', 'يكافئ': '\\Leftrightarrow',
+    'ضرب': '\\times', 'نقطة': '\\cdot', 'زائدناقص': '\\pm',
+    // Arrows, named by reading direction: "forward" points the way the text reads
+    // (→ in the Latin view, ← in the Arabic view, where arrows are mirrored).
+    'سهم': '\\rightarrow', 'سهمعكسي': '\\leftarrow', 'سهمان': '\\leftrightarrow',
+    'سهمطويل': '\\longrightarrow', 'سهممزدوج': '\\Rightarrow', 'سهممزدوجعكسي': '\\Leftarrow',
+    'سهممزدوجان': '\\Leftrightarrow', 'يستلزم': '\\implies', 'يستلزممن': '\\impliedby', 'يكافئ': '\\iff',
+    'يرسل': '\\mapsto',
     'لكل': '\\forall', 'يوجد': '\\exists',
     // Sets and norms
     'حقيقية': '\\R', 'طبيعية': '\\N', 'صحيحة': '\\Z', 'نسبية': '\\Q', 'مركبة': '\\C',
