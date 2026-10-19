@@ -35,6 +35,10 @@
     qa: '\\mathop{\\text{قا}}\\nolimits', qta: '\\mathop{\\text{قتا}}\\nolimits',
     // Logarithm
     lo: '\\mathop{\\text{لو}}\\nolimits',
+    // Derivatives: \partial shows as د; \pd{ص}{س} gives the long form دص/دس,
+    // \pd[2]{ص}{س} gives د²ص/دس²
+    partial: '\\mathrm{د}',
+    pd: ['\\frac{\\mathrm{د}^{#1} #2}{\\mathrm{د} #3^{#1}}', 3, ''],
     // Norm and absolute value
     norm: ['\\left\\lVert #1 \\right\\rVert', 1],
     abs: ['\\left\\lvert #1 \\right\\rvert', 1],
