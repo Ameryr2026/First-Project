@@ -19,7 +19,7 @@
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=12"></script>
+<script src="arabic-math.js?v=13"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -106,25 +106,8 @@
 (function () {
   var DEFAULT_MAP = 'x=س y=ص z=ل t=ز u=ع f=ق g=ه a=أ b=ب c=ج d=د k=ك m=م n=ن r=ر';
 
-  // English LaTeX command → Arabic command name (no backslash). Anything not listed is kept.
-  var ENG = {
-    frac: 'كسر', dfrac: 'كسر', tfrac: 'كسر', sqrt: 'جذر', quad: 'مسافة', left: 'افتح', right: 'اغلق',
-    lim: 'نها', to: 'الى', rightarrow: 'سهم', leftarrow: 'سهمعكسي', leftrightarrow: 'سهمان',
-    longrightarrow: 'سهمطويل', Leftarrow: 'سهممزدوجعكسي', Leftrightarrow: 'سهممزدوجان', impliedby: 'يستلزممن', mapsto: 'يرسل', int: 'تكامل', sum: 'مجموع', prod: 'جداء', infty: 'لانهاية',
-    partial: 'جزء', nabla: 'تدرج',
-    sin: 'جا', cos: 'جتا', tan: 'ظا', cot: 'ظتا', sec: 'قا', csc: 'قتا', log: 'لو',
-    le: 'لايزيد', leq: 'لايزيد', ge: 'لايقل', geq: 'لايقل', ne: 'لايساوي', neq: 'لايساوي', approx: 'تقريبا',
-    in: 'ينتمي', notin: 'لاينتمي', subset: 'محتواة', cup: 'اتحاد', cap: 'تقاطع',
-    times: 'ضرب', cdot: 'نقطة', pm: 'زائدناقص', Rightarrow: 'سهممزدوج', implies: 'يستلزم',
-    iff: 'يكافئ', forall: 'لكل', exists: 'يوجد',
-    alpha: 'الفا', beta: 'بيتا', gamma: 'جاما', delta: 'دلتا', epsilon: 'ابسلون', varepsilon: 'ابسلون',
-    theta: 'ثيتا', lambda: 'لامدا', mu: 'ميو', pi: 'باي', sigma: 'سيجما', phi: 'فاي', varphi: 'فاي',
-    omega: 'اوميجا', zeta: 'زيتا', eta: 'ايتا', iota: 'يوتا', kappa: 'كابا', nu: 'نيو', xi: 'كساي',
-    rho: 'رو', tau: 'تاو', upsilon: 'اوبسيلون', chi: 'كاي', psi: 'بساي',
-    Gamma: 'جاماكبيرة', Theta: 'ثيتاكبيرة', Lambda: 'لامداكبيرة', Xi: 'كسايكبيرة', Pi: 'بايكبيرة',
-    Sigma: 'سيجماكبيرة', Upsilon: 'اوبسيلونكبيرة', Phi: 'فايكبيرة', Psi: 'بسايكبيرة', Omega: 'اوميجاكبيرة'
-  };
-  var SETS = { R: 'حقيقية', N: 'طبيعية', Z: 'صحيحة', Q: 'نسبية', C: 'مركبة' };
+  // Which Arabic command matches an English LaTeX command comes from the shared list in
+  // arabic-math.js (ArabicMath.fromLatex), so a command added there converts here too.
   // Commands whose {argument} is a name or text, copied without changing letters.
   var VERBATIM = { text: 1, textrm: 1, mbox: 1, label: 1, ref: 1, eqref: 1, begin: 1, end: 1,
                    operatorname: 1, hspace: 1, vspace: 1, color: 1, textcolor: 1 };
@@ -179,7 +162,8 @@
           var k = skipSpaces(src, i);
           if (src[k] === '{') {
             var e = groupEnd(src, k), inner = src.slice(k + 1, e - 1).trim();
-            if (SETS[inner]) { i = e; emitCmd(SETS[inner]); continue; }
+            var set = ArabicMath.fromLatex('\\mathbb{' + inner + '}');
+            if (set) { i = e; emitCmd(set); continue; }
           }
           out += '\\mathbb'; continue;
         }
@@ -201,7 +185,8 @@
           if (src[k3] === '{') { var e3 = groupEnd(src, k3); out += src.slice(i, e3); i = e3; }
           continue;
         }
-        if (ENG[name]) { emitCmd(ENG[name]); continue; }
+        var ar = ArabicMath.fromLatex('\\' + name);
+        if (ar) { emitCmd(ar); continue; }
         out += '\\' + name;
         continue;
       }

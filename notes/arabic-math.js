@@ -213,6 +213,43 @@
     for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) COMMAND_LIST[k] = src[k]; }
   });
 
+  // ---------- Standard LaTeX ↔ Arabic commands (one list for the whole site) ----------
+  // The site's own short commands, written as a LaTeX user knows them.
+  var STANDARD = {
+    '\\nha': '\\lim', '\\ja': '\\sin', '\\jta': '\\cos', '\\zha': '\\tan', '\\zta': '\\cot',
+    '\\qa': '\\sec', '\\qta': '\\csc', '\\lo': '\\log', '\\tr': '\\operatorname{tr}',
+    '\\pd': '\\frac{d}{dx}', '\\ppd': '\\frac{\\partial}{\\partial x}',
+    '\\R': '\\mathbb{R}', '\\N': '\\mathbb{N}', '\\Z': '\\mathbb{Z}', '\\Q': '\\mathbb{Q}', '\\C': '\\mathbb{C}',
+    '\\norm': '\\lVert \\cdot \\rVert', '\\abs': '\\lvert \\cdot \\rvert'
+  };
+  // Other spellings of the same LaTeX command.
+  var SAME_AS = {
+    '\\leq': '\\le', '\\geq': '\\ge', '\\neq': '\\ne', '\\dfrac': '\\frac', '\\tfrac': '\\frac',
+    '\\epsilon': '\\varepsilon', '\\phi': '\\varphi'
+  };
+  // LaTeX commands left as they are by the converter, because their meaning is ambiguous
+  // (\Delta can be the capital letter or the Laplacian).
+  var KEEP = { '\\Delta': true };
+
+  function toLatex(tex) { return STANDARD[tex] || tex; }
+
+  // English LaTeX → Arabic name. The first Arabic name listed for a command wins
+  // (so \lim → نها, not نهاية; \to → الى, not يؤول).
+  var FROM = null;
+  function fromLatex(tex) {
+    if (!FROM) {
+      FROM = {};
+      Object.keys(COMMAND_LIST).forEach(function (name) {
+        var t = COMMAND_LIST[name];
+        if (!(toLatex(t) in FROM)) FROM[toLatex(t)] = name;
+        if (!(t in FROM)) FROM[t] = name;
+      });
+    }
+    tex = SAME_AS[tex] || tex;
+    if (KEEP[tex]) return null;
+    return FROM[tex] || null;
+  }
+
   // Replace \اسم with the TeX command. Longest known name wins, so \جاس reads as \جا س.
   function arabicCommands(args) {
     args.math.math = args.math.math.replace(/\\([ء-يـ]+)/g, function (m, word) {
@@ -360,6 +397,8 @@
   window.ArabicMath = {
     mode: MODE,
     commands: COMMAND_LIST,
+    toLatex: toLatex,       // '\\nha' → '\\lim'
+    fromLatex: fromLatex,   // '\\frac' → 'كسر', '\\mathbb{R}' → 'حقيقية'
     setMode: setMode,
     typeset: function (el) {
       return MathJax.typesetPromise(el ? [el] : undefined).then(function () { mirrorAll(el); });

@@ -9,7 +9,7 @@
 <script>
   window.ArabicMathLatin = { 'س': 'x', 'ص': 'y', 'ع': 'u', 'ز': 't', 'أ': 'a', 'ب': 'b', 'ن': 'n' };
 </script>
-<script src="arabic-math.js?v=12"></script>
+<script src="arabic-math.js?v=13"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -110,13 +110,7 @@
   var USAGE = {
     'كسر': '{أ}{ب}', 'افتح': '( ... \\اغلق)', 'اغلق': ')', 'جذر': '{س}', 'نص': '{...}', 'مشتقة': '{ص}{س}', 'جزئية': '{ع}{ز}', 'نظيم': '{ع}', 'مطلق': '{س}'
   };
-  // LaTeX equivalent as a LaTeX user knows it (the site's own short commands spelled out).
-  var KNOWN = {
-    '\\nha': '\\lim', '\\ja': '\\sin', '\\jta': '\\cos', '\\zha': '\\tan', '\\zta': '\\cot', '\\qa': '\\sec',
-    '\\qta': '\\csc', '\\lo': '\\log', '\\pd': '\\frac{d}{dx}', '\\ppd': '\\frac{\\partial}{\\partial x}',
-    '\\R': '\\mathbb{R}', '\\N': '\\mathbb{N}', '\\Z': '\\mathbb{Z}', '\\Q': '\\mathbb{Q}', '\\C': '\\mathbb{C}',
-    '\\norm': '\\lVert \\cdot \\rVert', '\\left': '\\left', '\\right': '\\right', '\\abs': '\\lvert \\cdot \\rvert', '\\text': '\\text'
-  };
+  // The LaTeX column comes from the shared list in arabic-math.js (ArabicMath.toLatex).
 
   function build() {
     var cmds = ArabicMath.commands, seen = {}, root = document.getElementById('tables');
@@ -135,11 +129,11 @@
         var c = document.createElement('td'); c.className = 'cmd copy';
         c.textContent = '\\' + n + (USAGE[n] || ''); c.title = 'انسخ';
         c.addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText('\\' + n); });
-        var x = document.createElement('td'); x.className = 'tex'; x.textContent = KNOWN[cmds[n]] || cmds[n];
+        var x = document.createElement('td'); x.className = 'tex'; x.textContent = ArabicMath.toLatex(cmds[n]);
         var o = document.createElement('td'); o.className = 'out';
         o.textContent = '$' + (EXAMPLE[n] || '\\' + n) + '$';
         tr.appendChild(c); tr.appendChild(x); tr.appendChild(o);
-        tr.setAttribute('data-search', n + ' ' + cmds[n] + ' ' + (KNOWN[cmds[n]] || ''));
+        tr.setAttribute('data-search', n + ' ' + cmds[n] + ' ' + ArabicMath.toLatex(cmds[n]));
         t.appendChild(tr);
       });
       sec.appendChild(t); root.appendChild(sec);
