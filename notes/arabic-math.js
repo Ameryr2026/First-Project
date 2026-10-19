@@ -193,6 +193,11 @@
   }
   addCommands(COMMANDS);
   addCommands(window.ArabicMathCommands || {});
+  // All Arabic command names as written (for the editor's suggestions).
+  var COMMAND_LIST = {};
+  [COMMANDS, window.ArabicMathCommands || {}].forEach(function (src) {
+    for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) COMMAND_LIST[k] = src[k]; }
+  });
 
   // Replace \اسم with the TeX command. Longest known name wins, so \جاس reads as \جا س.
   function arabicCommands(args) {
@@ -340,6 +345,7 @@
   // For content added later: ArabicMath.typeset(element)
   window.ArabicMath = {
     mode: MODE,
+    commands: COMMAND_LIST,
     setMode: setMode,
     typeset: function (el) {
       return MathJax.typesetPromise(el ? [el] : undefined).then(function () { mirrorAll(el); });
