@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amer Rawashdeh</title>
+<meta name="description" content="Amer Rawashdeh, PhD candidate in Mathematics at Wayne State University. Nonlinear PDEs and liquid crystal flows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --text: #1f2328;
+    --muted: #5b6470;
+    --accent: #0c4a6e;
+    --rule: #e3e0d8;
+    --card: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171b;
+      --text: #e6e6e3;
+      --muted: #a0a7b0;
+      --accent: #7cc4ec;
+      --rule: #2a2f36;
+      --card: #1b1f24;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: var(--accent); }
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 14px;
+  }
+  nav .inner {
+    max-width: 820px; margin: 0 auto; padding: 14px 20px;
+    display: flex; flex-wrap: wrap; gap: 6px 22px; align-items: center;
+  }
+  nav .name { font-weight: 600; color: var(--text); margin-right: auto; }
+  nav a { color: var(--muted); }
+  nav a:hover { color: var(--accent); }
+  main { max-width: 820px; margin: 0 auto; padding: 0 20px 80px; }
+  header.hero {
+    display: grid; grid-template-columns: 170px 1fr; gap: 32px;
+    align-items: center; padding: 56px 0 40px;
+  }
+  .photo {
+    width: 170px; height: 170px; border-radius: 50%;
+    background: var(--rule) center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Inter, sans-serif; font-size: 13px; color: var(--muted);
+  }
+  h1 { font-size: 40px; margin: 0 0 4px; font-weight: 600; letter-spacing: -0.01em; }
+  .role { color: var(--muted); margin: 0 0 14px; }
+  .links { font-family: Inter, sans-serif; font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  section { padding: 28px 0; border-top: 1px solid var(--rule); }
+  h2 {
+    font-family: Inter, sans-serif; font-size: 13px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent);
+    margin: 0 0 16px;
+  }
+  h3 { font-size: 19px; margin: 18px 0 4px; font-weight: 600; }
+  p { margin: 0 0 14px; }
+  ul.items { list-style: none; padding: 0; margin: 0; }
+  ul.items li { padding: 10px 0; border-bottom: 1px dashed var(--rule); }
+  ul.items li:last-child { border-bottom: none; }
+  .meta { color: var(--muted); font-size: 15px; }
+  .todo {
+    background: #fff4c2; color: #6b4e00; padding: 0 4px; border-radius: 3px;
+    font-family: Inter, sans-serif; font-size: 13px;
+  }
+  @media (prefers-color-scheme: dark) { .todo { background: #4a3d0a; color: #ffe08a; } }
+  footer { font-family: Inter, sans-serif; font-size: 13px; color: var(--muted); padding-top: 28px; border-top: 1px solid var(--rule); }
+  @media (max-width: 600px) {
+    body { font-size: 17px; }
+    header.hero { grid-template-columns: 1fr; text-align: left; padding-top: 36px; gap: 20px; }
+    .photo { width: 120px; height: 120px; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <span class="name">Amer Rawashdeh</span>
+    <a href="#research">Research</a>
+    <a href="#notes">Notes</a>
+    <a href="#notes-ar">عربي</a>
+    <a href="#teaching">Teaching</a>
+    <a href="#service">Service</a>
+    <a href="#cv">CV</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main>
+
+  <header class="hero">
+    <!-- EDIT: put your photo in the repo as photo.jpg, then replace this div with:
+         <div class="photo" style="background-image:url('photo.jpg')"></div> -->
+    <div class="photo">photo.jpg</div>
+    <div>
+      <h1>Amer Rawashdeh</h1>
+      <p class="role">PhD Candidate in Mathematics<br>Wayne State University, Detroit, MI</p>
+      <div class="links">
+        <a href="mailto:EMAIL">Email</a>
+        <a href="cv.pdf">CV (PDF)</a>
+        <!-- EDIT or delete any of these -->
+        <a href="https://scholar.google.com/">Google Scholar</a>
+        <a href="https://arxiv.org/">arXiv</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      I am a final-year PhD student in the Department of Mathematics at Wayne State University,
+      expecting to complete my degree in May 2027. My research is in nonlinear partial differential
+      equations, with a focus on the mathematical theory of liquid crystal flows.
+    </p>
+    <p>
+      Before graduate school, I taught secondary-school mathematics in Jordan. Teaching remains a
+      central part of my work, and I am currently on the academic job market.
+    </p>
+  </section>
+
+  <section id="research">
+    <h2>Research</h2>
+    <p>
+      My dissertation studies Ericksen's model for nematic liquid crystals with variable degree of
+      orientation, working with a reduction of the system to Poiseuille flow.
+    </p>
+    <p class="meta">Advisors: Fernando Charro and Tao Huang</p>
+
+    <h3>Papers and preprints</h3>
+    <ul class="items">
+      <li><span class="todo">EDIT: add your papers here, e.g. Authors, "Title," journal or arXiv number, year.</span></li>
+    </ul>
+
+    <h3>Talks</h3>
+    <ul class="items">
+      <li><span class="todo">EDIT: add talks (title, venue, date), or delete this subsection.</span></li>
+    </ul>
+  </section>
+
+  <section id="notes">
+    <h2>Notes on PDE Analysis</h2>
+    <p>Expository notes on topics in PDE analysis that I have worked through.</p>
+    <ul class="items">
+      <!-- Copy note-template.html for each new note, then add a line here. -->
+      <li>
+        <a href="notes/note-template.html"><strong>Note title</strong></a>
+        <span class="meta">· <span class="todo">EDIT: one-line description</span></span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="notes-ar" dir="rtl" lang="ar" style="font-family:'Noto Naskh Arabic',serif; line-height:1.9">
+    <h2 style="font-family:'Noto Naskh Arabic',serif; letter-spacing:0; text-transform:none; font-size:18px">ملاحظات بالعربية</h2>
+    <!-- EDIT: write a sentence or two in your own words about what these notes are and who they're for. -->
+    <p><span class="todo" dir="ltr">EDIT: وصف قصير للملاحظات ولمن هي موجّهة</span></p>
+    <ul class="items">
+      <!-- Copy notes/ar-template.html for each new note, then add a line here. -->
+      <li>
+        <a href="notes/ar-template.html"><strong>عنوان الملاحظة</strong></a>
+      </li>
+    </ul>
+  </section>
+
+  <section id="teaching">
+    <h2>Teaching</h2>
+    <p class="meta">Wayne State University</p>
+    <ul class="items">
+      <li><strong>MAT 1010 — Beginning Algebra</strong> <span class="meta">· Fall 2026 · Instructor</span></li>
+      <li><strong>Calculus I</strong> <span class="meta">· Fall 2024</span></li>
+      <li><span class="todo">EDIT: add your other courses and roles.</span></li>
+    </ul>
+    <p class="meta" style="margin-top:14px">Before graduate school: secondary-school mathematics teacher, Jordan.</p>
+  </section>
+
+  <section id="service">
+    <h2>Service</h2>
+    <ul class="items">
+      <li>
+        Co-organizer, AMS Special Session <em>Recent Trends in Nonlinear PDEs and Applications</em>,
+        AMS Sectional Meeting, Syracuse, April 2027
+      </li>
+    </ul>
+  </section>
+
+  <section id="cv">
+    <h2>CV</h2>
+    <p>My full CV is available <a href="cv.pdf">here (PDF)</a>.</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>
+      Department of Mathematics<br>
+      Wayne State University<br>
+      Detroit, MI<br>
+      <span class="todo">EDIT: office / email</span>
+    </p>
+  </section>
+
+  <footer>Last updated October 2026</footer>
+</main>
+
+</body>
+</html>
