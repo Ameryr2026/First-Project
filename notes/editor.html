@@ -12,17 +12,20 @@
   (function () {
     var saved = null;
     try { saved = localStorage.getItem('editor-latin-map'); } catch (e) {}
-    var text = saved || 'س=x ص=y ع=z ق=f ز=t ن=n ل=l م=m ك=k ر=r';
+    // Standard letters come from arabic-math.js; only an edited mapping is applied here.
+    var text = saved || '';
     var map = {};
     text.split(/\s+/).forEach(function (pair) {
       var p = pair.split('=');
-      if (p.length === 2 && p[0] && p[1]) map[p[0]] = p[1];
+      if (p.length === 2 && p[0] && p[1]) {
+        if (p[0] === 'هـ') { map['ه'] = p[1]; map['ـ'] = ''; } else map[p[0]] = p[1];
+      }
     });
     window.ArabicMathLatin = map;
     window.EditorLatinMapText = text;
   })();
 </script>
-<script src="arabic-math.js?v=14"></script>
+<script src="arabic-math.js?v=15"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>
@@ -187,7 +190,9 @@
   document.getElementById('clear').addEventListener('click', function () { src.value = ''; render(); src.focus(); });
 
   // Letter map: changing it reloads the page so the Latin view uses the new letters.
-  mapBox.value = window.EditorLatinMapText || '';
+  mapBox.value = window.EditorLatinMapText || Object.keys(ArabicMath.letters).map(function (l) {
+    return ArabicMath.letters[l] + '=' + l;
+  }).join(' ');
   mapBox.addEventListener('change', function () {
     try { localStorage.setItem('editor-latin-map', mapBox.value.trim()); } catch (e) {}
     if (window.ArabicMath && ArabicMath.mode === 'latin') location.reload();

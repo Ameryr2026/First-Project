@@ -59,7 +59,22 @@
   }
 
   // Letter map for the Latin view. د defaults to d (as in دص/دس); pages override anything.
-  var LATIN = {'د': 'd'};
+  // ---------- The standard letters: Latin ↔ Arabic (one table for the whole site) ----------
+  // Sound first, then abjad order (أ ب ج د = a b c d). g, p, v use the letters Arab readers know
+  // from foreign words (گ پ ڤ). e is هـ, as in Arab textbooks, because a plain ه looks like ٥.
+  // o is left Latin: it looks like ٠, and و means "and".
+  var LETTERS = {
+    a: 'أ', b: 'ب', c: 'ج', d: 'د', e: 'هـ', f: 'ق', g: 'گ', h: 'ح', i: 'ي', j: 'ط', k: 'ك',
+    l: 'ل', m: 'م', n: 'ن', p: 'پ', q: 'ظ', r: 'ر', s: 'ش', t: 'ز', u: 'ع', v: 'ڤ', w: 'ث',
+    x: 'س', y: 'ص', z: 'ض'
+  };
+  // Latin view: Arabic → Latin, from the table above; a page's own ArabicMathLatin wins.
+  var LATIN = {};
+  Object.keys(LETTERS).forEach(function (l) {
+    var ar = LETTERS[l];
+    if (ar === 'هـ') { LATIN['ه'] = l; LATIN['ـ'] = ''; } else LATIN[ar] = l;
+  });
+  function toLatinLetter(c) { return Object.prototype.hasOwnProperty.call(LATIN, c) ? LATIN[c] : c; }
   var pageMap = window.ArabicMathLatin || {};
   for (var a in pageMap) { if (Object.prototype.hasOwnProperty.call(pageMap, a)) LATIN[a] = pageMap[a]; }
 
@@ -150,9 +165,9 @@
         if (WORDS_LATIN[word]) {
           t = WORDS_LATIN[word];
         } else if (mv === 'double-struck') {
-          t = t.replace(/./gu, function (c) { return DOUBLE_LATIN[c] || LATIN[c] || c; });
+          t = t.replace(/./gu, function (c) { return DOUBLE_LATIN[c] || toLatinLetter(c); });
         } else if (kind !== 'mtext') {
-          t = t.replace(/./gu, function (c) { return LATIN[c] || c; });
+          t = t.replace(/./gu, toLatinLetter);
         }
         t = toWesternDigits(t).replace(/،/g, ',').replace(/؛/g, ';');
         child.setText(t);
@@ -305,13 +320,13 @@
     var src = args.math.math;
     // \mathbb{ح} → \mathbb{R}, etc.
     src = src.replace(/\\mathbb\s*\{([^{}]*)\}/g, function (m, inner) {
-      return '\\mathbb{' + inner.replace(/./gu, function (c) { return DOUBLE_LATIN[c] || LATIN[c] || c; }) + '}';
+      return '\\mathbb{' + inner.replace(/./gu, function (c) { return DOUBLE_LATIN[c] || toLatinLetter(c); }) + '}';
     });
     // Convert everything outside \text{...} / \nas{...}.
     var out = '', i = 0, re = /\\(?:text|nas|mbox|textrm)\s*\{/g, m;
     function conv(s) {
       return toWesternDigits(s).replace(/،/g, ',').replace(/؛/g, ';')
-        .replace(/./gu, function (c) { return LATIN[c] || c; });
+        .replace(/./gu, toLatinLetter);
     }
     while ((m = re.exec(src))) {
       out += conv(src.slice(i, m.index));
@@ -432,6 +447,7 @@
   window.ArabicMath = {
     mode: MODE,
     commands: COMMAND_LIST,
+    letters: LETTERS,       // 'x' → 'س'
     toLatex: toLatex,       // '\\nha' → '\\lim'
     fromLatex: fromLatex,   // '\\frac' → 'كسر', '\\mathbb{R}' → 'حقيقية'
     setMode: setMode,

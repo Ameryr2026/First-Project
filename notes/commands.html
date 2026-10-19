@@ -6,10 +6,7 @@
 <title>الأوامر العربية · عامر الرواشدة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Math&display=swap" rel="stylesheet">
-<script>
-  window.ArabicMathLatin = { 'س': 'x', 'ص': 'y', 'ع': 'u', 'ز': 't', 'أ': 'a', 'ب': 'b', 'ن': 'n' };
-</script>
-<script src="arabic-math.js?v=14"></script>
+<script src="arabic-math.js?v=15"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -122,6 +119,29 @@
     'محاذاةداخلية': '\\بداية{محاذاةداخلية} أ &= ب + ج \\\\ &= د \\نهاية{محاذاةداخلية}',
     'تقسيم': '\\بداية{تقسيم} أ &= ب \\\\ &= ج \\نهاية{تقسيم}'
   };
+  function lettersSection() {
+    var L = ArabicMath.letters, root = document.getElementById('tables');
+    var sec = document.createElement('section'), h = document.createElement('h2');
+    h.textContent = 'الحروف'; sec.appendChild(h);
+    var p = document.createElement('p'); p.className = 'lead';
+    p.textContent = 'الحرف العربي المقابل لكل حرف لاتيني، في المحوّل وفي العرض بالرموز اللاتينية. ' +
+      'الحرف o يبقى لاتينيًا لأنه يشبه الصفر ٠، والواو تعني «و» في الجملة.';
+    sec.appendChild(p);
+    var t = document.createElement('table'), head = document.createElement('tr');
+    ['العربي', 'اللاتيني', 'الشكل'].forEach(function (x) { var th = document.createElement('th'); th.textContent = x; head.appendChild(th); });
+    t.appendChild(head);
+    Object.keys(L).forEach(function (l) {
+      var tr = document.createElement('tr');
+      var c = document.createElement('td'); c.className = 'cmd'; c.textContent = L[l];
+      var x = document.createElement('td'); x.className = 'tex'; x.textContent = l;
+      var o = document.createElement('td'); o.className = 'out'; o.textContent = '$' + L[l] + '^2$';
+      tr.appendChild(c); tr.appendChild(x); tr.appendChild(o);
+      tr.setAttribute('data-search', L[l] + ' ' + l);
+      t.appendChild(tr);
+    });
+    sec.appendChild(t); root.appendChild(sec);
+  }
+
   function envSection() {
     var envs = ArabicMath.environments, root = document.getElementById('tables');
     var sec = document.createElement('section'), h = document.createElement('h2');
@@ -176,6 +196,7 @@
       });
       sec.appendChild(t); root.appendChild(sec);
     }
+    lettersSection();
     GROUPS.forEach(function (g) { section(g[0], g[1]); });
     envSection();
     var rest = Object.keys(cmds).filter(function (n) { return !seen[n]; });

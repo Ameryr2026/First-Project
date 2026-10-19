@@ -9,17 +9,20 @@
 <script>
   // Latin view: turn the Arabic letters back into the Latin ones from the mapping box.
   (function () {
-    var text = 'x=س y=ص z=ل t=ز u=ع f=ق g=ه a=أ b=ب c=ج d=د k=ك m=م n=ن r=ر';
-    try { text = localStorage.getItem('converter-map') || text; } catch (e) {}
+    // Only a mapping the reader edited is needed here; otherwise arabic-math.js uses its standard letters.
+    var text = '';
+    try { text = localStorage.getItem('converter-map-v2') || ''; } catch (e) {}
     var back = {};
     text.split(/\s+/).forEach(function (p) {
       var kv = p.split('=');
-      if (kv.length === 2 && kv[0] && kv[1]) back[kv[1]] = kv[0];
+      if (kv.length === 2 && kv[0] && kv[1]) {
+        if (kv[1] === 'هـ') { back['ه'] = kv[0]; back['ـ'] = ''; } else back[kv[1]] = kv[0];
+      }
     });
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=14"></script>
+<script src="arabic-math.js?v=15"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -104,7 +107,8 @@
 
 <script>
 (function () {
-  var DEFAULT_MAP = 'x=س y=ص z=ل t=ز u=ع f=ق g=ه a=أ b=ب c=ج d=د k=ك m=م n=ن r=ر';
+  // The standard letters come from arabic-math.js, the same table every page uses.
+  var DEFAULT_MAP = Object.keys(ArabicMath.letters).map(function (l) { return l + '=' + ArabicMath.letters[l]; }).join(' ');
 
   // Which Arabic command matches an English LaTeX command comes from the shared list in
   // arabic-math.js (ArabicMath.fromLatex), so a command added there converts here too.
@@ -205,7 +209,10 @@
         out += '\\' + name;
         continue;
       }
-      if (/[A-Za-z]/.test(ch) && map[ch]) { out += map[ch]; i++; continue; }
+      if (/[A-Za-z]/.test(ch) && map[ch]) {
+        // A two-character letter (هـ) is grouped, so e^x becomes {هـ}^{...}.
+        out += map[ch].length > 1 ? '{' + map[ch] + '}' : map[ch]; i++; continue;
+      }
       out += ch; i++;
     }
     return out;
@@ -213,7 +220,7 @@
 
   var timer = null;
   function update() {
-    try { localStorage.setItem('converter-map', mapBox.value); localStorage.setItem('converter-input', enBox.value); } catch (e) {}
+    try { localStorage.setItem('converter-map-v2', mapBox.value); localStorage.setItem('converter-input', enBox.value); } catch (e) {}
     var result = convert(enBox.value, readMap());
     arBox.value = result;
     document.getElementById('toEditor').onclick = function () {
@@ -233,7 +240,7 @@
   function later() { clearTimeout(timer); timer = setTimeout(update, 300); }
 
   try {
-    mapBox.value = localStorage.getItem('converter-map') || DEFAULT_MAP;
+    mapBox.value = localStorage.getItem('converter-map-v2') || DEFAULT_MAP;
     var saved = localStorage.getItem('converter-input'); if (saved) enBox.value = saved;
   } catch (e) { mapBox.value = DEFAULT_MAP; }
 
