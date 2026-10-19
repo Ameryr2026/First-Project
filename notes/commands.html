@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الأوامر العربية · عامر الرواشدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Math&display=swap" rel="stylesheet">
+<script>
+  window.ArabicMathLatin = { 'س': 'x', 'ص': 'y', 'ع': 'u', 'ز': 't', 'أ': 'a', 'ب': 'b', 'ن': 'n' };
+</script>
+<script src="arabic-math.js?v=9"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  :root {
+    --bg: #fbfaf7; --text: #1f2328; --muted: #5b6470;
+    --accent: #0c4a6e; --rule: #e3e0d8; --box: #f2f0ea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171b; --text: #e6e6e3; --muted: #a0a7b0;
+            --accent: #7cc4ec; --rule: #2a2f36; --box: #1c2026; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Noto Naskh Arabic", "Amiri", serif; font-size: 18px; line-height: 1.8; }
+  a { color: var(--accent); text-decoration: none; }
+  nav { border-bottom: 1px solid var(--rule); font-size: 15px; }
+  nav .inner { max-width: 860px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap;
+               gap: 8px 18px; align-items: center; }
+  nav .home { font-weight: 700; color: var(--text); margin-left: auto; }
+  nav a { color: var(--muted); }
+  main { max-width: 860px; margin: 0 auto; padding: 28px 16px 60px; }
+  h1 { font-size: 30px; margin: 0 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 18px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
+  .bar input { font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--rule);
+               border-radius: 6px; padding: 2px 10px; width: min(320px, 100%); }
+  .bar button { font: inherit; font-size: 15px; color: var(--text); background: var(--box);
+                border: 1px solid var(--rule); border-radius: 6px; padding: 2px 14px; cursor: pointer; }
+  h2 { font-size: 20px; margin: 28px 0 6px; color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: right; font-size: 14px; color: var(--muted); font-weight: 600; padding: 6px 8px;
+       border-bottom: 2px solid var(--rule); }
+  td { padding: 6px 8px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  td.cmd { white-space: nowrap; font-weight: 600; }
+  td.tex { direction: ltr; unicode-bidi: isolate; text-align: right; font-family: ui-monospace, Menlo, Consolas, monospace;
+           font-size: 15px; color: var(--muted); white-space: nowrap; }
+  td.out { min-width: 120px; }
+  .copy { cursor: pointer; }
+  .copy:hover { color: var(--accent); }
+  tr.hide, section.hide { display: none; }
+  @media print {
+    nav, .bar { display: none !important; }
+    body { background: #fff; color: #000; font-size: 11pt; }
+    main { max-width: none; padding: 0; }
+    tr { break-inside: avoid; }
+    h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="inner">
+    <a class="home" href="../index.html">عامر الرواشدة</a>
+    <a href="editor.html">المحرر</a>
+  </div>
+</nav>
+
+<main>
+  <h1>الأوامر العربية</h1>
+  <p class="lead">
+    كل أمر عربي يقابله أمر LaTeX معروف. يمكن استعمال الاثنين معًا، فالأمر <code>\كسر</code> هو نفسه <code dir="ltr">\frac</code>.
+    اضغط على أي أمر لنسخه.
+  </p>
+  <div class="bar">
+    <input id="q" type="search" placeholder="ابحث: كسر، frac، تكامل ..." aria-label="بحث">
+    <button type="button" id="pdf">PDF</button>
+  </div>
+  <div id="tables"></div>
+</main>
+
+<script>
+(function () {
+  // Groups and an example for commands that take arguments.
+  var GROUPS = [
+    ['البنية', ['كسر', 'جذر', 'نص', 'مسافة']],
+    ['التفاضل والتكامل', ['نها', 'نهاية', 'الى', 'يؤول', 'تكامل', 'مجموع', 'جداء', 'لانهاية',
+                         'مشتقة', 'جزئية', 'تدرج', 'لابلاس']],
+    ['الدوال', ['جا', 'جتا', 'ظا', 'ظتا', 'قا', 'قتا', 'لو']],
+    ['العلاقات', ['لايزيد', 'لايقل', 'لايساوي', 'تقريبا', 'ينتمي', 'لاينتمي', 'محتواة', 'اتحاد', 'تقاطع',
+                  'يستلزم', 'يكافئ', 'لكل', 'يوجد']],
+    ['العمليات', ['ضرب', 'نقطة', 'زائدناقص']],
+    ['المجموعات والمقاييس', ['حقيقية', 'طبيعية', 'صحيحة', 'نسبية', 'مركبة', 'نظيم', 'مطلق']],
+    ['الحروف اليونانية', ['الفا', 'بيتا', 'جاما', 'دلتا', 'ابسلون', 'ثيتا', 'لامدا', 'ميو', 'باي', 'سيجما',
+                          'فاي', 'اوميجا', 'اوميجاكبيرة']]
+  ];
+  var EXAMPLE = {
+    'كسر': '\\كسر{أ}{ب}', 'جذر': '\\جذر{س}', 'نص': '\\نص{حيث}', 'مسافة': 'أ \\مسافة ب',
+    'نها': '\\نها_{س \\الى 0}', 'نهاية': '\\نهاية_{س \\الى 0}', 'الى': 'س \\الى 0', 'يؤول': 'س \\يؤول 0',
+    'تكامل': '\\تكامل_أ^ب', 'مجموع': '\\مجموع_{ن=1}^{\\لانهاية}', 'جداء': '\\جداء_{ن=1}^{ب}',
+    'مشتقة': '\\مشتقة{ص}{س}', 'جزئية': '\\جزئية{ع}{ز}', 'تدرج': '\\تدرج ع', 'لابلاس': '\\لابلاس ع',
+    'نظيم': '\\نظيم{ع}', 'مطلق': '\\مطلق{س}', 'جا': '\\جا س', 'جتا': '\\جتا س', 'ظا': '\\ظا س',
+    'ظتا': '\\ظتا س', 'قا': '\\قا س', 'قتا': '\\قتا س', 'لو': '\\لو س'
+  };
+  var USAGE = {
+    'كسر': '{أ}{ب}', 'جذر': '{س}', 'نص': '{...}', 'مشتقة': '{ص}{س}', 'جزئية': '{ع}{ز}', 'نظيم': '{ع}', 'مطلق': '{س}'
+  };
+  // LaTeX equivalent as a LaTeX user knows it (the site's own short commands spelled out).
+  var KNOWN = {
+    '\\nha': '\\lim', '\\ja': '\\sin', '\\jta': '\\cos', '\\zha': '\\tan', '\\zta': '\\cot', '\\qa': '\\sec',
+    '\\qta': '\\csc', '\\lo': '\\log', '\\pd': '\\frac{d}{dx}', '\\ppd': '\\frac{\\partial}{\\partial x}',
+    '\\R': '\\mathbb{R}', '\\N': '\\mathbb{N}', '\\Z': '\\mathbb{Z}', '\\Q': '\\mathbb{Q}', '\\C': '\\mathbb{C}',
+    '\\norm': '\\lVert \\cdot \\rVert', '\\abs': '\\lvert \\cdot \\rvert', '\\text': '\\text'
+  };
+
+  function build() {
+    var cmds = ArabicMath.commands, seen = {}, root = document.getElementById('tables');
+    function section(title, names) {
+      var sec = document.createElement('section'), h = document.createElement('h2');
+      h.textContent = title; sec.appendChild(h);
+      var t = document.createElement('table'), head = document.createElement('tr');
+      ['الأمر العربي', 'في LaTeX', 'الشكل'].forEach(function (x) {
+        var th = document.createElement('th'); th.textContent = x; head.appendChild(th);
+      });
+      t.appendChild(head);
+      names.forEach(function (n) {
+        if (!cmds[n]) return;
+        seen[n] = true;
+        var tr = document.createElement('tr');
+        var c = document.createElement('td'); c.className = 'cmd copy';
+        c.textContent = '\\' + n + (USAGE[n] || ''); c.title = 'انسخ';
+        c.addEventListener('click', function () { if (navigator.clipboard) navigator.clipboard.writeText('\\' + n); });
+        var x = document.createElement('td'); x.className = 'tex'; x.textContent = KNOWN[cmds[n]] || cmds[n];
+        var o = document.createElement('td'); o.className = 'out';
+        o.textContent = '$' + (EXAMPLE[n] || '\\' + n) + '$';
+        tr.appendChild(c); tr.appendChild(x); tr.appendChild(o);
+        tr.setAttribute('data-search', n + ' ' + cmds[n] + ' ' + (KNOWN[cmds[n]] || ''));
+        t.appendChild(tr);
+      });
+      sec.appendChild(t); root.appendChild(sec);
+    }
+    GROUPS.forEach(function (g) { section(g[0], g[1]); });
+    var rest = Object.keys(cmds).filter(function (n) { return !seen[n]; });
+    if (rest.length) section('أوامر أخرى', rest);
+    return ArabicMath.typeset(root);
+  }
+
+  document.getElementById('q').addEventListener('input', function () {
+    var q = this.value.trim().replace(/[أإآ]/g, 'ا').replace(/^\\/, '');
+    document.querySelectorAll('#tables section').forEach(function (sec) {
+      var any = false;
+      sec.querySelectorAll('tr[data-search]').forEach(function (tr) {
+        var hit = !q || tr.getAttribute('data-search').replace(/[أإآ]/g, 'ا').indexOf(q) >= 0;
+        tr.classList.toggle('hide', !hit); if (hit) any = true;
+      });
+      sec.classList.toggle('hide', !any);
+    });
+  });
+  document.getElementById('pdf').addEventListener('click', function () { window.print(); });
+
+  (function waitReady() {
+    if (document.documentElement.getAttribute('data-math-ready')) build();
+    else setTimeout(waitReady, 100);
+  })();
+})();
+</script>
+</body>
+</html>
