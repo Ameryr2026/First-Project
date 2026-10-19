@@ -19,7 +19,7 @@
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=13"></script>
+<script src="arabic-math.js?v=14"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -178,6 +178,21 @@
             continue;
           }
           out += '\\' + name; continue;
+        }
+        if (name === 'begin' || name === 'end') {
+          var kb = skipSpaces(src, i);
+          if (src[kb] === '{') {
+            var eb = groupEnd(src, kb), env = src.slice(kb + 1, eb - 1).trim();
+            var arEnv = ArabicMath.environmentFromLatex(env);
+            out += arEnv ? ('\\' + (name === 'begin' ? 'بداية' : 'نهاية') + '{' + arEnv + '}') : src.slice(i - name.length - 1, eb);
+            i = eb;
+            // The column layout of an array ({cc}, {lr}) is kept exactly as written.
+            if (name === 'begin' && env === 'array') {
+              var kc = skipSpaces(src, i);
+              if (src[kc] === '{') { var ec = groupEnd(src, kc); out += src.slice(i, ec); i = ec; }
+            }
+            continue;
+          }
         }
         if (VERBATIM[name]) {
           out += '\\' + name;

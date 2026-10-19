@@ -9,7 +9,7 @@
 <script>
   window.ArabicMathLatin = { 'س': 'x', 'ص': 'y', 'ع': 'u', 'ز': 't', 'أ': 'a', 'ب': 'b', 'ن': 'n' };
 </script>
-<script src="arabic-math.js?v=13"></script>
+<script src="arabic-math.js?v=14"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -85,7 +85,7 @@
   // Groups and an example for commands that take arguments.
   var GROUPS = [
     ['البنية', ['كسر', 'جذر', 'افتح', 'اغلق', 'نص', 'مسافة']],
-    ['التفاضل والتكامل', ['نها', 'نهاية', 'يؤول', 'تكامل', 'مجموع', 'جداء', 'لانهاية',
+    ['التفاضل والتكامل', ['نها', 'يؤول', 'تكامل', 'مجموع', 'جداء', 'لانهاية',
                          'مشتقة', 'جزئية', 'جزء', 'تدرج', 'لابلاس']],
     ['الدوال', ['جا', 'جتا', 'ظا', 'ظتا', 'قا', 'قتا', 'لو']],
     ['العلاقات', ['لايزيد', 'لايقل', 'لايساوي', 'تقريبا', 'ينتمي', 'لاينتمي', 'محتواة', 'اتحاد', 'تقاطع',
@@ -111,6 +111,44 @@
     'كسر': '{أ}{ب}', 'افتح': '( ... \\اغلق)', 'اغلق': ')', 'جذر': '{س}', 'نص': '{...}', 'مشتقة': '{ص}{س}', 'جزئية': '{ع}{ز}', 'نظيم': '{ع}', 'مطلق': '{س}'
   };
   // The LaTeX column comes from the shared list in arabic-math.js (ArabicMath.toLatex).
+
+  var ENV_EXAMPLE = {
+    'مصفوفة': '\\بداية{مصفوفة} أ & ب \\\\ ج & د \\نهاية{مصفوفة}',
+    'مصفوفةقوسين': '\\بداية{مصفوفةقوسين} 1 & 0 \\\\ 0 & 1 \\نهاية{مصفوفةقوسين}',
+    'محدد': '\\بداية{محدد} أ & ب \\\\ ج & د \\نهاية{محدد}',
+    'مصفوفةمجردة': '\\بداية{مصفوفةمجردة} أ & ب \\\\ ج & د \\نهاية{مصفوفةمجردة}',
+    'حالات': 'ق(س) = \\بداية{حالات} س^2 & \\nas{إذا} س \\لايقل 0 \\\\ -س & \\nas{إذا} س < 0 \\نهاية{حالات}',
+    'جدول': '\\بداية{جدول}{cc} أ & ب \\\\ ج & د \\نهاية{جدول}',
+    'محاذاةداخلية': '\\بداية{محاذاةداخلية} أ &= ب + ج \\\\ &= د \\نهاية{محاذاةداخلية}',
+    'تقسيم': '\\بداية{تقسيم} أ &= ب \\\\ &= ج \\نهاية{تقسيم}'
+  };
+  function envSection() {
+    var envs = ArabicMath.environments, root = document.getElementById('tables');
+    var sec = document.createElement('section'), h = document.createElement('h2');
+    h.textContent = 'البيئات'; sec.appendChild(h);
+    var p = document.createElement('p'); p.className = 'lead';
+    p.textContent = 'تُكتب بين \\بداية{الاسم} و \\نهاية{الاسم}، مثل \\begin و \\end. ' +
+      'المعادلة والمحاذاة (معادلة، محاذاة، تجميع) تُكتب خارج $$ مباشرة في النص.';
+    sec.appendChild(p);
+    var t = document.createElement('table'), head = document.createElement('tr');
+    ['البيئة', 'في LaTeX', 'مثال'].forEach(function (x) { var th = document.createElement('th'); th.textContent = x; head.appendChild(th); });
+    t.appendChild(head);
+    Object.keys(envs).forEach(function (a) {
+      var tr = document.createElement('tr');
+      var c = document.createElement('td'); c.className = 'cmd copy'; c.textContent = '\\بداية{' + a + '}';
+      c.addEventListener('click', function () {
+        if (navigator.clipboard) navigator.clipboard.writeText('\\بداية{' + a + '}\n\n\\نهاية{' + a + '}');
+      });
+      var x = document.createElement('td'); x.className = 'tex'; x.textContent = '\\begin{' + envs[a] + '}';
+      var o = document.createElement('td'); o.className = 'out';
+      if (ENV_EXAMPLE[a]) o.textContent = '$' + ENV_EXAMPLE[a] + '$';
+      else { o.textContent = 'خارج $$'; o.className = 'out note'; }
+      tr.appendChild(c); tr.appendChild(x); tr.appendChild(o);
+      tr.setAttribute('data-search', a + ' ' + envs[a] + ' begin بداية');
+      t.appendChild(tr);
+    });
+    sec.appendChild(t); root.appendChild(sec);
+  }
 
   function build() {
     var cmds = ArabicMath.commands, seen = {}, root = document.getElementById('tables');
@@ -139,6 +177,7 @@
       sec.appendChild(t); root.appendChild(sec);
     }
     GROUPS.forEach(function (g) { section(g[0], g[1]); });
+    envSection();
     var rest = Object.keys(cmds).filter(function (n) { return !seen[n]; });
     if (rest.length) section('أوامر أخرى', rest);
     return ArabicMath.typeset(root);

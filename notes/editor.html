@@ -22,7 +22,7 @@
     window.EditorLatinMapText = text;
   })();
 </script>
-<script src="arabic-math.js?v=13"></script>
+<script src="arabic-math.js?v=14"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>
@@ -213,6 +213,11 @@
     var ar = (window.ArabicMath && ArabicMath.commands) || {};
     Object.keys(ar).forEach(function (k) { ITEMS.push({ name: k, key: norm(k), tex: ar[k] }); });
     LATIN_CMDS.forEach(function (k) { ITEMS.push({ name: k, key: k, tex: '' }); });
+    // Environments: typing \مصف offers a whole \بداية{مصفوفة} ... \نهاية{مصفوفة} block.
+    var envs = (window.ArabicMath && ArabicMath.environments) || {};
+    Object.keys(envs).forEach(function (a) {
+      ITEMS.push({ name: a, key: norm(a), tex: envs[a], env: true });
+    });
   }
 
   var box = document.getElementById('suggest');
@@ -254,7 +259,7 @@
       var li = document.createElement('li');
       li.setAttribute('role', 'option');
       if (i === active) li.className = 'on';
-      var n = document.createElement('span'); n.textContent = '\\' + it.name;
+      var n = document.createElement('span'); n.textContent = it.env ? ('\\بداية{' + it.name + '}') : ('\\' + it.name);
       var t = document.createElement('span'); t.className = 'tex'; t.textContent = it.tex || '';
       li.appendChild(n); li.appendChild(t);
       li.addEventListener('mousedown', function (e) { e.preventDefault(); accept(i); });
@@ -279,9 +284,16 @@
   function accept(i) {
     var it = matches[i];
     if (!it) return closeSuggest();
-    var shape = SHAPE[it.name] || ' |';
-    var insert = '\\' + it.name + shape.replace('|', '');
-    var caret = tokenStart + ('\\' + it.name).length + shape.indexOf('|');
+    var insert, caret;
+    if (it.env) {
+      var head = '\\بداية{' + it.name + '}' + (it.tex === 'array' ? '{cc}' : '') + ' ';
+      insert = head + ' \\نهاية{' + it.name + '}';
+      caret = tokenStart + head.length;
+    } else {
+      var shape = SHAPE[it.name] || ' |';
+      insert = '\\' + it.name + shape.replace('|', '');
+      caret = tokenStart + ('\\' + it.name).length + shape.indexOf('|');
+    }
     var end = src.selectionStart;
     src.value = src.value.slice(0, tokenStart) + insert + src.value.slice(end);
     src.setSelectionRange(caret, caret);

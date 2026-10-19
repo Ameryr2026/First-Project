@@ -170,7 +170,7 @@
     // Stretchy brackets: \افتح( ... \اغلق)  and  \افتح\{ ... \اغلق.  (named by meaning, not side)
     'افتح': '\\left', 'اغلق': '\\right',
     // Calculus
-    'نها': '\\nha', 'نهاية': '\\nha', 'الى': '\\to', 'يؤول': '\\to',
+    'نها': '\\nha', 'الى': '\\to', 'يؤول': '\\to',
     'تكامل': '\\int', 'مجموع': '\\sum', 'جداء': '\\prod', 'لانهاية': '\\infty',
     'مشتقة': '\\pd', 'جزئية': '\\ppd', 'جزء': '\\partial', 'تدرج': '\\nabla', 'لابلاس': '\\Delta',
     // Functions
@@ -251,6 +251,41 @@
   }
 
   // Replace \اسم with the TeX command. Longest known name wins, so \جاس reads as \جا س.
+  // ---------- Environments: \بداية{مصفوفة} ... \نهاية{مصفوفة} ----------
+  var ENVIRONMENTS = {
+    'مصفوفة': 'bmatrix', 'مصفوفةقوسين': 'pmatrix', 'محدد': 'vmatrix', 'مصفوفةمجردة': 'matrix',
+    'حالات': 'cases', 'جدول': 'array',
+    'معادلة': 'equation', 'معادلةبلارقم': 'equation*',
+    'محاذاة': 'align', 'محاذاةبلارقم': 'align*', 'محاذاةداخلية': 'aligned', 'تقسيم': 'split',
+    'تجميع': 'gather', 'تجميعبلارقم': 'gather*'
+  };
+  var envExtra = window.ArabicMathEnvironments || {};
+  for (var ek in envExtra) { if (Object.prototype.hasOwnProperty.call(envExtra, ek)) ENVIRONMENTS[ek] = envExtra[ek]; }
+  var ENV_FROM = {};
+  Object.keys(ENVIRONMENTS).forEach(function (a) { if (!(ENVIRONMENTS[a] in ENV_FROM)) ENV_FROM[ENVIRONMENTS[a]] = a; });
+
+  function arabicEnvironments(text) {
+    return text.replace(/\\(بداية|نهاية)\s*\{\s*([^{}]+?)\s*\}/g, function (m, which, name) {
+      var env = ENVIRONMENTS[normalizeName(name)] || ENVIRONMENTS[name];
+      if (!env) return m;
+      return (which === 'بداية' ? '\\begin{' : '\\end{') + env + '}';
+    });
+  }
+  // MathJax looks for \begin{...} in the page text to find math, so translate environment
+  // names in the text itself before MathJax reads it.
+  function translateEnvironments(root) {
+    var walker = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        var p = n.parentNode && n.parentNode.nodeName;
+        if (p === 'SCRIPT' || p === 'STYLE' || p === 'TEXTAREA' || p === 'CODE' || p === 'PRE') return NodeFilter.FILTER_REJECT;
+        return n.nodeValue.indexOf('\\') >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+      }
+    });
+    var list = [], n;
+    while ((n = walker.nextNode())) list.push(n);
+    list.forEach(function (t) { var v = arabicEnvironments(t.nodeValue); if (v !== t.nodeValue) t.nodeValue = v; });
+  }
+
   function arabicCommands(args) {
     args.math.math = args.math.math.replace(/\\([ء-يـ]+)/g, function (m, word) {
       for (var n = word.length; n > 0; n--) {
@@ -387,7 +422,7 @@
           ]).catch(function () {}).then(function () { return document.fonts.ready; });
         }
         return fontsReady
-          .then(function () { return MathJax.typesetPromise(); })
+          .then(function () { translateEnvironments(document.body); return MathJax.typesetPromise(); })
           .then(function () { mirrorAll(); document.documentElement.setAttribute('data-math-ready', '1'); });
       }
     }
@@ -400,7 +435,10 @@
     toLatex: toLatex,       // '\\nha' → '\\lim'
     fromLatex: fromLatex,   // '\\frac' → 'كسر', '\\mathbb{R}' → 'حقيقية'
     setMode: setMode,
+    environments: ENVIRONMENTS,
+    environmentFromLatex: function (env) { return ENV_FROM[env] || null; },
     typeset: function (el) {
+      translateEnvironments(el || document.body);
       return MathJax.typesetPromise(el ? [el] : undefined).then(function () { mirrorAll(el); });
     }
   };
