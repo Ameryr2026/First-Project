@@ -21,7 +21,17 @@
                       ['لن', 'ln'], ['جذر', 'sqrt'], ['مطلق', 'abs'], ['هـ', 'e'], ['باي', 'pi']];
   FUNCS.cot = function (t) { return 1 / Math.tan(t); };
 
-  function compile(text) {
+  var MSG = {
+    ar: { unknownSymbol: 'رمز غير مفهوم', expected: 'متوقّع', incomplete: 'المعادلة ناقصة', unknown: 'لا أعرف',
+          extra: 'رمز زائد', order: 'يجب أن يكون أ أصغر من ب' },
+    en: { unknownSymbol: 'Unknown symbol', expected: 'Expected', incomplete: 'The expression is incomplete',
+          unknown: 'Unknown name', extra: 'Unexpected', order: 'a must be less than b' }
+  };
+  var Q = { ar: ['«', '»'], en: ['“', '”'] };
+
+  function compile(text, lang) {
+    var M = MSG[lang] || MSG.ar, q = Q[lang] || Q.ar;
+    function quote(x) { return q[0] + x + q[1]; }
     var s = String(text).replace(/[٠-٩]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); })
       .replace(/٫/g, '.').replace(/[×·]/g, '*').replace(/÷/g, '/').replace(/[−–]/g, '-').replace(/π/g, 'pi');
     ARABIC_WORDS.forEach(function (w) { s = s.split(w[0]).join(' ' + w[1] + ' '); });
@@ -32,13 +42,13 @@
     while (pos < s.length) {
       re.lastIndex = pos;
       m = re.exec(s);
-      if (!m) throw new Error('رمز غير مفهوم: «' + s.slice(pos).trim().charAt(0) + '»');
+      if (!m) throw new Error(M.unknownSymbol + ': ' + quote(s.slice(pos).trim().charAt(0)));
       toks.push(m[1]); pos = re.lastIndex;
       while (pos < s.length && s[pos] === ' ') pos++;
     }
     var i = 0;
     function peek() { return toks[i]; }
-    function take(t) { if (toks[i] !== t) throw new Error('متوقّع «' + t + '»'); i++; }
+    function take(t) { if (toks[i] !== t) throw new Error(M.expected + ' ' + quote(t)); i++; }
     function startsAtom(t) { return t !== undefined && (/^[\d.A-Za-z(]/.test(t)); }
 
     function expr() {                       // a + b - c
@@ -74,7 +84,7 @@
     }
     function atom() {
       var t = toks[i++];
-      if (t === undefined) throw new Error('المعادلة ناقصة');
+      if (t === undefined) throw new Error(M.incomplete);
       if (/^[\d.]/.test(t)) { var v = parseFloat(t); return function () { return v; }; }
       if (t === '(') { var f = expr(); take(')'); return f; }
       if (t === 'x') return function (x) { return x; };
@@ -87,15 +97,16 @@
         if (ex) return function (x) { return Math.pow(fn(arg(x)), ex(x)); };
         return function (x) { return fn(arg(x)); };
       }
-      throw new Error('لا أعرف «' + t + '»');
+      throw new Error(M.unknown + ': ' + quote(t));
     }
     var f = expr();
-    if (i < toks.length) throw new Error('رمز زائد: «' + toks[i] + '»');
+    if (i < toks.length) throw new Error(M.extra + ': ' + quote(toks[i]));
     return f;
   }
 
   // ---------- Numbers in the page's digits ----------
-  function arabicDigits() { return !(window.ArabicMath && ArabicMath.mode === 'latin'); }
+  var LANG = 'ar';   // set per box when drawing
+  function arabicDigits() { return LANG !== 'en' && !(window.ArabicMath && ArabicMath.mode === 'latin'); }
   function fmt(v) {
     if (!isFinite(v)) return '—';
     var s = (Math.abs(v) < 1e-12 ? 0 : v).toFixed(4).replace(/\.?0+$/, '');
@@ -128,6 +139,7 @@
     '.riemann input, .riemann select { width: 100%; font: inherit; font-size: 17px; padding: 3px 8px; border-radius: 6px;' +
     ' border: 1px solid var(--rule, #e3e0d8); background: var(--bg, #fff); color: var(--text, #1f2328); }' +
     '.riemann input.rs-f { direction: rtl; }' +
+    '.riemann[data-lang="en"] input.rs-f { direction: ltr; }' +
     '.riemann input[type=range] { padding: 0; }' +
     '.riemann .rs-wide { grid-column: 1 / -1; }' +
     '.riemann svg { display: block; width: 100%; height: auto; background: var(--bg, #fff); border-radius: 6px;' +
@@ -145,18 +157,27 @@
       n: parseInt(box.getAttribute('data-n') || '6', 10),
       rule: box.getAttribute('data-rule') || 'left'
     };
+    var lang = box.getAttribute('data-lang') === 'en' ? 'en' : 'ar';
+    var TXT = lang === 'en'
+      ? { f: 'f(x) =', a: 'Lower bound a', b: 'Upper bound b', n: 'Number of rectangles n = ',
+          rule: 'Height taken at', left: 'Left endpoint', right: 'Right endpoint', mid: 'Midpoint',
+          sum: 'Riemann sum', integral: 'Integral', diff: 'Difference', aria: 'Riemann sum graph' }
+      : { f: 'الدالة ق(س) =', a: 'الحد الأدنى أ', b: 'الحد الأعلى ب', n: 'عدد المستطيلات ن = ',
+          rule: 'ارتفاع المستطيل من', left: 'الطرف الأيسر', right: 'الطرف الأيمن', mid: 'المنتصف',
+          sum: 'مجموع ريمان', integral: 'التكامل', diff: 'الفرق', aria: 'رسم مجموع ريمان' };
+    if (lang === 'en') box.setAttribute('dir', 'ltr');
     box.innerHTML =
       '<div class="rs-controls">' +
-      '  <div class="rs-wide"><label>الدالة ق(س) =</label><input class="rs-f" spellcheck="false"></div>' +
-      '  <div><label>الحد الأدنى أ</label><input class="rs-a" type="number" step="any"></div>' +
-      '  <div><label>الحد الأعلى ب</label><input class="rs-b" type="number" step="any"></div>' +
-      '  <div><label>عدد المستطيلات ن = <span class="rs-nv"></span></label><input class="rs-n" type="range" min="1" max="100"></div>' +
-      '  <div><label>ارتفاع المستطيل من</label><select class="rs-rule">' +
-      '    <option value="left">الطرف الأيسر</option><option value="right">الطرف الأيمن</option>' +
-      '    <option value="mid">المنتصف</option></select></div>' +
+      '  <div class="rs-wide"><label>' + TXT.f + '</label><input class="rs-f" spellcheck="false"></div>' +
+      '  <div><label>' + TXT.a + '</label><input class="rs-a" type="number" step="any"></div>' +
+      '  <div><label>' + TXT.b + '</label><input class="rs-b" type="number" step="any"></div>' +
+      '  <div><label>' + TXT.n + '<span class="rs-nv"></span></label><input class="rs-n" type="range" min="1" max="100"></div>' +
+      '  <div><label>' + TXT.rule + '</label><select class="rs-rule">' +
+      '    <option value="left">' + TXT.left + '</option><option value="right">' + TXT.right + '</option>' +
+      '    <option value="mid">' + TXT.mid + '</option></select></div>' +
       '</div>' +
       '<div class="rs-err" role="alert"></div>' +
-      '<svg viewBox="0 0 640 360" role="img" aria-label="رسم مجموع ريمان"></svg>' +
+      '<svg viewBox="0 0 640 360" role="img" aria-label="' + TXT.aria + '"></svg>' +
       '<div class="rs-out"></div>';
     var q = function (c) { return box.querySelector(c); };
     var fIn = q('.rs-f'), aIn = q('.rs-a'), bIn = q('.rs-b'), nIn = q('.rs-n'), ruleIn = q('.rs-rule');
@@ -165,11 +186,12 @@
 
     function draw() {
       var f;
-      try { f = compile(fIn.value); err.textContent = ''; }
+      LANG = lang;
+      try { f = compile(fIn.value, lang); err.textContent = ''; }
       catch (e) { err.textContent = e.message; return; }
       var a = parseFloat(aIn.value), b = parseFloat(bIn.value), n = parseInt(nIn.value, 10), rule = ruleIn.value;
       nv.textContent = arabicDigits() ? String(n).replace(/\d/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'[d]; }) : n;
-      if (!isFinite(a) || !isFinite(b) || a >= b) { err.textContent = 'يجب أن يكون أ أصغر من ب'; return; }
+      if (!isFinite(a) || !isFinite(b) || a >= b) { err.textContent = MSG[lang].order; return; }
 
       // View: a little room around [a, b], and around the curve's values.
       var pad = (b - a) * 0.12, x0 = a - pad, x1 = b + pad, ys = [0];
@@ -223,7 +245,7 @@
 
       var I = integral(f, a, b);
       out.innerHTML = '';
-      [['مجموع ريمان', sum], ['التكامل', I], ['الفرق', sum - I]].forEach(function (p) {
+      [[TXT.sum, sum], [TXT.integral, I], [TXT.diff, sum - I]].forEach(function (p) {
         var s = document.createElement('span');
         s.innerHTML = p[0] + ': <b></b>';
         s.querySelector('b').textContent = fmt(p[1]);

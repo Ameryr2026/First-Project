@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riemann Sums · Amer Rawashdeh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- MathJax: write LaTeX directly. Inline: $...$ or \(...\). Display: $$...$$ or \[...\].
+     Numbered equations: \begin{equation}\label{eq:heat} ... \end{equation}, cite with \eqref{eq:heat}. -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      tags: 'ams',
+      macros: {
+        R: '\\mathbb{R}',
+        N: '\\mathbb{N}',
+        dv: '\\,\\mathrm{div}\\,',
+        norm: ['\\left\\lVert #1 \\right\\rVert', 1],
+        abs: ['\\left\\lvert #1 \\right\\rvert', 1]
+      }
+    },
+    chtml: { scale: 1.0 }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+<style>
+  :root {
+    --bg: #fbfaf7; --text: #1f2328; --muted: #5b6470;
+    --accent: #0c4a6e; --rule: #e3e0d8; --box: #f2f0ea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171b; --text: #e6e6e3; --muted: #a0a7b0;
+            --accent: #7cc4ec; --rule: #2a2f36; --box: #1c2026; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Source Serif 4", Georgia, serif; font-size: 18px; line-height: 1.7; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { border-bottom: 1px solid var(--rule); font-family: Inter, system-ui, sans-serif; font-size: 14px; }
+  nav .inner { max-width: 760px; margin: 0 auto; padding: 14px 20px; display: flex; gap: 20px; }
+  nav .home { font-weight: 600; color: var(--text); margin-right: auto; }
+  nav a { color: var(--muted); }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+  h1 { font-size: 34px; line-height: 1.25; margin: 0 0 8px; font-weight: 600; }
+  .byline { font-family: Inter, sans-serif; font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+  h2 { font-size: 23px; margin: 40px 0 10px; font-weight: 600; }
+  h3 { font-size: 19px; margin: 28px 0 8px; font-weight: 600; }
+  p { margin: 0 0 16px; }
+  mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+
+  /* Theorem-style environments */
+  .thm, .defn, .lem, .prop, .cor, .rmk, .ex {
+    margin: 22px 0; padding: 14px 18px; border-left: 3px solid var(--accent);
+    background: var(--box); border-radius: 0 6px 6px 0;
+  }
+  .rmk, .ex { border-left-color: var(--rule); }
+  .label { font-weight: 600; font-style: normal; }
+  .thm p, .lem p, .prop p, .cor p { font-style: italic; }
+  .thm p:last-child, .defn p:last-child, .lem p:last-child, .prop p:last-child,
+  .cor p:last-child, .rmk p:last-child, .ex p:last-child { margin-bottom: 0; }
+  .proof { margin: 0 0 22px; }
+  .proof::after { content: "∎"; float: right; color: var(--muted); }
+  .proof .label { font-style: italic; font-weight: 400; }
+
+  ol.refs { padding-left: 22px; font-size: 16px; }
+  footer { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; border-top: 1px solid var(--rule);
+           font-family: Inter, sans-serif; font-size: 13px; color: var(--muted); }
+  @media (max-width: 600px) { body { font-size: 17px; } h1 { font-size: 28px; } }
+</style>
+<script src="riemann.js?v=2" defer></script>
+<script src="geogebra.js?v=1" defer></script>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../index.html">Amer Rawashdeh</a>
+    <a href="../index.html#notes">All notes</a>
+  </div>
+</nav>
+
+<main>
+  <h1>Riemann Sums</h1>
+  <div class="byline">Amer Rawashdeh · October 2026</div>
+
+  <!-- DRAFT: suggested text — review and edit in your own words before sharing -->
+  <p>
+    To approximate the area under the graph of a function $f$ on an interval $[a,b]$, divide the interval
+    into $n$ subintervals of equal width
+  </p>
+  \[ \Delta x = \frac{b-a}{n}, \]
+  <p>
+    choose a sample point $x_i^*$ in each subinterval, and add up the areas of the rectangles of height
+    $f(x_i^*)$. The result is a <em>Riemann sum</em>:
+  </p>
+  \[ R_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x. \]
+  <p>
+    Taking $x_i^*$ to be the left endpoint, the right endpoint, or the midpoint of each subinterval gives the
+    left, right, and midpoint sums. Rectangles below the $x$-axis contribute negatively.
+  </p>
+
+  <h2>Try it</h2>
+  <p>
+    Enter a function, choose the bounds $a$ and $b$, and move the slider to change the number of rectangles $n$.
+    The function can be typed as, for example, <code>x^2 + 1</code>, <code>sin(x)</code>, <code>e^x</code>,
+    <code>sqrt(x)</code>, or <code>1/(1+x^2)</code>.
+  </p>
+
+  <div class="riemann" data-lang="en" data-f="x^2" data-a="0" data-b="2" data-n="6"></div>
+
+  <h2>GeoGebra activity</h2>
+  <div class="geogebra" data-id="mpufvzus" data-width="800" data-height="500" data-lang="en"></div>
+
+  <h2>From sums to the integral</h2>
+  <p>
+    For a continuous function on $[a,b]$, the Riemann sums approach a single number as $n \to \infty$,
+    whichever sample points are chosen. That number is the definite integral:
+  </p>
+  \[ \lim_{n\to\infty} \sum_{i=1}^{n} f(x_i^*)\,\Delta x = \int_a^b f(x)\,dx. \]
+
+  <p class="lang-link"><a href="riemann-ar.html">النسخة العربية من هذه الصفحة</a></p>
+</main>
+
+<footer>
+  <a href="../index.html#notes">← Back to all notes</a>
+</footer>
+
+</body>
+</html>
