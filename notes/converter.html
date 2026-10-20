@@ -22,7 +22,7 @@
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=16"></script>
+<script src="arabic-math.js?v=17"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -57,6 +57,10 @@
            border: 1px solid var(--rule); border-radius: 6px; padding: 2px 14px; cursor: pointer; }
   button:hover { border-color: var(--accent); }
   .status { color: var(--muted); font-size: 15px; }
+  .en-preview { margin-top: 8px; padding: 10px 16px; border: 1px dashed var(--rule); border-radius: 8px;
+                min-height: 56px; overflow-x: auto; text-align: left; }
+  .en-preview::before { content: "English"; display: block; font-family: Inter, system-ui, sans-serif;
+                        font-size: 12px; color: var(--muted); margin-bottom: 2px; }
   #preview { margin-top: 8px; padding: 12px 16px; border: 1px solid var(--rule); border-radius: 8px;
              background: var(--box); min-height: 70px; overflow-x: auto; }
   .note { font-size: 15px; color: var(--muted); }
@@ -78,6 +82,7 @@
 
   <label for="en">المعادلة بالإنجليزية (LaTeX)</label>
   <textarea id="en" class="en" spellcheck="false">\lim_{x\to 3}\frac{x^2-9}{x-3} = 6</textarea>
+  <div id="enPreview" class="en-preview" data-math-plain dir="ltr" aria-live="polite"></div>
   <div class="row examples">
     <span class="note">أمثلة:</span>
     <button type="button">\int_0^1 x^2\,dx = \frac{1}{3}</button>
@@ -143,11 +148,18 @@
       } catch (e) {}
     };
     if (!window.ArabicMath || !MathJax.typesetClear) return;
-    MathJax.typesetClear([preview]);
+    var enPreview = document.getElementById('enPreview');
+    MathJax.typesetClear([preview, enPreview]);
     preview.textContent = '$$' + result + '$$';
-    ArabicMath.typeset(preview).then(function () {
+    // The English input, drawn exactly as written.
+    enPreview.textContent = enBox.value.trim() ? '$$' + enBox.value + '$$' : '';
+    MathJax.typesetPromise([enPreview]).then(function () {
+      return ArabicMath.typeset(preview);
+    }).then(function () {
+      var errEn = enPreview.querySelector('[data-mjx-error]');
       var err = preview.querySelector('[data-mjx-error]');
-      status.textContent = err ? 'خطأ: ' + err.getAttribute('data-mjx-error') : '';
+      status.textContent = errEn ? 'خطأ في المعادلة الإنجليزية: ' + errEn.getAttribute('data-mjx-error')
+                       : err ? 'خطأ: ' + err.getAttribute('data-mjx-error') : '';
     });
   }
   function later() { clearTimeout(timer); timer = setTimeout(update, 300); }

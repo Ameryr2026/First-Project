@@ -129,7 +129,16 @@
   }
 
   // ---------- Arabic view: rewrite the MathML before drawing ----------
+  // Math inside an element marked data-math-plain is drawn exactly as written (no Arabic, no
+  // mirroring), e.g. the English preview on the converter page.
+  function isPlain(args) {
+    var n = args.math && args.math.start && args.math.start.node;
+    var el = n && (n.nodeType === 1 ? n : n.parentNode);
+    return !!(el && el.closest && el.closest('[data-math-plain]'));
+  }
+
   function arabize(args) {
+    if (isPlain(args)) return;
     (args.data.root || args.math.root).walkTree(function (node) {
       if (!node.isToken) return;
       var kind = node.kind;
@@ -161,6 +170,7 @@
 
   // ---------- Latin view: swap Arabic letters for Latin ones ----------
   function latinize(args) {
+    if (isPlain(args)) return;
     (args.data.root || args.math.root).walkTree(function (node) {
       if (!node.isToken) return;
       var kind = node.kind;
@@ -418,7 +428,10 @@
   delete TEXT_WORDS.is;
 
   // A page whose math is written in English: the Arabic view converts each equation first.
-  function englishSource(args) { args.math.math = fromEnglish(args.math.math, ACTIVE_LETTERS, true); }
+  function englishSource(args) {
+    if (isPlain(args)) return;
+    args.math.math = fromEnglish(args.math.math, ACTIVE_LETTERS, true);
+  }
 
   function arabicCommands(args) {
     args.math.math = args.math.math.replace(/\\([ء-يـ]+)/g, function (m, word) {
@@ -436,6 +449,7 @@
   // Latin view, step 1: convert the TeX source itself, so Arabic letters become ordinary
   // TeX letters (italic variables). Arabic words inside \text{} and \nas{} are kept.
   function latinizeSource(args) {
+    if (isPlain(args)) return;
     var src = args.math.math;
     // \mathbb{ح} → \mathbb{R}, etc.
     src = src.replace(/\\mathbb\s*\{([^{}]*)\}/g, function (m, inner) {
@@ -476,7 +490,10 @@
   function mirrorAll(root) {
     if (MODE !== 'ar') return;
     var list = (root || document).querySelectorAll('mjx-container');
-    for (var i = 0; i < list.length; i++) mirror(list[i]);
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].closest && list[i].closest('[data-math-plain]')) continue;
+      mirror(list[i]);
+    }
   }
 
   // ---------- The switch ----------
