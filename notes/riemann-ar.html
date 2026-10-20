@@ -27,7 +27,7 @@
      عند تعديل arabic-math.js غيّر رقم ?v= في سطر تحميله، حتى لا يستخدم المتصفح نسخة قديمة.
      ============================================================ -->
 <script src="geogebra.js?v=1" defer></script>
-<script src="riemann.js?v=2" defer></script>
+<script src="riemann.js?v=3" defer></script>
 <script src="arabic-math.js?v=17"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
@@ -106,14 +106,19 @@
   \[ \Delta س = \كسر{ب - أ}{ن}، \]
   <p>ومجموع المساحات، ويسمى <strong>مجموع ريمان</strong>، هو</p>
   \[ \مجموع_{ي=1}^{ن} ق(س_ي) \, \Delta س. \]
+  <p>
+    إذا أخذنا أكبر قيمة للدالة في كل جزء نحصل على <strong>المجموع العلوي</strong>، وأصغر قيمة تعطي
+    <strong>المجموع السفلي</strong>. كل مجموع ريمان يقع بينهما، والتكامل كذلك.
+  </p>
 
   <h2>جرّب بنفسك</h2>
   <p>
-    اكتب أي دالة، واختر الحدين أ و ب، ثم حرّك عدد المستطيلات ن. راقب كيف يقترب مجموع ريمان من التكامل
-    كلما زاد عدد المستطيلات. يمكن كتابة الدالة بالعربية أو بالإنجليزية، مثل: س^2 + 1، جا س، هـ^س، جذر(س).
+    اكتب أي دالة، واختر الحدين أ و ب، ثم حرّك عدد المستطيلات ن. راقب كيف يقترب المجموعان العلوي والسفلي
+    من التكامل كلما زاد عدد المستطيلات. تُكتب الدالة بالإنجليزية، مثل:
+    <code dir="ltr">x^2 + 1</code>، <code dir="ltr">sin(x)</code>، <code dir="ltr">e^x</code>، <code dir="ltr">sqrt(x)</code>.
   </p>
 
-  <div class="riemann" data-f="س^2" data-a="0" data-b="2" data-n="6"></div>
+  <div class="riemann" data-fn="en" data-f="x^2" data-a="0" data-b="2" data-n="6"></div>
 
   <h2>نشاط جيوجبرا</h2>
 

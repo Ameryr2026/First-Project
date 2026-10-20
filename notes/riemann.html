@@ -73,7 +73,7 @@
            font-family: Inter, sans-serif; font-size: 13px; color: var(--muted); }
   @media (max-width: 600px) { body { font-size: 17px; } h1 { font-size: 28px; } }
 </style>
-<script src="riemann.js?v=2" defer></script>
+<script src="riemann.js?v=3" defer></script>
 <script src="geogebra.js?v=1" defer></script>
 </head>
 <body>
@@ -101,8 +101,10 @@
   </p>
   \[ R_n = \sum_{i=1}^{n} f(x_i^*)\,\Delta x. \]
   <p>
-    Taking $x_i^*$ to be the left endpoint, the right endpoint, or the midpoint of each subinterval gives the
-    left, right, and midpoint sums. Rectangles below the $x$-axis contribute negatively.
+    Taking $f(x_i^*)$ to be the largest value of $f$ on each subinterval gives the <em>upper sum</em> $U_n$;
+    the smallest value gives the <em>lower sum</em> $L_n$. Every Riemann sum lies between them,
+    $L_n \le R_n \le U_n$, and the integral lies between them as well.
+    Rectangles below the $x$-axis contribute negatively.
   </p>
 
   <h2>Try it</h2>

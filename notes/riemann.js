@@ -5,7 +5,8 @@
  *   <div class="riemann" data-f="س^2" data-a="0" data-b="2" data-n="6"></div>
  *
  * The reader can change the function, the bounds أ and ب, the number of rectangles ن,
- * and the rule (left / right / midpoint). The function may be written in Arabic or in English:
+ * and the sum (lower / upper / both / midpoint). data-fn="en" takes the function in English on an
+ * Arabic page. The function may be written in Arabic or in English:
  *   س^2 + 1     x^2 + 1     جا س     sin(x)     هـ^س     e^x     2س + 3     جذر(س)
  */
 (function () {
@@ -155,16 +156,21 @@
       a: parseFloat(box.getAttribute('data-a') || '0'),
       b: parseFloat(box.getAttribute('data-b') || '2'),
       n: parseInt(box.getAttribute('data-n') || '6', 10),
-      rule: box.getAttribute('data-rule') || 'left'
+      rule: box.getAttribute('data-rule') || 'lower'
     };
     var lang = box.getAttribute('data-lang') === 'en' ? 'en' : 'ar';
     var TXT = lang === 'en'
       ? { f: 'f(x) =', a: 'Lower bound a', b: 'Upper bound b', n: 'Number of rectangles n = ',
-          rule: 'Height taken at', left: 'Left endpoint', right: 'Right endpoint', mid: 'Midpoint',
-          sum: 'Riemann sum', integral: 'Integral', diff: 'Difference', aria: 'Riemann sum graph' }
+          rule: 'Sum', lower: 'Lower sum', upper: 'Upper sum', both: 'Upper and lower', mid: 'Midpoint sum',
+          sum: 'Riemann sum', lowerSum: 'Lower sum', upperSum: 'Upper sum', integral: 'Integral',
+          diff: 'Difference', gap: 'Upper − lower', aria: 'Riemann sum graph' }
       : { f: 'الدالة ق(س) =', a: 'الحد الأدنى أ', b: 'الحد الأعلى ب', n: 'عدد المستطيلات ن = ',
-          rule: 'ارتفاع المستطيل من', left: 'الطرف الأيسر', right: 'الطرف الأيمن', mid: 'المنتصف',
-          sum: 'مجموع ريمان', integral: 'التكامل', diff: 'الفرق', aria: 'رسم مجموع ريمان' };
+          rule: 'المجموع', lower: 'المجموع السفلي', upper: 'المجموع العلوي', both: 'العلوي والسفلي معًا',
+          mid: 'مجموع المنتصف', sum: 'مجموع ريمان', lowerSum: 'المجموع السفلي', upperSum: 'المجموع العلوي',
+          integral: 'التكامل', diff: 'الفرق', gap: 'العلوي − السفلي', aria: 'رسم مجموع ريمان' };
+    // data-fn="en": the function is typed in English (f(x) = x^2) even on an Arabic page.
+    var fnEnglish = lang === 'en' || box.getAttribute('data-fn') === 'en';
+    if (fnEnglish && lang !== 'en') TXT.f = 'الدالة f(x) =';
     if (lang === 'en') box.setAttribute('dir', 'ltr');
     box.innerHTML =
       '<div class="rs-controls">' +
@@ -173,8 +179,8 @@
       '  <div><label>' + TXT.b + '</label><input class="rs-b" type="number" step="any"></div>' +
       '  <div><label>' + TXT.n + '<span class="rs-nv"></span></label><input class="rs-n" type="range" min="1" max="100"></div>' +
       '  <div><label>' + TXT.rule + '</label><select class="rs-rule">' +
-      '    <option value="left">' + TXT.left + '</option><option value="right">' + TXT.right + '</option>' +
-      '    <option value="mid">' + TXT.mid + '</option></select></div>' +
+      '    <option value="lower">' + TXT.lower + '</option><option value="upper">' + TXT.upper + '</option>' +
+      '    <option value="both">' + TXT.both + '</option><option value="mid">' + TXT.mid + '</option></select></div>' +
       '</div>' +
       '<div class="rs-err" role="alert"></div>' +
       '<svg viewBox="0 0 640 360" role="img" aria-label="' + TXT.aria + '"></svg>' +
@@ -182,6 +188,7 @@
     var q = function (c) { return box.querySelector(c); };
     var fIn = q('.rs-f'), aIn = q('.rs-a'), bIn = q('.rs-b'), nIn = q('.rs-n'), ruleIn = q('.rs-rule');
     var nv = q('.rs-nv'), err = q('.rs-err'), svg = q('svg'), out = q('.rs-out');
+    if (fnEnglish) fIn.setAttribute('dir', 'ltr');
     fIn.value = state.f; aIn.value = state.a; bIn.value = state.b; nIn.value = state.n; ruleIn.value = state.rule;
 
     function draw() {
@@ -213,21 +220,35 @@
       if (y0 < 0 && y1 > 0) el('line', { x1: 0, x2: W, y1: Y(0), y2: Y(0), stroke: ink, 'stroke-width': 1, opacity: .6 }, svg);
       if (x0 < 0 && x1 > 0) el('line', { x1: X(0), x2: X(0), y1: 0, y2: H, stroke: ink, 'stroke-width': 1, opacity: .6 }, svg);
 
-      // Rectangles
-      var dx = (b - a) / n, sum = 0;
-      for (var j = 0; j < n; j++) {
-        var xl = a + j * dx;
-        var xs = rule === 'left' ? xl : rule === 'right' ? xl + dx : xl + dx / 2;
-        var h = f(xs);
-        if (!isFinite(h)) continue;
-        sum += h * dx;
+      // Rectangles. Upper / lower sums use the largest / smallest value of f on each piece,
+      // found by sampling the piece finely (exact for functions that only rise or only fall there).
+      var dx = (b - a) / n, lowerS = 0, upperS = 0, midS = 0, m = Math.max(24, Math.ceil(3000 / n));
+      function rect(xl, h, strong) {
         el('rect', {
           x: X(xl), width: Math.max(0, X(xl + dx) - X(xl)),
           y: Math.min(Y(h), Y(0)), height: Math.abs(Y(h) - Y(0)),
-          fill: h >= 0 ? accent : '#d97706', 'fill-opacity': .22,
-          stroke: h >= 0 ? accent : '#d97706', 'stroke-width': 1
+          fill: h >= 0 ? accent : '#d97706', 'fill-opacity': strong ? .28 : .1,
+          stroke: h >= 0 ? accent : '#d97706', 'stroke-width': 1, 'stroke-dasharray': strong ? '' : '3 2'
         }, svg);
-        el('circle', { cx: X(xs), cy: Y(h), r: n > 40 ? 1.5 : 3, fill: h >= 0 ? accent : '#d97706' }, svg);
+      }
+      function dot(x, h) {
+        el('circle', { cx: X(x), cy: Y(h), r: n > 40 ? 1.5 : 3, fill: h >= 0 ? accent : '#d97706' }, svg);
+      }
+      for (var j = 0; j < n; j++) {
+        var xl = a + j * dx, lo = Infinity, hi = -Infinity, xlo = xl, xhi = xl;
+        for (var t = 0; t <= m; t++) {
+          var xt = xl + dx * t / m, v = f(xt);
+          if (!isFinite(v)) continue;
+          if (v < lo) { lo = v; xlo = xt; }
+          if (v > hi) { hi = v; xhi = xt; }
+        }
+        if (!isFinite(lo)) continue;
+        var hm = f(xl + dx / 2);
+        lowerS += lo * dx; upperS += hi * dx; if (isFinite(hm)) midS += hm * dx;
+        if (rule === 'both') { rect(xl, hi, false); rect(xl, lo, true); dot(xhi, hi); dot(xlo, lo); }
+        else if (rule === 'upper') { rect(xl, hi, true); dot(xhi, hi); }
+        else if (rule === 'mid') { if (isFinite(hm)) { rect(xl, hm, true); dot(xl + dx / 2, hm); } }
+        else { rect(xl, lo, true); dot(xlo, lo); }
       }
       // Bounds
       [a, b].forEach(function (x) {
@@ -245,7 +266,11 @@
 
       var I = integral(f, a, b);
       out.innerHTML = '';
-      [[TXT.sum, sum], [TXT.integral, I], [TXT.diff, sum - I]].forEach(function (p) {
+      var rows = rule === 'both' ? [[TXT.lowerSum, lowerS], [TXT.upperSum, upperS], [TXT.integral, I], [TXT.gap, upperS - lowerS]]
+        : rule === 'upper' ? [[TXT.upperSum, upperS], [TXT.integral, I], [TXT.diff, upperS - I]]
+        : rule === 'mid' ? [[TXT.mid, midS], [TXT.integral, I], [TXT.diff, midS - I]]
+        : [[TXT.lowerSum, lowerS], [TXT.integral, I], [TXT.diff, lowerS - I]];
+      rows.forEach(function (p) {
         var s = document.createElement('span');
         s.innerHTML = p[0] + ': <b></b>';
         s.querySelector('b').textContent = fmt(p[1]);
