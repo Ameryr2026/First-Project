@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Energy Estimates · Amer Rawashdeh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pde.css">
+<script src="mathjax-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="wiki.js" defer></script>
+</head>
+<body data-page="energy-estimates">
+<!-- data-page must match this page's id in wiki.js (the file name without .html). -->
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../../index.html">Amer Rawashdeh</a>
+    <a href="index.html">PDE analysis</a>
+    <a href="../../index.html#notes">All notes</a>
+  </div>
+</nav>
+
+<main>
+  <div id="page-meta"></div>
+  <h1>Energy estimates and a priori bounds</h1>
+  <div id="prereqs"></div>
+
+  <h2>The idea</h2>
+  <p>
+    An a priori estimate is a bound that every smooth solution must satisfy, proved before knowing that solutions exist.
+    The standard way to find one: multiply the equation by a well-chosen quantity, integrate, integrate by parts, and use
+    the structure of the equation so that the dangerous terms cancel or have a sign. The choice of multiplier is the idea;
+    the rest is the <a href="elementary-inequalities.html">inequality toolkit</a>.
+  </p>
+
+  <h2>Statement</h2>
+  <div class="thm">
+    <p><span class="label">The method (not a theorem).</span>
+    </p>
+    <ol>
+      <li>Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$.</li>
+      <li>Integrate by parts, using the boundary conditions, to produce $\frac{d}{dt}$(energy) plus nonnegative dissipation.</li>
+      <li>Arrange the multipliers so that coupling terms cancel between equations.</li>
+      <li>Bound what remains by the energy and dissipation (Hölder, Sobolev, Young), absorb the dissipation parts, and close with <a href="gronwall.html">Gronwall</a>.</li>
+      <li>For higher regularity, repeat after differentiating the equation in $t$ or $x$.</li>
+    </ol>
+  </div>
+  <div class="ex">
+    <p><span class="label">Model example (heat equation).</span>
+      For $u_t-\Delta u=0$ with $u=0$ on $\partial\Omega$, multiplying by $u$ gives
+      $\frac{d}{dt}\frac12\norm{u}_{L^2}^2+\norm{\nabla u}_{L^2}^2=0$, and multiplying by $u_t$ gives
+      $\norm{u_t}_{L^2}^2+\frac{d}{dt}\frac12\norm{\nabla u}_{L^2}^2=0$.
+    </p>
+  </div>
+
+  <h2>Why it is plausible</h2>
+  <p>
+    Physical systems usually dissipate energy, and the mathematical energy is the physical one. Kinetic energy,
+    internal (pressure) energy and potential energy together cannot grow; each piece then bounds a norm of the unknowns.
+    When the energy contains a term with no sign, the first job is to show it is still bounded below, typically by
+    interpolation against a conserved quantity.
+  </p>
+
+  <h2>Where to find a proof</h2>
+  <ul>
+    <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §2.3.4 and §7.1.2 (energy methods for the heat equation and for linear parabolic equations).</li>
+  </ul>
+
+  <div id="used-in"></div>
+  <div id="pager"></div>
+</main>
+
+</body>
+</html>

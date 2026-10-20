@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lions–Feireisl Theory · Amer Rawashdeh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pde.css">
+<script src="mathjax-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="wiki.js" defer></script>
+</head>
+<body data-page="lions-feireisl">
+<!-- data-page must match this page's id in wiki.js (the file name without .html). -->
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../../index.html">Amer Rawashdeh</a>
+    <a href="index.html">PDE analysis</a>
+    <a href="../../index.html#notes">All notes</a>
+  </div>
+</nav>
+
+<main>
+  <div id="page-meta"></div>
+  <h1>Lions–Feireisl theory for compressible flow</h1>
+  <div id="prereqs"></div>
+
+  <h2>The idea</h2>
+  <p>
+    The central difficulty for weak solutions of compressible Navier–Stokes: the density converges only weakly, so the
+    weak limit of the pressure $p(\rho_n)$ need not be $p(\rho)$. Lions found a quantity that does behave well under weak
+    limits, the effective viscous flux, and used it to prove strong convergence of the density. Feireisl extended the
+    range of exponents to $\gamma\gt3/2$.
+  </p>
+
+  <h2>Statement</h2>
+  <div class="thm">
+    <p><span class="label">Theorem (Feireisl–Novotný–Petzeltová, 2001).</span>
+      Let $\Omega\subset\R^3$ be bounded with smooth boundary and $p(\rho)=a\rho^\gamma$ with $\gamma\gt3/2$. For initial data
+      of finite energy, the barotropic compressible Navier–Stokes equations with no-slip boundary condition have a global
+      finite-energy weak solution, and the density satisfies the continuity equation in the renormalized sense.
+      (Lions had proved this for $\gamma\ge9/5$.)
+    </p>
+  </div>
+  <div class="rmk">
+    <p><span class="label">The ingredients.</span></p>
+    <ul>
+      <li><em>Effective viscous flux.</em> $F = (\lambda+2\mu)\dv u - p(\rho)$. Although neither term converges strongly, products like $T(\rho_n)F_n$ converge weakly to $\overline{T(\rho)}\,F$: the oscillations of $p(\rho)$ and of $\dv u$ cancel.</li>
+      <li><em>Renormalization</em> (see <a href="notions-of-solution.html">notions of solution</a>), applied to truncations $T_k(\rho)$ of the density when $\rho$ is not square integrable.</li>
+      <li><em>Oscillation defect measure.</em> A bound on how much the truncations can oscillate; finite exactly when $\gamma\gt3/2$.</li>
+    </ul>
+  </div>
+
+  <h2>Why it is plausible</h2>
+  <p>
+    Strong convergence of $\rho_n$ is equivalent to $\overline{\rho\log\rho}=\rho\log\rho$ (weak limit equals function of
+    the limit), and by convexity one always has $\ge$. The effective viscous flux identity, combined with the renormalized
+    equations, shows that the defect $\overline{\rho\log\rho}-\rho\log\rho$ satisfies a transport inequality with zero
+    initial data, so it stays zero. Below $\gamma=3/2$ the integrability of $\rho$ is too low for the products in this
+    argument to make sense, even after truncation.
+  </p>
+
+  <h2>Where to find a proof</h2>
+  <ul>
+    <li>P.-L. Lions, <em>Mathematical Topics in Fluid Mechanics, Vol. 2: Compressible Models</em>, Oxford, 1998.</li>
+    <li>E. Feireisl, A. Novotný, H. Petzeltová, <em>J. Math. Fluid Mech.</em> 3 (2001) 358–392.</li>
+    <li>A. Novotný, I. Straškraba, <em>Introduction to the Mathematical Theory of Compressible Flow</em>, Oxford, 2004, Chapter 7; E. Feireisl, <em>Dynamics of Viscous Compressible Fluids</em>, Oxford, 2004.</li>
+  </ul>
+
+  <div id="used-in"></div>
+  <div id="pager"></div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gagliardo–Nirenberg · Amer Rawashdeh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pde.css">
+<script src="mathjax-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="wiki.js" defer></script>
+</head>
+<body data-page="gagliardo-nirenberg">
+<!-- data-page must match this page's id in wiki.js (the file name without .html). -->
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../../index.html">Amer Rawashdeh</a>
+    <a href="index.html">PDE analysis</a>
+    <a href="../../index.html#notes">All notes</a>
+  </div>
+</nav>
+
+<main>
+  <div id="page-meta"></div>
+  <h1>Gagliardo–Nirenberg inequalities</h1>
+  <div id="prereqs"></div>
+
+  <h2>The idea</h2>
+  <p>
+    A refinement of Sobolev embedding: an intermediate norm is bounded by a product of a high norm and a low norm, with
+    powers. This is what lets a nonlinear term be split so that the high norm appears with a power below 2 and can be
+    absorbed by Young's inequality.
+  </p>
+
+  <h2>Statement</h2>
+  <div class="thm">
+    <p><span class="label">Theorem (on $\R^n$).</span>
+      Let $1\le q, r\le\infty$, $j \lt m$ integers, and $\frac{j}{m}\le a\le 1$ with
+    </p>
+    \[ \frac1p = \frac jn + a\Big(\frac1r - \frac mn\Big) + \frac{1-a}{q}. \]
+    <p>
+      Then $\norm{\nabla^j u}_{L^p}\le C\norm{\nabla^m u}_{L^r}^{a}\norm{u}_{L^q}^{1-a}$, except that $a = 1$ is not allowed
+      when $1\lt r\lt\infty$ and $m - j - n/r$ is a nonnegative integer.
+      On a bounded Lipschitz domain the same holds with an extra lower-order term, e.g. $+\,C\norm{u}_{L^q}$, on the right.
+    </p>
+  </div>
+  <div class="ex">
+    <p><span class="label">The form used most in 3D.</span>
+      For $f\in H^1(\Omega)$, $\Omega\subset\R^3$ bounded and Lipschitz:
+      $\norm{f}_{L^3}\le C\norm{f}_{L^2}^{1/2}\norm{f}_{H^1}^{1/2}$. Applied to $f=\nabla u$:
+      $\norm{\nabla u}_{L^3}\le C\norm{\nabla u}_{L^2}^{1/2}\norm{\nabla u}_{H^1}^{1/2}$.
+    </p>
+  </div>
+
+  <h2>Why it is plausible</h2>
+  <p>
+    The example is just two facts in a row: interpolate $L^3$ between $L^2$ and $L^6$ (the weights are $\frac12,\frac12$
+    because $\frac13 = \frac{1/2}{2} + \frac{1/2}{6}$), then bound $L^6$ by $H^1$ with Sobolev. The general exponent
+    relation is again forced by scaling, exactly as for Sobolev embedding.
+  </p>
+
+  <h2>Where to find a proof</h2>
+  <ul>
+    <li>L. Nirenberg, On elliptic partial differential equations, <em>Ann. Scuola Norm. Sup. Pisa</em> 13 (1959) 115–162 (the original statement).</li>
+    <li>A. Fiorenza, M. R. Formica, T. Roskovec, F. Soudský, Detailed proof of classical Gagliardo–Nirenberg interpolation inequality with historical remarks, <em>Z. Anal. Anwend.</em> 40 (2021) 217–236.</li>
+  </ul>
+
+  <div id="used-in"></div>
+  <div id="pager"></div>
+</main>
+
+</body>
+</html>

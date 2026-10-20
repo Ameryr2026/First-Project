@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uniqueness · Amer Rawashdeh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pde.css">
+<script src="mathjax-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<script src="wiki.js" defer></script>
+</head>
+<body data-page="uniqueness-energy">
+<!-- data-page must match this page's id in wiki.js (the file name without .html). -->
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../../index.html">Amer Rawashdeh</a>
+    <a href="index.html">PDE analysis</a>
+    <a href="../../index.html#notes">All notes</a>
+  </div>
+</nav>
+
+<main>
+  <div id="page-meta"></div>
+  <h1>Uniqueness by difference estimates</h1>
+  <div id="prereqs"></div>
+
+  <h2>The idea</h2>
+  <p>
+    To show two solutions with the same data coincide, subtract them and estimate the difference. The trick is to measure
+    the difference in a weaker norm than the solutions themselves live in, so that the regularity of the two solutions
+    can be used freely as coefficients.
+  </p>
+
+  <h2>Statement</h2>
+  <div class="thm">
+    <p><span class="label">The scheme.</span></p>
+    <ol>
+      <li>Write the equations for the difference $(\bar\rho,\bar u,\bar\phi)$ of two solutions. Nonlinear terms become linear in the difference, with coefficients built from the two solutions.</li>
+      <li>Run an energy estimate for the difference at a low level (typically $L^2$), producing $\frac{d}{dt}Y + \text{dissipation}\le K(t)\,Y$.</li>
+      <li>Check $K\in L^1(0,T)$ using the regularity of the solutions, and apply <a href="gronwall.html">Gronwall</a> with $Y(0)=0$.</li>
+    </ol>
+    <p>
+      A variant: <em>weak–strong uniqueness</em> compares a weak solution with a strong one with the same data, using the
+      energy inequality of the weak solution in place of the equation, and shows they coincide.
+    </p>
+  </div>
+
+  <h2>Why it is plausible</h2>
+  <p>
+    Uniqueness asks less than existence: one does not need new bounds, only that the bounds already available are strong
+    enough to control the coefficient $K(t)$. That is why uniqueness theorems are usually stated in the same class where
+    existence of strong solutions was proved, and why uniqueness of weak solutions is often open.
+  </p>
+
+  <h2>Where to find a proof</h2>
+  <ul>
+    <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §7.1.2 (Theorem 4, uniqueness for linear parabolic equations).</li>
+    <li>X. Huo, A. Jüngel, Global existence and weak-strong uniqueness for chemotaxis compressible Navier–Stokes equations modeling vascular network formation, <em>J. Math. Fluid Mech.</em> 26 (2024) 11.</li>
+  </ul>
+
+  <div id="used-in"></div>
+  <div id="pager"></div>
+</main>
+
+</body>
+</html>
