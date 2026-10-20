@@ -28,8 +28,8 @@
   /* The board stays white so the graph reads the same in light and dark mode. */
   #board { width: 100%; aspect-ratio: 4 / 3; max-height: 560px; border: 1px solid var(--rule); border-radius: 8px;
            background: #fff; }
-  .out { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 10px; font-family: system-ui, sans-serif; }
-  .out b { font-variant-numeric: tabular-nums; }
+  .out { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 10px; font-family: system-ui, sans-serif; }
+  .out b { font-variant-numeric: tabular-nums; margin-inline-end: 16px; }
   .err { color: #b42318; font-family: system-ui, sans-serif; font-size: 14px; min-height: 1.3em; }
   .hint { font-family: system-ui, sans-serif; font-size: 14px; color: var(--muted); }
   pre { background: var(--box); border: 1px solid var(--rule); border-radius: 8px; padding: 14px; overflow-x: auto;
@@ -51,6 +51,7 @@
         <option value="middle">Midpoint</option>
         <option value="lower" selected>Lower sum (min of f)</option>
         <option value="upper">Upper sum (max of f)</option>
+        <option value="both">Upper and lower together</option>
         <option value="trapezoidal">Trapezoids</option>
       </select></div>
   </div>
@@ -58,9 +59,10 @@
   <div id="board" class="jxgbox"></div>
   <p class="hint">Drag the points a and b along the x-axis, and the n slider. Scroll to zoom, drag the background to move.</p>
   <div class="out">
-    <span>Sum: <b id="sum"></b></span>
-    <span>Integral: <b id="int"></b></span>
-    <span>Difference: <b id="diff"></b></span>
+    <span id="sumLabel">Sum</span><b id="sum"></b>
+    <span id="upLabel" hidden>Upper sum</span><b id="up" hidden></b>
+    <span>Integral:</span><b id="int"></b>
+    <span id="diffLabel">Difference:</span><b id="diff"></b>
   </div>
 
   <h2>The code</h2>
@@ -79,7 +81,7 @@ const board = JXG.JSXGraph.initBoard('board', {
 // 2. The function. Typed text is read by JSXGraph's own parser (x^2, sin(x), exp(x), sqrt(x) ...).
 let fn = x => x * x;
 const f = x => fn(x);
-board.create('functiongraph', [f], { strokeWidth: 2.5, strokeColor: '#1f2328' });
+board.create('functiongraph', [f], { strokeWidth: 2.5, strokeColor: '#1f2328', layer: 8 });   // layer 8: drawn above the rectangles
 
 // 3. The bounds a and b: points that can only slide along the x-axis.
 const xAxis = board.defaultAxes.x;
@@ -90,21 +92,41 @@ const B = board.create('glider', [2, 0, xAxis], { name: 'b', size: 5, color: '#0
 const n = board.create('slider', [[-1, 4.4], [1.6, 4.4], [1, 6, 50]],
                        { name: 'n', snapWidth: 1, precision: 0 });
 
-// 5. The Riemann sum itself — one line. Its type comes from the menu above the board.
+// 5. The Riemann sums. Lower sums are blue, upper sums orange; "both" draws the two together.
+// Solid light fills, so where both are drawn the lower (blue) covers the upper (orange).
+const BLUE = { line: '#0c4a6e', fill: '#b9d1e3' }, ORANGE = { line: '#c2410c', fill: '#f7d3bd' };
 let type = 'lower';
+// The upper sum is created first so it sits behind the lower one.
+const upper = board.create('riemannsum',
+  [f, () => n.Value(), 'upper', () => A.X(), () => B.X()],
+  { fillColor: ORANGE.fill, fillOpacity: 0.9, strokeColor: ORANGE.line, dash: 2, visible: false });
 const sum = board.create('riemannsum',
-  [f, () => n.Value(), () => type, () => A.X(), () => B.X()],
-  { fillColor: '#0c4a6e', fillOpacity: 0.25, strokeColor: '#0c4a6e' });
+  [f, () => n.Value(), () => (type === 'both' ? 'lower' : type), () => A.X(), () => B.X()],
+  { fillColor: BLUE.fill, fillOpacity: 0.9, strokeColor: BLUE.line });
+
+function setColors() {
+  const c = type === 'upper' ? ORANGE : BLUE;
+  sum.setAttribute({ fillColor: c.fill, strokeColor: c.line });
+  upper.setAttribute({ visible: type === 'both' });
+}
 
 // 6. The numbers under the board, refreshed whenever anything moves.
 const show = (id, v) => { document.getElementById(id).textContent = v.toFixed(4); };
 board.on('update', () => {
   const I = JXG.Math.Numerics.I([A.X(), B.X()], f);
-  show('sum', sum.Value()); show('int', I); show('diff', sum.Value() - I);
+  const both = type === 'both';
+  show('sum', sum.Value()); show('int', I);
+  show('diff', both ? upper.Value() - sum.Value() : sum.Value() - I);
+  show('up', upper.Value());
+  document.getElementById('sumLabel').textContent = both || type === 'lower' ? 'Lower sum:'
+    : type === 'upper' ? 'Upper sum:' : 'Sum:';
+  document.getElementById('upLabel').hidden = document.getElementById('up').hidden = !both;
+  document.getElementById('upLabel').textContent = 'Upper sum:';
+  document.getElementById('diffLabel').textContent = both ? 'Upper − lower:' : 'Difference:';
 });
 
 // 7. The menu and the function box.
-document.getElementById('type').onchange = e => { type = e.target.value; board.update(); };
+document.getElementById('type').onchange = e => { type = e.target.value; setColors(); board.update(); };
 document.getElementById('fx').oninput = e => {
   try {
     fn = board.jc.snippet(e.target.value, true, 'x', true);
