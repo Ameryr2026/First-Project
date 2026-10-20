@@ -94,7 +94,10 @@
 
   <label for="map">الحروف (اللاتيني=العربي)</label>
   <input id="map" class="map" spellcheck="false">
-  <p class="note">غيّر أي حرف كما تشاء. الحروف غير المذكورة تبقى لاتينية.</p>
+  <div class="row">
+    <span class="note">غيّر أي حرف كما تشاء. الحروف غير المذكورة تبقى لاتينية.</span>
+    <button type="button" id="resetMap">استعادة الحروف الأصلية</button>
+  </div>
 
   <label for="ar">النتيجة بالعربية</label>
   <textarea id="ar" class="ar" spellcheck="false" readonly></textarea>
@@ -171,6 +174,19 @@
 
   enBox.addEventListener('input', later);
   mapBox.addEventListener('input', later);
+  // In the Latin view the page maps Arabic letters back when it loads, so reload after a change.
+  mapBox.addEventListener('change', function () {
+    update();
+    if (window.ArabicMath && ArabicMath.mode === 'latin') location.reload();
+  });
+  document.getElementById('resetMap').addEventListener('click', function () {
+    mapBox.value = DEFAULT_MAP;
+    try { localStorage.removeItem('converter-map-v2'); } catch (e) {}
+    if (window.ArabicMath && ArabicMath.mode === 'latin') { location.reload(); return; }
+    update();
+    setTimeout(function () { status.textContent = 'أُعيدت الحروف الأصلية'; }, 500);
+    setTimeout(function () { status.textContent = ''; }, 2500);
+  });
   document.querySelectorAll('.examples button').forEach(function (b) {
     b.addEventListener('click', function () { enBox.value = b.textContent; update(); });
   });
