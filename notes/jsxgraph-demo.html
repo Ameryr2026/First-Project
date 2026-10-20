@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Riemann Sums with JSXGraph · Amer Rawashdeh</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph@1.14.0/distrib/jsxgraph.css">
+<script src="https://cdn.jsdelivr.net/npm/jsxgraph@1.14.0/distrib/jsxgraphcore.js"></script>
+<style>
+  :root { --bg: #fbfaf7; --text: #1f2328; --muted: #5b6470; --accent: #0c4a6e; --rule: #e3e0d8; --box: #f2f0ea; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171b; --text: #e6e6e3; --muted: #a0a7b0; --accent: #7cc4ec; --rule: #2a2f36; --box: #1c2026; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: Georgia, "Times New Roman", serif; font-size: 18px; line-height: 1.6; }
+  a { color: var(--accent); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 60px; }
+  h1 { font-size: 30px; margin: 0 0 4px; }
+  h2 { font-size: 21px; margin: 32px 0 8px; }
+  .lead { color: var(--muted); margin: 0 0 18px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: end; margin-bottom: 10px;
+              font-family: system-ui, sans-serif; font-size: 15px; }
+  .controls label { display: block; color: var(--muted); font-size: 13px; }
+  .controls input, .controls select { font: inherit; font-size: 16px; padding: 3px 8px; border-radius: 6px;
+              border: 1px solid var(--rule); background: #fff; color: #1f2328; }
+  .controls input { width: 220px; font-family: ui-monospace, Menlo, Consolas, monospace; }
+  /* The board stays white so the graph reads the same in light and dark mode. */
+  #board { width: 100%; aspect-ratio: 4 / 3; max-height: 560px; border: 1px solid var(--rule); border-radius: 8px;
+           background: #fff; }
+  .out { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 10px; font-family: system-ui, sans-serif; }
+  .out b { font-variant-numeric: tabular-nums; }
+  .err { color: #b42318; font-family: system-ui, sans-serif; font-size: 14px; min-height: 1.3em; }
+  .hint { font-family: system-ui, sans-serif; font-size: 14px; color: var(--muted); }
+  pre { background: var(--box); border: 1px solid var(--rule); border-radius: 8px; padding: 14px; overflow-x: auto;
+        font-size: 14px; line-height: 1.5; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Riemann Sums with JSXGraph</h1>
+  <p class="lead">A demo of building interactive mathematics with code. Everything below comes from the short program at the bottom of this page.</p>
+
+  <div class="controls">
+    <div><label for="fx">f(x) =</label><input id="fx" value="x^2" spellcheck="false"></div>
+    <div><label for="type">Sample point / sum</label>
+      <select id="type">
+        <option value="left">Left endpoint</option>
+        <option value="right">Right endpoint</option>
+        <option value="middle">Midpoint</option>
+        <option value="lower" selected>Lower sum (min of f)</option>
+        <option value="upper">Upper sum (max of f)</option>
+        <option value="trapezoidal">Trapezoids</option>
+      </select></div>
+  </div>
+  <div class="err" id="err" role="alert"></div>
+  <div id="board" class="jxgbox"></div>
+  <p class="hint">Drag the points a and b along the x-axis, and the n slider. Scroll to zoom, drag the background to move.</p>
+  <div class="out">
+    <span>Sum: <b id="sum"></b></span>
+    <span>Integral: <b id="int"></b></span>
+    <span>Difference: <b id="diff"></b></span>
+  </div>
+
+  <h2>The code</h2>
+  <p>This is the whole program behind the graph. Changing a line here changes the page.</p>
+  <pre><code id="codeView"></code></pre>
+</main>
+
+<script id="demo">
+// 1. A board: the drawing area, with axes. boundingbox = [left, top, right, bottom].
+const board = JXG.JSXGraph.initBoard('board', {
+  boundingbox: [-1.5, 5, 4.5, -1.5], axis: true,
+  showCopyright: false, showNavigation: false,
+  pan: { enabled: true, needShift: false }, zoom: { wheel: true, needShift: false }
+});
+
+// 2. The function. Typed text is read by JSXGraph's own parser (x^2, sin(x), exp(x), sqrt(x) ...).
+let fn = x => x * x;
+const f = x => fn(x);
+board.create('functiongraph', [f], { strokeWidth: 2.5, strokeColor: '#1f2328' });
+
+// 3. The bounds a and b: points that can only slide along the x-axis.
+const xAxis = board.defaultAxes.x;
+const A = board.create('glider', [0, 0, xAxis], { name: 'a', size: 5, color: '#0c4a6e' });
+const B = board.create('glider', [2, 0, xAxis], { name: 'b', size: 5, color: '#0c4a6e' });
+
+// 4. The number of rectangles: a slider from 1 to 50, in whole steps.
+const n = board.create('slider', [[-1, 4.4], [1.6, 4.4], [1, 6, 50]],
+                       { name: 'n', snapWidth: 1, precision: 0 });
+
+// 5. The Riemann sum itself — one line. Its type comes from the menu above the board.
+let type = 'lower';
+const sum = board.create('riemannsum',
+  [f, () => n.Value(), () => type, () => A.X(), () => B.X()],
+  { fillColor: '#0c4a6e', fillOpacity: 0.25, strokeColor: '#0c4a6e' });
+
+// 6. The numbers under the board, refreshed whenever anything moves.
+const show = (id, v) => { document.getElementById(id).textContent = v.toFixed(4); };
+board.on('update', () => {
+  const I = JXG.Math.Numerics.I([A.X(), B.X()], f);
+  show('sum', sum.Value()); show('int', I); show('diff', sum.Value() - I);
+});
+
+// 7. The menu and the function box.
+document.getElementById('type').onchange = e => { type = e.target.value; board.update(); };
+document.getElementById('fx').oninput = e => {
+  try {
+    fn = board.jc.snippet(e.target.value, true, 'x', true);
+    fn(1);                                         // check it can be evaluated
+    document.getElementById('err').textContent = '';
+    board.update();
+  } catch (err) {
+    document.getElementById('err').textContent = 'Could not read the function.';
+  }
+};
+board.update();
+</script>
+<script>
+  // Show the program above on the page.
+  document.getElementById('codeView').textContent = document.getElementById('demo').textContent.trim();
+</script>
+</body>
+</html>
