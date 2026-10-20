@@ -7,7 +7,7 @@
  *
  * Optional settings on the same tag:
  *   data-width="800" data-height="500"   the activity's own size (it is scaled to fit the page)
- *   data-lang="ar"                       interface language (default: ar)
+ *   data-lang="ar"                       interface language (default: en, the activity as made)
  *   data-toolbar="true"                  show GeoGebra's toolbar   (default: hidden)
  *   data-menu="true"                     show the menu bar         (default: hidden)
  *   data-input="true"                    show the input bar        (default: hidden)
@@ -56,7 +56,7 @@
       material_id: el.getAttribute('data-id'),
       width: +el.getAttribute('data-width') || 800,
       height: +el.getAttribute('data-height') || 500,
-      language: el.getAttribute('data-lang') || 'ar',
+      language: el.getAttribute('data-lang') || 'en',
       showToolBar: flag(el, 'toolbar', false),
       showMenuBar: flag(el, 'menu', false),
       showAlgebraInput: flag(el, 'input', false),
