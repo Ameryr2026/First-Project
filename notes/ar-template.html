@@ -33,6 +33,11 @@
        العلامة / تعني القسمة دائمًا.
        أضف أوامرك: window.ArabicMathCommands = { 'اسم': '\\texcommand' };
 
+     الكتابة بالرياضيات الإنجليزية: إن أردت كتابة المعادلات بـ LaTeX الإنجليزي العادي
+     (\frac{x}{2}، \sin x ...)، أضف السطر:  window.ArabicMathSource = 'latin';
+     عندها يعرض الزر «رموز لاتينية» المعادلات كما كتبتها، و«رموز عربية» يحوّلها إلى العربية.
+     لتغيير حرف: window.ArabicMathLetters = { s: 'ت' };
+
      زر «رموز عربية / رموز لاتينية» يظهر تلقائيًا أعلى الصفحة. للعرض اللاتيني:
      حدّد في ArabicMathLatin الحرف اللاتيني المقابل لكل حرف عربي تستخدمه.
      الدوال (جا، جتا، نهــا، لو، ...) تتحول تلقائيًا.
@@ -48,7 +53,7 @@
     'س': 'x', 'ص': 'y', 'ع': 'u', 'ز': 't', 'ق': 'f', 'ن': 'T', 'ط': 'n'
   };
 </script>
-<script src="arabic-math.js?v=15"></script>
+<script src="arabic-math.js?v=16"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>

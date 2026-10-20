@@ -68,6 +68,13 @@
     l: 'ل', m: 'م', n: 'ن', p: 'پ', q: 'ظ', r: 'ر', s: 'ش', t: 'ز', u: 'ع', v: 'ڤ', w: 'ث',
     x: 'س', y: 'ص', z: 'ض'
   };
+  // English → Arabic letters; a page can override with window.ArabicMathLetters = { s: 'ت' }.
+  var ACTIVE_LETTERS = {};
+  Object.keys(LETTERS).forEach(function (l) { ACTIVE_LETTERS[l] = LETTERS[l]; });
+  var pageLetters = window.ArabicMathLetters || {};
+  for (var pl in pageLetters) { if (Object.prototype.hasOwnProperty.call(pageLetters, pl)) ACTIVE_LETTERS[pl] = pageLetters[pl]; }
+  // Which language the page's math is written in: 'ar' (default) or 'latin' (ordinary English LaTeX).
+  var SOURCE = window.ArabicMathSource === 'latin' ? 'latin' : 'ar';
   // Latin view: Arabic → Latin, from the table above; a page's own ArabicMathLatin wins.
   var LATIN = {};
   Object.keys(LETTERS).forEach(function (l) {
@@ -184,6 +191,8 @@
     'كسر': '\\frac', 'جذر': '\\sqrt', 'نص': '\\text', 'مسافة': '\\quad',
     // Stretchy brackets: \افتح( ... \اغلق)  and  \افتح\{ ... \اغلق.  (named by meaning, not side)
     'افتح': '\\left', 'اغلق': '\\right',
+    // Equation label: \رقم{٣} = \tag{3}
+    'رقم': '\\tag',
     // Calculus
     'نها': '\\nha', 'الى': '\\to', 'يؤول': '\\to',
     'تكامل': '\\int', 'مجموع': '\\sum', 'جداء': '\\prod', 'لانهاية': '\\infty',
@@ -301,6 +310,116 @@
     list.forEach(function (t) { var v = arabicEnvironments(t.nodeValue); if (v !== t.nodeValue) t.nodeValue = v; });
   }
 
+  // ---------- English LaTeX → Arabic form (used by the converter and by English-source pages) ----------
+  // Commands whose {argument} is a name or text, copied without changing letters.
+  var VERBATIM = { text: 1, textrm: 1, mbox: 1, label: 1, ref: 1, eqref: 1, begin: 1, end: 1,
+                   operatorname: 1, hspace: 1, vspace: 1, color: 1, textcolor: 1 };
+  // Read one {...} group starting at src[i] === '{'. Returns the end index (after '}').
+  function groupEnd(src, i) {
+    var depth = 0;
+    for (var j = i; j < src.length; j++) {
+      if (src[j] === '\\') { j++; continue; }
+      if (src[j] === '{') depth++;
+      else if (src[j] === '}') { depth--; if (depth === 0) return j + 1; }
+    }
+    return src.length;
+  }
+  function skipSpaces(src, i) { while (i < src.length && src[i] === ' ') i++; return i; }
+
+  function fromEnglish(src, map, keepEnv) {
+    map = map || ACTIVE_LETTERS;
+    // Derivatives first: \frac{dy}{dx} → \مشتقة{y}{x}, \frac{\partial u}{\partial t} → \جزئية{u}{t}
+    src = src.replace(/\\frac\s*\{\s*d\s*\^?\s*\{?(\d*)\}?\s*([A-Za-z])\s*\}\s*\{\s*d\s*([A-Za-z])\s*(?:\^\s*\{?\d*\}?)?\s*\}/g,
+      function (m, n, a, b) { return '\\مشتقة' + (n ? '[' + n + ']' : '') + '{' + a + '}{' + b + '}'; });
+    src = src.replace(/\\frac\s*\{\s*\\partial\s*\^?\s*\{?(\d*)\}?\s*([A-Za-z])\s*\}\s*\{\s*\\partial\s*([A-Za-z])\s*(?:\^\s*\{?\d*\}?)?\s*\}/g,
+      function (m, n, a, b) { return '\\جزئية' + (n ? '[' + n + ']' : '') + '{' + a + '}{' + b + '}'; });
+
+    var out = '', i = 0;
+    function emitCmd(name) {
+      out += '\\' + name;
+      // A space only when a letter or digit follows directly (\جا س, not \جاس).
+      if (i < src.length && /[A-Za-z\u0600-\u06FF0-9]/.test(src[i])) out += ' ';
+    }
+    while (i < src.length) {
+      var ch = src[i];
+      if (ch === '\\') {
+        var m = /^\\([A-Za-z]+|.)/.exec(src.slice(i));
+        if (!m) { out += ch; i++; continue; }
+        var name = m[1];
+        i += m[0].length;
+        if (name === 'mathbb') {
+          var k = skipSpaces(src, i);
+          if (src[k] === '{') {
+            var e = groupEnd(src, k), inner = src.slice(k + 1, e - 1).trim();
+            var set = fromLatex('\\mathbb{' + inner + '}');
+            if (set) { i = e; emitCmd(set); continue; }
+          }
+          out += '\\mathbb'; continue;
+        }
+        if (name === 'mathrm' || name === 'mathbf' || name === 'mathit') {
+          // \mathrm{d} → د ; other contents have their letters converted.
+          var k2 = skipSpaces(src, i);
+          if (src[k2] === '{') {
+            var e2 = groupEnd(src, k2), inner2 = src.slice(k2 + 1, e2 - 1);
+            i = e2;
+            if (name === 'mathrm' && inner2.trim() === 'd') { out += (map.d || 'd'); continue; }
+            out += '\\' + name + '{' + fromEnglish(inner2, map, keepEnv) + '}';
+            continue;
+          }
+          out += '\\' + name; continue;
+        }
+        if (name === 'begin' || name === 'end') {
+          var kb = skipSpaces(src, i);
+          if (src[kb] === '{') {
+            var eb = groupEnd(src, kb), env = src.slice(kb + 1, eb - 1).trim();
+            var arEnv = (keepEnv ? null : (ENV_FROM[env] || null));
+            out += arEnv ? ('\\' + (name === 'begin' ? 'بداية' : 'نهاية') + '{' + arEnv + '}') : src.slice(i - name.length - 1, eb);
+            i = eb;
+            // The column layout of an array ({cc}, {lr}) is kept exactly as written.
+            if (name === 'begin' && env === 'array') {
+              var kc = skipSpaces(src, i);
+              if (src[kc] === '{') { var ec = groupEnd(src, kc); out += src.slice(i, ec); i = ec; }
+            }
+            continue;
+          }
+        }
+        if ((name === 'text' || name === 'textrm' || name === 'mbox') && src[skipSpaces(src, i)] === '{') {
+          // Common short words in \text{} are translated, with spacing that survives mirroring.
+          var kt = skipSpaces(src, i), et = groupEnd(src, kt);
+          var word = src.slice(kt + 1, et - 1).trim().toLowerCase();
+          if (TEXT_WORDS[word]) { out += '\\nas{' + TEXT_WORDS[word] + '}'; i = et; continue; }
+        }
+        if (VERBATIM[name]) {
+          out += '\\' + name;
+          var k3 = skipSpaces(src, i);
+          if (src[k3] === '{') { var e3 = groupEnd(src, k3); out += src.slice(i, e3); i = e3; }
+          continue;
+        }
+        var ar = fromLatex('\\' + name);
+        if (ar) { emitCmd(ar); continue; }
+        out += '\\' + name;
+        continue;
+      }
+      if (/[A-Za-z]/.test(ch) && map[ch]) {
+        // A two-character letter (هـ) is grouped, so e^x becomes {هـ}^{...}.
+        out += map[ch].length > 1 ? '{' + map[ch] + '}' : map[ch]; i++; continue;
+      }
+      out += ch; i++;
+    }
+    return out;
+  }
+
+  // Short words often written inside \text{} in English formulas.
+  var TEXT_WORDS = {
+    'in': 'في', 'on': 'على', 'if': 'إذا', 'for': 'لكل', 'for all': 'لكل', 'and': 'و', 'or': 'أو',
+    'where': 'حيث', 'when': 'عندما', 'with': 'مع', 'such that': 'بحيث', 'otherwise': 'غير ذلك',
+    'as': 'عندما', 'then': 'إذن', 'else': 'غير ذلك', 'is': '', 'at': 'عند'
+  };
+  delete TEXT_WORDS.is;
+
+  // A page whose math is written in English: the Arabic view converts each equation first.
+  function englishSource(args) { args.math.math = fromEnglish(args.math.math, ACTIVE_LETTERS, true); }
+
   function arabicCommands(args) {
     args.math.math = args.math.math.replace(/\\([ء-يـ]+)/g, function (m, word) {
       for (var n = word.length; n > 0; n--) {
@@ -417,6 +536,15 @@
       ready: function () {
         MathJax.startup.defaultReady();
         var tex = MathJax.startup.document.inputJax[0];
+        if (SOURCE === 'latin') {
+          // Math written in English: the Latin view draws it as written; the Arabic view converts it.
+          if (MODE === 'ar') {
+            tex.preFilters.add(englishSource, 40);
+            tex.preFilters.add(arabicCommands, 50);
+            tex.postFilters.add(arabize, 100);
+          }
+          return;
+        }
         tex.preFilters.add(arabicCommands, 50);   // runs before the Latin conversion
         if (MODE === 'latin') {
           tex.preFilters.add(latinizeSource, 100);
@@ -448,6 +576,8 @@
     mode: MODE,
     commands: COMMAND_LIST,
     letters: LETTERS,       // 'x' → 'س'
+    source: SOURCE,
+    fromEnglish: function (src, map) { return fromEnglish(src, map, false); },
     toLatex: toLatex,       // '\\nha' → '\\lim'
     fromLatex: fromLatex,   // '\\frac' → 'كسر', '\\mathbb{R}' → 'حقيقية'
     setMode: setMode,

@@ -22,7 +22,7 @@
     window.ArabicMathLatin = back;
   })();
 </script>
-<script src="arabic-math.js?v=15"></script>
+<script src="arabic-math.js?v=16"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   :root {
@@ -112,9 +112,6 @@
 
   // Which Arabic command matches an English LaTeX command comes from the shared list in
   // arabic-math.js (ArabicMath.fromLatex), so a command added there converts here too.
-  // Commands whose {argument} is a name or text, copied without changing letters.
-  var VERBATIM = { text: 1, textrm: 1, mbox: 1, label: 1, ref: 1, eqref: 1, begin: 1, end: 1,
-                   operatorname: 1, hspace: 1, vspace: 1, color: 1, textcolor: 1 };
   var ARABIC = /[؀-ۿ]/;
 
   var enBox = document.getElementById('en'), arBox = document.getElementById('ar'),
@@ -130,93 +127,9 @@
     return m;
   }
 
-  // Read one {...} group starting at src[i] === '{'. Returns the end index (after '}').
-  function groupEnd(src, i) {
-    var depth = 0;
-    for (var j = i; j < src.length; j++) {
-      if (src[j] === '\\') { j++; continue; }
-      if (src[j] === '{') depth++;
-      else if (src[j] === '}') { depth--; if (depth === 0) return j + 1; }
-    }
-    return src.length;
-  }
-  function skipSpaces(src, i) { while (i < src.length && src[i] === ' ') i++; return i; }
-
-  function convert(src, map) {
-    // Derivatives first: \frac{dy}{dx} → \مشتقة{y}{x}, \frac{\partial u}{\partial t} → \جزئية{u}{t}
-    src = src.replace(/\\frac\s*\{\s*d\s*\^?\s*\{?(\d*)\}?\s*([A-Za-z])\s*\}\s*\{\s*d\s*([A-Za-z])\s*(?:\^\s*\{?\d*\}?)?\s*\}/g,
-      function (m, n, a, b) { return '\\مشتقة' + (n ? '[' + n + ']' : '') + '{' + a + '}{' + b + '}'; });
-    src = src.replace(/\\frac\s*\{\s*\\partial\s*\^?\s*\{?(\d*)\}?\s*([A-Za-z])\s*\}\s*\{\s*\\partial\s*([A-Za-z])\s*(?:\^\s*\{?\d*\}?)?\s*\}/g,
-      function (m, n, a, b) { return '\\جزئية' + (n ? '[' + n + ']' : '') + '{' + a + '}{' + b + '}'; });
-
-    var out = '', i = 0;
-    function emitCmd(name) {
-      out += '\\' + name;
-      // A space only when a letter or digit follows directly (\جا س, not \جاس).
-      if (i < src.length && /[A-Za-z؀-ۿ0-9]/.test(src[i])) out += ' ';
-    }
-    while (i < src.length) {
-      var ch = src[i];
-      if (ch === '\\') {
-        var m = /^\\([A-Za-z]+|.)/.exec(src.slice(i));
-        if (!m) { out += ch; i++; continue; }
-        var name = m[1];
-        i += m[0].length;
-        if (name === 'mathbb') {
-          var k = skipSpaces(src, i);
-          if (src[k] === '{') {
-            var e = groupEnd(src, k), inner = src.slice(k + 1, e - 1).trim();
-            var set = ArabicMath.fromLatex('\\mathbb{' + inner + '}');
-            if (set) { i = e; emitCmd(set); continue; }
-          }
-          out += '\\mathbb'; continue;
-        }
-        if (name === 'mathrm' || name === 'mathbf' || name === 'mathit') {
-          // \mathrm{d} → د ; other contents have their letters converted.
-          var k2 = skipSpaces(src, i);
-          if (src[k2] === '{') {
-            var e2 = groupEnd(src, k2), inner2 = src.slice(k2 + 1, e2 - 1);
-            i = e2;
-            if (name === 'mathrm' && inner2.trim() === 'd') { out += (map.d || 'd'); continue; }
-            out += '\\' + name + '{' + convert(inner2, map) + '}';
-            continue;
-          }
-          out += '\\' + name; continue;
-        }
-        if (name === 'begin' || name === 'end') {
-          var kb = skipSpaces(src, i);
-          if (src[kb] === '{') {
-            var eb = groupEnd(src, kb), env = src.slice(kb + 1, eb - 1).trim();
-            var arEnv = ArabicMath.environmentFromLatex(env);
-            out += arEnv ? ('\\' + (name === 'begin' ? 'بداية' : 'نهاية') + '{' + arEnv + '}') : src.slice(i - name.length - 1, eb);
-            i = eb;
-            // The column layout of an array ({cc}, {lr}) is kept exactly as written.
-            if (name === 'begin' && env === 'array') {
-              var kc = skipSpaces(src, i);
-              if (src[kc] === '{') { var ec = groupEnd(src, kc); out += src.slice(i, ec); i = ec; }
-            }
-            continue;
-          }
-        }
-        if (VERBATIM[name]) {
-          out += '\\' + name;
-          var k3 = skipSpaces(src, i);
-          if (src[k3] === '{') { var e3 = groupEnd(src, k3); out += src.slice(i, e3); i = e3; }
-          continue;
-        }
-        var ar = ArabicMath.fromLatex('\\' + name);
-        if (ar) { emitCmd(ar); continue; }
-        out += '\\' + name;
-        continue;
-      }
-      if (/[A-Za-z]/.test(ch) && map[ch]) {
-        // A two-character letter (هـ) is grouped, so e^x becomes {هـ}^{...}.
-        out += map[ch].length > 1 ? '{' + map[ch] + '}' : map[ch]; i++; continue;
-      }
-      out += ch; i++;
-    }
-    return out;
-  }
+  // English → Arabic conversion lives in arabic-math.js (ArabicMath.fromEnglish), shared with
+  // pages whose math is written in English.
+  function convert(src, map) { return ArabicMath.fromEnglish(src, map); }
 
   var timer = null;
   function update() {
