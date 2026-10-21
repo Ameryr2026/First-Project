@@ -61,6 +61,39 @@
     it is the momentum $\rho u$, not $u$.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Rellich in one dimension. Let $(u_n)$ be bounded in $H^1_0(0,1)$, $u_n = \sum_k a_k^{(n)}\sqrt2\sin(k\pi x)$. Show
+$\sum_{k\gt N}|a_k^{(n)}|^2 \le \frac{M}{N^2\pi^2}$ uniformly in $n$, and use this to extract a subsequence converging in $L^2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$\norm{u_n'}_{L^2}^2 = \sum_k k^2\pi^2|a_k^{(n)}|^2 \le M$. Choose a subsequence along which each coefficient converges
+(diagonal argument); the tails are uniformly small, so the subsequence is Cauchy in $L^2$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Why a time-derivative bound is needed. Let $w \in H^1_0(\Omega)$, $w \ne 0$, and $u_n(x,t) = \sin(nt)w(x)$. Show $(u_n)$ is
+bounded in $L^2(0,T;H^1_0)$ but has no subsequence converging in $L^2(0,T;L^2)$. What happens to $\partial_t u_n$?
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>In time this is the $\sin(nt)$ example: weak limit $0$, norm bounded below. $\partial_t u_n = n\cos(nt)w$ is unbounded
+in every $L^r(0,T;X_1)$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Compactness fails at the critical exponent. For $u \in C_c^\infty(B_1)$, $p \lt n$, let
+$u_\lambda(x) = \lambda^{(n-p)/p}u(\lambda x)$. Show $\norm{\nabla u_\lambda}_{L^p}$ and $\norm{u_\lambda}_{L^{p^*}}$ do not depend
+on $\lambda$, and conclude that $W^{1,p}_0(B_1) \subset L^{p^*}(B_1)$ is not compact.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Change variables. As $\lambda \to \infty$ the supports shrink to the origin, so any limit in $L^{p^*}$ would be $0$, but the
+norms stay equal to $\norm{u}_{L^{p^*}} \ne 0$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §5.7 (Rellich–Kondrachov).</li>

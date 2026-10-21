@@ -89,6 +89,9 @@ def where(pid):
 
 
 # ---------- HTML → LaTeX ----------
+HINTS = []   # (page id, exercise number, hint LaTeX), printed in an appendix
+
+
 class Page:
     def __init__(self, pid, file=None):
         self.pid = pid
@@ -194,6 +197,24 @@ class Page:
                     h4.extract()
                 env = 'stepnew' if 'new' in cls else 'step'
                 return '\\begin{%s}{%s}\n%s\n\\end{%s}' % (env, title, self.blocks(c, depth + 1), env)
+            if 'exercise' in cls:
+                lab = c.find('span', class_='label')
+                n = re.sub(r'\D', '', lab.get_text()) if lab else str(len(HINTS) + 1)
+                if lab:
+                    lab.extract()
+                det = c.find('details')
+                hint = ''
+                if det:
+                    summ = det.find('summary')
+                    if summ:
+                        summ.extract()
+                    hint = self.blocks(det, depth + 1)
+                    det.extract()
+                    HINTS.append((self.pid, n, hint))
+                ref = (r'\par\hfill{\footnotesize\color{black!60}Hint on page~\pageref{h:%s:%s}}' % (self.pid, n)
+                       if hint else '')
+                return '\\begin{exercisebox}{Exercise \\thesection.%s}\\label{x:%s:%s}\n%s%s\n\\end{exercisebox}' % (
+                    n, self.pid, n, self.blocks(c, depth + 1), ref)
             for kind in ('thm', 'defn', 'rmk', 'ex'):
                 if kind in cls:
                     lab = c.find('span', class_='label')
@@ -294,6 +315,9 @@ PREAMBLE = r"""\documentclass[11pt,openany]{book}
   borderline={0.6pt}{0pt}{black!40,dashed},frame hidden,fontupper=\itshape\small,before skip=8pt,after skip=12pt}
 \newtcolorbox{conceptsbox}{enhanced,breakable,colback=boxbg,colframe=boxbg,arc=2pt,
   title={Concepts used in this case study},coltitle=accent,colbacktitle=boxbg,fonttitle=\bfseries\small}
+\newtcolorbox{exercisebox}[1]{enhanced,breakable,colback=white,colframe=accent!45,boxrule=0.6pt,arc=2pt,
+  left=8pt,right=8pt,top=5pt,bottom=5pt,before skip=8pt,after skip=8pt,
+  title={#1},coltitle=black,fonttitle=\bfseries,detach title,before upper={\textbf{\tcbtitle}.\ }}
 \newenvironment{byline}{\begin{quote}\small}{\end{quote}}
 \newcommand{\routine}{\fcolorbox{black!30}{black!5}{\sffamily\scriptsize\strut routine}\ }
 \newcommand{\newidea}{\fcolorbox{newidea!60}{newidea!10}{\sffamily\scriptsize\color{newidea}\strut new idea}\ }
@@ -349,6 +373,16 @@ def build():
     parts.append(r'\part{Case studies}')
     for c in CASES:
         parts.append(Page(c['id']).latex())
+    if HINTS:
+        parts.append(r'\appendix')
+        parts.append(r'\chapter{Hints to the exercises}')
+        last = None
+        for pid, n, hint in HINTS:
+            if pid != last:
+                parts.append(r'\section*{%s~(%s)}' % (esc(BY_ID[pid]['title']), where(pid)))
+                last = pid
+            # \ref{x:...} gives the section number (the label sits inside the section); the exercise number follows it.
+            parts.append(r'\noindent\textbf{Exercise~\ref{x:%s:%s}.%s.}\label{h:%s:%s} %s' % (pid, n, n, pid, n, hint))
     parts.append(r'\end{document}')
 
     tex = os.path.join(OUT, 'pde-analysis.tex')

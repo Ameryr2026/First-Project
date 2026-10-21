@@ -63,6 +63,47 @@
     a term actually needs; the exponent $\eta$ is fixed by matching the reciprocals, which is just a weighted average.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Prove Young's inequality $ab \le \frac{a^p}{p} + \frac{b^q}{q}$ from the concavity of $\log$. Then deduce
+$ab \le \varepsilon a^2 + \frac{1}{4\varepsilon}b^2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>For $a, b \gt 0$: $\log\big(\frac1p a^p + \frac1q b^q\big) \ge \frac1p\log a^p + \frac1q\log b^q = \log(ab)$. For the second
+inequality, apply the case $p = q = 2$ to the product $(\sqrt{2\varepsilon}\,a)(b/\sqrt{2\varepsilon})$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Prove the interpolation inequality $\norm{f}_{L^r} \le \norm{f}_{L^p}^{\eta}\norm{f}_{L^q}^{1-\eta}$ (for $q \lt \infty$) from
+Hölder's inequality.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Write $|f|^r = |f|^{\eta r}\,|f|^{(1-\eta)r}$ and apply Hölder with exponents $\frac{p}{\eta r}$ and $\frac{q}{(1-\eta)r}$.
+They are conjugate exactly because $\frac{\eta r}{p} + \frac{(1-\eta)r}{q} = 1$, which is the defining relation for $\eta$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Let $\rho \ge 0$ with $\int_\Omega \rho = m$, and $\gamma \gt 2$. Find $\eta$ with
+$\norm{\rho}_{L^2} \le m^{\eta}\norm{\rho}_{L^\gamma}^{1-\eta}$. Check that $\eta \to 0$ as $\gamma \to 2$ and explain why.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Solve $\frac12 = \frac{\eta}{1} + \frac{1-\eta}{\gamma}$: $\eta = \frac{\gamma-2}{2(\gamma-1)}$. When $\gamma = 2$ the
+$L^\gamma$ norm is already the $L^2$ norm, so no help from the mass is needed.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 4.</span>
+      Absorption. Suppose $X \ge 0$ satisfies $X^2 \le A + BX$ with $A, B \ge 0$. Show $X^2 \le 2A + B^2$. This is the step
+"move the term to the left-hand side" in every energy estimate.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>By Young, $BX \le \frac12 X^2 + \frac12 B^2$. Substitute and subtract $\frac12 X^2$ from both sides.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, Appendix B.2.</li>

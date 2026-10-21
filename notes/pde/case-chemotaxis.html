@@ -380,7 +380,46 @@
   </div>
 
   <!-- ======================================================== -->
-  <h2>6. Open questions</h2>
+  <h2>6. Exercises</h2>
+  <p>These rebuild the paper's key computations by hand.</p>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Derive the energy identity of Lemma 2.1 for smooth solutions: test the momentum equation with $u$ and the $\phi$-equation
+with $\frac{\chi}{a}\phi_t$, and show how the cross terms cancel. Check that the pressure potential is
+$\frac\theta\gamma\rho^\gamma$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>The chemotactic work: $\int\chi\rho\nabla\phi\cdot u = -\int\chi\phi\,\dv(\rho u) = \int\chi\phi\rho_t
+= \frac{d}{dt}\int\chi\rho\phi - \int\chi\rho\phi_t$. The $\phi$-equation tested with $\frac\chi a\phi_t$ produces
+$+\int\chi\rho\phi_t$. For the pressure, $P(\rho) = \frac{p(\rho)}{\gamma-1} = \frac\theta\gamma\rho^\gamma$ satisfies
+$\rho P'(\rho) - P(\rho) = p(\rho)$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Proposition 2.2 in its simplest case. Assume $b \gt 0$ and $\gamma \gt 2$. Using the mass $m$, show
+$\big|\int\chi\rho\phi\big| \le \frac12E_+ + Cm$, where $E_+$ contains $\frac\theta\gamma\int\rho^\gamma$ and
+$\frac{\chi b}{2a}\int\phi^2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$|\int\rho\phi| \le \norm{\rho}_{L^2}\norm{\phi}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}\norm{\phi}_{L^2}$ with
+$\eta = \frac{\gamma-2}{2(\gamma-1)}$ (Exercise 3 in <a href="elementary-inequalities.html">Hölder, Young, and Lᵖ interpolation</a>). Use Young with three exponents:
+$\norm{\rho}_{L^\gamma}^{1-\eta}$ to the power $\frac{\gamma}{1-\eta}$, $\norm{\phi}_{L^2}$ to the power $2$, and $m^\eta$ to the
+power $r$ with $\frac{1-\eta}{\gamma} + \frac12 + \frac1r = 1$. You should find $r = \frac1\eta$, which needs $\gamma \gt 2$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      The exponent $p_0$ in the regularized system. Show $p_0 + 2 = \frac{\gamma}{\gamma-1}$, the conjugate of $\gamma$. Then use
+Young to bound $\varepsilon\big|\int\rho\,\Delta\phi\big|$ by $\varepsilon\int\rho^\gamma$ and $\varepsilon\int|\Delta\phi|^{p_0+2}$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$p_0 + 2 = \frac{2-\gamma+2\gamma-2}{\gamma-1}$. Then $\rho|\Delta\phi| \le \frac{\rho^\gamma}{\gamma} + \frac{|\Delta\phi|^{\gamma'}}{\gamma'}$.</p>
+    </details>
+  </div>
+
+  <!-- ======================================================== -->
+  <h2>7. Open questions</h2>
   <ul>
     <li>
       <strong>Vanishing damping.</strong> The construction of weak solutions never uses the damping term

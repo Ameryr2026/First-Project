@@ -55,6 +55,29 @@
     existence of strong solutions was proved, and why uniqueness of weak solutions is often open.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Let $u_1, u_2 \in L^\infty(\Omega\times(0,T))$ be solutions of $u_t - \Delta u = u^2$ with the same data and $u = 0$ on
+$\partial\Omega$. Show $u_1 = u_2$ by an $L^2$ estimate for $w = u_1 - u_2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$w_t - \Delta w = (u_1 + u_2)w$. Testing with $w$: $\frac12\frac{d}{dt}\norm{w}^2 + \norm{\nabla w}^2
+\le \norm{u_1 + u_2}_{L^\infty}\norm{w}^2$. Gronwall with $w(0) = 0$; here $K(t) = 2\norm{u_1 + u_2}_{L^\infty}$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Viscous Burgers on $(0,1)$: $u_t + uu_x = u_{xx}$, $u = 0$ at both ends. For two solutions, find the coefficient $K(t)$ in
+the $L^2$ estimate for the difference, and say which norms of $u_1, u_2$ must be integrable in time.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>For $w = u_1 - u_2$: $w_t + u_1w_x + u_{2,x}w = w_{xx}$. Bound $|\int u_1ww_x| \le \frac12\norm{w_x}^2 + \frac12\norm{u_1}_{L^\infty}^2\norm{w}^2$
+and $|\int u_{2,x}w^2| \le \norm{u_{2,x}}_{L^\infty}\norm{w}^2$. So $K = \norm{u_1}_{L^\infty}^2 + 2\norm{u_{2,x}}_{L^\infty}$
+must be in $L^1(0,T)$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §7.1.2 (Theorem 4, uniqueness for linear parabolic equations).</li>

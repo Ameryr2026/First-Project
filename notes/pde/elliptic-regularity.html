@@ -59,6 +59,40 @@
     Calderón–Zygmund theory, and near the boundary by flattening it; this is the hard part of the proof.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      For $u \in C_c^\infty(\R^n)$, prove $\int|\nabla^2 u|^2\,dx = \int|\Delta u|^2\,dx$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Integrate by parts twice: $\int \partial_i\partial_j u\,\partial_i\partial_j u = -\int \partial_j u\,\partial_i\partial_i\partial_j u
+= \int \partial_j\partial_j u\,\partial_i\partial_i u$, summed over $i, j$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Where $\lambda + 2\mu \gt 0$ comes from. For $u \in C_c^\infty(\R^3;\R^3)$, show
+$-\int \Lame u\cdot u = \mu\int|\nabla\times u|^2 + (\lambda + 2\mu)\int(\dv u)^2$, using
+$\int|\nabla u|^2 = \int|\nabla\times u|^2 + \int(\dv u)^2$. Then explain why the right-hand side controls
+$\int|\nabla u|^2$ exactly when $\mu \gt 0$ and $\lambda + 2\mu \gt 0$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Integrate by parts: $-\int \Lame u\cdot u = \mu\int|\nabla u|^2 + (\lambda+\mu)\int(\dv u)^2$, then substitute the identity.
+Test with a curl-free field ($u = \nabla\psi$) and with a divergence-free field to see that each coefficient must be
+positive.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      The Neumann problem. Show that constants solve $-\Delta\phi = 0$ with $\partial_\nu\phi = 0$, so the estimate cannot hold
+without the term $\norm{\phi}_{L^2}$. Show also that $-\Delta\phi = f$ with the Neumann condition can have a solution only if
+$\int_\Omega f = 0$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Integrate the equation over $\Omega$ and use the divergence theorem: $\int_\Omega \Delta\phi = \int_{\partial\Omega}\partial_\nu\phi = 0$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §6.3 (H² regularity for scalar equations, Dirichlet case).</li>

@@ -61,6 +61,37 @@
     equation must be handled with an extra argument: some strong convergence, or a structure that survives weak limits.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Show that $u_n(x) = \sin(nx) \weakto 0$ in $L^2(0,2\pi)$ and that $u_n^2 \weakto \frac12$, but that $u_n$ has no strongly
+convergent subsequence.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>For $\varphi \in C_c^\infty(0,2\pi)$, integrate by parts: $|\int \sin(nx)\varphi| \le \frac1n\int|\varphi'|$. Extend to all
+$\varphi \in L^2$ by density, using $\norm{u_n}_{L^2} = \sqrt\pi$ for every $n$. For the squares use
+$\sin^2(nx) = \frac12 - \frac12\cos(2nx)$. A strong limit would have to be the weak limit $0$, but the norms stay $\sqrt\pi$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      In a Hilbert space, prove from the definition that $u_n \weakto u$ implies $\norm{u} \le \liminf\norm{u_n}$. Give an example
+where the inequality is strict.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$\norm{u}^2 = \lim (u_n, u) \le \liminf \norm{u_n}\,\norm{u}$. The sequence of Exercise 1 is an example.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      In a Hilbert space, show that $u_n \weakto u$ together with $\norm{u_n} \to \norm{u}$ implies $u_n \to u$ strongly. This is the
+pattern behind every "weak convergence plus convergence of the norm" argument.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Expand $\norm{u_n - u}^2 = \norm{u_n}^2 - 2(u_n, u) + \norm{u}^2$ and let $n \to \infty$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>H. Brezis, <em>Functional Analysis, Sobolev Spaces and Partial Differential Equations</em>, Springer, 2011, Chapter 3.</li>

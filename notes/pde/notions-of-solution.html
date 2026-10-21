@@ -72,6 +72,50 @@
     regularity at the initial time cannot exceed what the data give, so the data must already have it.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Write the weak formulation of $u_t - \Delta u = f$ in $\Omega\times(0,T)$ with $u = 0$ on $\partial\Omega$ and $u(0) = u_0$.
+Show that a weak solution that is smooth up to the boundary is a classical solution.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Multiply by $\varphi \in C_c^\infty(\Omega\times[0,T))$, integrate by parts in $x$ and $t$; the initial value enters through
+$\int u_0\varphi(0)$. For a smooth weak solution, integrate back by parts: $\int(u_t - \Delta u - f)\varphi = 0$ for all
+$\varphi$ gives the equation, and then the remaining terms give the initial condition.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Renormalization. For smooth $\rho \gt 0$ and $u$ solving $\rho_t + \dv(\rho u) = 0$, verify the renormalized equation.
+Write it out for $b(\rho) = \rho\log\rho$; this is the form used in the Lions–Feireisl argument.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$b(\rho)_t + \dv(b(\rho)u) = b'(\rho)(\rho_t + u\cdot\nabla\rho) + b(\rho)\dv u = -\big(b'(\rho)\rho - b(\rho)\big)\dv u$.
+For $b = \rho\log\rho$: $b'(\rho)\rho - b(\rho) = \rho$, so $(\rho\log\rho)_t + \dv(\rho\log\rho\,u) + \rho\,\dv u = 0$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Weak solutions need not be unique. For Burgers' equation $u_t + (\frac12u^2)_x = 0$ with $u_0 = 0$, check that
+$u = -1$ on $-\frac t2 \lt x \lt 0$, $u = 1$ on $0 \lt x \lt \frac t2$, and $u = 0$ elsewhere is a weak solution. Show that
+its energy $\int\frac12u^2$ increases, so an energy inequality rules it out.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>A piecewise constant function is a weak solution exactly when each jump moves with speed
+$s = \frac{[\frac12u^2]}{[u]}$ (Rankine–Hugoniot; derive it by testing across the jump). Check the three jumps:
+speeds $-\frac12$, $0$, $\frac12$. The energy is $\frac t2$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 4.</span>
+      Compatibility for the heat equation. Suppose $u_t = \Delta u$ with $u = 0$ on $\partial\Omega$, and $u_t$ is continuous up to
+$t = 0$ and to the boundary. Show that the data must satisfy $\Delta u_0 = 0$ on $\partial\Omega$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$u = 0$ on $\partial\Omega$ for all $t$, so $u_t = 0$ there; at $t = 0$ the equation gives $u_t(0) = \Delta u_0$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>E. Feireisl, A. Novotný, <em>Singular Limits in Thermodynamics of Viscous Fluids</em>, Birkhäuser, 2009, §10.18 (renormalized solutions).</li>

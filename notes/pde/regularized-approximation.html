@@ -60,6 +60,30 @@
     term must be invented to restore it.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      For $\rho_t + \dv(\rho u) = \varepsilon\Delta\rho$ with $u = 0$ and $\partial_\nu\rho = 0$ on $\partial\Omega$, show that the mass
+is conserved. With $P(\rho) = \frac{\rho^\gamma}{\gamma-1}$ and $p(\rho) = \rho^\gamma$, show
+$\frac{d}{dt}\int P(\rho) + \varepsilon\int P''(\rho)|\nabla\rho|^2 = -\int p(\rho)\,\dv u$. The artificial viscosity only adds
+dissipation.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Multiply by $P'(\rho)$ and integrate. The viscosity term gives $-\varepsilon\int P''(\rho)|\nabla\rho|^2$. For the transport term,
+$\rho P''(\rho) = p'(\rho)$, so $\int P'(\rho)\dv(\rho u) = -\int\rho P''(\rho)\nabla\rho\cdot u = -\int\nabla p\cdot u = \int p\,\dv u$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      The balancing term. Show $\frac{\varepsilon}{2}\int\Delta\rho\,|u|^2 = -\varepsilon\int(\nabla\rho\cdot\nabla)u\cdot u$ when
+$u = 0$ on $\partial\Omega$. This is why adding $\varepsilon\nabla\rho\cdot\nabla u$ to the momentum equation cancels the extra
+kinetic energy created by $\varepsilon\Delta\rho$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Integrate by parts once: $\int\Delta\rho\,|u|^2 = -\int\nabla\rho\cdot\nabla|u|^2$, and $\partial_j|u|^2 = 2u_i\partial_ju_i$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>E. Feireisl, A. Novotný, H. Petzeltová, On the existence of globally defined weak solutions to the Navier–Stokes equations, <em>J. Math. Fluid Mech.</em> 3 (2001) 358–392.</li>

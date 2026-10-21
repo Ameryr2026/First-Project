@@ -59,6 +59,44 @@
     Having $u$ in $H^1$ and $u_t$ in $H^{-1}$ puts $u$, on average, halfway between them in time, which is $L^2$.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Let $X$ be a Banach space, $v \in L^1(0,T;X)$, and $u(t) = \int_0^t v(s)\,ds$. Show that $u \in C([0,T];X)$ and that
+$u_t = v$ weakly.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Continuity: $\norm{u(t) - u(s)}_X \le \int_s^t \norm{v}_X$, which tends to $0$ as $t \to s$. Weak derivative: for
+$\varphi \in C_c^\infty(0,T)$ write $\int_0^T u\,\varphi'\,dt = \int_0^T \int_0^t v(s)\,ds\,\varphi'(t)\,dt$ and exchange the order
+of integration (Fubini for Bochner integrals); the inner integral becomes $\int_s^T \varphi' = -\varphi(s)$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Let $w_k$ be the Dirichlet eigenfunctions of $-\Delta$ on $\Omega$, orthonormal in $L^2$, with eigenvalues $\lambda_k$, and
+let $u(t) = \sum_k a_k e^{-\lambda_k t} w_k$ be the solution of the heat equation with $u(0) = \sum_k a_k w_k \in L^2$.
+Show that $\int_0^T \norm{\nabla u(t)}_{L^2}^2\,dt \le \frac12\norm{u(0)}_{L^2}^2$. So $u \in L^2(0,T;H^1_0)$ even when
+$u(0) \notin H^1_0$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>The $w_k$ are orthogonal in $H^1_0$ too, with $\norm{\nabla w_k}_{L^2}^2 = \lambda_k$. So
+$\norm{\nabla u(t)}_{L^2}^2 = \sum_k \lambda_k a_k^2 e^{-2\lambda_k t}$, and integrating in $t$ gives
+$\sum_k a_k^2 \frac{1 - e^{-2\lambda_k T}}{2}$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Suppose $u \in L^2(0,T;H^1_0(\Omega))$, $u_t \in L^2(0,T;H^{-1}(\Omega))$, and $u_t = \Delta u$. Use the theorem above to
+show $\norm{u(t)}_{L^2}^2 + 2\int_0^t \norm{\nabla u}_{L^2}^2\,ds = \norm{u(0)}_{L^2}^2$. Deduce that this solution is
+determined by $u(0)$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>From <a href="sobolev-spaces.html">Sobolev spaces</a>, $\langle \Delta u, u\rangle = -\norm{\nabla u}_{L^2}^2$. Integrate
+$\frac{d}{dt}\norm{u}_{L^2}^2 = 2\langle u_t, u\rangle$ from $0$ to $t$. For uniqueness, apply the identity to the
+difference of two solutions, which is again a solution, with zero initial value.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §5.9 (the theorem is §5.9.2, Theorem 3).</li>

@@ -56,6 +56,32 @@
     worth $\frac2p$ space derivatives).
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      The case $p = 2$ by hand. Let $\phi_t - \Delta\phi = f$ in $\Omega\times(0,T)$ with $\partial_\nu\phi = 0$ and $\phi(0) = \phi_0$.
+Test with $-\Delta\phi$ to show
+$\sup_t\norm{\nabla\phi(t)}_{L^2}^2 + \int_0^T\norm{\Delta\phi}_{L^2}^2 \le \norm{\nabla\phi_0}_{L^2}^2 + \int_0^T\norm{f}_{L^2}^2$,
+then bound $\int_0^T\norm{\phi_t}_{L^2}^2$. The data needed is $\phi_0 \in H^1 = W^{2-2/p,\,p}$ for $p = 2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$\int\phi_t(-\Delta\phi) = \int\nabla\phi_t\cdot\nabla\phi = \frac12\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2$, with no boundary term
+because $\partial_\nu\phi = 0$. Bound $-\int f\Delta\phi \le \frac12\norm{f}^2 + \frac12\norm{\Delta\phi}^2$ and absorb. For
+$\phi_t$, use the equation: $\phi_t = f + \Delta\phi$. The $H^2$ bound then follows from elliptic regularity.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Show that the heat equation is invariant under $x \mapsto \lambda x$, $t \mapsto \lambda^2 t$, and that $\norm{\phi_t}_{L^p(Q)}$ and
+$\norm{\nabla^2\phi}_{L^p(Q)}$ scale with the same power of $\lambda$. This is why one time derivative is worth two space
+derivatives.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>For $\phi_\lambda(x,t) = \phi(\lambda x, \lambda^2 t)$, both $\partial_t\phi_\lambda$ and $\nabla^2\phi_\lambda$ carry a factor
+$\lambda^2$, and the change of variables in $Q$ contributes $\lambda^{-(n+2)/p}$ to both norms.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>E. Feireisl, A. Novotný, <em>Singular Limits in Thermodynamics of Viscous Fluids</em>, Birkhäuser, 2009, Theorem 10.22.</li>

@@ -62,6 +62,40 @@
     argument to make sense, even after truncation.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Let $\rho_n \ge 0$, $\rho_n \weakto \rho$ and $\rho_n\log\rho_n \weakto \overline{\rho\log\rho}$ in $L^1(\Omega)$, with $\rho \gt 0$.
+Show $\overline{\rho\log\rho} \ge \rho\log\rho$ a.e.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Convexity: $s\log s \ge \rho\log\rho + (1 + \log\rho)(s - \rho)$ for all $s \ge 0$. Put $s = \rho_n$, multiply by a
+nonnegative test function, and pass to the weak limit (the right-hand side is linear in $\rho_n$; truncate $\log\rho$ if it is
+unbounded).</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Strong convergence from "limit of the square equals square of the limit". On a bounded $\Omega$, show that
+$\rho_n \weakto \rho$ and $\rho_n^2 \weakto \rho^2$ in $L^1$ (with $\rho_n$ bounded in $L^2$) imply $\rho_n \to \rho$ in $L^2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$\int(\rho_n - \rho)^2 = \int\rho_n^2 - 2\int\rho_n\rho + \int\rho^2$, and each term converges (test $\rho_n^2$ against $1$ and
+$\rho_n$ against $\rho$). The argument with $\rho\log\rho$ is the same idea with a different convex function.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      The effective viscous flux in one dimension. For $(\rho u)_t + (\rho u^2)_x + p(\rho)_x = \nu u_{xx}$, show that
+$F = \nu u_x - p(\rho)$ satisfies $F_x = (\rho u)_t + (\rho u^2)_x$. Explain why this gives $F$ more regularity in $x$ than
+$u_x$ or $p(\rho)$ have separately.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Rearrange the momentum equation. The right-hand side is controlled by the energy bounds on $\rho u$ and $\rho u^2$, so
+$F$ gains a derivative, while $u_x$ and $p(\rho)$ alone can oscillate.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>P.-L. Lions, <em>Mathematical Topics in Fluid Mechanics, Vol. 2: Compressible Models</em>, Oxford, 1998.</li>

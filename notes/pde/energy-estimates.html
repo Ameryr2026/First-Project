@@ -63,6 +63,37 @@
     interpolation against a conserved quantity.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Derive the two identities for the heat equation in the model example, with every integration by parts and boundary term.
+Conclude that $u_0 \in H^1_0$ gives $u \in L^\infty(0,T;H^1_0)$ and $u_t \in L^2(0,T;L^2)$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$\int u_t u = \frac12\frac{d}{dt}\norm{u}^2$ and $-\int\Delta u\,u = \norm{\nabla u}^2$ (boundary term vanishes since $u = 0$).
+Similarly $-\int\Delta u\,u_t = \frac12\frac{d}{dt}\norm{\nabla u}^2$ because $u_t = 0$ on $\partial\Omega$. Integrate in time.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      A nonlinear term with a sign. For $u_t - \Delta u = u - u^3$ with $\partial_\nu u = 0$, multiply by $u$ and show
+$\norm{u(t)}_{L^2}^2 \le \norm{u_0}_{L^2}^2 + \frac{|\Omega|}{2}t$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = \int(u^2 - u^4)$, and $s^2 - s^4 \le \frac14$ for all real $s$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Choosing the multiplier. For the wave equation $u_{tt} = u_{xx}$ on $(0,1)$ with $u = 0$ at both ends, find a multiplier that
+shows $\int_0^1 (u_t^2 + u_x^2)\,dx$ is constant in time.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Multiply by $u_t$: $u_{tt}u_t = \frac12(u_t^2)_t$ and $\int u_{xx}u_t = -\int u_x u_{xt} = -\frac12\frac{d}{dt}\int u_x^2$, since
+$u_t = 0$ at the ends.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §2.3.4 and §7.1.2 (energy methods for the heat equation and for linear parabolic equations).</li>

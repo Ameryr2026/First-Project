@@ -59,6 +59,38 @@
     No formula for $M$ is needed, which is why papers write "for some $M$" and let it change from line to line.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Prove the differential form of Gronwall's inequality.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Let $\Phi(t) = \int_0^t \phi$. Then $\big(e^{-\Phi}\eta\big)' = e^{-\Phi}(\eta' - \phi\eta) \le e^{-\Phi}\psi \le \psi$ a.e.
+Integrate from $0$ to $t$ and multiply by $e^{\Phi(t)}$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      Compare the continuity argument with an exact solution. Let $y' = y^2$, $y(0) = A \gt 0$.
+(a) Solve it and show $y(t) = A\exp\big(\int_0^t y\big)$, so the continuity argument applies with $C = 1$, $M(s) = s$.
+(b) Which time does the argument guarantee, and when does $y$ actually reach $2A$?
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>(a) $y = \frac{A}{1 - At}$, and $\int_0^t y = -\log(1 - At)$. (b) The argument gives $y \lt 2A$ for
+$t \lt \frac{\ln 2}{2A} \approx \frac{0.35}{A}$. In fact $y = 2A$ at $t = \frac{1}{2A}$, and $y$ blows up at $t = \frac1A$.
+The argument is not sharp, but it needs no formula for the solution.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Why $K \in L^1$ matters. Show that $y(t) = t^2$ and $y = 0$ both solve $y' = 2\sqrt{y}$, $y(0) = 0$. Writing the equation
+as $y' = K(t)y$, explain why Gronwall cannot rule out the nonzero solution.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>For $y = t^2$, $K(t) = \frac{2\sqrt{y}}{y} = \frac{2}{t}$, which is not integrable near $t = 0$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, Appendix B.2 (Gronwall's inequality, differential and integral forms).</li>

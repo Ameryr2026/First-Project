@@ -60,6 +60,41 @@
     one derivative in $L^p$ is worth $n/p$ "units of singularity", and when that is less than 1 the function is bounded.
   </p>
 
+  <h2>Exercises</h2>
+  <div class="exercise">
+    <p><span class="label">Exercise 1.</span>
+      Carry out the scaling argument. For $u \in C_c^\infty(\R^n)$ and $u_\lambda(x) = u(\lambda x)$, compute
+$\norm{u_\lambda}_{L^q}$ and $\norm{\nabla u_\lambda}_{L^p}$ in terms of $u$ and $\lambda$, and show that
+$\norm{u}_{L^q} \le C\norm{\nabla u}_{L^p}$ for all $u$ forces $q = \frac{np}{n-p}$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Change variables $y = \lambda x$: $\norm{u_\lambda}_{L^q} = \lambda^{-n/q}\norm{u}_{L^q}$ and
+$\norm{\nabla u_\lambda}_{L^p} = \lambda^{1-n/p}\norm{\nabla u}_{L^p}$. If the exponents of $\lambda$ differ, let $\lambda \to 0$ or
+$\lambda \to \infty$ to contradict the inequality.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 2.</span>
+      The one-dimensional case by hand. For $u \in C^1([0,1])$ with $u(0) = 0$, show
+$\norm{u}_{L^\infty} \le \norm{u'}_{L^2}$ and $|u(x) - u(y)| \le |x-y|^{1/2}\norm{u'}_{L^2}$. Compare with the theorem for
+$n = 1$, $p = 2$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$u(x) - u(y) = \int_y^x u'$, then Cauchy–Schwarz. Here $p = 2 \gt n = 1$, and the Hölder exponent $1 - \frac{n}{p} = \frac12$
+is exactly what you found.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 3.</span>
+      Sharpness in $\R^3$. Using Exercise 2 in <a href="sobolev-spaces.html">Sobolev spaces</a>, show that for every $q \gt 6$ there is $u \in H^1(B)$
+with $u \notin L^q(B)$. So $H^1 \subset L^6$ cannot be improved.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>$|x|^{-s} \in H^1(B)$ for $s \lt \frac12$, and $|x|^{-s} \notin L^q(B)$ when $sq \ge 3$. Both hold for
+$s \in [\frac3q, \frac12)$, which is nonempty exactly when $q \gt 6$.</p>
+    </details>
+  </div>
+
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §5.6 (Gagliardo–Nirenberg–Sobolev inequality and Morrey's inequality).</li>
