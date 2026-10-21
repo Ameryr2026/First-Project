@@ -72,6 +72,17 @@ convergent subsequence.
 $\varphi \in L^2$ by density, using $\norm{u_n}_{L^2} = \sqrt\pi$ for every $n$. For the squares use
 $\sin^2(nx) = \frac12 - \frac12\cos(2nx)$. A strong limit would have to be the weak limit $0$, but the norms stay $\sqrt\pi$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>For $\varphi \in C_c^\infty(0,2\pi)$, integration by parts gives
+      $\int \sin(nx)\varphi\,dx = \frac1n\int\cos(nx)\varphi'\,dx$, so $|\int\sin(nx)\varphi| \le \frac1n\norm{\varphi'}_{L^1} \to 0$.
+      For general $f \in L^2$ and $\varepsilon \gt 0$, choose $\varphi$ with $\norm{f - \varphi}_{L^2} \lt \varepsilon$. Since
+      $\norm{u_n}_{L^2}^2 = \int_0^{2\pi}\sin^2(nx)\,dx = \pi$,</p>
+      \[ \Big|\int u_n f\Big| \le \Big|\int u_n\varphi\Big| + \norm{u_n}_{L^2}\norm{f - \varphi}_{L^2} \le \Big|\int u_n\varphi\Big| + \sqrt\pi\,\varepsilon, \]
+      <p>so $\limsup|\int u_nf| \le \sqrt\pi\,\varepsilon$ for every $\varepsilon$: $u_n \weakto 0$. The same argument gives
+      $\cos(2nx) \weakto 0$, and $\sin^2(nx) = \frac12 - \frac12\cos(2nx) \weakto \frac12$.</p>
+      <p>If a subsequence converged strongly in $L^2$ to some $g$, it would also converge weakly to $g$, so $g = 0$; but its norms are all
+      $\sqrt\pi$, not tending to $0$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -81,6 +92,11 @@ where the inequality is strict.
     <details class="hint"><summary>Hint</summary>
       <p>$\norm{u}^2 = \lim (u_n, u) \le \liminf \norm{u_n}\,\norm{u}$. The sequence of Exercise 1 is an example.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>The map $v \mapsto (v, u)$ is a bounded linear functional, so $(u_n, u) \to (u, u) = \norm{u}^2$. By Cauchy–Schwarz,
+      $(u_n, u) \le \norm{u_n}\,\norm{u}$, hence $\norm{u}^2 \le \liminf_n\norm{u_n}\,\norm{u}$. If $u = 0$ there is nothing to prove;
+      otherwise divide by $\norm{u}$. For $u_n = \sin(nx)$ in $L^2(0,2\pi)$: $\norm{0} = 0 \lt \sqrt\pi = \liminf\norm{u_n}$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 3.</span>
@@ -89,6 +105,10 @@ pattern behind every "weak convergence plus convergence of the norm" argument.
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>Expand $\norm{u_n - u}^2 = \norm{u_n}^2 - 2(u_n, u) + \norm{u}^2$ and let $n \to \infty$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$\norm{u_n - u}^2 = \norm{u_n}^2 - 2(u_n, u) + \norm{u}^2 \to \norm{u}^2 - 2\norm{u}^2 + \norm{u}^2 = 0$, using
+      $\norm{u_n} \to \norm{u}$ and $(u_n, u) \to \norm{u}^2$ (weak convergence tested against $u$).</p>
     </details>
   </div>
 

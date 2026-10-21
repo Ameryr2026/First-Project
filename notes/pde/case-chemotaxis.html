@@ -394,6 +394,21 @@ $\frac\theta\gamma\rho^\gamma$.
 $+\int\chi\rho\phi_t$. For the pressure, $P(\rho) = \frac{p(\rho)}{\gamma-1} = \frac\theta\gamma\rho^\gamma$ satisfies
 $\rho P'(\rho) - P(\rho) = p(\rho)$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p><em>Momentum.</em> Test with $u$ ($u = 0$ on $\partial\Omega$). Using the continuity equation,
+      $\int\big((\rho u)_t + \dv(\rho u\otimes u)\big)\cdot u = \frac{d}{dt}\int\frac12\rho|u|^2$. For the pressure, with
+      $P(\rho) = \frac{\theta}{\gamma}\rho^\gamma$ one has $\rho P'(\rho) - P(\rho) = \theta\rho^\gamma - \frac\theta\gamma\rho^\gamma = p(\rho)$, and then
+      $\int\nabla p\cdot u = -\int p\,\dv u = \frac{d}{dt}\int P(\rho)$. The viscous terms give $\mu\norm{\nabla u}^2 + (\lambda+\mu)\norm{\dv u}^2$.
+      So</p>
+      \[ \frac{d}{dt}\int\Big(\frac12\rho|u|^2 + \frac\theta\gamma\rho^\gamma\Big) + \mu\norm{\nabla u}^2 + (\lambda+\mu)\norm{\dv u}^2
+         = \int\chi\rho\nabla\phi\cdot u - \alpha\int\rho|u|^2. \]
+      <p><em>Chemotactic work.</em> $\int\chi\rho\nabla\phi\cdot u = -\int\chi\phi\,\dv(\rho u) = \int\chi\phi\rho_t
+      = \frac{d}{dt}\int\chi\rho\phi - \int\chi\rho\phi_t$.</p>
+      <p><em>Chemical.</em> Test $\sigma\phi_t = D\Delta\phi + a\rho - b\phi$ with $\frac\chi a\phi_t$, using $\partial_\nu\phi = 0$:</p>
+      \[ \frac{\chi\sigma}{a}\norm{\phi_t}^2 = -\frac{d}{dt}\int\Big(\frac{\chi D}{2a}|\nabla\phi|^2 + \frac{\chi b}{2a}\phi^2\Big) + \int\chi\rho\phi_t. \]
+      <p>Add the three: the term $\int\chi\rho\phi_t$ appears with opposite signs and cancels, leaving
+      $\frac{d}{dt}E = -\int\big(\frac{\chi\sigma}{a}|\phi_t|^2 + \alpha\rho|u|^2 + \mu|\nabla u|^2 + (\lambda+\mu)|\dv u|^2\big)$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -407,6 +422,20 @@ $\eta = \frac{\gamma-2}{2(\gamma-1)}$ (Exercise 3 in <a href="elementary-inequal
 $\norm{\rho}_{L^\gamma}^{1-\eta}$ to the power $\frac{\gamma}{1-\eta}$, $\norm{\phi}_{L^2}$ to the power $2$, and $m^\eta$ to the
 power $r$ with $\frac{1-\eta}{\gamma} + \frac12 + \frac1r = 1$. You should find $r = \frac1\eta$, which needs $\gamma \gt 2$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>By Hölder and Exercise 3 in the inequalities section ($\rho \ge 0$, $\int\rho = m$):
+      $\big|\int\rho\phi\big| \le \norm{\rho}_{L^2}\norm{\phi}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}\norm{\phi}_{L^2}$ with
+      $\eta = \frac{\gamma-2}{2(\gamma-1)}$, so $1 - \eta = \frac{\gamma}{2(\gamma-1)}$.</p>
+      <p>Young with three factors: $abc \le \frac{a^P}{P} + \frac{b^Q}{Q} + \frac{c^R}{R}$ when $\frac1P + \frac1Q + \frac1R = 1$. Take
+      $a = \varepsilon_1\norm{\rho}_{L^\gamma}^{1-\eta}$ with $P = \frac{\gamma}{1-\eta} = 2(\gamma-1)$ (so $a^P = \varepsilon_1^P\norm{\rho}_{L^\gamma}^\gamma$),
+      $b = \varepsilon_2\norm{\phi}_{L^2}$ with $Q = 2$, and $c = \frac{\chi m^\eta}{\varepsilon_1\varepsilon_2}$. Then
+      $\frac1R = 1 - \frac{1}{2(\gamma-1)} - \frac12 = \frac{\gamma-2}{2(\gamma-1)} = \eta$, positive exactly when $\gamma \gt 2$, and
+      $c^R = \big(\frac{\chi}{\varepsilon_1\varepsilon_2}\big)^{1/\eta}m$. Hence</p>
+      \[ \chi\Big|\int\rho\phi\Big| \le \frac{\varepsilon_1^P}{P}\int\rho^\gamma + \frac{\varepsilon_2^2}{2}\int\phi^2 + C(\varepsilon_1,\varepsilon_2)\,m. \]
+      <p>Choose $\varepsilon_1, \varepsilon_2$ with $\frac{\varepsilon_1^P}{P} \le \frac{\theta}{2\gamma}$ and $\frac{\varepsilon_2^2}{2} \le \frac{\chi b}{4a}$ (this uses
+      $b \gt 0$). The first two terms are then at most half of $\frac\theta\gamma\int\rho^\gamma + \frac{\chi b}{2a}\int\phi^2 \le E_+$, so
+      $\big|\int\chi\rho\phi\big| \le \frac12E_+ + Cm$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 3.</span>
@@ -415,6 +444,16 @@ Young to bound $\varepsilon\big|\int\rho\,\Delta\phi\big|$ by $\varepsilon\int\r
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>$p_0 + 2 = \frac{2-\gamma+2\gamma-2}{\gamma-1}$. Then $\rho|\Delta\phi| \le \frac{\rho^\gamma}{\gamma} + \frac{|\Delta\phi|^{\gamma'}}{\gamma'}$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$p_0 + 2 = \frac{2-\gamma}{\gamma-1} + 2 = \frac{2 - \gamma + 2\gamma - 2}{\gamma-1} = \frac{\gamma}{\gamma-1} = \gamma'$, and
+      $\frac1\gamma + \frac1{\gamma'} = 1$. For $\rho \ge 0$, Young's inequality with exponents $\gamma, \gamma'$ (and a parameter $\kappa \gt 0$)
+      gives</p>
+      \[ \varepsilon\Big|\int\rho\,\Delta\phi\Big| \le \varepsilon\int\rho|\Delta\phi| \le \varepsilon\kappa\int\rho^\gamma + \varepsilon C(\kappa)\int|\Delta\phi|^{p_0+2}. \]
+      <p>The regularized energy contains $\frac\theta\gamma\int\rho^\gamma$ and $\frac{\varepsilon\chi}{a(p_0+2)}\int|\Delta\phi|^{p_0+2}$, so both
+      terms on the right are at most a constant times that energy. In the energy balance this gives $\frac{d}{dt}E \le CE$ (plus
+      dissipation), and Gronwall closes the estimate. Without the biharmonic term one would need $\Delta\phi \in L^{\gamma'}$ from somewhere
+      else, and $\gamma' \gt 2$ when $\gamma \lt 2$.</p>
     </details>
   </div>
 

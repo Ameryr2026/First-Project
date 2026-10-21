@@ -65,6 +65,14 @@ the exact solution.
       <p>Testing against $w_k$ decouples: $c_k' = -k^2c_k + f_k$ with $f_k = \frac2\pi\int_0^\pi f\,w_k$. The basis consists of
 eigenfunctions, so nothing couples different modes.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>The weak form is $(u_t, v) + (u_x, v_x) = (f, v)$ for $v \in H^1_0(0,\pi)$. On $(0,\pi)$, $(w_j, w_k) = \frac\pi2\delta_{jk}$ and
+      $(w_j', w_k') = \frac\pi2k^2\delta_{jk}$. With $u_m = \sum_{k\le m}c_kw_k$ and $v = w_j$, $j \le m$:</p>
+      \[ \frac\pi2c_j' + \frac\pi2j^2c_j = (f, w_j), \quad\text{i.e.}\quad c_j' = -j^2c_j + f_j,\ \ f_j = \frac2\pi(f,w_j), \quad c_j(0) = \frac2\pi(u_0,w_j). \]
+      <p>So $c_j(t) = e^{-j^2t}c_j(0) + \int_0^te^{-j^2(t-s)}f_j(s)\,ds$. Testing the exact equation with $w_j$ shows that the $j$-th sine
+      coefficient of the exact solution solves the same ODE with the same initial value. Hence $u_m$ is the exact solution's Fourier series cut
+      at $m$: an eigenfunction basis decouples the modes completely.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -74,6 +82,12 @@ identity $\frac12\frac{d}{dt}\norm{u_m}^2 + \norm{\nabla u_m}^2 = (f, u_m)$, wit
     <details class="hint"><summary>Hint</summary>
       <p>Multiply the $k$-th equation by $c_k(t)$ and sum over $k$. This is "testing with $u_m$", allowed because $u_m$ is a
 combination of the test functions.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Multiply the $k$-th equation by $c_k(t)$ and sum over $k \le m$. By linearity,
+      $(\partial_tu_m, \sum_kc_kw_k) + (\nabla u_m, \nabla\sum_kc_kw_k) = (f, \sum_kc_kw_k)$, i.e.
+      $(\partial_tu_m, u_m) + \norm{\nabla u_m}^2 = (f, u_m)$, and $(\partial_tu_m, u_m) = \frac12\frac{d}{dt}\norm{u_m}^2$. No constant
+      depends on $m$. Every estimate derived from this identity, for instance with Young and Gronwall, is therefore uniform in $m$.</p>
     </details>
   </div>
   <div class="exercise">
@@ -85,6 +99,14 @@ $\int_0^T\!\int u_m^2 w\,\psi$ need not converge to the same expression with $u$
     <details class="hint"><summary>Hint</summary>
       <p>The map $v \mapsto \int_0^T(\nabla v,\nabla w)\psi$ is a bounded linear functional on $L^2(0,T;H^1_0)$. Squares are not
 linear: see the $\sin(nx)$ example in <a href="weak-convergence.html">weak and weak* convergence</a>.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$\ell(v) = \int_0^T(\nabla v, \nabla w)\psi\,dt$ is linear and
+      $|\ell(v)| \le \norm{\nabla w}_{L^2}\norm{\psi}_{L^2(0,T)}\norm{v}_{L^2(0,T;H^1_0)}$, so $\ell$ is a bounded linear functional on
+      $L^2(0,T;H^1_0)$ and $\ell(u_m) \to \ell(u)$ by definition of weak convergence.</p>
+      <p>The map $v \mapsto \int_0^T\!\!\int v^2w\psi$ is not linear, and weak convergence does not pass through it. Example: fix $v \in H^1_0$,
+      $v \ne 0$, and $u_m(x,t) = \sin(mt)v(x)$. Then $u_m \weakto 0$ in $L^2(0,T;H^1_0)$, but
+      $\int_0^T\!\!\int u_m^2w\psi = \int_0^T\sin^2(mt)\psi(t)\,dt\int v^2w \to \frac12\int_0^T\psi\int v^2w$, which is not $0$ in general.</p>
     </details>
   </div>
 

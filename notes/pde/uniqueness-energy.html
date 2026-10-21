@@ -65,6 +65,12 @@ $\partial\Omega$. Show $u_1 = u_2$ by an $L^2$ estimate for $w = u_1 - u_2$.
       <p>$w_t - \Delta w = (u_1 + u_2)w$. Testing with $w$: $\frac12\frac{d}{dt}\norm{w}^2 + \norm{\nabla w}^2
 \le \norm{u_1 + u_2}_{L^\infty}\norm{w}^2$. Gronwall with $w(0) = 0$; here $K(t) = 2\norm{u_1 + u_2}_{L^\infty}$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$w = u_1 - u_2$ satisfies $w_t - \Delta w = u_1^2 - u_2^2 = (u_1 + u_2)w$, $w = 0$ on $\partial\Omega$, $w(0) = 0$. Testing with $w$:</p>
+      \[ \frac12\frac{d}{dt}\norm{w}^2 + \norm{\nabla w}^2 = \int(u_1 + u_2)w^2 \le \norm{u_1 + u_2}_{L^\infty}\norm{w}^2. \]
+      <p>So $Y = \norm{w}^2$ satisfies $Y' \le KY$ with $K = 2\norm{u_1 + u_2}_{L^\infty} \in L^1(0,T)$, and $Y(0) = 0$. By Gronwall, $Y \equiv 0$.
+      The boundedness of the two solutions was used only as a coefficient.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -75,6 +81,14 @@ the $L^2$ estimate for the difference, and say which norms of $u_1, u_2$ must be
       <p>For $w = u_1 - u_2$: $w_t + u_1w_x + u_{2,x}w = w_{xx}$. Bound $|\int u_1ww_x| \le \frac12\norm{w_x}^2 + \frac12\norm{u_1}_{L^\infty}^2\norm{w}^2$
 and $|\int u_{2,x}w^2| \le \norm{u_{2,x}}_{L^\infty}\norm{w}^2$. So $K = \norm{u_1}_{L^\infty}^2 + 2\norm{u_{2,x}}_{L^\infty}$
 must be in $L^1(0,T)$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Since $u_1u_{1,x} - u_2u_{2,x} = u_1w_x + wu_{2,x}$, the difference satisfies $w_t + u_1w_x + u_{2,x}w = w_{xx}$. Testing with $w$:</p>
+      \[ \frac12\frac{d}{dt}\norm{w}^2 + \norm{w_x}^2 = -\int u_1ww_x - \int u_{2,x}w^2. \]
+      <p>Bound $|\int u_1ww_x| \le \norm{u_1}_{L^\infty}\norm{w}\norm{w_x} \le \frac12\norm{w_x}^2 + \frac12\norm{u_1}_{L^\infty}^2\norm{w}^2$ and
+      $|\int u_{2,x}w^2| \le \norm{u_{2,x}}_{L^\infty}\norm{w}^2$. Absorbing,
+      $\frac{d}{dt}\norm{w}^2 \le \big(\norm{u_1}_{L^\infty}^2 + 2\norm{u_{2,x}}_{L^\infty}\big)\norm{w}^2$. So uniqueness holds whenever
+      $u_1 \in L^2(0,T;L^\infty)$ and $u_{2,x} \in L^1(0,T;L^\infty)$.</p>
     </details>
   </div>
 

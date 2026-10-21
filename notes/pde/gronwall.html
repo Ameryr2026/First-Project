@@ -68,6 +68,13 @@
       <p>Let $\Phi(t) = \int_0^t \phi$. Then $\big(e^{-\Phi}\eta\big)' = e^{-\Phi}(\eta' - \phi\eta) \le e^{-\Phi}\psi \le \psi$ a.e.
 Integrate from $0$ to $t$ and multiply by $e^{\Phi(t)}$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Let $\Phi(t) = \int_0^t\phi$, absolutely continuous with $\Phi' = \phi$ a.e. The product $e^{-\Phi}\eta$ is absolutely continuous and,
+      a.e.,</p>
+      \[ \big(e^{-\Phi}\eta\big)' = e^{-\Phi}\big(\eta' - \phi\eta\big) \le e^{-\Phi}\psi \le \psi, \]
+      <p>using $\Phi \ge 0$ and $\psi \ge 0$. Integrating from $0$ to $t$: $e^{-\Phi(t)}\eta(t) \le \eta(0) + \int_0^t\psi$. Multiply by
+      $e^{\Phi(t)}$. If $\psi = 0$ and $\eta(0) = 0$ the right side is $0$, and $\eta \ge 0$ forces $\eta \equiv 0$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -80,6 +87,14 @@ Integrate from $0$ to $t$ and multiply by $e^{\Phi(t)}$.</p>
 $t \lt \frac{\ln 2}{2A} \approx \frac{0.35}{A}$. In fact $y = 2A$ at $t = \frac{1}{2A}$, and $y$ blows up at $t = \frac1A$.
 The argument is not sharp, but it needs no formula for the solution.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>(a) Separating variables, $-\frac1y = t - \frac1A$, so $y(t) = \frac{A}{1 - At}$ for $t \lt \frac1A$. Then
+      $\int_0^t y = \int_0^t\frac{A}{1-As}\,ds = -\log(1 - At)$, and $A\exp\big(\int_0^ty\big) = \frac{A}{1-At} = y(t)$. So
+      $\Phi = y$ satisfies the hypothesis of the continuity argument with $C = 1$, $M(s) = s$ (with equality).</p>
+      <p>(b) The argument gives $y \lt 2A$ on $[0, T_0]$ for any $T_0 \lt \frac{\ln 2}{M(2A)} = \frac{\ln 2}{2A} \approx \frac{0.347}{A}$.
+      Exactly, $\frac{A}{1-At} = 2A$ at $t = \frac{1}{2A}$, and $y$ blows up at $t = \frac1A$. The guaranteed time is about $70\%$ of the true
+      one, without solving anything.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 3.</span>
@@ -88,6 +103,12 @@ as $y' = K(t)y$, explain why Gronwall cannot rule out the nonzero solution.
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>For $y = t^2$, $K(t) = \frac{2\sqrt{y}}{y} = \frac{2}{t}$, which is not integrable near $t = 0$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>For $t \ge 0$, $y = t^2$ gives $y' = 2t = 2\sqrt{t^2} = 2\sqrt y$, and $y(0) = 0$; $y = 0$ is also a solution. For the nonzero
+      solution, $y' = K(t)y$ with $K = \frac{2\sqrt y}{y} = \frac2t$, and $\int_0^T\frac2t\,dt = \infty$. Gronwall needs $\phi = K \in L^1(0,T)$:
+      its bound $e^{\int_0^tK}\cdot y(0)$ becomes the meaningless $\infty\cdot 0$. The non-Lipschitz right side $2\sqrt y$ at $y = 0$ is
+      exactly what lets a solution leave $0$.</p>
     </details>
   </div>
 

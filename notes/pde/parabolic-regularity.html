@@ -60,14 +60,26 @@
   <div class="exercise">
     <p><span class="label">Exercise 1.</span>
       The case $p = 2$ by hand. Let $\phi_t - \Delta\phi = f$ in $\Omega\times(0,T)$ with $\partial_\nu\phi = 0$ and $\phi(0) = \phi_0$.
-Test with $-\Delta\phi$ to show
-$\sup_t\norm{\nabla\phi(t)}_{L^2}^2 + \int_0^T\norm{\Delta\phi}_{L^2}^2 \le \norm{\nabla\phi_0}_{L^2}^2 + \int_0^T\norm{f}_{L^2}^2$,
+Test with $-\Delta\phi$ to show that for every $t$,
+$\norm{\nabla\phi(t)}_{L^2}^2 + \int_0^t\norm{\Delta\phi}_{L^2}^2 \le \norm{\nabla\phi_0}_{L^2}^2 + \int_0^t\norm{f}_{L^2}^2$,
 then bound $\int_0^T\norm{\phi_t}_{L^2}^2$. The data needed is $\phi_0 \in H^1 = W^{2-2/p,\,p}$ for $p = 2$.
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>$\int\phi_t(-\Delta\phi) = \int\nabla\phi_t\cdot\nabla\phi = \frac12\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2$, with no boundary term
 because $\partial_\nu\phi = 0$. Bound $-\int f\Delta\phi \le \frac12\norm{f}^2 + \frac12\norm{\Delta\phi}^2$ and absorb. For
 $\phi_t$, use the equation: $\phi_t = f + \Delta\phi$. The $H^2$ bound then follows from elliptic regularity.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>For a smooth solution, multiply the equation by $-\Delta\phi$ and integrate. Since $\partial_\nu\phi = 0$,</p>
+      \[ \int\phi_t(-\Delta\phi) = \int\nabla\phi_t\cdot\nabla\phi = \frac12\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2, \qquad
+         \int(-\Delta\phi)(-\Delta\phi) = \norm{\Delta\phi}_{L^2}^2, \]
+      <p>and $-\int f\Delta\phi \le \frac12\norm{f}_{L^2}^2 + \frac12\norm{\Delta\phi}_{L^2}^2$. Absorbing,
+      $\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2 + \norm{\Delta\phi}_{L^2}^2 \le \norm{f}_{L^2}^2$, and integrating from $0$ to $t$:</p>
+      \[ \norm{\nabla\phi(t)}_{L^2}^2 + \int_0^t\norm{\Delta\phi}_{L^2}^2 \le \norm{\nabla\phi_0}_{L^2}^2 + \int_0^t\norm{f}_{L^2}^2. \]
+      <p>From the equation, $\phi_t = f + \Delta\phi$, so $\norm{\phi_t}^2 \le 2\norm{f}^2 + 2\norm{\Delta\phi}^2$ and
+      $\int_0^T\norm{\phi_t}_{L^2}^2 \le 2\norm{\nabla\phi_0}_{L^2}^2 + 4\int_0^T\norm{f}_{L^2}^2$. Elliptic regularity for the Neumann Laplacian
+      turns $\Delta\phi \in L^2$ into $\phi \in H^2$ (with $\norm{\phi}_{L^2}$, bounded by testing with $\phi$). The data enter only through
+      $\nabla\phi_0 \in L^2$: $\phi_0 \in H^1 = W^{2-2/p,p}$ for $p = 2$.</p>
     </details>
   </div>
   <div class="exercise">
@@ -79,6 +91,15 @@ derivatives.
     <details class="hint"><summary>Hint</summary>
       <p>For $\phi_\lambda(x,t) = \phi(\lambda x, \lambda^2 t)$, both $\partial_t\phi_\lambda$ and $\nabla^2\phi_\lambda$ carry a factor
 $\lambda^2$, and the change of variables in $Q$ contributes $\lambda^{-(n+2)/p}$ to both norms.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Let $\phi_\lambda(x,t) = \phi(\lambda x, \lambda^2t)$. By the chain rule, $\partial_t\phi_\lambda = \lambda^2(\phi_t)(\lambda x,\lambda^2t)$
+      and $\nabla^2\phi_\lambda = \lambda^2(\nabla^2\phi)(\lambda x,\lambda^2t)$; so $\phi_t = \Delta\phi$ implies the same for $\phi_\lambda$.
+      Changing variables $(y,s) = (\lambda x,\lambda^2t)$, $dx\,dt = \lambda^{-n-2}dy\,ds$:</p>
+      \[ \norm{\partial_t\phi_\lambda}_{L^p} = \lambda^{2 - \frac{n+2}{p}}\norm{\phi_t}_{L^p}, \qquad
+         \norm{\nabla^2\phi_\lambda}_{L^p} = \lambda^{2 - \frac{n+2}{p}}\norm{\nabla^2\phi}_{L^p}, \]
+      <p>the same power, while $\norm{\nabla\phi_\lambda}_{L^p}$ carries $\lambda^{1 - \frac{n+2}{p}}$. One $t$-derivative costs what two
+      $x$-derivatives cost.</p>
     </details>
   </div>
 

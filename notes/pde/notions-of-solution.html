@@ -83,6 +83,16 @@ Show that a weak solution that is smooth up to the boundary is a classical solut
 $\int u_0\varphi(0)$. For a smooth weak solution, integrate back by parts: $\int(u_t - \Delta u - f)\varphi = 0$ for all
 $\varphi$ gives the equation, and then the remaining terms give the initial condition.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Multiply by $\varphi \in C_c^\infty(\Omega\times[0,T))$ and integrate. In time, $\int_0^T u_t\varphi = -\int_0^T u\varphi_t - u(0)\varphi(0)$;
+      in space, $-\int\Delta u\,\varphi = \int\nabla u\cdot\nabla\varphi$. A weak solution is $u \in L^2(0,T;H^1_0)$ with</p>
+      \[ -\int_0^T\!\!\int_\Omega u\,\varphi_t + \int_0^T\!\!\int_\Omega\nabla u\cdot\nabla\varphi = \int_0^T\!\!\int_\Omega f\varphi + \int_\Omega u_0\,\varphi(\cdot,0)
+         \quad\text{for all such }\varphi. \]
+      <p>If $u$ is smooth up to the boundary, integrate back by parts:
+      $\int\!\!\int(u_t - \Delta u - f)\varphi + \int(u(\cdot,0) - u_0)\varphi(\cdot,0) = 0$. Taking $\varphi$ supported in $\Omega\times(0,T)$,
+      the fundamental lemma gives $u_t - \Delta u = f$. Then $\int(u(\cdot,0) - u_0)\varphi(\cdot,0) = 0$ for all $\varphi$, so $u(0) = u_0$.
+      Finally, $u(t) \in H^1_0$ and continuous up to $\partial\Omega$ means $u = 0$ there.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -92,6 +102,12 @@ Write it out for $b(\rho) = \rho\log\rho$; this is the form used in the Lions–
     <details class="hint"><summary>Hint</summary>
       <p>$b(\rho)_t + \dv(b(\rho)u) = b'(\rho)(\rho_t + u\cdot\nabla\rho) + b(\rho)\dv u = -\big(b'(\rho)\rho - b(\rho)\big)\dv u$.
 For $b = \rho\log\rho$: $b'(\rho)\rho - b(\rho) = \rho$, so $(\rho\log\rho)_t + \dv(\rho\log\rho\,u) + \rho\,\dv u = 0$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Using $\rho_t = -\dv(\rho u) = -u\cdot\nabla\rho - \rho\,\dv u$:</p>
+      \[ b(\rho)_t + \dv(b(\rho)u) = b'(\rho)\big(\rho_t + u\cdot\nabla\rho\big) + b(\rho)\,\dv u = -\big(b'(\rho)\rho - b(\rho)\big)\dv u. \]
+      <p>For $b(\rho) = \rho\log\rho$, $b'(\rho) = 1 + \log\rho$ and $b'(\rho)\rho - b(\rho) = \rho$, so
+      $(\rho\log\rho)_t + \dv(\rho\log\rho\,u) + \rho\,\dv u = 0$.</p>
     </details>
   </div>
   <div class="exercise">
@@ -105,6 +121,17 @@ its energy $\int\frac12u^2$ increases, so an energy inequality rules it out.
 $s = \frac{[\frac12u^2]}{[u]}$ (Rankine–Hugoniot; derive it by testing across the jump). Check the three jumps:
 speeds $-\frac12$, $0$, $\frac12$. The energy is $\frac t2$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p><em>Rankine–Hugoniot.</em> A function is a weak solution if
+      $\int_0^\infty\!\int(u\varphi_t + \frac12u^2\varphi_x)\,dx\,dt + \int u_0\varphi(x,0)\,dx = 0$ for all test functions. On each region where
+      $u$ is constant the equation holds classically; integrating by parts region by region, only the jump lines contribute. On a line
+      $x = st$ the contribution is $\int(s[u] - [\frac12u^2])\varphi\,d\ell$ up to a positive factor, where $[\cdot]$ is right value minus left
+      value. So $u$ is a weak solution iff every jump satisfies $s = [\frac12u^2]/[u]$.</p>
+      <p>Check the three jumps: at $x = -\frac t2$, from $0$ to $-1$: $\frac{1/2 - 0}{-1 - 0} = -\frac12$. At $x = 0$, from $-1$ to $1$:
+      $\frac{1/2 - 1/2}{2} = 0$. At $x = \frac t2$, from $1$ to $0$: $\frac{0 - 1/2}{0 - 1} = \frac12$. All match, and $u \to 0 = u_0$ as $t \to 0$.</p>
+      <p>Its energy is $\int\frac12u^2\,dx = \frac12\cdot\frac t2 + \frac12\cdot\frac t2 = \frac t2$, which increases from $0$, while $u \equiv 0$
+      is another weak solution with the same data. Requiring that the energy not increase rules out the first.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 4.</span>
@@ -113,6 +140,11 @@ $t = 0$ and to the boundary. Show that the data must satisfy $\Delta u_0 = 0$ on
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>$u = 0$ on $\partial\Omega$ for all $t$, so $u_t = 0$ there; at $t = 0$ the equation gives $u_t(0) = \Delta u_0$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>For $x \in \partial\Omega$, $u(x,t) = 0$ for all $t$, so $u_t(x,t) = 0$ for $t \gt 0$, and by continuity also at $t = 0$. By the
+      equation and continuity at $t = 0$, $u_t(x,0) = \Delta u(x,0) = \Delta u_0(x)$. Hence $\Delta u_0 = 0$ on $\partial\Omega$. This is a
+      condition on the data alone: smooth data that violate it cannot produce a solution with $u_t$ continuous up to $t = 0$.</p>
     </details>
   </div>
 

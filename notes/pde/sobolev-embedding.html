@@ -72,6 +72,15 @@ $\norm{u}_{L^q} \le C\norm{\nabla u}_{L^p}$ for all $u$ forces $q = \frac{np}{n-
 $\norm{\nabla u_\lambda}_{L^p} = \lambda^{1-n/p}\norm{\nabla u}_{L^p}$. If the exponents of $\lambda$ differ, let $\lambda \to 0$ or
 $\lambda \to \infty$ to contradict the inequality.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>With $y = \lambda x$, $dx = \lambda^{-n}dy$: $\norm{u_\lambda}_{L^q}^q = \int|u(\lambda x)|^q\,dx = \lambda^{-n}\norm{u}_{L^q}^q$, so
+      $\norm{u_\lambda}_{L^q} = \lambda^{-n/q}\norm{u}_{L^q}$. Since $\nabla u_\lambda(x) = \lambda(\nabla u)(\lambda x)$, similarly
+      $\norm{\nabla u_\lambda}_{L^p} = \lambda^{1-n/p}\norm{\nabla u}_{L^p}$.</p>
+      <p>If $\norm{v}_{L^q} \le C\norm{\nabla v}_{L^p}$ for all $v$, apply it to $v = u_\lambda$ with a fixed $u \ne 0$:</p>
+      \[ \norm{u}_{L^q} \le C\lambda^{\alpha}\norm{\nabla u}_{L^p}, \qquad \alpha = 1 - \frac np + \frac nq, \quad\text{for every }\lambda \gt 0. \]
+      <p>If $\alpha \gt 0$, let $\lambda \to 0$; if $\alpha \lt 0$, let $\lambda \to \infty$; either way $\norm{u}_{L^q} = 0$, a contradiction.
+      So $\alpha = 0$, i.e. $\frac1q = \frac1p - \frac1n$, $q = \frac{np}{n-p}$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -83,6 +92,11 @@ $n = 1$, $p = 2$.
       <p>$u(x) - u(y) = \int_y^x u'$, then Cauchy–Schwarz. Here $p = 2 \gt n = 1$, and the Hölder exponent $1 - \frac{n}{p} = \frac12$
 is exactly what you found.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>For $x, y \in [0,1]$, $u(x) - u(y) = \int_y^x u'(t)\,dt$, and Cauchy–Schwarz gives
+      $|u(x) - u(y)| \le |x - y|^{1/2}\big(\int_0^1|u'|^2\big)^{1/2}$. With $y = 0$ and $u(0) = 0$: $|u(x)| \le x^{1/2}\norm{u'}_{L^2} \le \norm{u'}_{L^2}$.
+      For $n = 1$, $p = 2 \gt n$, the theorem predicts $W^{1,2} \subset C^{0,1-1/2} = C^{0,1/2}$: exactly the exponent $\frac12$ found here.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 3.</span>
@@ -92,6 +106,11 @@ with $u \notin L^q(B)$. So $H^1 \subset L^6$ cannot be improved.
     <details class="hint"><summary>Hint</summary>
       <p>$|x|^{-s} \in H^1(B)$ for $s \lt \frac12$, and $|x|^{-s} \notin L^q(B)$ when $sq \ge 3$. Both hold for
 $s \in [\frac3q, \frac12)$, which is nonempty exactly when $q \gt 6$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>By Exercise 2 in Sobolev spaces with $n = 3$, $p = 2$: $|x|^{-s} \in H^1(B)$ iff $s \lt \frac12$. On the other hand
+      $\int_B|x|^{-sq}\,dx = 4\pi\int_0^1 r^{2-sq}\,dr = \infty$ iff $sq \ge 3$. Given $q \gt 6$, we have $\frac3q \lt \frac12$, so any
+      $s \in [\frac3q, \frac12)$ gives $u \in H^1(B)\setminus L^q(B)$. For $q \le 6$ no such $s$ exists, consistent with $H^1 \subset L^6$.</p>
     </details>
   </div>
 

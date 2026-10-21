@@ -73,6 +73,14 @@ Show $\overline{\rho\log\rho} \ge \rho\log\rho$ a.e.
 nonnegative test function, and pass to the weak limit (the right-hand side is linear in $\rho_n$; truncate $\log\rho$ if it is
 unbounded).</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$g(s) = s\log s$ is convex on $[0,\infty)$ ($g'' = 1/s \gt 0$), so it lies above its tangent at $\rho \gt 0$:
+      $\rho_n\log\rho_n \ge \rho\log\rho + (1 + \log\rho)(\rho_n - \rho)$ pointwise. Fix $k$ and let $\psi \ge 0$ be bounded and supported in
+      $\{1/k \le \rho \le k\}$, so that $(1 + \log\rho)\psi \in L^\infty$. Multiplying by $\psi$ and integrating,</p>
+      \[ \int\rho_n\log\rho_n\,\psi \ge \int\rho\log\rho\,\psi + \int(1 + \log\rho)\psi\,(\rho_n - \rho). \]
+      <p>Weak convergence in $L^1$ against $L^\infty$ functions gives, in the limit, $\int\overline{\rho\log\rho}\,\psi \ge \int\rho\log\rho\,\psi$.
+      As this holds for all such $\psi$, $\overline{\rho\log\rho} \ge \rho\log\rho$ a.e. on $\{1/k \le \rho \le k\}$; let $k \to \infty$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -82,6 +90,12 @@ $\rho_n \weakto \rho$ and $\rho_n^2 \weakto \rho^2$ in $L^1$ (with $\rho_n$ boun
     <details class="hint"><summary>Hint</summary>
       <p>$\int(\rho_n - \rho)^2 = \int\rho_n^2 - 2\int\rho_n\rho + \int\rho^2$, and each term converges (test $\rho_n^2$ against $1$ and
 $\rho_n$ against $\rho$). The argument with $\rho\log\rho$ is the same idea with a different convex function.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$\int(\rho_n - \rho)^2 = \int\rho_n^2 - 2\int\rho_n\rho + \int\rho^2$. Since $\Omega$ is bounded, $1 \in L^\infty$ and
+      $\int\rho_n^2 \to \int\rho^2$. Since $\rho_n$ is bounded in $L^2$ and $\rho_n \weakto \rho$ in $L^1$, also $\rho_n \weakto \rho$ in
+      $L^2$ (every subsequence has an $L^2$-weakly convergent subsequence, whose limit must be $\rho$), and $\rho \in L^2$; so
+      $\int\rho_n\rho \to \int\rho^2$. Hence $\int(\rho_n - \rho)^2 \to \int\rho^2 - 2\int\rho^2 + \int\rho^2 = 0$.</p>
     </details>
   </div>
   <div class="exercise">
@@ -93,6 +107,13 @@ $u_x$ or $p(\rho)$ have separately.
     <details class="hint"><summary>Hint</summary>
       <p>Rearrange the momentum equation. The right-hand side is controlled by the energy bounds on $\rho u$ and $\rho u^2$, so
 $F$ gains a derivative, while $u_x$ and $p(\rho)$ alone can oscillate.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Rearranging the momentum equation, $\nu u_{xx} - p(\rho)_x = (\rho u)_t + (\rho u^2)_x$, and the left side is $(\nu u_x - p(\rho))_x = F_x$.
+      The energy bounds control $\rho u$ and $\rho u^2$, so $F_x$ is a combination of a time derivative and a space derivative of bounded
+      quantities, and $F$ itself is, roughly, an $x$-antiderivative of bounded quantities. By contrast, $\nu u_x$ is only in $L^2$ and $p(\rho)$
+      only in $L^1$, and each can oscillate in $x$; in $F$ their oscillations cancel. This extra regularity in $x$ is what lets $F$ pass to the
+      limit in products such as $T(\rho_n)F_n$.</p>
     </details>
   </div>
 

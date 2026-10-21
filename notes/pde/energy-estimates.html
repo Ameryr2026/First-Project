@@ -73,6 +73,14 @@ Conclude that $u_0 \in H^1_0$ gives $u \in L^\infty(0,T;H^1_0)$ and $u_t \in L^2
       <p>$\int u_t u = \frac12\frac{d}{dt}\norm{u}^2$ and $-\int\Delta u\,u = \norm{\nabla u}^2$ (boundary term vanishes since $u = 0$).
 Similarly $-\int\Delta u\,u_t = \frac12\frac{d}{dt}\norm{\nabla u}^2$ because $u_t = 0$ on $\partial\Omega$. Integrate in time.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Multiplying by $u$: $\int u_tu = \frac12\frac{d}{dt}\norm{u}^2$ and $-\int\Delta u\,u = \int|\nabla u|^2 - \int_{\partial\Omega}u\,\partial_\nu u
+      = \norm{\nabla u}^2$ since $u = 0$ on $\partial\Omega$. So $\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = 0$.</p>
+      <p>Multiplying by $u_t$: $-\int\Delta u\,u_t = \int\nabla u\cdot\nabla u_t - \int_{\partial\Omega}u_t\,\partial_\nu u = \frac12\frac{d}{dt}\norm{\nabla u}^2$,
+      because $u_t = 0$ on $\partial\Omega$ ($u$ vanishes there for all $t$). So $\norm{u_t}^2 + \frac12\frac{d}{dt}\norm{\nabla u}^2 = 0$.</p>
+      <p>Integrating: $\norm{u(t)}^2 \le \norm{u_0}^2$ and $\norm{\nabla u(t)}^2 + 2\int_0^t\norm{u_t}^2 = \norm{\nabla u_0}^2$. So
+      $u \in L^\infty(0,T;H^1_0)$ and $u_t \in L^2(0,T;L^2)$ when $u_0 \in H^1_0$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -81,6 +89,12 @@ $\norm{u(t)}_{L^2}^2 \le \norm{u_0}_{L^2}^2 + \frac{|\Omega|}{2}t$.
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>$\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = \int(u^2 - u^4)$, and $s^2 - s^4 \le \frac14$ for all real $s$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Multiplying by $u$ and using $\partial_\nu u = 0$: $\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = \int_\Omega(u^2 - u^4)$. Since
+      $s^2 - s^4 = \frac14 - (s^2 - \frac12)^2 \le \frac14$, the right side is at most $\frac{|\Omega|}{4}$. Dropping $\norm{\nabla u}^2 \ge 0$,
+      $\frac{d}{dt}\norm{u}^2 \le \frac{|\Omega|}{2}$, and integrating, $\norm{u(t)}^2 \le \norm{u_0}^2 + \frac{|\Omega|}{2}t$. The cubic term was
+      not estimated at all: its sign did the work.</p>
     </details>
   </div>
   <div class="exercise">
@@ -91,6 +105,11 @@ shows $\int_0^1 (u_t^2 + u_x^2)\,dx$ is constant in time.
     <details class="hint"><summary>Hint</summary>
       <p>Multiply by $u_t$: $u_{tt}u_t = \frac12(u_t^2)_t$ and $\int u_{xx}u_t = -\int u_x u_{xt} = -\frac12\frac{d}{dt}\int u_x^2$, since
 $u_t = 0$ at the ends.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Multiply by $u_t$ and integrate over $(0,1)$. First, $\int u_{tt}u_t = \frac12\frac{d}{dt}\int u_t^2$. Second,
+      $\int u_{xx}u_t = \big[u_xu_t\big]_0^1 - \int u_xu_{xt} = -\frac12\frac{d}{dt}\int u_x^2$, since $u_t = 0$ at $x = 0, 1$. So
+      $\frac{d}{dt}\int_0^1(u_t^2 + u_x^2)\,dx = 0$.</p>
     </details>
   </div>
 

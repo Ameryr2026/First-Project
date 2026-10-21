@@ -71,6 +71,16 @@ $\sum_{k\gt N}|a_k^{(n)}|^2 \le \frac{M}{N^2\pi^2}$ uniformly in $n$, and use th
       <p>$\norm{u_n'}_{L^2}^2 = \sum_k k^2\pi^2|a_k^{(n)}|^2 \le M$. Choose a subsequence along which each coefficient converges
 (diagonal argument); the tails are uniformly small, so the subsequence is Cauchy in $L^2$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>The functions $\sqrt2\sin(k\pi x)$ and $\sqrt2\cos(k\pi x)$, $k \ge 1$, are orthonormal in $L^2(0,1)$. For $u \in H^1_0$, integration
+      by parts (using $u(0) = u(1) = 0$) gives $(u', \sqrt2\cos(k\pi x)) = k\pi a_k$, so Bessel's inequality yields
+      $\sum_kk^2\pi^2a_k^2 \le \norm{u'}^2$. If $\norm{u_n'}^2 \le M$ for all $n$, then</p>
+      \[ \sum_{k\gt N}|a_k^{(n)}|^2 \le \frac{1}{N^2\pi^2}\sum_kk^2\pi^2|a_k^{(n)}|^2 \le \frac{M}{N^2\pi^2}. \]
+      <p>Each sequence $(a_k^{(n)})_n$ is bounded, so a diagonal argument gives a subsequence along which $a_k^{(n)}$ converges for every $k$.
+      Along it,
+      $\norm{u_n - u_m}_{L^2}^2 \le \sum_{k\le N}|a_k^{(n)} - a_k^{(m)}|^2 + \frac{4M}{N^2\pi^2}$. Choose $N$ to make the last term small,
+      then $n, m$ large: the subsequence is Cauchy in $L^2$, hence convergent.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -80,6 +90,12 @@ bounded in $L^2(0,T;H^1_0)$ but has no subsequence converging in $L^2(0,T;L^2)$.
     <details class="hint"><summary>Hint</summary>
       <p>In time this is the $\sin(nt)$ example: weak limit $0$, norm bounded below. $\partial_t u_n = n\cos(nt)w$ is unbounded
 in every $L^r(0,T;X_1)$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$\norm{u_n}_{L^2(0,T;H^1_0)}^2 = \norm{w}_{H^1}^2\int_0^T\sin^2(nt)\,dt \le T\norm{w}_{H^1}^2$: bounded. For $g \in L^2(0,T;L^2)$,
+      $\int_0^T\!\!\int u_ng = \int_0^T\sin(nt)(w, g(t))\,dt \to 0$ (the $\sin(nx)$ argument in time), so any strong limit of a subsequence
+      would be $0$. But $\norm{u_n}_{L^2(0,T;L^2)}^2 = \norm{w}_{L^2}^2\int_0^T\sin^2(nt)\,dt \to \frac T2\norm{w}_{L^2}^2 \ne 0$. Meanwhile
+      $\partial_tu_n = n\cos(nt)w$ has norm of order $n$ in every $L^r(0,T;X_1)$: the hypothesis of Aubin–Lions fails exactly here.</p>
     </details>
   </div>
   <div class="exercise">
@@ -91,6 +107,16 @@ on $\lambda$, and conclude that $W^{1,p}_0(B_1) \subset L^{p^*}(B_1)$ is not com
     <details class="hint"><summary>Hint</summary>
       <p>Change variables. As $\lambda \to \infty$ the supports shrink to the origin, so any limit in $L^{p^*}$ would be $0$, but the
 norms stay equal to $\norm{u}_{L^{p^*}} \ne 0$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$\nabla u_\lambda(x) = \lambda^{\frac{n-p}{p}+1}(\nabla u)(\lambda x) = \lambda^{n/p}(\nabla u)(\lambda x)$, so
+      $\norm{\nabla u_\lambda}_{L^p}^p = \lambda^n\lambda^{-n}\norm{\nabla u}_{L^p}^p$. With $p^* = \frac{np}{n-p}$,
+      $\norm{u_\lambda}_{L^{p^*}}^{p^*} = \lambda^{\frac{n-p}{p}p^*}\lambda^{-n}\norm{u}_{L^{p^*}}^{p^*} = \lambda^n\lambda^{-n}\norm{u}_{L^{p^*}}^{p^*}$.
+      Both are independent of $\lambda$.</p>
+      <p>For $\lambda \ge 1$, $\operatorname{supp}u_\lambda \subset B_{1/\lambda}$, so $(u_\lambda)$ is bounded in $W^{1,p}_0(B_1)$. If the embedding
+      were compact, some $u_{\lambda_k}$ with $\lambda_k \to \infty$ would converge in $L^{p^*}$, and a further subsequence a.e., to some $g$.
+      For each $x \ne 0$, $u_{\lambda_k}(x) = 0$ once $\lambda_k \gt 1/|x|$, so $g = 0$; but
+      $\norm{u_{\lambda_k}}_{L^{p^*}} = \norm{u}_{L^{p^*}} \ne 0$. Contradiction.</p>
     </details>
   </div>
 

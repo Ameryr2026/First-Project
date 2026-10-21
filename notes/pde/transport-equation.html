@@ -66,6 +66,15 @@ show $\frac{d}{dt}\rho(X(t),t) = -\rho\,\dv u$ and solve this to get the lower b
       <p>$\int\dv(\rho u) = \int_{\partial\Omega}\rho\,u\cdot\nu = 0$. For the path, expand $\dv(\rho u) = u\cdot\nabla\rho + \rho\,\dv u$
 and use the chain rule; then $\rho(X(t),t) = \rho_0(X(0))\exp\big(-\int_0^t \dv u(X(s),s)\,ds\big)$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>$\frac{d}{dt}\int_\Omega\rho = -\int_\Omega\dv(\rho u) = -\int_{\partial\Omega}\rho\,u\cdot\nu = 0$ since $u = 0$ on $\partial\Omega$.</p>
+      <p>Since $\dv(\rho u) = u\cdot\nabla\rho + \rho\,\dv u$, along $\dot X = u(X,t)$:</p>
+      \[ \frac{d}{dt}\rho(X(t),t) = \rho_t + \nabla\rho\cdot\dot X = \rho_t + u\cdot\nabla\rho = -\rho\,\dv u. \]
+      <p>This linear ODE gives $\rho(X(t),t) = \rho_0(X(0))\exp\big(-\int_0^t\dv u(X(s),s)\,ds\big)$. Because $u$ is smooth and vanishes on
+      $\partial\Omega$, every point $(x,t)$ lies on exactly one path starting in $\overline\Omega$. Hence $\rho_0 \ge \delta$ gives
+      $\rho(x,t) \ge \delta\exp\big(-\int_0^t\norm{\dv u}_{L^\infty}\big)$; $\rho_0 \ge 0$ gives $\rho \ge 0$; and $\rho_0 = 0$ at the start of a
+      path gives $\rho = 0$ along it.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -76,6 +85,14 @@ and that a jump in $\rho_0$ is never smoothed out.
     <details class="hint"><summary>Hint</summary>
       <p>Differentiate directly. The paths are $X(t) = x_0e^{-t}$: particles are squeezed together, the density grows like $e^t$, and
 its derivative picks up one more factor $e^t$ from the squeezing. A jump at $x_0$ moves to $x_0e^{-t}$ and stays a jump.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>With $\rho = e^t\rho_0(xe^t)$: $\rho_t = e^t\rho_0(xe^t) + xe^{2t}\rho_0'(xe^t)$ and
+      $(\rho u)_x = (-x\rho)_x = -\rho - x\rho_x = -e^t\rho_0(xe^t) - xe^{2t}\rho_0'(xe^t)$. The sum is $0$.</p>
+      <p>Mass: $\int e^t\rho_0(xe^t)\,dx = \int\rho_0(y)\,dy$. Derivative: $\rho_x = e^{2t}\rho_0'(xe^t)$, so
+      $\norm{\rho_x(t)}_{L^\infty} = e^{2t}\norm{\rho_0'}_{L^\infty}$. Here $\nabla u = -1$, so the growth is $\exp\big(2\int_0^t\norm{\nabla u}_{L^\infty}\big)$,
+      of the form in the statement. If $\rho_0$ jumps at $x_0$, then $\rho(\cdot,t)$ jumps at $x_0e^{-t}$ by $e^t$ times the original jump: the
+      equation moves and amplifies the jump but never smooths it.</p>
     </details>
   </div>
   <div class="exercise">
@@ -90,6 +107,17 @@ Why does this need $q \gt 3$ in the case study?
       <p>The term $\int\dv(\partial_i\rho\,u)|\nabla\rho|^{q-2}\partial_i\rho$ integrates by parts to a multiple of
 $\int\dv u\,|\nabla\rho|^q$. To close with Gronwall you need $\nabla u \in L^1(0,T;L^\infty)$; in 3D,
 $W^{1,q} \subset L^\infty$ requires $q \gt 3$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Differentiating, $\partial_i\dv(\rho u) = \dv(\partial_i\rho\,u) + \partial_iu\cdot\nabla\rho + \rho\,\partial_i\dv u$, which gives the stated
+      equation. Multiply it by $|\nabla\rho|^{q-2}\partial_i\rho$ and sum over $i$. The time term is $\frac1q\partial_t|\nabla\rho|^q$. Since
+      $\dv(\partial_i\rho\,u) = u\cdot\nabla\partial_i\rho + \partial_i\rho\,\dv u$, the transport term is
+      $\frac1qu\cdot\nabla|\nabla\rho|^q + \dv u\,|\nabla\rho|^q$, whose integral is $(1 - \frac1q)\int\dv u\,|\nabla\rho|^q$ (integrate the first
+      piece by parts; $u = 0$ on $\partial\Omega$). Hence, with Hölder on the last term,</p>
+      \[ \frac1q\frac{d}{dt}\norm{\nabla\rho}_{L^q}^q \le C\norm{\nabla u}_{L^\infty}\norm{\nabla\rho}_{L^q}^q
+         + \norm{\rho}_{L^\infty}\norm{\nabla^2u}_{L^q}\norm{\nabla\rho}_{L^q}^{q-1}. \]
+      <p>Since $\frac1q\frac{d}{dt}N^q = N^{q-1}N'$, dividing gives the claim. Gronwall then needs $\int_0^T\norm{\nabla u}_{L^\infty} \lt \infty$; in
+      three dimensions the case study gets this from $\nabla u \in L^1(0,T;W^{1,q})$ and $W^{1,q} \subset L^\infty$, valid only for $q \gt 3$.</p>
     </details>
   </div>
 

@@ -68,6 +68,11 @@
       <p>Integrate by parts twice: $\int \partial_i\partial_j u\,\partial_i\partial_j u = -\int \partial_j u\,\partial_i\partial_i\partial_j u
 = \int \partial_j\partial_j u\,\partial_i\partial_i u$, summed over $i, j$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Sum over $i, j$ and integrate by parts first in $x_i$, then in $x_j$; there are no boundary terms because $u$ has compact support:</p>
+      \[ \int|\nabla^2u|^2 = \sum_{i,j}\int\partial_i\partial_ju\,\partial_i\partial_ju = -\sum_{i,j}\int\partial_ju\,\partial_i\partial_i\partial_ju
+         = \sum_{i,j}\int\partial_j\partial_ju\,\partial_i\partial_iu = \int(\Delta u)^2. \]
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -81,6 +86,17 @@ $\int|\nabla u|^2$ exactly when $\mu \gt 0$ and $\lambda + 2\mu \gt 0$.
 Test with a curl-free field ($u = \nabla\psi$) and with a divergence-free field to see that each coefficient must be
 positive.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Integrating by parts, $-\int\Delta u\cdot u = \int|\nabla u|^2$ and $-\int\nabla\dv u\cdot u = \int(\dv u)^2$, so</p>
+      \[ -\int\Lame u\cdot u = \mu\int|\nabla u|^2 + (\lambda+\mu)\int(\dv u)^2. \]
+      <p>For compactly supported $u$, $-\Delta u = \nabla\times\nabla\times u - \nabla\dv u$; dotting with $u$ and integrating by parts gives
+      $\int|\nabla u|^2 = \int|\nabla\times u|^2 + \int(\dv u)^2$. Substituting,</p>
+      \[ -\int\Lame u\cdot u = \mu\int|\nabla\times u|^2 + (\lambda+2\mu)\int(\dv u)^2. \]
+      <p>If $\mu \gt 0$ and $\lambda + 2\mu \gt 0$, this is at least $\min(\mu,\lambda+2\mu)\int|\nabla u|^2$. Conversely, take
+      $u = \nabla\psi$ with $\psi \in C_c^\infty$: then $\nabla\times u = 0$ and the form equals $(\lambda+2\mu)\int(\Delta\psi)^2$, so
+      $\lambda + 2\mu \gt 0$ is needed. Take $u = \nabla\times\Psi$: then $\dv u = 0$ and the form equals $\mu\int|\nabla\times u|^2$, so
+      $\mu \gt 0$ is needed.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 3.</span>
@@ -90,6 +106,13 @@ $\int_\Omega f = 0$.
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>Integrate the equation over $\Omega$ and use the divergence theorem: $\int_\Omega \Delta\phi = \int_{\partial\Omega}\partial_\nu\phi = 0$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>A constant $\phi = c$ has $\Delta\phi = 0$ and $\partial_\nu\phi = 0$. An estimate $\norm{\phi}_{H^2} \le C\norm{f}_{L^2}$ would give
+      $\norm{c}_{H^2} \le 0$, false for $c \ne 0$; the term $\norm{\phi}_{L^2}$ is what accounts for constants.</p>
+      <p>If $-\Delta\phi = f$ with $\partial_\nu\phi = 0$, the divergence theorem gives
+      $\int_\Omega f = -\int_\Omega\Delta\phi = -\int_{\partial\Omega}\partial_\nu\phi = 0$. So $\int f = 0$ is necessary. (It is also sufficient,
+      and the solution is unique up to a constant.)</p>
     </details>
   </div>
 

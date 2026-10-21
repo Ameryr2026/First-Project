@@ -89,7 +89,8 @@ def where(pid):
 
 
 # ---------- HTML → LaTeX ----------
-HINTS = []   # (page id, exercise number, hint LaTeX), printed in an appendix
+HINTS = []      # (page id, exercise number, hint LaTeX), printed in Appendix A
+SOLUTIONS = []  # (page id, exercise number, solution LaTeX), printed in Appendix B
 
 
 class Page:
@@ -202,17 +203,29 @@ class Page:
                 n = re.sub(r'\D', '', lab.get_text()) if lab else str(len(HINTS) + 1)
                 if lab:
                     lab.extract()
-                det = c.find('details')
-                hint = ''
-                if det:
+                def take(kind):
+                    """Remove the folded box of this kind (hint or solution) and return its LaTeX."""
+                    det = c.find('details', class_=kind)
+                    if not det:
+                        return ''
                     summ = det.find('summary')
                     if summ:
                         summ.extract()
-                    hint = self.blocks(det, depth + 1)
+                    body = self.blocks(det, depth + 1)
                     det.extract()
+                    return body
+                hint, sol = take('hint'), take('solution')
+                if hint:
                     HINTS.append((self.pid, n, hint))
-                ref = (r'\par\hfill{\footnotesize\color{black!60}Hint on page~\pageref{h:%s:%s}}' % (self.pid, n)
-                       if hint else '')
+                if sol:
+                    SOLUTIONS.append((self.pid, n, sol))
+                where_to = []
+                if hint:
+                    where_to.append(r'Hint on page~\pageref{h:%s:%s}' % (self.pid, n))
+                if sol:
+                    where_to.append(r'solution on page~\pageref{s:%s:%s}' % (self.pid, n))
+                ref = (r'\par\hfill{\footnotesize\color{black!60}%s}' % ' \\textperiodcentered\\ '.join(where_to)
+                       if where_to else '')
                 return '\\begin{exercisebox}{Exercise \\thesection.%s}\\label{x:%s:%s}\n%s%s\n\\end{exercisebox}' % (
                     n, self.pid, n, self.blocks(c, depth + 1), ref)
             for kind in ('thm', 'defn', 'rmk', 'ex'):
@@ -373,16 +386,23 @@ def build():
     parts.append(r'\part{Case studies}')
     for c in CASES:
         parts.append(Page(c['id']).latex())
-    if HINTS:
-        parts.append(r'\appendix')
-        parts.append(r'\chapter{Hints to the exercises}')
+    def appendix(title, items, tag):
+        parts.append(r'\chapter{%s}' % title)
         last = None
-        for pid, n, hint in HINTS:
+        for pid, n, body in items:
             if pid != last:
                 parts.append(r'\section*{%s~(%s)}' % (esc(BY_ID[pid]['title']), where(pid)))
                 last = pid
             # \ref{x:...} gives the section number (the label sits inside the section); the exercise number follows it.
-            parts.append(r'\noindent\textbf{Exercise~\ref{x:%s:%s}.%s.}\label{h:%s:%s} %s' % (pid, n, n, pid, n, hint))
+            parts.append(r'\noindent\textbf{Exercise~\ref{x:%s:%s}.%s.}\label{%s:%s:%s} %s'
+                         % (pid, n, n, tag, pid, n, body))
+
+    if HINTS or SOLUTIONS:
+        parts.append(r'\appendix')
+    if HINTS:
+        appendix('Hints to the exercises', HINTS, 'h')
+    if SOLUTIONS:
+        appendix('Solutions to the exercises', SOLUTIONS, 's')
     parts.append(r'\end{document}')
 
     tex = os.path.join(OUT, 'pde-analysis.tex')

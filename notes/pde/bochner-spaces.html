@@ -70,6 +70,18 @@ $u_t = v$ weakly.
 $\varphi \in C_c^\infty(0,T)$ write $\int_0^T u\,\varphi'\,dt = \int_0^T \int_0^t v(s)\,ds\,\varphi'(t)\,dt$ and exchange the order
 of integration (Fubini for Bochner integrals); the inner integral becomes $\int_s^T \varphi' = -\varphi(s)$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p><em>Continuity.</em> For $s \lt t$, $\norm{u(t) - u(s)}_X = \norm{\int_s^t v(\tau)\,d\tau}_X \le \int_s^t \norm{v(\tau)}_X\,d\tau$.
+      Since $\norm{v}_X \in L^1(0,T)$, the right side tends to $0$ as $t - s \to 0$ (absolute continuity of the integral). So $u$ is
+      (uniformly) continuous into $X$.</p>
+      <p><em>Weak derivative.</em> For $\varphi \in C_c^\infty(0,T)$,</p>
+      \[ \begin{aligned}
+         \int_0^T u(t)\varphi'(t)\,dt &= \int_0^T\!\!\int_0^t v(s)\,ds\,\varphi'(t)\,dt = \int_0^T v(s)\Big(\int_s^T\varphi'(t)\,dt\Big)ds \\
+         &= \int_0^T v(s)\big(\varphi(T) - \varphi(s)\big)ds = -\int_0^T v\varphi\,ds.
+         \end{aligned} \]
+      <p>Exchanging the order is allowed because $\int_0^T\!\int_0^T \norm{v(s)}_X|\varphi'(t)|\,ds\,dt \lt \infty$ (Fubini holds for
+      Bochner integrals). This is the definition of $u_t = v$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -83,6 +95,16 @@ $u(0) \notin H^1_0$.
 $\norm{\nabla u(t)}_{L^2}^2 = \sum_k \lambda_k a_k^2 e^{-2\lambda_k t}$, and integrating in $t$ gives
 $\sum_k a_k^2 \frac{1 - e^{-2\lambda_k T}}{2}$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>For eigenfunctions, $(\nabla w_j, \nabla w_k) = (-\Delta w_j, w_k) = \lambda_j\delta_{jk}$, so the $w_k$ are orthogonal in $H^1_0$ with
+      $\norm{\nabla w_k}_{L^2}^2 = \lambda_k$. For $t \gt 0$ the series for $u(t)$ converges in $H^1_0$, and</p>
+      \[ \norm{\nabla u(t)}_{L^2}^2 = \sum_k \lambda_k a_k^2 e^{-2\lambda_k t}. \]
+      <p>All terms are nonnegative, so integration and summation can be exchanged (monotone convergence):</p>
+      \[ \int_0^T \norm{\nabla u}_{L^2}^2\,dt = \sum_k \lambda_k a_k^2\int_0^T e^{-2\lambda_kt}\,dt = \sum_k a_k^2\,\frac{1 - e^{-2\lambda_kT}}{2}
+         \le \frac12\sum_k a_k^2 = \frac12\norm{u(0)}_{L^2}^2. \]
+      <p>This is finite for every $u(0) \in L^2$, while $u(0) \in H^1_0$ would need $\sum_k\lambda_k a_k^2 \lt \infty$. The heat equation
+      gains a derivative on average in time.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 3.</span>
@@ -94,6 +116,14 @@ determined by $u(0)$.
       <p>From <a href="sobolev-spaces.html">Sobolev spaces</a>, $\langle \Delta u, u\rangle = -\norm{\nabla u}_{L^2}^2$. Integrate
 $\frac{d}{dt}\norm{u}_{L^2}^2 = 2\langle u_t, u\rangle$ from $0$ to $t$. For uniqueness, apply the identity to the
 difference of two solutions, which is again a solution, with zero initial value.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>The equation $u_t = \Delta u$ in $L^2(0,T;H^{-1})$ means $\langle u_t, v\rangle = -\int\nabla u\cdot\nabla v$ for $v \in H^1_0$ and
+      a.e. $t$. By the theorem, $t \mapsto \norm{u(t)}_{L^2}^2$ is absolutely continuous with</p>
+      \[ \frac{d}{dt}\norm{u(t)}_{L^2}^2 = 2\langle u_t, u\rangle = -2\norm{\nabla u(t)}_{L^2}^2 \quad\text{for a.e. } t. \]
+      <p>Integrating from $0$ to $t$ gives $\norm{u(t)}_{L^2}^2 + 2\int_0^t\norm{\nabla u}_{L^2}^2 = \norm{u(0)}_{L^2}^2$.</p>
+      <p>If $u_1, u_2$ are two such solutions with the same initial value, $w = u_1 - u_2$ is again one (the equation is linear) with
+      $w(0) = 0$. The identity gives $\norm{w(t)}_{L^2}^2 \le 0$, so $w \equiv 0$.</p>
     </details>
   </div>
 

@@ -73,6 +73,15 @@ $ab \le \varepsilon a^2 + \frac{1}{4\varepsilon}b^2$.
       <p>For $a, b \gt 0$: $\log\big(\frac1p a^p + \frac1q b^q\big) \ge \frac1p\log a^p + \frac1q\log b^q = \log(ab)$. For the second
 inequality, apply the case $p = q = 2$ to the product $(\sqrt{2\varepsilon}\,a)(b/\sqrt{2\varepsilon})$.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>If $a = 0$ or $b = 0$ there is nothing to prove. Otherwise, $\log$ is concave on $(0,\infty)$, so with $\theta = \frac1p$,
+      $1 - \theta = \frac1q$:</p>
+      \[ \log\Big(\frac{a^p}{p} + \frac{b^q}{q}\Big) \ge \frac1p\log a^p + \frac1q\log b^q = \log a + \log b = \log(ab). \]
+      <p>Exponentiate. For the version with $\varepsilon$, apply the case $p = q = 2$ to $(\sqrt{2\varepsilon}\,a)(b/\sqrt{2\varepsilon})$:
+      $ab \le \frac12(2\varepsilon a^2) + \frac12\frac{b^2}{2\varepsilon} = \varepsilon a^2 + \frac{b^2}{4\varepsilon}$. In general,
+      $ab = \big((\varepsilon p)^{1/p}a\big)\big((\varepsilon p)^{-1/p}b\big) \le \varepsilon a^p + C(\varepsilon)b^q$ with
+      $C(\varepsilon) = \frac{(\varepsilon p)^{-q/p}}{q}$.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 2.</span>
@@ -82,6 +91,13 @@ Hölder's inequality.
     <details class="hint"><summary>Hint</summary>
       <p>Write $|f|^r = |f|^{\eta r}\,|f|^{(1-\eta)r}$ and apply Hölder with exponents $\frac{p}{\eta r}$ and $\frac{q}{(1-\eta)r}$.
 They are conjugate exactly because $\frac{\eta r}{p} + \frac{(1-\eta)r}{q} = 1$, which is the defining relation for $\eta$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>If $\eta \in \{0,1\}$ then $r = q$ or $r = p$ and there is nothing to prove. Otherwise set $P = \frac{p}{\eta r}$ and
+      $Q = \frac{q}{(1-\eta)r}$. Then $\frac1P + \frac1Q = r\big(\frac\eta p + \frac{1-\eta}{q}\big) = r\cdot\frac1r = 1$, and Hölder gives</p>
+      \[ \int|f|^r = \int|f|^{\eta r}|f|^{(1-\eta)r} \le \Big(\int|f|^p\Big)^{\eta r/p}\Big(\int|f|^q\Big)^{(1-\eta)r/q}
+         = \norm{f}_{L^p}^{\eta r}\norm{f}_{L^q}^{(1-\eta)r}. \]
+      <p>Take the $r$-th root.</p>
     </details>
   </div>
   <div class="exercise">
@@ -93,6 +109,12 @@ $\norm{\rho}_{L^2} \le m^{\eta}\norm{\rho}_{L^\gamma}^{1-\eta}$. Check that $\et
       <p>Solve $\frac12 = \frac{\eta}{1} + \frac{1-\eta}{\gamma}$: $\eta = \frac{\gamma-2}{2(\gamma-1)}$. When $\gamma = 2$ the
 $L^\gamma$ norm is already the $L^2$ norm, so no help from the mass is needed.</p>
     </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>The relation is $\frac12 = \frac\eta1 + \frac{1-\eta}{\gamma}$, i.e. $\eta\big(1 - \frac1\gamma\big) = \frac12 - \frac1\gamma$, so</p>
+      \[ \eta = \frac{\gamma-2}{2\gamma}\cdot\frac{\gamma}{\gamma-1} = \frac{\gamma-2}{2(\gamma-1)} \in (0,1). \]
+      <p>Since $\rho \ge 0$, $\norm{\rho}_{L^1} = m$, and interpolation gives $\norm{\rho}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}$.
+      As $\gamma \to 2$, $\eta \to 0$: the target space $L^2$ becomes the energy space $L^\gamma$ itself, so no weight on $L^1$ is needed.</p>
+    </details>
   </div>
   <div class="exercise">
     <p><span class="label">Exercise 4.</span>
@@ -101,6 +123,10 @@ $L^\gamma$ norm is already the $L^2$ norm, so no help from the mass is needed.</
     </p>
     <details class="hint"><summary>Hint</summary>
       <p>By Young, $BX \le \frac12 X^2 + \frac12 B^2$. Substitute and subtract $\frac12 X^2$ from both sides.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>By Young, $BX \le \frac12X^2 + \frac12B^2$. Then $X^2 \le A + \frac12X^2 + \frac12B^2$, so $\frac12X^2 \le A + \frac12B^2$ and
+      $X^2 \le 2A + B^2$.</p>
     </details>
   </div>
 
