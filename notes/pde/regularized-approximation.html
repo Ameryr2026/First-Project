@@ -38,9 +38,11 @@
   <div class="thm">
     <p><span class="label">The standard scheme for compressible Navier–Stokes (Feireisl–Novotný–Petzeltová).</span></p>
     \[
-      \rho_t+\dv(\rho u)=\varepsilon\Delta\rho,\qquad
+      \begin{gathered}
+      \rho_t+\dv(\rho u)=\varepsilon\Delta\rho,\\
       (\rho u)_t+\dv(\rho u\otimes u)+\nabla p(\rho)+\delta\nabla\rho^\beta+\varepsilon\nabla\rho\cdot\nabla u
        =\mu\Delta u+(\lambda+\mu)\nabla\dv u,
+      \end{gathered}
     \]
     <ul>
       <li>$\varepsilon\Delta\rho$ (artificial viscosity) makes the continuity equation parabolic: $\rho$ becomes smooth and positive.</li>
