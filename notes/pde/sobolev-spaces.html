@@ -52,6 +52,28 @@
     </p>
   </div>
   <div class="defn">
+    <p><span class="label">The dual space $H^{-1}$.</span>
+      $H^{-1}(\Omega)$ is the dual of $H^1_0(\Omega)$: the space of bounded linear functionals $f$ on $H^1_0(\Omega)$.
+      Write $\langle f, v\rangle$ for the value of $f$ at $v$; this is the pairing between $H^{-1}$ and $H^1_0$. The norm is
+    </p>
+    \[
+      \norm{f}_{H^{-1}} = \sup\big\{ \langle f, v\rangle : v \in H^1_0(\Omega),\ \norm{v}_{H^1} \le 1 \big\}.
+    \]
+    <p>
+      Each $f \in L^2(\Omega)$ defines an element of $H^{-1}$ by $\langle f, v\rangle = \int_\Omega f v\,dx$, so
+      $H^1_0 \subset L^2 \subset H^{-1}$, each space continuously embedded in the next; for $f \in L^2$ the pairing is the
+      $L^2$ inner product. Here $H^1_0$ is <em>not</em> identified with its own dual: $L^2$ is the space in the middle.
+    </p>
+  </div>
+  <div class="thm">
+    <p><span class="label">Theorem (what elements of $H^{-1}$ look like).</span>
+      $f \in H^{-1}(\Omega)$ if and only if there are $f^0, f^1, \dots, f^n \in L^2(\Omega)$ with
+      $\langle f, v\rangle = \int_\Omega \big(f^0 v + \sum_{i=1}^n f^i \partial_i v\big)\,dx$ for all $v \in H^1_0(\Omega)$.
+      In the sense of distributions, $f = f^0 - \sum_{i=1}^n \partial_i f^i$. Moreover $\norm{f}_{H^{-1}}$ is the infimum
+      of $\big(\int_\Omega \sum_{i=0}^n |f^i|^2\,dx\big)^{1/2}$ over all such representations.
+    </p>
+  </div>
+  <div class="defn">
     <p><span class="label">Homogeneous spaces.</span>
       $D^{k,r}(\Omega) = \{ u \in L^1_{\mathrm{loc}} : \norm{\nabla^k u}_{L^r} \lt \infty \}$ with seminorm
       $\norm{\nabla^k u}_{L^r}$, and $D^k = D^{k,2}$. These record only the top derivative. They are convenient for
@@ -71,10 +93,20 @@
     when $u$ is merely integrable. A function like $|x|$ on $(-1,1)$ has weak derivative $\operatorname{sign}(x)$, but
     $\operatorname{sign}(x)$ has no weak derivative in $L^1$: a jump is the first thing weak differentiation cannot absorb.
   </p>
+  <p>
+    $H^{-1}$ is where one derivative of an $L^2$ function lives: $H^1_0$ functions have one derivative more than $L^2$,
+    and elements of $H^{-1}$ have one derivative less. For example, if $u \in H^1_0(\Omega)$ then $\Delta u \in H^{-1}$,
+    since $\langle \Delta u, v\rangle = -\int_\Omega \nabla u \cdot \nabla v\,dx$ is bounded by $\norm{\nabla u}_{L^2}\norm{v}_{H^1}$.
+    So for the heat equation $u_t = \Delta u$ with $u \in L^2(0,T;H^1_0)$, the time derivative $u_t$ lies in
+    $L^2(0,T;H^{-1})$: exactly the setting of the continuity theorem on
+    <a href="bochner-spaces.html">spaces of time-dependent functions</a>.
+    In one dimension the point evaluation $v \mapsto v(0)$ belongs to $H^{-1}(-1,1)$, because $H^1$ functions are
+    continuous there; in two or more dimensions it does not.
+  </p>
 
   <h2>Where to find a proof</h2>
   <ul>
-    <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §5.2–5.5.</li>
+    <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §5.2–5.5; §5.9.1 for $H^{-1}$ and the theorem describing its elements.</li>
     <li>H. Brezis, <em>Functional Analysis, Sobolev Spaces and Partial Differential Equations</em>, Springer, 2011, Chapters 8–9.</li>
   </ul>
 
