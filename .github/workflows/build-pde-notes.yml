@@ -27,7 +27,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # Warnings (an unknown LaTeX command, a page id that does not exist, ...) appear
       # as yellow notes on the run's summary page; the pages are built anyway.
@@ -64,7 +64,7 @@ jobs:
           else
             git commit -m "Rebuild the PDE pages and PDFs"
             git restore .        # drop a half-built PDF that was not committed, so the pull can rebase
-            git pull --rebase origin main
+            git pull --rebase -X theirs origin main   # if another build pushed meanwhile, keep this build's files
             git push
           fi
 
