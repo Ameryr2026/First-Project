@@ -1,0 +1,45 @@
+# Recompiles the PDE notes (latex/pde-notes/main.tex) and commits the new main.pdf,
+# whenever a .tex or .sty file in that folder changes on the main branch.
+# It can also be started by hand: Actions tab -> "Build PDE notes PDF" -> Run workflow.
+name: Build PDE notes PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'latex/pde-notes/**.tex'
+      - 'latex/pde-notes/**.sty'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pde-notes-pdf
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compile main.tex with pdfLaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          working_directory: latex/pde-notes
+          latexmk_use_lualatex: false
+
+      - name: Commit the new PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add latex/pde-notes/main.pdf
+          if git diff --cached --quiet; then
+            echo "PDF unchanged."
+          else
+            git commit -m "Rebuild PDE notes PDF"
+            git pull --rebase origin main
+            git push
+          fi

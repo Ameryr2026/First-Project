@@ -9,7 +9,7 @@
 \frontmatter
 \begin{titlepage}\centering\vspace*{1.6in}
 {\Huge\bfseries The Analysis of Nonlinear PDEs\par}\vspace{14pt}
-{\Large Foundations and a case study\par}\vspace{40pt}
+{\Large Foundations and case studies\par}\vspace{40pt}
 {\large Amer Rawashdeh\par}\vspace{8pt}
 {\normalsize Draft, \today\par}\vfill
 {\small \copyright\ Amer Rawashdeh. Licensed under Creative Commons Attribution 4.0 (CC BY 4.0):\\
@@ -23,7 +23,7 @@ You can start from a case study and follow the links back, or read the concept p
 
 \begin{rmkbox}{How to read this}
 Part~I follows the reading path layer by layer: each layer uses only the layers before it.
-Part~II is the case study. 17 of the 17 concept sections are still stubs (statement, intuition and a reference). Dashed boxes mark proofs still to be written.
+Part~II contains the case studies; each one can be read on its own, following the links back into Part~I. Dashed boxes mark proofs still to be written.
 \end{rmkbox}
 
 \tableofcontents
@@ -32,40 +32,42 @@ Part~II is the case study. 17 of the 17 concept sections are still stubs (statem
 \part{Foundations}
 
 \chapter{The language: function spaces}
-\input{sections/sobolev-spaces}
-\input{sections/bochner-spaces}
-\input{sections/weak-convergence}
+\input{sections/foundations/sobolev-spaces}
+\input{sections/foundations/bochner-spaces}
+\input{sections/foundations/weak-convergence}
 
 \chapter{The inequality toolkit}
-\input{sections/elementary-inequalities}
-\input{sections/sobolev-embedding}
-\input{sections/gagliardo-nirenberg}
-\input{sections/gronwall}
+\input{sections/foundations/elementary-inequalities}
+\input{sections/foundations/sobolev-embedding}
+\input{sections/foundations/gagliardo-nirenberg}
+\input{sections/foundations/gronwall}
 
 \chapter{Linear building blocks}
-\input{sections/elliptic-regularity}
-\input{sections/parabolic-regularity}
-\input{sections/transport-equation}
+\input{sections/foundations/elliptic-regularity}
+\input{sections/foundations/parabolic-regularity}
+\input{sections/foundations/transport-equation}
 
 \chapter{What ``solution'' means}
-\input{sections/notions-of-solution}
+\input{sections/foundations/notions-of-solution}
 
 \chapter{A priori estimates}
-\input{sections/energy-estimates}
+\input{sections/foundations/energy-estimates}
 
 \chapter{Existence by approximation}
-\input{sections/galerkin}
+\input{sections/foundations/galerkin}
 
 \chapter{Uniqueness}
-\input{sections/uniqueness-energy}
+\input{sections/foundations/uniqueness-energy}
 
 \chapter{Global weak solutions}
-\input{sections/compactness}
-\input{sections/regularized-approximation}
-\input{sections/lions-feireisl}
+\input{sections/foundations/compactness}
+\input{sections/foundations/regularized-approximation}
+\input{sections/foundations/lions-feireisl}
 
 \part{Case studies}
-\input{sections/case-chemotaxis}
+% One line per case study, in the order they should appear.
+% To add one: copy sections/case-studies/_template.tex, fill it in, and add its \input line here.
+\input{sections/case-studies/chemotaxis}
 
 \appendix
 \chapter{Hints to the exercises}

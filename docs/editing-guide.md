@@ -257,9 +257,12 @@ If you add one, add it to `tools/pdenotes.sty` too so the LaTeX version understa
 ## 9. The PDE notes in LaTeX and PDF
 
 **The LaTeX book** is in `latex/pde-notes/` and is the master copy for print. Its own
-`README.md` explains the files, boxes and the exercise system. To work on it in Overleaf: download the
-folder (or the repository as a zip), then New Project → Upload Project. Compile with pdfLaTeX.
-After editing on Overleaf, copy the changed files back into the repository so there is only one master.
+`README.md` explains the files, boxes, the exercise system, and how to add a case study
+(copy `sections/case-studies/_template.tex`, then add one `\input` line to `main.tex`).
+
+Edit the `.tex` files directly on GitHub (or in a clone and push). You never compile by hand: a GitHub
+Action (`.github/workflows/build-pde-notes.yml`) recompiles `main.pdf` whenever a `.tex` or `.sty` file in
+`latex/pde-notes/` changes, and commits it back. If the build fails, the **Actions** tab shows the LaTeX error.
 
 **Regenerating from the website** (optional; needs Python 3 with `beautifulsoup4`, Node.js and a TeX
 installation):

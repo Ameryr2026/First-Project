@@ -1,0 +1,119 @@
+% TEMPLATE FOR A NEW CASE STUDY
+%
+% 1. Copy this file to sections/case-studies/<short-name>.tex (e.g. ericksen.tex).
+% 2. Replace every <...> below, and delete the parts you do not need.
+% 3. In main.tex, add  \input{sections/case-studies/<short-name>}  under \part{Case studies}.
+%
+% Labels: start every label in this file with the short name, so they never clash with
+% another case study: \label{p:case-<short-name>}, \label{eq:<short-name>-system}, ...
+% Links to Part I: \S\ref{p:energy-estimates}, \S\ref{p:galerkin}, ... (the label is the
+% file name in sections/foundations/ with p: in front).
+%
+% Boxes: \begin{step}{\routine{}Step 1. <title>} for a standard tool used in the standard way,
+%        \begin{stepnew}{\newidea{}Step 2. <title>} for what is new in the paper.
+
+\chapter{<Title of the case study>}\label{p:case-<short-name>}
+
+\begin{byline}Based on <Authors>, \emph{<Title of the paper>}, <Journal> <volume> (<year>) <pages>. \href{https://doi.org/<doi>}{doi:<doi>}\end{byline}
+
+<One paragraph: what system this is, and what the paper proves about it.>
+Steps are tagged \routine{} when a standard tool is used in the standard way, and \newidea{} when the argument does something that cannot be taken off the shelf.
+
+\begin{conceptsbox}
+\begin{multicols}{2}\small\raggedright
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+% Keep only the concepts this case study uses.
+\item Energy estimates and a priori bounds~(\S\ref{p:energy-estimates})
+\item The Faedo--Galerkin method~(\S\ref{p:galerkin})
+\item <Concept>~(\S\ref{p:<concept-file-name>})
+\end{itemize}
+\end{multicols}
+\end{conceptsbox}
+
+\section{The model}
+
+<Where the system comes from, the unknowns, and the domain.>
+
+\begin{equation}\label{eq:<short-name>-system}
+  \left\{
+  \begin{aligned}
+    &<\text{first equation}>,\\
+    &<\text{second equation}>,
+  \end{aligned}
+  \right.
+\end{equation}
+with boundary and initial conditions <...>.
+
+\subsection*{Difficulties to keep in mind}
+
+<What makes this system harder than the standard ones: a bad coupling term, a degenerate coefficient, a missing estimate, ...>
+
+\section{The main results}
+
+\begin{thmbox}{Theorem A (<e.g. local strong solutions>)}
+<Statement.>
+\end{thmbox}
+
+\begin{thmbox}{Theorem B (<e.g. global weak solutions>)}
+<Statement.>
+\end{thmbox}
+
+\section{The energy structure}
+
+<The energy E and the dissipation D, and which multipliers produce them.>
+
+\begin{step}{\routine{}The energy identity}
+<Which equation is multiplied by what, and which terms cancel.>
+\end{step}
+
+\begin{stepnew}{\newidea{}<What is non-standard about the energy, if anything>}
+<...>
+\end{stepnew}
+
+\section{Map of the proof of Theorem A}
+
+\begin{step}{\routine{}Step 1. <title>}
+<What is proved, and which tool from Part I does it.>
+\end{step}
+
+\begin{step}{\routine{}Step 2. <title>}
+<...>
+\end{step}
+
+\section{Map of the proof of Theorem B}
+
+\begin{stepnew}{\newidea{}Step 1. <The approximate problem>}
+<...>
+\end{stepnew}
+
+\begin{step}{\routine{}Step 2. <Uniform bounds>}
+<...>
+\end{step}
+
+\begin{step}{\routine{}Step 3. <Passing to the limit>}
+<...>
+\end{step}
+
+\section{Exercises}
+
+\begin{exercise}
+  <Statement.>
+  \begin{hint}
+    <Hint.>
+  \end{hint}
+  \begin{solution}
+    <Solution.>
+  \end{solution}
+\end{exercise}
+
+\section{Open questions}
+
+\begin{itemize}
+\item <...>
+\end{itemize}
+
+\section*{References}
+
+\begin{enumerate}[label={[\arabic*]}, leftmargin=*]
+\item <Authors>, <Title>, \emph{<Journal>} <volume> (<year>) <pages>.
+\end{enumerate}
