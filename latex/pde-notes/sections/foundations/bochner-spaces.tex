@@ -12,10 +12,12 @@ For an evolution equation we view a solution $u(x,t)$ as a curve $t \mapsto u(t)
 \subsection*{Statement}
 
 \begin{defnbox}{Definition}
+\index{Bochner spaces}%
 Let $X$ be a Banach space. $L^p(0,T;X)$ is the space of strongly measurable $u:(0,T)\to X$ with $\norm{u}_{L^p(0,T;X)} = \big(\int_0^T \norm{u(t)}_X^p\,dt\big)^{1/p} < \infty$ (essential supremum for $p=\infty$). $C([0,T];X)$ is the space of continuous $u:[0,T]\to X$ with the norm $\max_t \norm{u(t)}_X$. $u_t = v$ weakly if $\int_0^T u\,\varphi'\,dt = -\int_0^T v\,\varphi\,dt$ in $X$ for all $\varphi\in C_c^\infty(0,T)$.
 \end{defnbox}
 
 \begin{thmbox}{Theorem (gaining continuity in time)}
+\index{Bochner spaces!continuity in time}%
 If $u \in L^2(0,T;H^1_0(\Omega))$ and $u_t \in L^2(0,T;H^{-1}(\Omega))$, then $u \in C([0,T];L^2(\Omega))$ after modification on a set of measure zero, and $t\mapsto\norm{u(t)}_{L^2}^2$ is absolutely continuous with $\frac{d}{dt}\norm{u(t)}_{L^2}^2 = 2\langle u_t, u\rangle$ for a.e. $t$, where $\langle\cdot,\cdot\rangle$ is the pairing between $H^{-1}$ and $H^1_0$ (see \pref{sobolev-spaces}{Sobolev spaces}).
 \end{thmbox}
 

@@ -32,16 +32,16 @@
 <p>"Solution" means different things depending on how much regularity one can prove. Classical solutions have all derivatives continuous. Strong solutions have enough weak derivatives that the equation holds almost everywhere. Weak solutions satisfy the equation only after multiplying by test functions and integrating by parts. Each weaker notion is easier to construct and harder to make unique.</p>
 <h2>Statement</h2>
 <div class="defn">
-<p><span class="label">Strong solution.</span> All derivatives appearing in the equation exist as functions (in some $L^p$), and the equation holds almost everywhere in $\Omega\times(0,T)$. The precise spaces are part of the definition; for example, the chemotaxis case study asks $\rho\in C([0,T];W^{1,q})$, $u\in C([0,T];D^2\cap D^1_0)\cap L^2(0,T;D^{2,q})$, $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$.</p>
+<p><span class="label">Strong solution.</span> <span id="term1"></span>All derivatives appearing in the equation exist as functions (in some $L^p$), and the equation holds almost everywhere in $\Omega\times(0,T)$. The precise spaces are part of the definition; for example, the chemotaxis case study asks $\rho\in C([0,T];W^{1,q})$, $u\in C([0,T];D^2\cap D^1_0)\cap L^2(0,T;D^{2,q})$, $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$.</p>
 </div>
 <div class="defn">
-<p><span class="label">Weak (distributional) solution.</span> The equation holds in $\mathcal{D}'$: multiplied by any smooth compactly supported test function and integrated by parts so that no derivative falls on the unknown beyond what its integrability allows. A <em>finite-energy</em> weak solution additionally satisfies the energy inequality, which is part of the definition.</p>
+<p><span class="label">Weak (distributional) solution.</span> <span id="term2"></span>The equation holds in $\mathcal{D}'$: multiplied by any smooth compactly supported test function and integrated by parts so that no derivative falls on the unknown beyond what its integrability allows. A <em>finite-energy</em> weak solution additionally satisfies the energy inequality, which is part of the definition.</p>
 </div>
 <div class="defn">
-<p><span class="label">Renormalized solution of the continuity equation.</span> $\rho$ solves $\rho_t+\dv(\rho u)=0$ in the renormalized sense if, for every $b\in C^1([0,\infty))$ with suitable growth (e.g. $b'$ bounded), $b(\rho)_t+\dv(b(\rho)u)+\big(b'(\rho)\rho-b(\rho)\big)\dv u=0$ in $\mathcal{D}'$.</p>
+<p><span class="label">Renormalized solution of the continuity equation.</span> <span id="term3"></span>$\rho$ solves $\rho_t+\dv(\rho u)=0$ in the renormalized sense if, for every $b\in C^1([0,\infty))$ with suitable growth (e.g. $b'$ bounded), $b(\rho)_t+\dv(b(\rho)u)+\big(b'(\rho)\rho-b(\rho)\big)\dv u=0$ in $\mathcal{D}'$.</p>
 </div>
 <div class="defn">
-<p><span class="label">Compatibility condition.</span> A condition on the initial data saying that the equation, evaluated at $t=0$, is consistent with the regularity being asked for. In compressible flow with vacuum: if $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$ is required, then at $t=0$ the momentum equation forces $\Lame u_0-\nabla p(\rho_0)+(\text{forces}) = \sqrt{\rho_0}\,g$ with $g\in L^2$.</p>
+<p><span class="label">Compatibility condition.</span> <span id="term4"></span>A condition on the initial data saying that the equation, evaluated at $t=0$, is consistent with the regularity being asked for. In compressible flow with vacuum: if $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$ is required, then at $t=0$ the momentum equation forces $\Lame u_0-\nabla p(\rho_0)+(\text{forces}) = \sqrt{\rho_0}\,g$ with $g\in L^2$.</p>
 </div>
 <h2>Why it is plausible</h2>
 <p>Renormalization is the chain rule: for smooth solutions, multiplying the equation by $b'(\rho)$ gives the renormalized form. For weak solutions this is not automatic, and asking for it is what allows nonlinear functions of $\rho$ (like the pressure) to be handled after weak limits. The compatibility condition is the same idea at $t=0$: the solution's regularity at the initial time cannot exceed what the data give, so the data must already have it.</p>

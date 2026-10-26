@@ -32,13 +32,13 @@
 <p>Three inequalities do most of the bookkeeping in every estimate: Hölder splits an integral of a product into norms, Young splits a product of numbers into a sum (so that one piece can be absorbed into the left-hand side), and interpolation bounds an intermediate $L^p$ norm by two others.</p>
 <h2>Statement</h2>
 <div class="thm">
-<p><span class="label">Hölder.</span> If $1 \le p, q, r \le \infty$ with $\frac1p + \frac1q = \frac1r$, then $\norm{fg}_{L^r} \le \norm{f}_{L^p}\norm{g}_{L^q}$.</p>
+<p><span class="label">Hölder.</span> <span id="term1"></span>If $1 \le p, q, r \le \infty$ with $\frac1p + \frac1q = \frac1r$, then $\norm{fg}_{L^r} \le \norm{f}_{L^p}\norm{g}_{L^q}$.</p>
 </div>
 <div class="thm">
-<p><span class="label">Young.</span> If $1 &lt; p, q &lt; \infty$ with $\frac1p + \frac1q = 1$ and $a, b \ge 0$, then $ab \le \frac{a^p}{p} + \frac{b^q}{q}$. With a parameter: for every $\varepsilon &gt; 0$, $ab \le \varepsilon a^p + C(\varepsilon) b^q$, and in particular $ab \le \varepsilon a^2 + \frac{1}{4\varepsilon} b^2$ ("Cauchy's inequality with $\varepsilon$").</p>
+<p><span class="label">Young.</span> <span id="term2"></span>If $1 &lt; p, q &lt; \infty$ with $\frac1p + \frac1q = 1$ and $a, b \ge 0$, then $ab \le \frac{a^p}{p} + \frac{b^q}{q}$. With a parameter: for every $\varepsilon &gt; 0$, $ab \le \varepsilon a^p + C(\varepsilon) b^q$, and in particular $ab \le \varepsilon a^2 + \frac{1}{4\varepsilon} b^2$ ("Cauchy's inequality with $\varepsilon$").</p>
 </div>
 <div class="thm">
-<p><span class="label">Interpolation of L<sup><em>p</em></sup> norms.</span> If $1 \le p \le r \le q \le \infty$ and $\frac1r = \frac{\eta}{p} + \frac{1-\eta}{q}$ with $\eta\in[0,1]$, then $\norm{f}_{L^r} \le \norm{f}_{L^p}^{\eta}\norm{f}_{L^q}^{1-\eta}$.</p>
+<p><span class="label">Interpolation of L<sup><em>p</em></sup> norms.</span> <span id="term3"></span>If $1 \le p \le r \le q \le \infty$ and $\frac1r = \frac{\eta}{p} + \frac{1-\eta}{q}$ with $\eta\in[0,1]$, then $\norm{f}_{L^r} \le \norm{f}_{L^p}^{\eta}\norm{f}_{L^q}^{1-\eta}$.</p>
 </div>
 <h2>Why it is plausible</h2>
 <p>The pattern to recognize: a bad term $\int |\nabla u|\,|F|$ is bounded by Hölder, then by $\varepsilon\norm{\nabla u}_{L^2}^2 + C(\varepsilon)\norm{F}_{L^2}^2$ by Young, and the first piece is moved to the left-hand side, where the dissipation $\mu\norm{\nabla u}_{L^2}^2$ absorbs it. Interpolation is how a conserved low norm (like the mass $\norm{\rho}_{L^1}$) and an energy norm (like $\norm{\rho}_{L^\gamma}$) together control the norm a term actually needs; the exponent $\eta$ is fixed by matching the reciprocals, which is just a weighted average.</p>

@@ -12,6 +12,7 @@ To solve a PDE, solve a finite-dimensional version of it (an ODE system), prove 
 \subsection*{Statement}
 
 \begin{thmbox}{The scheme}
+\index{Faedo--Galerkin method}%
 \begin{enumerate}
 \item Choose a basis $\{w_k\}$ of the solution space, usually eigenfunctions of the elliptic part of the equation (so the boundary conditions are built in).
 \item Look for $u_m(t)=\sum_{k=1}^m c_k(t)w_k$ satisfying the weak form tested against $w_1,\dots,w_m$ only. This is an ODE system for $c_1,\dots,c_m$; solve it locally by ODE theory.

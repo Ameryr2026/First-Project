@@ -32,7 +32,7 @@
 <p>An a priori estimate is a bound that every smooth solution must satisfy, proved before knowing that solutions exist. The standard way to find one: multiply the equation by a well-chosen quantity, integrate, integrate by parts, and use the structure of the equation so that the dangerous terms cancel or have a sign. The choice of multiplier is the idea; the rest is the <a href="elementary-inequalities.html">inequality toolkit</a>.</p>
 <h2>Statement</h2>
 <div class="thm">
-<p><span class="label">The method (not a theorem).</span> </p>
+<p><span class="label">The method (not a theorem).</span> <span id="term1"></span></p>
 <ol>
 <li>Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$. How to choose it is explained under <em>Choosing the multiplier</em> below.</li>
 <li>Integrate by parts, using the boundary conditions, to produce $\frac{d}{dt}$(energy) plus nonnegative dissipation.</li>
@@ -47,7 +47,7 @@
 <h2>Choosing the multiplier</h2>
 <p>The multiplier is not guessed. First decide which quantity you want to bound; the multiplier is its derivative.</p>
 <div class="thm">
-<p><span class="label">The multiplier rule.</span> To control $\int_\Omega \Phi(u)\,dx$, multiply the equation by $\Phi'(u)$. By the chain rule the time term becomes exactly the time derivative of that quantity:</p>
+<p><span class="label">The multiplier rule.</span> <span id="term2"></span><span id="term3"></span>To control $\int_\Omega \Phi(u)\,dx$, multiply the equation by $\Phi'(u)$. By the chain rule the time term becomes exactly the time derivative of that quantity:</p>
 \[
 \int_\Omega \Phi'(u)\,u_t\,dx=\frac{d}{dt}\int_\Omega \Phi(u)\,dx.
 \]

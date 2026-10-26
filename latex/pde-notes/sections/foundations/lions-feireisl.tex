@@ -12,14 +12,15 @@ The central difficulty for weak solutions of compressible Navier--Stokes: the de
 \subsection*{Statement}
 
 \begin{thmbox}{Theorem (Feireisl--Novotný--Petzeltová, 2001)}
+\index{compressible Navier--Stokes!global weak solutions}%
 Let $\Omega\subset\R^3$ be bounded with smooth boundary and $p(\rho)=a\rho^\gamma$ with $\gamma> 3/2$. For initial data of finite energy, the barotropic compressible Navier--Stokes equations with no-slip boundary condition have a global finite-energy weak solution, and the density satisfies the continuity equation in the renormalized sense. (Lions had proved this for $\gamma\ge9/5$.)
 \end{thmbox}
 
 \begin{rmkbox}{The ingredients}
 \begin{itemize}
-\item \emph{Effective viscous flux.} $F = (\lambda+2\mu)\dv u - p(\rho)$. Although neither term converges strongly, products like $T(\rho_n)F_n$ converge weakly to $\overline{T(\rho)}\,F$: the oscillations of $p(\rho)$ and of $\dv u$ cancel.
-\item \emph{Renormalization} (see \pref{notions-of-solution}{notions of solution}), applied to truncations $T_k(\rho)$ of the density when $\rho$ is not square integrable.
-\item \emph{Oscillation defect measure.} A bound on how much the truncations can oscillate; finite exactly when $\gamma> 3/2$.
+\item \emph{Effective viscous flux.}\index{effective viscous flux} $F = (\lambda+2\mu)\dv u - p(\rho)$. Although neither term converges strongly, products like $T(\rho_n)F_n$ converge weakly to $\overline{T(\rho)}\,F$: the oscillations of $p(\rho)$ and of $\dv u$ cancel.
+\item \emph{Renormalization}\index{renormalized solution} (see \pref{notions-of-solution}{notions of solution}), applied to truncations $T_k(\rho)$ of the density when $\rho$ is not square integrable.
+\item \emph{Oscillation defect measure.}\index{oscillation defect measure} A bound on how much the truncations can oscillate; finite exactly when $\gamma> 3/2$.
 \end{itemize}
 \end{rmkbox}
 

@@ -10,6 +10,7 @@ Energy estimates usually end with a differential inequality: the quantity you co
 \subsection*{Statement}
 
 \begin{thmbox}{Theorem (Gronwall, differential form)}
+\index{Gronwall's inequality}%
 Let $\eta\ge0$ be absolutely continuous on $[0,T]$ and $\phi,\psi\ge0$ integrable, with $\eta'(t)\le\phi(t)\eta(t)+\psi(t)$ for a.e. $t$. Then
 
 \[ \eta(t)\le e^{\int_0^t\phi}\Big(\eta(0)+\int_0^t\psi\Big)\quad\text{for all } t\in[0,T]. \]
@@ -18,6 +19,7 @@ In particular, if $\psi = 0$ and $\eta(0)=0$, then $\eta\equiv0$.
 \end{thmbox}
 
 \begin{thmbox}{Continuity argument}
+\index{continuity argument}%
 Let $\Phi\ge0$ be continuous and nondecreasing on $[0,T]$, and $M$ nondecreasing, with $\Phi(t)\le A\exp\big(C\int_0^t M(\Phi(s))\,ds\big)$ for all $t$. If $0< T_0< \frac{\ln 2}{C\,M(2A)}$, then $\Phi(t)< 2A$ on $[0,\min(T_0,T)]$.
 \end{thmbox}
 

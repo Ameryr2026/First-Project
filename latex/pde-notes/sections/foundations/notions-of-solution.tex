@@ -12,18 +12,22 @@
 \subsection*{Statement}
 
 \begin{defnbox}{Strong solution}
+\index{strong solution}%
 All derivatives appearing in the equation exist as functions (in some $L^p$), and the equation holds almost everywhere in $\Omega\times(0,T)$. The precise spaces are part of the definition; for example, the chemotaxis case study asks $\rho\in C([0,T];W^{1,q})$, $u\in C([0,T];D^2\cap D^1_0)\cap L^2(0,T;D^{2,q})$, $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$.
 \end{defnbox}
 
 \begin{defnbox}{Weak (distributional) solution}
+\index{weak solution}%
 The equation holds in $\mathcal{D}'$: multiplied by any smooth compactly supported test function and integrated by parts so that no derivative falls on the unknown beyond what its integrability allows. A \emph{finite-energy} weak solution additionally satisfies the energy inequality, which is part of the definition.
 \end{defnbox}
 
 \begin{defnbox}{Renormalized solution of the continuity equation}
+\index{renormalized solution}%
 $\rho$ solves $\rho_t+\dv(\rho u)=0$ in the renormalized sense if, for every $b\in C^1([0,\infty))$ with suitable growth (e.g. $b'$ bounded), $b(\rho)_t+\dv(b(\rho)u)+\big(b'(\rho)\rho-b(\rho)\big)\dv u=0$ in $\mathcal{D}'$.
 \end{defnbox}
 
 \begin{defnbox}{Compatibility condition}
+\index{compatibility condition}%
 A condition on the initial data saying that the equation, evaluated at $t=0$, is consistent with the regularity being asked for. In compressible flow with vacuum: if $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$ is required, then at $t=0$ the momentum equation forces $\Lame u_0-\nabla p(\rho_0)+(\text{forces}) = \sqrt{\rho_0}\,g$ with $g\in L^2$.
 \end{defnbox}
 

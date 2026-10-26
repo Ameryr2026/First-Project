@@ -32,10 +32,10 @@
 <p>For an elliptic operator, knowing the operator applied to $u$ in $L^p$ gives all second derivatives of $u$ in $L^p$. In evolution problems this is used "frozen in time": rewrite the equation as (elliptic operator)$(u)$ = (everything else), and read off two derivatives of $u$ from bounds on everything else.</p>
 <h2>Statement</h2>
 <div class="thm">
-<p><span class="label">Theorem (Lamé system, Dirichlet condition).</span> Let $\Omega\subset\R^3$ be bounded with smooth boundary, $\Lame u = \mu\Delta u+(\lambda+\mu)\nabla\dv u$ with $\mu&gt; 0$ and $\lambda+2\mu&gt; 0$, and $1&lt; p&lt; \infty$. If $u\in W^{1,p}_0(\Omega)$ and $\Lame u = F\in L^p$, then $u\in W^{2,p}(\Omega)$ and $\norm{u}_{W^{2,p}}\le C\norm{F}_{L^p}$, with $C$ depending on $\Omega, p, \mu, \lambda$.</p>
+<p><span class="label">Theorem (Lamé system, Dirichlet condition).</span> <span id="term1"></span><span id="term2"></span>Let $\Omega\subset\R^3$ be bounded with smooth boundary, $\Lame u = \mu\Delta u+(\lambda+\mu)\nabla\dv u$ with $\mu&gt; 0$ and $\lambda+2\mu&gt; 0$, and $1&lt; p&lt; \infty$. If $u\in W^{1,p}_0(\Omega)$ and $\Lame u = F\in L^p$, then $u\in W^{2,p}(\Omega)$ and $\norm{u}_{W^{2,p}}\le C\norm{F}_{L^p}$, with $C$ depending on $\Omega, p, \mu, \lambda$.</p>
 </div>
 <div class="thm">
-<p><span class="label">Theorem (Laplacian, Neumann condition).</span> If $\phi\in H^1(\Omega)$ is a weak solution of $-\Delta\phi = f\in L^2$ with $\partial_\nu\phi = 0$ on $\partial\Omega$, then $\phi\in H^2(\Omega)$ and $\norm{\phi}_{H^2}\le C(\norm{f}_{L^2}+\norm{\phi}_{L^2})$. The same holds in $W^{2,p}$ for $1&lt; p&lt; \infty$.</p>
+<p><span class="label">Theorem (Laplacian, Neumann condition).</span> <span id="term3"></span>If $\phi\in H^1(\Omega)$ is a weak solution of $-\Delta\phi = f\in L^2$ with $\partial_\nu\phi = 0$ on $\partial\Omega$, then $\phi\in H^2(\Omega)$ and $\norm{\phi}_{H^2}\le C(\norm{f}_{L^2}+\norm{\phi}_{L^2})$. The same holds in $W^{2,p}$ for $1&lt; p&lt; \infty$.</p>
 </div>
 <h2>Why it is plausible</h2>
 <p>On all of $\R^n$ and for the Laplacian in $L^2$ this is integration by parts twice: $\int|\nabla^2 u|^2 = \int|\Delta u|^2$. The condition $\lambda+2\mu&gt; 0$ is what makes the same identity work for the Lamé operator: it splits into $\mu\Delta$ on the divergence-free part of $u$ and $(\lambda+2\mu)\Delta$ on the gradient part, and both coefficients must be positive. In $L^p$ with $p\ne2$ the identity is replaced by Calderón–Zygmund theory, and near the boundary by flattening it; this is the hard part of the proof.</p>

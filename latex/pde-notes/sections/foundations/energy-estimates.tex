@@ -12,6 +12,7 @@ An a priori estimate is a bound that every smooth solution must satisfy, proved 
 \subsection*{Statement}
 
 \begin{thmbox}{The method (not a theorem)}
+\index{energy estimate}%
 \begin{enumerate}
 \item Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$. How to choose it is explained under \emph{Choosing the multiplier} below.
 \item Integrate by parts, using the boundary conditions, to produce $\frac{d}{dt}$(energy) plus nonnegative dissipation.
@@ -30,6 +31,7 @@ For $u_t-\Delta u=0$ with $u=0$ on $\partial\Omega$, multiplying by $u$ gives $\
 The multiplier is not guessed. First decide which quantity you want to bound; the multiplier is its derivative.
 
 \begin{thmbox}{The multiplier rule}
+\index{multiplier rule}\index{energy estimate!choosing the multiplier}%
 To control $\int_\Omega \Phi(u)\,dx$, multiply the equation by $\Phi'(u)$. By the chain rule the time term becomes exactly the time derivative of that quantity:
 \[
 \int_\Omega \Phi'(u)\,u_t\,dx=\frac{d}{dt}\int_\Omega \Phi(u)\,dx.

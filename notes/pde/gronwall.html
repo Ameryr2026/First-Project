@@ -32,12 +32,12 @@
 <p>Energy estimates usually end with a differential inequality: the quantity you control grows at a rate bounded by itself. Gronwall's inequality turns this into an explicit bound. Its nonlinear relative, the continuity argument, gives bounds for a short time when the growth rate is superlinear.</p>
 <h2>Statement</h2>
 <div class="thm">
-<p><span class="label">Theorem (Gronwall, differential form).</span> Let $\eta\ge0$ be absolutely continuous on $[0,T]$ and $\phi,\psi\ge0$ integrable, with $\eta'(t)\le\phi(t)\eta(t)+\psi(t)$ for a.e. $t$. Then</p>
+<p><span class="label">Theorem (Gronwall, differential form).</span> <span id="term1"></span>Let $\eta\ge0$ be absolutely continuous on $[0,T]$ and $\phi,\psi\ge0$ integrable, with $\eta'(t)\le\phi(t)\eta(t)+\psi(t)$ for a.e. $t$. Then</p>
 \[ \eta(t)\le e^{\int_0^t\phi}\Big(\eta(0)+\int_0^t\psi\Big)\quad\text{for all } t\in[0,T]. \]
 <p>In particular, if $\psi = 0$ and $\eta(0)=0$, then $\eta\equiv0$.</p>
 </div>
 <div class="thm">
-<p><span class="label">Continuity argument.</span> Let $\Phi\ge0$ be continuous and nondecreasing on $[0,T]$, and $M$ nondecreasing, with $\Phi(t)\le A\exp\big(C\int_0^t M(\Phi(s))\,ds\big)$ for all $t$. If $0&lt; T_0&lt; \frac{\ln 2}{C\,M(2A)}$, then $\Phi(t)&lt; 2A$ on $[0,\min(T_0,T)]$.</p>
+<p><span class="label">Continuity argument.</span> <span id="term2"></span>Let $\Phi\ge0$ be continuous and nondecreasing on $[0,T]$, and $M$ nondecreasing, with $\Phi(t)\le A\exp\big(C\int_0^t M(\Phi(s))\,ds\big)$ for all $t$. If $0&lt; T_0&lt; \frac{\ln 2}{C\,M(2A)}$, then $\Phi(t)&lt; 2A$ on $[0,\min(T_0,T)]$.</p>
 </div>
 <h2>Why it is plausible</h2>
 <p>For Gronwall: $\big(e^{-\int_0^t\phi}\eta\big)'\le e^{-\int_0^t\phi}\psi$, then integrate. For the continuity argument: as long as $\Phi\le 2A$, the right-hand side is at most $A\exp(C\,t\,M(2A))&lt; 2A$ for $t\le T_0$. So $\Phi$ can never reach the value $2A$ before time $T_0$: the first time it did, the inequality would give a strict contradiction. No formula for $M$ is needed, which is why papers write "for some $M$" and let it change from line to line.</p>

@@ -32,7 +32,7 @@
 <p>To solve a PDE, solve a finite-dimensional version of it (an ODE system), prove bounds that do not depend on the dimension, and pass to the limit. The a priori estimates are what make this work: the approximations are built so that the same estimates hold for them.</p>
 <h2>Statement</h2>
 <div class="thm">
-<p><span class="label">The scheme.</span> </p>
+<p><span class="label">The scheme.</span> <span id="term1"></span></p>
 <ol>
 <li>Choose a basis $\{w_k\}$ of the solution space, usually eigenfunctions of the elliptic part of the equation (so the boundary conditions are built in).</li>
 <li>Look for $u_m(t)=\sum_{k=1}^m c_k(t)w_k$ satisfying the weak form tested against $w_1,\dots,w_m$ only. This is an ODE system for $c_1,\dots,c_m$; solve it locally by ODE theory.</li>

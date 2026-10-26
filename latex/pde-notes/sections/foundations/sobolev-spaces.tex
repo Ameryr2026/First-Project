@@ -10,6 +10,7 @@ PDE solutions are rarely smooth enough for classical derivatives, but they can b
 \subsection*{Statement}
 
 \begin{defnbox}{Definition}
+\index{weak derivative}\index{Sobolev space}%
 Let $\Omega \subset \R^n$ be open and $u, v \in L^1_{\mathrm{loc}}(\Omega)$. Then $v = \partial^\alpha u$ weakly if $\int_\Omega u\, \partial^\alpha \varphi \,dx = (-1)^{|\alpha|}\int_\Omega v\,\varphi\,dx$ for all $\varphi \in C_c^\infty(\Omega)$. For $k \in \N$ and $1 \le p \le \infty$,
 
 \[
@@ -21,6 +22,7 @@ $H^k = W^{k,2}$, and $H^1_0(\Omega)$ is the closure of $C_c^\infty(\Omega)$ in $
 \end{defnbox}
 
 \begin{defnbox}{The dual space $H^{-1}$}
+\index{H-1@$H^{-1}$ (dual of $H^1_0$)}%
 $H^{-1}(\Omega)$ is the dual of $H^1_0(\Omega)$: the space of bounded linear functionals $f$ on $H^1_0(\Omega)$. Write $\langle f, v\rangle$ for the value of $f$ at $v$; this is the pairing between $H^{-1}$ and $H^1_0$. The norm is
 
 \[
@@ -35,6 +37,7 @@ $f \in H^{-1}(\Omega)$ if and only if there are $f^0, f^1, \dots, f^n \in L^2(\O
 \end{thmbox}
 
 \begin{defnbox}{Homogeneous spaces}
+\index{Sobolev space!homogeneous}%
 $D^{k,r}(\Omega) = \{ u \in L^1_{\mathrm{loc}} : \norm{\nabla^k u}_{L^r} < \infty \}$ with seminorm $\norm{\nabla^k u}_{L^r}$, and $D^k = D^{k,2}$. These record only the top derivative. They are convenient for quantities like the velocity, where the estimates naturally control $\nabla u$ and $\nabla^2 u$ but not $u$ itself.
 \end{defnbox}
 

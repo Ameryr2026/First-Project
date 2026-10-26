@@ -678,17 +678,20 @@ def build_page(info, reg, author):
 def build_term_index(infos, reg, author):
     p = Page('index', {'top': 'section'}, reg)
     entries = {}                                   # (term, subterm) -> list of links
+    sortkey = {}
     for inf in infos:
         for n, entry in enumerate(inf['terms'], 1):
             entry = entry.split('|')[0]            # drop |textbf, |see{...}
             levels = [x.split('@')[-1].strip() for x in entry.split('!')]
+            sort = [x.split('@')[0].strip() for x in entry.split('!')]   # the part before @ is the sort key
             key = (levels[0], levels[1] if len(levels) > 1 else '')
+            sortkey.setdefault(key, (sort[0].casefold(), sort[1].casefold() if len(sort) > 1 else ''))
             link = f'<a href="{inf["id"]}.html#term{n}">{inf["title"]}</a>'
             entries.setdefault(key, [])
             if link not in entries[key]:
                 entries[key].append(link)
     items, last = [], None
-    for (term, sub) in sorted(entries, key=lambda k: (k[0].casefold(), k[1].casefold())):
+    for (term, sub) in sorted(entries, key=lambda k: sortkey[k]):
         links = ', '.join(entries[(term, sub)])
         if sub:
             if term != last and (term, '') not in entries:
