@@ -21,7 +21,7 @@ maintenance, and anyone can read or copy any page. The `.nojekyll` file tells Gi
 files exactly as they are.
 
 **Shared code, thin pages.** Each feature lives in one script that pages load: `arabic-math.js` (Arabic
-math), `terms.js` (terminology), `riemann.js` and `geogebra.js` (interactive pieces), `pde/wiki.js` (the
+math), `terms.js` (terminology), `ggb-riemann.js` and `ggb-volume.js` (interactive GeoGebra pieces), `pde/wiki.js` (the
 PDE wiki's links). A page is mostly content plus a few `<div>` tags and settings. Fixing a script fixes
 every page.
 

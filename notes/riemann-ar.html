@@ -26,9 +26,8 @@
      (اسم الأمر بحروف إنجليزية فقط)
      عند تعديل arabic-math.js غيّر رقم ?v= في سطر تحميله، حتى لا يستخدم المتصفح نسخة قديمة.
      ============================================================ -->
-<script src="geogebra.js?v=3" defer></script>
-<script src="riemann.js?v=4" defer></script>
-<script src="terms.js?v=1"></script>
+<script src="ggb-riemann.js?v=4" defer></script>
+<script src="terms.js?v=2"></script>
 <script src="arabic-math.js?v=18"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
@@ -117,14 +116,11 @@
   <p>
     اكتب أي {{function}}، واختر الحدين أ و ب، ثم حرّك عدد {{rectangle.defpl}} ن. راقب كيف يقترب المجموعان العلوي والسفلي
     من {{integral.def}} كلما زاد عدد {{rectangle.defpl}}. {{function?يُكتب:تُكتب}} {{function.def}} بالإنجليزية، مثل:
-    <code dir="ltr">x^2 + 1</code>، <code dir="ltr">sin(x)</code>، <code dir="ltr">e^x</code>، <code dir="ltr">sqrt(x)</code>.
+    <code dir="ltr">x^2 + 1</code>، <code dir="ltr">sin(x)</code>، <code dir="ltr">exp(x)</code>، <code dir="ltr">sqrt(x)</code>.
+    كبّر الرسم بعجلة الفأرة (أو بإصبعين) واسحبه لترى {{rectangle.defpl}} عن قرب.
   </p>
 
-  <div class="riemann" data-fn="en" data-f="x^2" data-a="0" data-b="2" data-n="6"></div>
-
-  <h2>نشاط جيوجبرا</h2>
-
-  <div class="geogebra" data-id="tqw7qdcx" data-width="800" data-height="600" data-lang="en"></div>
+  <div class="ggb-riemann" data-lang="ar" data-f="x^2" data-a="0" data-b="2" data-n="6" data-sum="both"></div>
 
   <h2>من المجموع إلى التكامل</h2>
   <p>كلما زاد عدد {{rectangle.defpl}} صَغُر عرضها، واقترب {{sum.def}} من {{area.def}} الحقيقية. {{limit}} هذا {{sum.def}} هي {{definite-integral.def}}:</p>

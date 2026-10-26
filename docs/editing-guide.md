@@ -179,16 +179,25 @@ whole site (for example in a fork of the repository) or link to a page with `?te
 
 ## 6. Interactive pieces
 
-**Riemann sum** (`notes/riemann.js`): put this anywhere in a page that loads the script:
+**GeoGebra widgets with our own inputs** (`notes/ggb-riemann.js`, `notes/ggb-volume.js`): the reader types
+in boxes on our page and GeoGebra only draws. Used on the Riemann sum and volume of revolution pages.
+
+```html
+<div class="ggb-riemann" data-f="x^2" data-a="0" data-b="2" data-n="6"></div>
+<div class="ggb-volume" data-f="x" data-a="0" data-b="3" data-n="6"></div>
+```
+
+All settings, how the widgets work, and how to build a new one (starting from the small example
+`notes/ggb-template.js`) are in **[geogebra-widgets.md](geogebra-widgets.md)**.
+
+**Riemann sum without GeoGebra** (`notes/riemann.js`): the older widget, drawn by our own code. It is no
+longer used on the pages but still works:
 
 ```html
 <div class="riemann" data-f="x^2" data-a="0" data-b="2" data-n="6" data-fn="en"></div>
 ```
 
-`data-fn="en"` means the reader types the function in English (`sin(x)`, `e^x`, `sqrt(x)`); without it,
-Arabic (`جا س`, `جذر(س)`) also works. Add `data-lang="en"` for an English page.
-
-**GeoGebra** (`notes/geogebra.js`):
+**A GeoGebra activity as made on geogebra.org** (`notes/geogebra.js`):
 
 ```html
 <div class="geogebra" data-id="mpufvzus" data-width="800" data-height="500"></div>

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حجم المجسّمات الدورانية · عامر رواشدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Noto+Sans+Math&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+     الرياضيات بالعربية (من اليمين إلى اليسار):
+     اكتب LaTeX كالمعتاد مع حروف عربية: $ق(س) = س^2 + 1$
+     الأرقام تُكتب 0-9 وتظهر ١٢٣ تلقائيًا، والفاصلة تظهر ، تلقائيًا.
+     داخل السطر: $...$   — معادلة مستقلة: $$...$$
+     معادلة مرقمة: \begin{equation}\label{eq:x} ... \end{equation} ثم \eqref{eq:x}
+
+     أوامر جاهزة: \nha (نهــا)، \ja (جا)، \jta (جتا)، \zha (ظا)، \zta (ظتا)،
+     \qa (قا)، \qta (قتا)، \lo (لو)، \norm{..}، \abs{..}، \R (ℝ للأعداد الحقيقية)، \N، \Z، \Q، \C،
+     \mathbb{ص} لأي حرف مزدوج الخطوط (عدا ا، ك، ه)،
+     \pd{ص}{س} (دص على دس)، \pd[2]{ص}{س} (المشتقة الثانية)، 
+     \ppd{ع}{ز} مشتقة جزئية بـ ∂ معكوسة، \ppd[2]{ع}{س}، و \partial_ز ع،
+     \nas{نص} لكتابة كلمة عربية داخل معادلة.
+
+     رموزك الخاصة لهذه الصفحة: أضفها في ArabicMathMacros أدناه، مثلًا
+       tdrj: '\\mathop{\\text{تدرج}}\\nolimits'   ثم اكتب \tdrj ع
+     (اسم الأمر بحروف إنجليزية فقط)
+     عند تعديل arabic-math.js غيّر رقم ?v= في سطر تحميله، حتى لا يستخدم المتصفح نسخة قديمة.
+     ============================================================ -->
+<script src="ggb-volume.js?v=2" defer></script>
+<script>window.ArabicMathLatin = { 'ح': 'V', 'م': 'm', 'ع': 'h' };</script>
+<script src="terms.js?v=2"></script>
+<script src="arabic-math.js?v=18"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<style>
+  :root {
+    --bg: #fbfaf7; --text: #1f2328; --muted: #5b6470;
+    --accent: #0c4a6e; --rule: #e3e0d8; --box: #f2f0ea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171b; --text: #e6e6e3; --muted: #a0a7b0;
+            --accent: #7cc4ec; --rule: #2a2f36; --box: #1c2026; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font-family: "Noto Naskh Arabic", "Amiri", serif; font-size: 20px; line-height: 1.95; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* الرياضيات تبقى من اليسار إلى اليمين داخل النص العربي */
+  mjx-container { direction: ltr; unicode-bidi: isolate; }
+  mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+  .terms-note { font-size: 16px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; margin-top: 32px; }
+  .en { direction: ltr; unicode-bidi: isolate; font-family: Inter, sans-serif; font-size: 0.8em; color: var(--muted); }
+
+  nav { border-bottom: 1px solid var(--rule); font-size: 16px; }
+  nav .inner { max-width: 760px; margin: 0 auto; padding: 12px 20px; display: flex; gap: 20px; }
+  nav .home { font-weight: 700; color: var(--text); margin-left: auto; }
+  nav a { color: var(--muted); }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+  h1 { font-size: 34px; line-height: 1.4; margin: 0 0 6px; font-weight: 700; }
+  .byline { font-size: 15px; color: var(--muted); margin-bottom: 32px; }
+  h2 { font-size: 25px; margin: 40px 0 10px; font-weight: 700; }
+  p { margin: 0 0 16px; }
+
+  /* بيئات المبرهنات */
+  .thm, .defn, .lem, .prop, .cor, .rmk, .ex {
+    margin: 22px 0; padding: 14px 18px; border-right: 3px solid var(--accent);
+    background: var(--box); border-radius: 6px 0 0 6px;
+  }
+  .rmk, .ex { border-right-color: var(--rule); }
+  .label { font-weight: 700; }
+  .thm p:last-child, .defn p:last-child, .lem p:last-child, .prop p:last-child,
+  .cor p:last-child, .rmk p:last-child, .ex p:last-child { margin-bottom: 0; }
+  .proof { margin: 0 0 22px; }
+  .proof::after { content: "∎"; display: block; text-align: left; color: var(--muted); line-height: 1; }
+
+  /* مسرد المصطلحات */
+  table.glossary { width: 100%; border-collapse: collapse; margin: 12px 0 24px; font-size: 18px; }
+  table.glossary td { padding: 8px 10px; border-bottom: 1px solid var(--rule); }
+  table.glossary td:first-child { width: 30%; }
+
+  ol.refs { font-size: 17px; list-style-type: arabic-indic; }
+  footer { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; border-top: 1px solid var(--rule);
+           font-size: 15px; color: var(--muted); }
+  @media (max-width: 600px) { body { font-size: 18px; } h1 { font-size: 28px; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="home" href="../index.html">الصفحة الرئيسية</a>
+    <a href="../index.html#notes-ar">كل الملاحظات</a>
+  </div>
+</nav>
+
+<main>
+  <h1>{{volume}} المجسّمات الدورانية</h1>
+  <div class="byline">عامر رواشدة · ٢٠٢٦</div>
+  <!-- DRAFT: نص تمهيدي مقترح، راجعه وعدّله بأسلوبك -->
+  <p>
+    خذ المنطقة المحصورة تحت منحنى $ص = {{function.sym}}(س)$ حيث $أ \le س \le ب$، ودوّرها دورة كاملة حول محور السينات،
+    فينتج عن ذلك <strong>{{solid-of-revolution}}</strong>. لحساب {{volume}}ه نقسم {{interval.def}} $[أ، ب]$ إلى $ن$ من الأجزاء
+    عرض كل منها $\Delta س = \كسر{ب - أ}{ن}$، ومنتصفاتها $م_1، \dots، م_ن$. فوق كل جزء يكون المجسّم قريبًا من
+    {{disc}}: أسطوانة قصيرة نصف قطرها ${{function.sym}}(م_ي)$ وسُمكها $\Delta س$، و{{volume}}ها $\pi\, {{function.sym}}(م_ي)^2\, \Delta س$.
+    وبجمع {{disc.defpl}}:
+  </p>
+  \[ ح_ن = \مجموع_{ي=1}^{ن} \pi\, {{function.sym}}(م_ي)^2 \, \Delta س. \]
+  <p>
+    وهذا {{riemann-sum}} ل{{function.def}} $\pi\, {{function.sym}}(س)^2$ (انظر <a href="riemann-ar.html">مجموع ريمان</a>)،
+    فكلما زاد $ن$ اقترب من {{integral.def}}:
+  </p>
+  \[ ح = \pi \تكامل_أ^ب {{function.sym}}(س)^2 \, دس. \]
+
+  <h2>جرّب بنفسك</h2>
+  <p>
+    اكتب {{function.def}} و{{interval.def}}، ثم اضغط «دوّر» أو حرّك مؤشر الزاوية لتدوير المنطقة. زِد عدد {{disc.defpl}} ن وراقب كيف
+    يقترب مجموعها من {{volume.def}}. {{function?يُكتب:تُكتب}} {{function.def}} بالإنجليزية، مثل
+    <code dir="ltr">sqrt(x)</code>، <code dir="ltr">x^2</code>، <code dir="ltr">sin(x) + 1</code>.
+    اسحب الرسم لترى المجسّم من كل جهة، وكبّره بعجلة الفأرة أو بإصبعين.
+  </p>
+
+  <div class="ggb-volume" data-lang="ar" data-f="x" data-a="0" data-b="3" data-n="6"></div>
+
+  <h2>مثال</h2>
+  <p>إذا كان ${{function.sym}}(س) = س$ على $[0، 3]$ (المثال الأول أعلاه)، فالمنطقة مثلث والمجسّم مخروط نصف قطره $ر = 3$ وارتفاعه $ع = 3$:</p>
+  \[ ح = \pi \تكامل_0^3 س^2 \, دس = 9\pi \approx 28.27، \]
+  <p>وهي قاعدة المخروط $\كسر{1}{3} \pi ر^2 ع$ نفسها. جرّب بعدها $\جذر{س}$ على $[0، 4]$: تعطي {{disc.defpl}}
+  {{volume.def}} الصحيح $8\pi$ مهما كان $ن$. هل تستطيع أن تفسّر السبب؟</p>
+
+  <p><a href="volume.html">English version of this page</a></p>
+</main>
+<footer>
+  <a href="../index.html#notes-ar">→ العودة إلى كل الملاحظات</a>
+</footer>
+</body>
+</html>

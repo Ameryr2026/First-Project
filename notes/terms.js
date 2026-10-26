@@ -47,7 +47,11 @@
     'upper-sum': { en: 'upper sum',      jo: { sg: 'مجموع علوي', def: 'المجموع العلوي', pl: 'مجاميع علوية', g: 'm' } },
     'lower-sum': { en: 'lower sum',      jo: { sg: 'مجموع سفلي', def: 'المجموع السفلي', pl: 'مجاميع سفلية', g: 'm' } },
     'definite-integral': { en: 'definite integral',
-                   jo: { sg: 'تكامل محدد', def: 'التكامل المحدد', pl: 'تكاملات محددة', g: 'm' } }
+                   jo: { sg: 'تكامل محدد', def: 'التكامل المحدد', pl: 'تكاملات محددة', g: 'm' } },
+    'volume':    { en: 'volume',         jo: { sg: 'حجم', pl: 'أحجام', g: 'm' } },
+    'disc':      { en: 'disc',           jo: { sg: 'قرص', pl: 'أقراص', g: 'm' } },
+    'solid-of-revolution': { en: 'solid of revolution',
+                   jo: { sg: 'مجسّم دوراني', def: 'المجسّم الدوراني', pl: 'مجسّمات دورانية', g: 'm' } }
   };
 
   var REGION = SITE_REGION;

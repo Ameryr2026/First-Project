@@ -153,6 +153,7 @@
     }
     function fmt(x) {
       if (!isFinite(x)) return '—';
+      if (Math.abs(x) < 1e-9) x = 0;                 // rounding noise
       var s = Math.abs(x) >= 1e5 || (Math.abs(x) < 1e-4 && x !== 0) ? x.toExponential(3) : String(+x.toFixed(4));
       return digits(s);
     }

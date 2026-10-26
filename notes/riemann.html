@@ -73,8 +73,7 @@
            font-family: Inter, sans-serif; font-size: 13px; color: var(--muted); }
   @media (max-width: 600px) { body { font-size: 17px; } h1 { font-size: 28px; } }
 </style>
-<script src="riemann.js?v=4" defer></script>
-<script src="geogebra.js?v=3" defer></script>
+<script src="ggb-riemann.js?v=4" defer></script>
 </head>
 <body>
 
@@ -110,14 +109,12 @@
   <h2>Try it</h2>
   <p>
     Enter a function, choose the bounds $a$ and $b$, and move the slider to change the number of rectangles $n$.
-    The function can be typed as, for example, <code>x^2 + 1</code>, <code>sin(x)</code>, <code>e^x</code>,
-    <code>sqrt(x)</code>, or <code>1/(1+x^2)</code>.
+    The function can be typed as, for example, <code>x^2 + 1</code>, <code>sin(x)</code>, <code>exp(x)</code>,
+    <code>sqrt(x)</code>, or <code>1/(1+x^2)</code>. Zoom into the graph with the mouse wheel (or two fingers)
+    and drag it to look closely at the rectangles.
   </p>
 
-  <div class="riemann" data-lang="en" data-f="x^2" data-a="0" data-b="2" data-n="6"></div>
-
-  <h2>GeoGebra activity</h2>
-   <div class="geogebra" data-id="tqw7qdcx" data-width="800" data-height="600" data-lang="en"></div>
+  <div class="ggb-riemann" data-lang="en" data-f="x^2" data-a="0" data-b="2" data-n="6" data-sum="both"></div>
 
   <h2>From sums to the integral</h2>
   <p>

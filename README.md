@@ -20,6 +20,8 @@ This repository is the whole website. It has three parts:
 ## Guides
 
 - **[docs/editing-guide.md](docs/editing-guide.md)**: how to edit and extend everything. Start here.
+- **[docs/geogebra-widgets.md](docs/geogebra-widgets.md)**: the interactive GeoGebra pages, and how to
+  build your own.
 - **[docs/how-it-works.md](docs/how-it-works.md)**: how the site was built and why it works the way it
   does, for anyone who wants to maintain it or build something similar.
 
@@ -35,7 +37,8 @@ notes/                  Arabic pages and the shared Arabic-math system
   converter.html          English LaTeX → Arabic converter
   commands.html           table of all Arabic commands
   terms.html              glossary page
-  riemann.js, geogebra.js interactive widgets
+  ggb-riemann.js, ggb-volume.js  interactive GeoGebra widgets (inputs on our page, GeoGebra draws)
+  ggb-template.js         the smallest widget, to copy when building a new one
   pde/                    the English PDE wiki (registry in wiki.js)
 latex/pde-notes/        the PDE notes as a LaTeX book (master copy for print)
 tools/                  scripts: PDE pages → PDF, PDE pages → LaTeX project
