@@ -197,6 +197,7 @@ class Page:
         self.sec = 0
         self.links = set()
         self.footnotes = []
+        self.terms = []
 
     # ---------------------------------------------------------------- inline text
     def inline(self, s):
@@ -316,6 +317,14 @@ class Page:
             self.footnotes.append(self.inline(g))
             n = len(self.footnotes)
             return f'<sup><a href="#fn{n}" id="fnref{n}">{n}</a></sup>', j
+        if name == 'index':
+            entry, j = read_group(s, j, self.where)
+            self.terms.append(entry)
+            return f'<span id="term{len(self.terms)}"></span>', j
+        if name == 'term':
+            word, j = read_group(s, j, self.where)
+            self.terms.append(word)
+            return f'<em id="term{len(self.terms)}">{self.inline(word)}</em>', j
         if name == 'today':
             return '', k
         if name in ('vspace', 'hspace', 'phantom', 'hphantom', 'vphantom', 'index', 'hypertarget',
