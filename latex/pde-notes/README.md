@@ -6,7 +6,7 @@ Do not regenerate it with tools/export-pde-latex.py: that writes a fresh export 
 ## Compiling
 
 You do not need to compile anything. Every time a `.tex` or `.sty` file in this folder changes on GitHub,
-the "Build PDE notes PDF" action (`.github/workflows/build-pde-notes.yml`) compiles `main.tex` with pdfLaTeX
+the "Build PDFs (PDE notes and CV)" action (`.github/workflows/build-pde-notes.yml`) compiles `main.tex` with pdfLaTeX
 and commits the new `main.pdf` back to the repository, so the download link on the website is always current.
 It takes a couple of minutes; you can watch it, and see any LaTeX error, under the repository's **Actions** tab.
 

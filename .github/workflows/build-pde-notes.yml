@@ -1,7 +1,7 @@
-# Recompiles the PDE notes (latex/pde-notes/main.tex) and commits the new main.pdf,
-# whenever a .tex or .sty file in that folder changes on the main branch.
-# It can also be started by hand: Actions tab -> "Build PDE notes PDF" -> Run workflow.
-name: Build PDE notes PDF
+# Recompiles the PDE notes (latex/pde-notes/main.tex) and the CV (cv/cv.tex) and commits
+# the new PDFs, whenever a .tex or .sty file in those folders changes on the main branch.
+# It can also be started by hand: Actions tab -> "Build PDFs (PDE notes and CV)" -> Run workflow.
+name: Build PDFs (PDE notes and CV)
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
     paths:
       - 'latex/pde-notes/**.tex'
       - 'latex/pde-notes/**.sty'
+      - 'cv/**.tex'
   workflow_dispatch:
 
 permissions:
@@ -31,15 +32,21 @@ jobs:
           working_directory: latex/pde-notes
           latexmk_use_lualatex: false
 
+      - name: Compile the CV
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: cv.tex
+          working_directory: cv
+
       - name: Commit the new PDF
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
-          git add latex/pde-notes/main.pdf
+          git add latex/pde-notes/main.pdf cv/cv.pdf
           if git diff --cached --quiet; then
             echo "PDF unchanged."
           else
-            git commit -m "Rebuild PDE notes PDF"
+            git commit -m "Rebuild PDFs"
             git pull --rebase origin main
             git push
           fi
