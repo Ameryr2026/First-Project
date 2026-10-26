@@ -88,7 +88,7 @@
 
   // The exact solid (S…) and the n pieces (A…). Names ending in "cut" are the flat faces at angle 0 and t.
   // In GeoGebra: xk(j) is the j-th division point, mk(j) the midpoint of the j-th piece.
-  function commands(axis) {
+  /*function commands(axis) {
     var R = function (X, Y, ang) { return rot(axis, X, Y, ang); };
     var mid = 'g(u) + s (f(u) - g(u))';                     // a point of the region above x = u
     var F = 'f(mk(k))', G = 'g(mk(k))', X0 = 'xk(k - 1)', X1 = 'xk(k)';
@@ -124,7 +124,7 @@
         : 'D = pi (b - a) / n Sum(Sequence(If((' + F + ' - c) (' + G + ' - c) >= 0, abs((' + F + ' - c)^2 - (' + G +
           ' - c)^2), Max((' + F + ' - c)^2, (' + G + ' - c)^2)), k, 1, n))'
     };
-  }
+  }*/
 
   // ---- 4. Styles (written once for every widget on the page) ----
   var css = document.createElement('style');
