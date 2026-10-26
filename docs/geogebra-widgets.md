@@ -90,7 +90,7 @@ $n$ adds pieces one at a time; ▶ next to the angle turns the region.
 | `data-color-outer`, `-inner`, `-ends`, `-cuts` | colours of the parts of the solid (surface made by f, by g, end faces, cut faces); `data-color-surface` sets all four at once | blue, green, purple, orange |
 | `data-color-curve`, `-axis` | colours as `#rrggbb` | black, red |
 
-In the picture, **Settings** also lets the reader change the opacity of each part of the solid (default 40%, cut faces 70%) and the thickness (1–13) and style (solid, dashed, dotted, dash-dot) of the curves and the axis.
+In the picture, **Settings** also lets the reader change the opacity of each part of the solid (default 40%, cut faces 70%), the thickness (0 = none) and style of the grid lines on each part, and the thickness (1–13) and style (solid, dashed, dotted, dash-dot) of the curves and the axis.
 | `data-lang`, `data-height` | as above | |
 
 For shells, the vertical axis must not pass through the region ($c \le a$ or $c \ge b$); the widget says so

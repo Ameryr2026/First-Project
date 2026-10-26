@@ -54,7 +54,7 @@
           failed: 'GeoGebra could not be loaded. Check the connection and reload the page.',
           help: 'Write the functions in English: sqrt(x), x^2, sin(x) + 1, 2x - x^2. Drag the picture to turn it.',
           settings: 'Settings', nmax: 'Largest n on the slider', show: 'Show',
-          surfaces: 'Surfaces', lines: 'Lines', colorW: 'Color', opacity: 'Opacity', thick: 'Thickness', style: 'Style',
+          surfaces: 'Surfaces', lines: 'Lines', grid: 'Grid lines', none: 'none', colorW: 'Color', opacity: 'Opacity', thick: 'Thickness', style: 'Style',
           styles: ['Solid', 'Long dashes', 'Short dashes', 'Dotted', 'Dash-dot'] },
     ar: { f: 'المنحنى العلوي f(x) =', g: 'المنحنى السفلي g(x) =', a: 'من أ =', b: 'إلى ب =',
           n: 'عدد القطع ن = ', angle: 'دوّر المنطقة: ', axis: 'محور الدوران',
@@ -70,7 +70,7 @@
           failed: 'تعذّر تحميل جيوجبرا. تحقّق من الاتصال وأعد تحميل الصفحة.',
           help: 'اكتب الاقترانات بالإنجليزية: sqrt(x)، x^2، sin(x) + 1، 2x - x^2. اسحب الرسم لتدويره.',
           settings: 'الإعدادات', nmax: 'أكبر قيمة لـ ن على المؤشر', show: 'اعرض',
-          surfaces: 'الأسطح', lines: 'الخطوط', colorW: 'اللون', opacity: 'التعتيم', thick: 'السُّمك', style: 'النمط',
+          surfaces: 'الأسطح', lines: 'الخطوط', grid: 'خطوط الشبكة', none: 'بلا', colorW: 'اللون', opacity: 'التعتيم', thick: 'السُّمك', style: 'النمط',
           styles: ['متصل', 'متقطع طويل', 'متقطع قصير', 'منقّط', 'شرطة ونقطة'] }
   };
 
@@ -86,7 +86,9 @@
   // Opacity of each part of the solid (0 = invisible, 1 = solid), and the thickness (1 to 13) and style of
   // each line. GeoGebra's line styles: 0 solid, 1 long dashes, 2 short dashes, 3 dotted, 4 dash-dot.
   var DEFAULT_OPACITY = { outer: 0.4, inner: 0.4, ends: 0.4, cuts: 0.7 };
-  var DEFAULT_LINE = { prof: { thick: 7, style: 0 }, axis: { thick: 6, style: 1 } };
+  // For the parts of the solid, the "lines" are the grid lines drawn on the surface (thickness 0: none).
+  var DEFAULT_LINE = { outer: { thick: 1, style: 0 }, inner: { thick: 1, style: 0 }, ends: { thick: 1, style: 0 },
+                       cuts: { thick: 1, style: 0 }, prof: { thick: 7, style: 0 }, axis: { thick: 6, style: 1 } };
   var LINE_STYLES = [0, 1, 2, 3, 4];
   function rgb(hex) {
     var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || '');
@@ -182,7 +184,7 @@
     '.ggb-volume table.gv-tab td { padding: 4px 10px 4px 0; vertical-align: middle; }' +
     '.ggb-volume table.gv-tab input[type=range] { width: 8em; vertical-align: middle; }' +
     '.ggb-volume table.gv-tab .gv-val { display: inline-block; min-width: 3em; text-align: end; }' +
-    '.ggb-volume .gv-set { flex-direction: column; align-items: stretch; }' +
+    '.ggb-volume .gv-set { flex-direction: column; align-items: stretch; overflow-x: auto; }' +
     '.ggb-volume button { font: inherit; font-size: 14px; padding: 4px 10px; border: 1px solid var(--rule, #d0ccc2);' +
     '  border-radius: 4px; background: var(--bg, #fff); color: inherit; cursor: pointer; white-space: nowrap; }' +
     '@media (max-width: 600px) { .ggb-volume .gv-controls { grid-template-columns: 1fr; } }';
@@ -222,6 +224,15 @@
     var height = num(box.getAttribute('data-height'), 480);
     var gid = 'ggb-volume-' + index;
 
+    // The thickness slider and the style menu of one row of the settings (min: the thinnest allowed).
+    function lineCells(k, min) {
+      return '<td><input type="range" class="gv-th" data-k="' + k + '" min="' + min + '" max="13" step="1">' +
+        ' <span class="gv-val" data-v="th-' + k + '"></span></td>' +
+        '<td><select class="gv-st" data-k="' + k + '">' + LINE_STYLES.map(function (st) {
+          return '<option value="' + st + '">' + T.styles[st] + '</option>';
+        }).join('') + '</select></td>';
+    }
+
     // ---- 6. Our own inputs, the place for GeoGebra, and the results ----
     box.innerHTML =
       '<div class="gv-controls">' +
@@ -247,23 +258,19 @@
       '<div class="gv-graph"><div id="' + gid + '">' + T.loading + '</div></div>' +
       '<div class="gv-out"></div>' +
       '<details class="gv-more"><summary>' + T.settings + '</summary><div class="gv-set">' +
-      // Surfaces: a colour and an opacity for each part of the solid.
-      '<table class="gv-tab"><tr><th>' + T.surfaces + '</th><th>' + T.colorW + '</th><th>' + T.opacity + '</th></tr>' +
+      // Surfaces: a colour, an opacity, and the thickness and style of the grid lines for each part.
+      '<table class="gv-tab"><tr><th>' + T.surfaces + '</th><th>' + T.colorW + '</th><th>' + T.opacity + '</th><th>' +
+      T.grid + ': ' + T.thick + '</th><th>' + T.style + '</th></tr>' +
       [['outer', T.outer], ['inner', T.inner], ['ends', T.ends], ['cuts', T.cuts]].map(function (p) {
         return '<tr><td>' + p[1] + '</td><td><input type="color" data-k="' + p[0] + '"></td>' +
           '<td><input type="range" class="gv-op" data-k="' + p[0] + '" min="0" max="100" step="5">' +
-          ' <span class="gv-val" data-v="' + p[0] + '"></span></td></tr>';
+          ' <span class="gv-val" data-v="' + p[0] + '"></span></td>' + lineCells(p[0], 0) + '</tr>';
       }).join('') + '</table>' +
       // Lines: a colour, a thickness and a style for the curves and the axis.
       '<table class="gv-tab"><tr><th>' + T.lines + '</th><th>' + T.colorW + '</th><th>' + T.thick + '</th><th>' +
       T.style + '</th></tr>' +
       [['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
-        return '<tr><td>' + p[1] + '</td><td><input type="color" data-k="' + p[0] + '"></td>' +
-          '<td><input type="range" class="gv-th" data-k="' + p[0] + '" min="1" max="13" step="1">' +
-          ' <span class="gv-val" data-v="' + p[0] + '"></span></td>' +
-          '<td><select class="gv-st" data-k="' + p[0] + '">' + LINE_STYLES.map(function (st) {
-            return '<option value="' + st + '">' + T.styles[st] + '</option>';
-          }).join('') + '</select></td></tr>';
+        return '<tr><td>' + p[1] + '</td><td><input type="color" data-k="' + p[0] + '"></td>' + lineCells(p[0], 1) + '</tr>';
       }).join('') + '</table>' +
       '</div></details>';
     if (lang === 'ar') box.setAttribute('dir', 'rtl');
@@ -323,7 +330,13 @@
       api.setFixed(name, true, false);
     }
     function paintAll() {
-      names.S.forEach(function (o) { paint(o[0], PART[o[0]], opacity[PART[o[0]]]); });
+      names.S.forEach(function (o) {
+        var k = PART[o[0]];
+        paint(o[0], k, opacity[k]);
+        if (!api.exists(o[0])) return;
+        api.setLineThickness(o[0], line[k].thick);
+        if (api.setLineStyle) api.setLineStyle(o[0], line[k].style);
+      });
       names.A.forEach(function (o) { paint(o[0], 'pieces', o[1] ? 0.85 : 0.55); });
       [['pf', 'prof'], ['pg', 'prof'], ['AX', 'axis']].forEach(function (o) {
         if (!api.exists(o[0])) return;
@@ -538,10 +551,11 @@
     });
     Array.prototype.forEach.call(box.querySelectorAll('.gv-th'), function (el) {
       var k = el.getAttribute('data-k');
-      showVal(k, digits(el.value));
+      function label() { showVal('th-' + k, +el.value === 0 ? T.none : digits(el.value)); }
+      label();
       el.addEventListener('input', function () {
         line[k].thick = +el.value;
-        showVal(k, digits(el.value));
+        label();
         if (api) paintAll();
       });
     });
