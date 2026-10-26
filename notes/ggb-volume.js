@@ -24,7 +24,10 @@
  *   data-method      shells is the same as data-axis="vertical" (kept for older pages)
  *   data-angle       starting angle in degrees (default 270, so the cut is visible)
  *   data-nmax        the largest n on the slider (default 20, at most 200; each piece is several 3D surfaces)
- *   data-color-surface, data-color-discs, data-color-curve, data-color-axis   colours as #rrggbb
+ *   data-color-outer, data-color-inner, data-color-ends, data-color-cuts   colours of the parts of the solid:
+ *                    the surface made by f, the one made by g, the end faces at a and b, the cut faces
+ *   data-color-surface   one colour for all four parts at once (used when the four above are not given)
+ *   data-color-curve, data-color-axis   colours as #rrggbb
  *   data-lang        ar for Arabic labels (default: the page's language)
  *   data-height      height of the picture in pixels (default 480)
  *
@@ -41,6 +44,7 @@
           n: 'Pieces n = ', angle: 'Turn the region: ', axis: 'Axis of revolution',
           axisH: 'Horizontal line y = c  (discs and washers)', axisV: 'Vertical line x = c  (shells)', c: 'c =',
           play: '▶', stop: '■', playN: 'Play: add pieces one at a time', playT: 'Turn the region',
+          outer: 'Surface made by f', inner: 'Surface made by g', ends: 'End faces', cuts: 'Cut faces',
           surface: 'Solid', piecesH: 'Discs / washers', piecesV: 'Shells', curve: 'Curves', axisLine: 'Axis',
           approxH: 'Sum of the discs/washers', approxV: 'Sum of the shells',
           exactH: 'Volume π∫(R² − r²)', exactV: 'Volume 2π∫|x − c|(f − g)', gap: 'Difference', fit: 'Fit view',
@@ -54,6 +58,7 @@
           n: 'عدد القطع ن = ', angle: 'دوّر المنطقة: ', axis: 'محور الدوران',
           axisH: 'مستقيم أفقي y = c  (أقراص وحلقات)', axisV: 'مستقيم رأسي x = c  (قشرات أسطوانية)', c: 'c =',
           play: '▶', stop: '■', playN: 'تشغيل: أضف القطع واحدة بعد الأخرى', playT: 'دوّر المنطقة',
+          outer: 'سطح المنحنى الأعلى', inner: 'سطح المنحنى الأسفل', ends: 'الوجهان الطرفيان', cuts: 'وجها القطع',
           surface: 'المجسّم', piecesH: 'الأقراص والحلقات', piecesV: 'القشرات', curve: 'المنحنيان', axisLine: 'المحور',
           approxH: 'مجموع الأقراص والحلقات', approxV: 'مجموع القشرات',
           exactH: 'الحجم <bdi dir="ltr">π∫(R² − r²)</bdi>', exactV: 'الحجم <bdi dir="ltr">2π∫|x − c|(f − g)</bdi>', gap: 'الفرق', fit: 'ملاءمة الرسم',
@@ -66,9 +71,14 @@
   };
 
   // ---- 2. Colours ----
-  var DEFAULT_COLOR = { surf: '#2563eb', pieces: '#ea580c', prof: '#1f2328', axis: '#b91c1c' };
-  var COLOR_ATTR = { surf: 'data-color-surface', pieces: 'data-color-discs', prof: 'data-color-curve',
+  // Each part of the solid has its own colour: outer = f turned, inner = g turned, ends = the faces at
+  // x = a and x = b, cuts = the flat faces where the solid is cut (at angle 0 and t).
+  var DEFAULT_COLOR = { outer: '#2563eb', inner: '#16a34a', ends: '#9333ea', cuts: '#ea580c',
+                        pieces: '#ea580c', prof: '#1f2328', axis: '#b91c1c' };
+  var COLOR_ATTR = { outer: 'data-color-outer', inner: 'data-color-inner', ends: 'data-color-ends',
+                     cuts: 'data-color-cuts', pieces: 'data-color-discs', prof: 'data-color-curve',
                      axis: 'data-color-axis' };
+  var PART = { S1: 'outer', S2: 'inner', S3: 'ends', S4: 'ends', S5: 'cuts', S6: 'cuts' };
   function rgb(hex) {
     var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || '');
     return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : null;
@@ -191,6 +201,7 @@
     var color = {};
     Object.keys(DEFAULT_COLOR).forEach(function (k) {
       var c = box.getAttribute(COLOR_ATTR[k]);
+      if (!rgb(c) && /^(outer|inner|ends|cuts)$/.test(k)) c = box.getAttribute('data-color-surface');
       color[k] = rgb(c) ? c : DEFAULT_COLOR[k];
     });
     var height = num(box.getAttribute('data-height'), 480);
@@ -221,7 +232,7 @@
       '<div class="gv-graph"><div id="' + gid + '">' + T.loading + '</div></div>' +
       '<div class="gv-out"></div>' +
       '<details class="gv-more"><summary>' + T.settings + '</summary><div class="gv-set">' +
-      [['surf', T.surface], ['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
+      [['outer', T.outer], ['inner', T.inner], ['ends', T.ends], ['cuts', T.cuts], ['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
         return '  <div><label>' + p[1] + '</label><input type="color" data-k="' + p[0] + '"></div>';
       }).join('') +
       '</div></details>';
@@ -269,7 +280,7 @@
       api.setFixed(name, true, false);
     }
     function paintAll() {
-      names.S.forEach(function (o) { paint(o[0], 'surf', o[1] ? 0.7 : 0.4); });
+      names.S.forEach(function (o) { paint(o[0], PART[o[0]], o[1] ? 0.7 : 0.4); });
       names.A.forEach(function (o) { paint(o[0], 'pieces', o[1] ? 0.85 : 0.55); });
       ['pf', 'pg'].forEach(function (o) { paint(o, 'prof'); api.setLineThickness(o, 7); });
       paint('AX', 'axis'); api.setLineThickness('AX', 6); api.setLineStyle && api.setLineStyle('AX', 1);
@@ -308,7 +319,7 @@
       make(M.solid, names.S);
       // make(M.pieces, names.A);          // pieces turned off
       cmd(M.axisLine);
-      cmd(M.exact); hide('V');
+      cmd(M.exact); if (api.exists('V')) hide('V');   // if GeoGebra rejects V, carry on without it
       // cmd(M.approx); hide('D');          // sum of the pieces turned off
       paintAll();
       applyVisibility();
@@ -330,8 +341,9 @@
 
     function readout() {
       var v = inAx.value === 'vertical', V = api.getValue('V');
+      if (!api.exists('V')) { out.innerHTML = ''; return; }
       out.innerHTML =
-        '<span style="color:' + color.surf + '"><b>' + (v ? T.exactV : T.exactH) + ':</b> ' + fmt(V) + '</span>';
+        '<span style="color:' + color.outer + '"><b>' + (v ? T.exactV : T.exactH) + ':</b> ' + fmt(V) + '</span>';
     }
 
     // Send a new formula for f or g; keep the old one if GeoGebra rejects it.

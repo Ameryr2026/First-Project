@@ -87,7 +87,8 @@ $n$ adds pieces one at a time; ▶ next to the angle turns the region.
 | `data-c` | where the axis is | 0 |
 | `data-angle` | the starting angle in degrees; below 360 the cut is visible | 270 |
 | `data-nmax` | largest $n$ on the slider (up to 200; each piece is several 3D surfaces, so keep it modest) | 20 |
-| `data-color-surface`, `-discs`, `-curve`, `-axis` | colours as `#rrggbb` | blue, orange, black, red |
+| `data-color-outer`, `-inner`, `-ends`, `-cuts` | colours of the parts of the solid (surface made by f, by g, end faces, cut faces); `data-color-surface` sets all four at once | blue, green, purple, orange |
+| `data-color-curve`, `-axis` | colours as `#rrggbb` | black, red |
 | `data-lang`, `data-height` | as above | |
 
 For shells, the vertical axis must not pass through the region ($c \le a$ or $c \ge b$); the widget says so
