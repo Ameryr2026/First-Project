@@ -35,7 +35,7 @@
           order: 'a must be less than b.', loading: 'Loading GeoGebra…',
           failed: 'GeoGebra could not be loaded. Check the connection and reload the page.',
           help: 'Write the function in English: x^2 + 1, sin(x), sqrt(x), exp(x), ln(x), abs(x).',
-          othersum: 'Left, right, midpoint sums', settings: 'Settings', nmax: 'Largest n on the slider', curve: 'Graph of f', colors: 'Colours' },
+          othersum: 'Left, right, midpoint sums', playN: 'Play: increase n step by step', settings: 'Settings', nmax: 'Largest n on the slider', curve: 'Graph of f', colors: 'Colours' },
     ar: { f: 'f(x) =', a: 'من أ =', b: 'إلى ب =', n: 'عدد المستطيلات ن = ', sum: 'المجموع',
           lower: 'المجموع السفلي', upper: 'المجموع العلوي', both: 'العلوي والسفلي معًا', left: 'الأطراف اليسرى',
           right: 'الأطراف اليمنى', mid: 'منتصفات الفترات', integral: 'التكامل', fit: 'ملاءمة الرسم',
@@ -43,7 +43,7 @@
           order: 'يجب أن يكون أ أصغر من ب.', loading: 'جارٍ تحميل جيوجبرا…',
           failed: 'تعذّر تحميل جيوجبرا. تحقّق من الاتصال وأعد تحميل الصفحة.',
           help: 'اكتب الاقتران بالإنجليزية: x^2 + 1، sin(x)، sqrt(x)، exp(x)، ln(x)، abs(x).',
-          othersum: 'مجاميع الأطراف والمنتصفات', settings: 'الإعدادات', nmax: 'أكبر قيمة لـ ن على المؤشر', curve: 'منحنى الاقتران', colors: 'الألوان' }
+          othersum: 'مجاميع الأطراف والمنتصفات', playN: 'تشغيل: زيادة ن خطوة خطوة', settings: 'الإعدادات', nmax: 'أكبر قيمة لـ ن على المؤشر', curve: 'منحنى الاقتران', colors: 'الألوان' }
   };
 
   // Default colours: upper sum blue, lower sum orange (as on the other Riemann pages), other sums green.
@@ -66,6 +66,7 @@
     '.ggb-riemann input.gr-f, .ggb-riemann input[type=number] { direction: ltr; text-align: left;' +
     '  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }' +
     '.ggb-riemann input[type=range] { padding: 0; border: 0; }' +
+    '.ggb-riemann .gr-slide { display: flex; gap: 8px; align-items: center; } .ggb-riemann .gr-slide input { flex: 1; }' +
     '.ggb-riemann .gr-help { font-size: 13px; color: var(--muted, #5b6470); margin-top: 3px; }' +
     '.ggb-riemann .gr-msg { min-height: 1.4em; font-size: 14px; color: #b42318; }' +
     '.ggb-riemann .gr-graph { width: 100%; direction: ltr; border: 1px solid var(--rule, #e3e0d8); border-radius: 4px;' +
@@ -78,7 +79,7 @@
     '.ggb-riemann .gr-set input[type=number] { width: 7em; }' +
     '.ggb-riemann .gr-set input[type=color] { width: 3em; height: 2em; padding: 0; cursor: pointer; }' +
     '.ggb-riemann button { font: inherit; font-size: 14px; padding: 4px 10px; border: 1px solid var(--rule, #d0ccc2);' +
-    '  border-radius: 4px; background: var(--bg, #fff); color: inherit; cursor: pointer; }' +
+    '  border-radius: 4px; background: var(--bg, #fff); color: inherit; cursor: pointer; white-space: nowrap; }' +
     '@media (max-width: 600px) { .ggb-riemann .gr-controls { grid-template-columns: 1fr; } }';
   document.head.appendChild(css);
 
@@ -115,7 +116,9 @@
       '    <div class="gr-help">' + T.help + '</div></div>' +
       '  <div><label>' + T.a + '</label><input class="gr-a" type="number" step="any"></div>' +
       '  <div><label>' + T.b + '</label><input class="gr-b" type="number" step="any"></div>' +
-      '  <div><label>' + T.n + '<span class="gr-nv"></span></label><input class="gr-n" type="range" min="1"></div>' +
+      '  <div><label>' + T.n + '<span class="gr-nv"></span></label><div class="gr-slide">' +
+      '    <button type="button" class="gr-play" title="' + T.playN + '">▶</button>' +
+      '    <input class="gr-n" type="range" min="1"></div></div>' +
       '  <div><label>' + T.sum + '</label><select class="gr-sum">' +
       ['both', 'lower', 'upper', 'left', 'right', 'mid'].map(function (k) {
         return '<option value="' + k + '">' + T[k] + '</option>';
@@ -272,7 +275,22 @@
     inF.addEventListener('input', soon);
     inA.addEventListener('input', soon);
     inB.addEventListener('input', soon);
-    inN.addEventListener('input', function () { update(false); });
+    inN.addEventListener('input', function () { stopPlay(); update(false); });
+    // ▶ next to n: n goes up one step at a time to the slider's maximum (from 1 if already there).
+    var play = $('.gr-play'), playTimer = null;
+    function stopPlay() { if (playTimer) { clearInterval(playTimer); playTimer = null; play.textContent = '▶'; } }
+    play.addEventListener('click', function () {
+      if (playTimer) return stopPlay();
+      if (+inN.value >= +inN.max) inN.value = 1;
+      play.textContent = '■';
+      update(false);
+      var delay = Math.max(60, Math.min(500, 6000 / +inN.max));   // about 6 seconds for the whole slider
+      playTimer = setInterval(function () {
+        if (+inN.value >= +inN.max) return stopPlay();
+        inN.value = +inN.value + 1;
+        update(false);
+      }, delay);
+    });
     inSum.addEventListener('change', function () { update(false); });
     $('.gr-fit').addEventListener('click', function () { if (api) fit(); });
     // Settings: the slider's maximum, and the colours.

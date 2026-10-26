@@ -73,7 +73,7 @@
            font-family: Inter, sans-serif; font-size: 13px; color: var(--muted); }
   @media (max-width: 600px) { body { font-size: 17px; } h1 { font-size: 28px; } }
 </style>
-<script src="ggb-volume.js?v=2" defer></script>
+<script src="ggb-volume.js?v=4" defer></script>
 </head>
 <body>
 
@@ -105,9 +105,10 @@
 
   <h2>Try it</h2>
   <p>
-    Enter a function and an interval, then press <em>Rotate</em> or move the angle slider to turn the region.
-    Increase the number of discs $n$ and watch their total approach the volume. Drag the picture to look at
-    the solid from any side, and zoom with the mouse wheel or two fingers.
+    Enter a function and an interval. Press ▶ next to the angle (or move the slider) to turn the region; the
+    flat faces where the solid is cut show its cross-section: the region itself, and the rectangles that
+    make the discs. Press ▶ next to $n$ to add discs one at a time and watch their total approach the volume.
+    Drag the picture to look at the solid from any side, and zoom with the mouse wheel or two fingers.
   </p>
 
   <div class="ggb-volume" data-lang="en" data-f="x" data-a="0" data-b="3" data-n="6"></div>
@@ -120,6 +121,42 @@
   \[ V = \pi \int_0^3 x^2\,dx = 9\pi \approx 28.27, \]
   <p>the same as the cone formula $\frac13 \pi r^2 h$. Try $\sqrt{x}$ on $[0,4]$ next: the discs give the exact
   volume $8\pi$ for every $n$. Can you explain why?</p>
+
+  <h2>Between two curves, about any horizontal line</h2>
+  <p>
+    The same idea works for the region between two curves $g(x) \le y \le f(x)$, turned about a horizontal line
+    $y = c$. Each piece now sweeps out a <em>washer</em>: a disc with a hole. If $R$ and $r$ are the distances
+    from the axis to the farther and the nearer curve, the washer has volume $\pi (R^2 - r^2)\,\Delta x$, and
+  </p>
+  \[ V = \pi \int_a^b \left(R(x)^2 - r(x)^2\right) dx. \]
+  <p>
+    Below, $f(x) = x + 1$ and $g(x) = \sin x$ on $[1, 3.8]$ are turned about the line $y = -1$ (the dashed red
+    line). Change the axis in the menu: a horizontal line $y = c$ gives washers, a vertical line $x = c$ gives shells.
+  </p>
+
+  <div class="ggb-volume" data-lang="en" data-f="x + 1" data-g="sin(x)" data-axis="horizontal" data-c="-1"
+       data-a="1" data-b="3.8" data-n="6"></div>
+
+  <h2>The shell method</h2>
+  <p>
+    Now turn the region about the $y$-axis instead (with $0 \le a < b$). Cut $[a,b]$ into $n$ pieces at the points
+    $x_0 = a < x_1 < \dots < x_n = b$. The $k$-th strip, of height $f(m_k)$, sweeps out a <em>cylindrical shell</em>:
+    a tube with inner radius $x_{k-1}$, outer radius $x_k$ and height $f(m_k)$. Its volume is
+  </p>
+  \[ \pi\left(x_k^2 - x_{k-1}^2\right) f(m_k) = 2\pi\, m_k f(m_k)\,\Delta x, \]
+  <p>
+    because $x_k^2 - x_{k-1}^2 = (x_k + x_{k-1})(x_k - x_{k-1}) = 2 m_k\,\Delta x$. Adding the shells gives a Riemann
+    sum for $2\pi x f(x)$, so
+  </p>
+  \[ V = 2\pi \int_a^b x\, f(x)\,dx. \]
+
+  <div class="ggb-volume" data-lang="en" data-axis="vertical" data-c="0" data-f="2x - x^2" data-a="0" data-b="2" data-n="6"></div>
+
+  <p>
+    For $f(x) = 2x - x^2$ on $[0,2]$ (the example above), $V = 2\pi \int_0^2 x(2x - x^2)\,dx = \frac{8\pi}{3} \approx 8.378$.
+    In every picture, the axis menu switches between turning about a horizontal line (discs and washers) and
+    a vertical line (shells), so you can compare the two ways of cutting the same region.
+  </p>
 
   <p class="lang-link"><a href="volume-ar.html">النسخة العربية من هذه الصفحة</a></p>
 </main>

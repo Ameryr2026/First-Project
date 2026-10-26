@@ -50,6 +50,7 @@
                    jo: { sg: 'تكامل محدد', def: 'التكامل المحدد', pl: 'تكاملات محددة', g: 'm' } },
     'volume':    { en: 'volume',         jo: { sg: 'حجم', pl: 'أحجام', g: 'm' } },
     'disc':      { en: 'disc',           jo: { sg: 'قرص', pl: 'أقراص', g: 'm' } },
+    'shell':     { en: 'cylindrical shell', jo: { sg: 'قشرة أسطوانية', def: 'القشرة الأسطوانية', pl: 'قشرات أسطوانية', g: 'f' } },
     'solid-of-revolution': { en: 'solid of revolution',
                    jo: { sg: 'مجسّم دوراني', def: 'المجسّم الدوراني', pl: 'مجسّمات دورانية', g: 'm' } }
   };

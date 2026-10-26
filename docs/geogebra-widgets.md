@@ -64,16 +64,47 @@ Load the script once in the page's `<head>`, then put a `<div>` where the widget
 | `data-lang` | `ar` for Arabic labels | the page's language |
 | `data-height` | height of the graph in pixels | 460 |
 
-**Volume of revolution** (`notes/ggb-volume.js`), about the x-axis by discs:
+**Volumes of revolution** (`notes/ggb-volume.js`): the region between two curves, turned about a horizontal
+line (discs and washers) or a vertical line (shells). The axis is drawn as a dashed line; the solid and the
+pieces turn with the angle slider, and the flat faces where they are cut show the cross-sections. ▶ next to
+$n$ adds pieces one at a time; ▶ next to the angle turns the region.
 
 ```html
-<script src="ggb-volume.js?v=2" defer></script>
+<script src="ggb-volume.js?v=4" defer></script>
 …
-<div class="ggb-volume" data-f="x" data-a="0" data-b="3" data-n="6"></div>
+<div class="ggb-volume" data-f="x" data-a="0" data-b="3"></div>                          <!-- discs about the x-axis -->
+<div class="ggb-volume" data-f="x + 1" data-g="sin(x)" data-axis="horizontal" data-c="-1"
+     data-a="1" data-b="3.8"></div>                                                       <!-- washers about y = -1 -->
+<div class="ggb-volume" data-f="2x - x^2" data-axis="vertical" data-c="0"
+     data-a="0" data-b="2"></div>                                                         <!-- shells about the y-axis -->
 ```
 
-Same settings, with `data-nmax` (default 40, at most 200) and the colours `data-color-surface`,
-`data-color-discs`, `data-color-curve`.
+| Setting | Meaning | Default |
+|---|---|---|
+| `data-f`, `data-g` | the upper and the lower curve | `x`, `0` |
+| `data-a`, `data-b`, `data-n` | the interval and the number of pieces | 0, 3, 6 |
+| `data-axis` | `horizontal` (the axis is $y = c$) or `vertical` ($x = c$) | `horizontal` |
+| `data-c` | where the axis is | 0 |
+| `data-angle` | the starting angle in degrees; below 360 the cut is visible | 270 |
+| `data-nmax` | largest $n$ on the slider (up to 200) | 40 |
+| `data-color-surface`, `-discs`, `-curve`, `-axis` | colours as `#rrggbb` | blue, orange, black, red |
+| `data-lang`, `data-height` | as above | |
+
+For shells, the vertical axis must not pass through the region ($c \le a$ or $c \ge b$); the widget says so
+if it does.
+
+**How the volume widget builds its pieces.** Each disc, washer or shell is built from GeoGebra `Surface`s,
+not from the `Cylinder` command, so it can be turned by any angle like the solid: the curved sides, the two
+flat ends, and the flat cut faces (`Polygon`s). All of them use one formula for turning a point
+$(X, Y)$ of the plane by an angle $\theta$ about the axis:
+
+```
+about y = c:   (X,  c + (Y − c) cos θ,  (Y − c) sin θ)
+about x = c:   (c + (X − c) cos θ,  Y,  (X − c) sin θ)
+```
+
+This is the function `rot()` near the top of `ggb-volume.js`; to add another kind of axis, add its formula
+there.
 
 Several widgets can be on one page. Readers can change the slider's maximum and the colours themselves
 under "Settings".
@@ -99,18 +130,22 @@ commands, and the best place to learn them is GeoGebra itself:
 3. Change `n` (double-click it, or make it a slider) and watch `U` change. This is exactly what the widget
    does; the widget only adds our own input boxes.
 
-The volume widget, typed the same way in the 3D calculator:
+The volume widget's discs about the x-axis, typed the same way in the 3D calculator:
 
 ```
 f(x) = x
 a = 0
 b = 3
 n = 6
-t = 2pi
-surf = Surface(u, f(u) cos(v), f(u) sin(v), u, a, b, v, 0, t)
-discs = Sequence(Cylinder((a + (k-1)(b-a)/n, 0, 0), (a + k(b-a)/n, 0, 0), abs(f(a + (k-0.5)(b-a)/n))), k, 1, n)
+t = 3pi/2
+mk(j) = a + (j - 0.5) (b - a) / n
+xk(j) = a + j (b - a) / n
+solid = Surface(u, f(u) cos(v), f(u) sin(v), u, a, b, v, 0, t)
+discs = Sequence(Surface(u, f(mk(k)) cos(v), f(mk(k)) sin(v), u, xk(k - 1), xk(k), v, 0, t), k, 1, n)
 V = pi Integral(f(x)^2, a, b)
 ```
+
+Make `t` and `n` sliders and move them: the solid and the sides of the discs turn together.
 
 When a command works in the calculator, it will work in a widget. The full list of commands, each with
 examples: <https://geogebra.github.io/docs/manual/en/commands/>.
@@ -193,8 +228,8 @@ Suppose you want **the trapezoid rule**.
 For 3D, start from `ggb-volume.js` instead: it uses `appName: '3d'` and `perspective: 'T'`.
 
 **Ideas that fit this pattern well:** trapezoid and Simpson's rule; the tangent line and the secant line
-approaching it; Taylor polynomials of increasing degree; the area between two curves; shells for volumes
-about the y-axis (`Surface` about another line, and `Cylinder`s around it); slope fields with `SlopeField`.
+approaching it; Taylor polynomials of increasing degree; the area between two curves; slope fields with
+`SlopeField`; surface area of revolution (the same `rot()` surfaces, with frustums instead of discs).
 
 ---
 
