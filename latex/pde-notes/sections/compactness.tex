@@ -1,0 +1,76 @@
+% Compactness: Rellich–Kondrachov and Aubin–Lions
+% Converted from notes/pde/compactness.html. Edit freely: this file is now the master copy.
+
+\section{Compactness: Rellich--Kondrachov and Aubin--Lions}\label{p:compactness}
+
+\prereqs{Sobolev embeddings~(\S\ref{p:sobolev-embedding}), Spaces of time-dependent functions~(\S\ref{p:bochner-spaces}), Weak and weak* convergence~(\S\ref{p:weak-convergence})}
+
+\subsection*{The idea}
+
+Weak convergence cannot pass limits through nonlinear terms, so one needs strong convergence of at least one factor. Compactness theorems give it: a bound on derivatives makes a bounded set precompact in a weaker norm. In space this is Rellich--Kondrachov; in space--time it is Aubin--Lions, which needs a bound on the time derivative as well.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Rellich--Kondrachov}
+Let $\Omega\subset\R^n$ be bounded with Lipschitz boundary and $1\le p< n$. Then $W^{1,p}(\Omega)$ embeds compactly in $L^q(\Omega)$ for every $1\le q< p^*$. For $p\ge n$ the embedding into $L^q$ is compact for every $q< \infty$.
+\end{thmbox}
+
+\begin{thmbox}{Aubin--Lions (Simon's form)}
+Let $X_0\subset X\subset X_1$ be Banach spaces with $X_0\subset X$ compact and $X\subset X_1$ continuous. Let $F$ be bounded in $L^p(0,T;X_0)$ with $\{\partial_t f: f\in F\}$ bounded in $L^r(0,T;X_1)$.
+
+\begin{itemize}
+\item If $1\le p< \infty$ and $r\ge1$, then $F$ is relatively compact in $L^p(0,T;X)$.
+\item If $p=\infty$ and $r> 1$, then $F$ is relatively compact in $C([0,T];X)$.
+\end{itemize}
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+A bound on $\nabla u$ prevents fast oscillation in space, and fast oscillation is exactly what weak convergence loses (the $\sin(nx)$ example on the weak convergence~(\S\ref{p:weak-convergence}) page has $\norm{\nabla u_n}\to\infty$). A bound on $u_t$, even in a very weak space, prevents oscillation in time. With both, no oscillation is left, and weak convergence improves to strong. The art is in finding which quantity has a time derivative bound: for compressible flow it is the momentum $\rho u$, not $u$.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Rellich in one dimension. Let $(u_n)$ be bounded in $H^1_0(0,1)$, $u_n = \sum_k a_k^{(n)}\sqrt2\sin(k\pi x)$. Show $\sum_{k> N}|a_k^{(n)}|^2 \le \frac{M}{N^2\pi^2}$ uniformly in $n$, and use this to extract a subsequence converging in $L^2$.
+  \begin{hint}
+    $\norm{u_n'}_{L^2}^2 = \sum_k k^2\pi^2|a_k^{(n)}|^2 \le M$. Choose a subsequence along which each coefficient converges (diagonal argument); the tails are uniformly small, so the subsequence is Cauchy in $L^2$.
+  \end{hint}
+  \begin{solution}
+    The functions $\sqrt2\sin(k\pi x)$ and $\sqrt2\cos(k\pi x)$, $k \ge 1$, are orthonormal in $L^2(0,1)$. For $u \in H^1_0$, integration by parts (using $u(0) = u(1) = 0$) gives $(u', \sqrt2\cos(k\pi x)) = k\pi a_k$, so Bessel's inequality yields $\sum_kk^2\pi^2a_k^2 \le \norm{u'}^2$. If $\norm{u_n'}^2 \le M$ for all $n$, then
+
+    \[ \sum_{k> N}|a_k^{(n)}|^2 \le \frac{1}{N^2\pi^2}\sum_kk^2\pi^2|a_k^{(n)}|^2 \le \frac{M}{N^2\pi^2}. \]
+
+    Each sequence $(a_k^{(n)})_n$ is bounded, so a diagonal argument gives a subsequence along which $a_k^{(n)}$ converges for every $k$. Along it, $\norm{u_n - u_m}_{L^2}^2 \le \sum_{k\le N}|a_k^{(n)} - a_k^{(m)}|^2 + \frac{4M}{N^2\pi^2}$. Choose $N$ to make the last term small, then $n, m$ large: the subsequence is Cauchy in $L^2$, hence convergent.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Why a time-derivative bound is needed. Let $w \in H^1_0(\Omega)$, $w \ne 0$, and $u_n(x,t) = \sin(nt)w(x)$. Show $(u_n)$ is bounded in $L^2(0,T;H^1_0)$ but has no subsequence converging in $L^2(0,T;L^2)$. What happens to $\partial_t u_n$?
+  \begin{hint}
+    In time this is the $\sin(nt)$ example: weak limit $0$, norm bounded below. $\partial_t u_n = n\cos(nt)w$ is unbounded in every $L^r(0,T;X_1)$.
+  \end{hint}
+  \begin{solution}
+    $\norm{u_n}_{L^2(0,T;H^1_0)}^2 = \norm{w}_{H^1}^2\int_0^T\sin^2(nt)\,dt \le T\norm{w}_{H^1}^2$: bounded. For $g \in L^2(0,T;L^2)$, $\int_0^T\!\!\int u_ng = \int_0^T\sin(nt)(w, g(t))\,dt \to 0$ (the $\sin(nx)$ argument in time), so any strong limit of a subsequence would be $0$. But $\norm{u_n}_{L^2(0,T;L^2)}^2 = \norm{w}_{L^2}^2\int_0^T\sin^2(nt)\,dt \to \frac T2\norm{w}_{L^2}^2 \ne 0$. Meanwhile $\partial_tu_n = n\cos(nt)w$ has norm of order $n$ in every $L^r(0,T;X_1)$: the hypothesis of Aubin--Lions fails exactly here.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Compactness fails at the critical exponent. For $u \in C_c^\infty(B_1)$, $p < n$, let $u_\lambda(x) = \lambda^{(n-p)/p}u(\lambda x)$. Show $\norm{\nabla u_\lambda}_{L^p}$ and $\norm{u_\lambda}_{L^{p^*}}$ do not depend on $\lambda$, and conclude that $W^{1,p}_0(B_1) \subset L^{p^*}(B_1)$ is not compact.
+  \begin{hint}
+    Change variables. As $\lambda \to \infty$ the supports shrink to the origin, so any limit in $L^{p^*}$ would be $0$, but the norms stay equal to $\norm{u}_{L^{p^*}} \ne 0$.
+  \end{hint}
+  \begin{solution}
+    $\nabla u_\lambda(x) = \lambda^{\frac{n-p}{p}+1}(\nabla u)(\lambda x) = \lambda^{n/p}(\nabla u)(\lambda x)$, so $\norm{\nabla u_\lambda}_{L^p}^p = \lambda^n\lambda^{-n}\norm{\nabla u}_{L^p}^p$. With $p^* = \frac{np}{n-p}$, $\norm{u_\lambda}_{L^{p^*}}^{p^*} = \lambda^{\frac{n-p}{p}p^*}\lambda^{-n}\norm{u}_{L^{p^*}}^{p^*} = \lambda^n\lambda^{-n}\norm{u}_{L^{p^*}}^{p^*}$. Both are independent of $\lambda$.
+
+    For $\lambda \ge 1$, $\operatorname{supp}u_\lambda \subset B_{1/\lambda}$, so $(u_\lambda)$ is bounded in $W^{1,p}_0(B_1)$. If the embedding were compact, some $u_{\lambda_k}$ with $\lambda_k \to \infty$ would converge in $L^{p^*}$, and a further subsequence a.e., to some $g$. For each $x \ne 0$, $u_{\lambda_k}(x) = 0$ once $\lambda_k > 1/|x|$, so $g = 0$; but $\norm{u_{\lambda_k}}_{L^{p^*}} = \norm{u}_{L^{p^*}} \ne 0$. Contradiction.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §5.7 (Rellich--Kondrachov).
+\item J. Simon, Compact sets in the space $L^p(0,T;B)$, \emph{Ann. Mat. Pura Appl.} 146 (1987) 65--96, Corollary 4.
+\end{itemize}
+
+\neededfor{Lions--Feireisl theory for compressible flow~(\S\ref{p:lions-feireisl})}

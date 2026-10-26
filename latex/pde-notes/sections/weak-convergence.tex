@@ -1,0 +1,73 @@
+% Weak and weak* convergence
+% Converted from notes/pde/weak-convergence.html. Edit freely: this file is now the master copy.
+
+\section{Weak and weak* convergence}\label{p:weak-convergence}
+
+\prereqs{Weak derivatives and Sobolev spaces~(\S\ref{p:sobolev-spaces})}
+
+\subsection*{The idea}
+
+Estimates give bounds, and bounds give convergent subsequences only in weak topologies. Almost every existence proof ends with "extract a weakly convergent subsequence and show the limit solves the equation". The hard part is always that weak limits do not commute with nonlinear functions.
+
+\subsection*{Statement}
+
+\begin{defnbox}{Definition}
+$u_n \weakto u$ weakly in a Banach space $X$ if $f(u_n)\to f(u)$ for every $f \in X^*$. If $X = Y^*$, $u_n \weakstarto u$ weak* if $u_n(y) \to u(y)$ for every $y \in Y$.
+\end{defnbox}
+
+\begin{thmbox}{Theorem (compactness in weak topologies)}
+(i) In a reflexive Banach space, every bounded sequence has a weakly convergent subsequence. (ii) If $Y$ is a separable Banach space, every bounded sequence in $Y^*$ has a weak* convergent subsequence. (iii) Norms are weakly lower semicontinuous: $u_n \weakto u$ implies $\norm{u} \le \liminf \norm{u_n}$.
+\end{thmbox}
+
+Typical use: $L^p(0,T;X)$ is reflexive for $1< p< \infty$ and $X$ reflexive; $L^\infty(0,T;X)$ is the dual of $L^1(0,T;X^*)$ when $X$ is reflexive and separable, which is where the weak* limits of energy bounds live.
+
+\subsection*{Why it is plausible}
+
+The standard example: $u_n(x) = \sin(nx)$ on $(0,2\pi)$ converges weakly to $0$ in $L^2$ (it oscillates faster and faster, so its integral against any fixed function vanishes), but $u_n^2 \weakto \frac12 \ne 0^2$. Weak convergence keeps averages and loses oscillations, so $\lim f(u_n) \ne f(\lim u_n)$ in general. Every nonlinear term in an equation must be handled with an extra argument: some strong convergence, or a structure that survives weak limits.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Show that $u_n(x) = \sin(nx) \weakto 0$ in $L^2(0,2\pi)$ and that $u_n^2 \weakto \frac12$, but that $u_n$ has no strongly convergent subsequence.
+  \begin{hint}
+    For $\varphi \in C_c^\infty(0,2\pi)$, integrate by parts: $|\int \sin(nx)\varphi| \le \frac1n\int|\varphi'|$. Extend to all $\varphi \in L^2$ by density, using $\norm{u_n}_{L^2} = \sqrt\pi$ for every $n$. For the squares use $\sin^2(nx) = \frac12 - \frac12\cos(2nx)$. A strong limit would have to be the weak limit $0$, but the norms stay $\sqrt\pi$.
+  \end{hint}
+  \begin{solution}
+    For $\varphi \in C_c^\infty(0,2\pi)$, integration by parts gives $\int \sin(nx)\varphi\,dx = \frac1n\int\cos(nx)\varphi'\,dx$, so $|\int\sin(nx)\varphi| \le \frac1n\norm{\varphi'}_{L^1} \to 0$. For general $f \in L^2$ and $\varepsilon > 0$, choose $\varphi$ with $\norm{f - \varphi}_{L^2} < \varepsilon$. Since $\norm{u_n}_{L^2}^2 = \int_0^{2\pi}\sin^2(nx)\,dx = \pi$,
+
+    \[ \Big|\int u_n f\Big| \le \Big|\int u_n\varphi\Big| + \norm{u_n}_{L^2}\norm{f - \varphi}_{L^2} \le \Big|\int u_n\varphi\Big| + \sqrt\pi\,\varepsilon, \]
+
+    so $\limsup|\int u_nf| \le \sqrt\pi\,\varepsilon$ for every $\varepsilon$: $u_n \weakto 0$. The same argument gives $\cos(2nx) \weakto 0$, and $\sin^2(nx) = \frac12 - \frac12\cos(2nx) \weakto \frac12$.
+
+    If a subsequence converged strongly in $L^2$ to some $g$, it would also converge weakly to $g$, so $g = 0$; but its norms are all $\sqrt\pi$, not tending to $0$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  In a Hilbert space, prove from the definition that $u_n \weakto u$ implies $\norm{u} \le \liminf\norm{u_n}$. Give an example where the inequality is strict.
+  \begin{hint}
+    $\norm{u}^2 = \lim (u_n, u) \le \liminf \norm{u_n}\,\norm{u}$. The sequence of Exercise 1 is an example.
+  \end{hint}
+  \begin{solution}
+    The map $v \mapsto (v, u)$ is a bounded linear functional, so $(u_n, u) \to (u, u) = \norm{u}^2$. By Cauchy--Schwarz, $(u_n, u) \le \norm{u_n}\,\norm{u}$, hence $\norm{u}^2 \le \liminf_n\norm{u_n}\,\norm{u}$. If $u = 0$ there is nothing to prove; otherwise divide by $\norm{u}$. For $u_n = \sin(nx)$ in $L^2(0,2\pi)$: $\norm{0} = 0 < \sqrt\pi = \liminf\norm{u_n}$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  In a Hilbert space, show that $u_n \weakto u$ together with $\norm{u_n} \to \norm{u}$ implies $u_n \to u$ strongly. This is the pattern behind every "weak convergence plus convergence of the norm" argument.
+  \begin{hint}
+    Expand $\norm{u_n - u}^2 = \norm{u_n}^2 - 2(u_n, u) + \norm{u}^2$ and let $n \to \infty$.
+  \end{hint}
+  \begin{solution}
+    $\norm{u_n - u}^2 = \norm{u_n}^2 - 2(u_n, u) + \norm{u}^2 \to \norm{u}^2 - 2\norm{u}^2 + \norm{u}^2 = 0$, using $\norm{u_n} \to \norm{u}$ and $(u_n, u) \to \norm{u}^2$ (weak convergence tested against $u$).
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item H. Brezis, \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations}, Springer, 2011, Chapter 3.
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, Appendix D.4.
+\end{itemize}
+
+\neededfor{The Faedo--Galerkin method~(\S\ref{p:galerkin}), Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness})}

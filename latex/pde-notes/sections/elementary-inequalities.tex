@@ -1,0 +1,90 @@
+% Hölder, Young, and Lᵖ interpolation
+% Converted from notes/pde/elementary-inequalities.html. Edit freely: this file is now the master copy.
+
+\section{Hölder, Young, and L\textsuperscript{\textit{p}} interpolation}\label{p:elementary-inequalities}
+
+\subsection*{The idea}
+
+Three inequalities do most of the bookkeeping in every estimate: Hölder splits an integral of a product into norms, Young splits a product of numbers into a sum (so that one piece can be absorbed into the left-hand side), and interpolation bounds an intermediate $L^p$ norm by two others.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Hölder}
+If $1 \le p, q, r \le \infty$ with $\frac1p + \frac1q = \frac1r$, then $\norm{fg}_{L^r} \le \norm{f}_{L^p}\norm{g}_{L^q}$.
+\end{thmbox}
+
+\begin{thmbox}{Young}
+If $1 < p, q < \infty$ with $\frac1p + \frac1q = 1$ and $a, b \ge 0$, then $ab \le \frac{a^p}{p} + \frac{b^q}{q}$. With a parameter: for every $\varepsilon > 0$, $ab \le \varepsilon a^p + C(\varepsilon) b^q$, and in particular $ab \le \varepsilon a^2 + \frac{1}{4\varepsilon} b^2$ ("Cauchy's inequality with $\varepsilon$").
+\end{thmbox}
+
+\begin{thmbox}{Interpolation of L\textsuperscript{\textit{p}} norms}
+If $1 \le p \le r \le q \le \infty$ and $\frac1r = \frac{\eta}{p} + \frac{1-\eta}{q}$ with $\eta\in[0,1]$, then $\norm{f}_{L^r} \le \norm{f}_{L^p}^{\eta}\norm{f}_{L^q}^{1-\eta}$.
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+The pattern to recognize: a bad term $\int |\nabla u|\,|F|$ is bounded by Hölder, then by $\varepsilon\norm{\nabla u}_{L^2}^2 + C(\varepsilon)\norm{F}_{L^2}^2$ by Young, and the first piece is moved to the left-hand side, where the dissipation $\mu\norm{\nabla u}_{L^2}^2$ absorbs it. Interpolation is how a conserved low norm (like the mass $\norm{\rho}_{L^1}$) and an energy norm (like $\norm{\rho}_{L^\gamma}$) together control the norm a term actually needs; the exponent $\eta$ is fixed by matching the reciprocals, which is just a weighted average.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Prove Young's inequality $ab \le \frac{a^p}{p} + \frac{b^q}{q}$ from the concavity of $\log$. Then deduce $ab \le \varepsilon a^2 + \frac{1}{4\varepsilon}b^2$.
+  \begin{hint}
+    For $a, b > 0$: $\log\big(\frac1p a^p + \frac1q b^q\big) \ge \frac1p\log a^p + \frac1q\log b^q = \log(ab)$. For the second inequality, apply the case $p = q = 2$ to the product $(\sqrt{2\varepsilon}\,a)(b/\sqrt{2\varepsilon})$.
+  \end{hint}
+  \begin{solution}
+    If $a = 0$ or $b = 0$ there is nothing to prove. Otherwise, $\log$ is concave on $(0,\infty)$, so with $\theta = \frac1p$, $1 - \theta = \frac1q$:
+
+    \[ \log\Big(\frac{a^p}{p} + \frac{b^q}{q}\Big) \ge \frac1p\log a^p + \frac1q\log b^q = \log a + \log b = \log(ab). \]
+
+    Exponentiate. For the version with $\varepsilon$, apply the case $p = q = 2$ to $(\sqrt{2\varepsilon}\,a)(b/\sqrt{2\varepsilon})$: $ab \le \frac12(2\varepsilon a^2) + \frac12\frac{b^2}{2\varepsilon} = \varepsilon a^2 + \frac{b^2}{4\varepsilon}$. In general, $ab = \big((\varepsilon p)^{1/p}a\big)\big((\varepsilon p)^{-1/p}b\big) \le \varepsilon a^p + C(\varepsilon)b^q$ with $C(\varepsilon) = \frac{(\varepsilon p)^{-q/p}}{q}$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Prove the interpolation inequality $\norm{f}_{L^r} \le \norm{f}_{L^p}^{\eta}\norm{f}_{L^q}^{1-\eta}$ (for $q < \infty$) from Hölder's inequality.
+  \begin{hint}
+    Write $|f|^r = |f|^{\eta r}\,|f|^{(1-\eta)r}$ and apply Hölder with exponents $\frac{p}{\eta r}$ and $\frac{q}{(1-\eta)r}$. They are conjugate exactly because $\frac{\eta r}{p} + \frac{(1-\eta)r}{q} = 1$, which is the defining relation for $\eta$.
+  \end{hint}
+  \begin{solution}
+    If $\eta \in \{0,1\}$ then $r = q$ or $r = p$ and there is nothing to prove. Otherwise set $P = \frac{p}{\eta r}$ and $Q = \frac{q}{(1-\eta)r}$. Then $\frac1P + \frac1Q = r\big(\frac\eta p + \frac{1-\eta}{q}\big) = r\cdot\frac1r = 1$, and Hölder gives
+
+    \[ \int|f|^r = \int|f|^{\eta r}|f|^{(1-\eta)r} \le \Big(\int|f|^p\Big)^{\eta r/p}\Big(\int|f|^q\Big)^{(1-\eta)r/q}
+             = \norm{f}_{L^p}^{\eta r}\norm{f}_{L^q}^{(1-\eta)r}. \]
+
+    Take the $r$-th root.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Let $\rho \ge 0$ with $\int_\Omega \rho = m$, and $\gamma > 2$. Find $\eta$ with $\norm{\rho}_{L^2} \le m^{\eta}\norm{\rho}_{L^\gamma}^{1-\eta}$. Check that $\eta \to 0$ as $\gamma \to 2$ and explain why.
+  \begin{hint}
+    Solve $\frac12 = \frac{\eta}{1} + \frac{1-\eta}{\gamma}$: $\eta = \frac{\gamma-2}{2(\gamma-1)}$. When $\gamma = 2$ the $L^\gamma$ norm is already the $L^2$ norm, so no help from the mass is needed.
+  \end{hint}
+  \begin{solution}
+    The relation is $\frac12 = \frac\eta1 + \frac{1-\eta}{\gamma}$, i.e. $\eta\big(1 - \frac1\gamma\big) = \frac12 - \frac1\gamma$, so
+
+    \[ \eta = \frac{\gamma-2}{2\gamma}\cdot\frac{\gamma}{\gamma-1} = \frac{\gamma-2}{2(\gamma-1)} \in (0,1). \]
+
+    Since $\rho \ge 0$, $\norm{\rho}_{L^1} = m$, and interpolation gives $\norm{\rho}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}$. As $\gamma \to 2$, $\eta \to 0$: the target space $L^2$ becomes the energy space $L^\gamma$ itself, so no weight on $L^1$ is needed.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Absorption. Suppose $X \ge 0$ satisfies $X^2 \le A + BX$ with $A, B \ge 0$. Show $X^2 \le 2A + B^2$. This is the step "move the term to the left-hand side" in every energy estimate.
+  \begin{hint}
+    By Young, $BX \le \frac12 X^2 + \frac12 B^2$. Substitute and subtract $\frac12 X^2$ from both sides.
+  \end{hint}
+  \begin{solution}
+    By Young, $BX \le \frac12X^2 + \frac12B^2$. Then $X^2 \le A + \frac12X^2 + \frac12B^2$, so $\frac12X^2 \le A + \frac12B^2$ and $X^2 \le 2A + B^2$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, Appendix B.2.
+\item H. Brezis, \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations}, Springer, 2011, Chapter 4.
+\end{itemize}
+
+\neededfor{Gagliardo--Nirenberg inequalities~(\S\ref{p:gagliardo-nirenberg}), Energy estimates and a priori bounds~(\S\ref{p:energy-estimates})}

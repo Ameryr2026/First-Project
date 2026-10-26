@@ -1,0 +1,74 @@
+\documentclass[11pt,openany]{book}
+\usepackage{pdenotes}
+\hypersetup{pdftitle={The Analysis of Nonlinear PDEs},pdfauthor={Amer Rawashdeh}}
+
+% To print each hint and solution right under its exercise (e.g. for a handout), uncomment:
+% \showsolutionsinline
+
+\begin{document}
+\frontmatter
+\begin{titlepage}\centering\vspace*{1.6in}
+{\Huge\bfseries The Analysis of Nonlinear PDEs\par}\vspace{14pt}
+{\Large Foundations and a case study\par}\vspace{40pt}
+{\large Amer Rawashdeh\par}\vspace{8pt}
+{\normalsize Draft, \today\par}\vfill
+\end{titlepage}
+
+\chapter*{Introduction}
+These pages explain how existence, uniqueness and regularity are proved for nonlinear partial differential equations, through complete worked examples. Textbooks teach the tools one at a time; papers use them without comment. Here each \textbf{case study} walks through a real argument, and every tool it uses links to a \textbf{concept page} with a precise statement, the intuition behind it, and a reference for the proof.
+
+You can start from a case study and follow the links back, or read the concept pages in order along the reading path below.
+
+\begin{rmkbox}{How to read this}
+Part~I follows the reading path layer by layer: each layer uses only the layers before it.
+Part~II is the case study. 17 of the 17 concept sections are still stubs (statement, intuition and a reference). Dashed boxes mark proofs still to be written.
+\end{rmkbox}
+
+\tableofcontents
+
+\mainmatter
+\part{Foundations}
+
+\chapter{The language: function spaces}
+\input{sections/sobolev-spaces}
+\input{sections/bochner-spaces}
+\input{sections/weak-convergence}
+
+\chapter{The inequality toolkit}
+\input{sections/elementary-inequalities}
+\input{sections/sobolev-embedding}
+\input{sections/gagliardo-nirenberg}
+\input{sections/gronwall}
+
+\chapter{Linear building blocks}
+\input{sections/elliptic-regularity}
+\input{sections/parabolic-regularity}
+\input{sections/transport-equation}
+
+\chapter{What ``solution'' means}
+\input{sections/notions-of-solution}
+
+\chapter{A priori estimates}
+\input{sections/energy-estimates}
+
+\chapter{Existence by approximation}
+\input{sections/galerkin}
+
+\chapter{Uniqueness}
+\input{sections/uniqueness-energy}
+
+\chapter{Global weak solutions}
+\input{sections/compactness}
+\input{sections/regularized-approximation}
+\input{sections/lions-feireisl}
+
+\part{Case studies}
+\input{sections/case-chemotaxis}
+
+\appendix
+\chapter{Hints to the exercises}
+\printhints
+\chapter{Solutions to the exercises}
+\printsolutions
+
+\end{document}

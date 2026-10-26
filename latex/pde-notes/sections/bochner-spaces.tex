@@ -1,0 +1,88 @@
+% Spaces of time-dependent functions
+% Converted from notes/pde/bochner-spaces.html. Edit freely: this file is now the master copy.
+
+\section{Spaces of time-dependent functions}\label{p:bochner-spaces}
+
+\prereqs{Weak derivatives and Sobolev spaces~(\S\ref{p:sobolev-spaces})}
+
+\subsection*{The idea}
+
+For an evolution equation we view a solution $u(x,t)$ as a curve $t \mapsto u(t)$ in a function space $X$. The notation $L^p(0,T;X)$ and $C([0,T];X)$ records how regular $u$ is in $x$ (through $X$) and in $t$ (through $L^p$ or $C$) separately. Definitions of solutions are written in this language.
+
+\subsection*{Statement}
+
+\begin{defnbox}{Definition}
+Let $X$ be a Banach space. $L^p(0,T;X)$ is the space of strongly measurable $u:(0,T)\to X$ with $\norm{u}_{L^p(0,T;X)} = \big(\int_0^T \norm{u(t)}_X^p\,dt\big)^{1/p} < \infty$ (essential supremum for $p=\infty$). $C([0,T];X)$ is the space of continuous $u:[0,T]\to X$ with the norm $\max_t \norm{u(t)}_X$. $u_t = v$ weakly if $\int_0^T u\,\varphi'\,dt = -\int_0^T v\,\varphi\,dt$ in $X$ for all $\varphi\in C_c^\infty(0,T)$.
+\end{defnbox}
+
+\begin{thmbox}{Theorem (gaining continuity in time)}
+If $u \in L^2(0,T;H^1_0(\Omega))$ and $u_t \in L^2(0,T;H^{-1}(\Omega))$, then $u \in C([0,T];L^2(\Omega))$ after modification on a set of measure zero, and $t\mapsto\norm{u(t)}_{L^2}^2$ is absolutely continuous with $\frac{d}{dt}\norm{u(t)}_{L^2}^2 = 2\langle u_t, u\rangle$ for a.e. $t$, where $\langle\cdot,\cdot\rangle$ is the pairing between $H^{-1}$ and $H^1_0$ (see Sobolev spaces~(\S\ref{p:sobolev-spaces})).
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+The theorem is what makes energy estimates legitimate: the formula $\frac{d}{dt}\frac12\norm{u}^2 = \langle u_t, u\rangle$ is exactly the step "multiply by $u$ and integrate", and it needs only that $u$ and $u_t$ live in dual spaces. Having $u$ in $H^1$ and $u_t$ in $H^{-1}$ puts $u$, on average, halfway between them in time, which is $L^2$.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Let $X$ be a Banach space, $v \in L^1(0,T;X)$, and $u(t) = \int_0^t v(s)\,ds$. Show that $u \in C([0,T];X)$ and that $u_t = v$ weakly.
+  \begin{hint}
+    Continuity: $\norm{u(t) - u(s)}_X \le \int_s^t \norm{v}_X$, which tends to $0$ as $t \to s$. Weak derivative: for $\varphi \in C_c^\infty(0,T)$ write $\int_0^T u\,\varphi'\,dt = \int_0^T \int_0^t v(s)\,ds\,\varphi'(t)\,dt$ and exchange the order of integration (Fubini for Bochner integrals); the inner integral becomes $\int_s^T \varphi' = -\varphi(s)$.
+  \end{hint}
+  \begin{solution}
+    \emph{Continuity.} For $s < t$, $\norm{u(t) - u(s)}_X = \norm{\int_s^t v(\tau)\,d\tau}_X \le \int_s^t \norm{v(\tau)}_X\,d\tau$. Since $\norm{v}_X \in L^1(0,T)$, the right side tends to $0$ as $t - s \to 0$ (absolute continuity of the integral). So $u$ is (uniformly) continuous into $X$.
+
+    \emph{Weak derivative.} For $\varphi \in C_c^\infty(0,T)$,
+
+    \[ \begin{aligned}
+             \int_0^T u(t)\varphi'(t)\,dt &= \int_0^T\!\!\int_0^t v(s)\,ds\,\varphi'(t)\,dt = \int_0^T v(s)\Big(\int_s^T\varphi'(t)\,dt\Big)ds \\
+             &= \int_0^T v(s)\big(\varphi(T) - \varphi(s)\big)ds = -\int_0^T v\varphi\,ds.
+             \end{aligned} \]
+
+    Exchanging the order is allowed because $\int_0^T\!\int_0^T \norm{v(s)}_X|\varphi'(t)|\,ds\,dt < \infty$ (Fubini holds for Bochner integrals). This is the definition of $u_t = v$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Let $w_k$ be the Dirichlet eigenfunctions of $-\Delta$ on $\Omega$, orthonormal in $L^2$, with eigenvalues $\lambda_k$, and let $u(t) = \sum_k a_k e^{-\lambda_k t} w_k$ be the solution of the heat equation with $u(0) = \sum_k a_k w_k \in L^2$. Show that $\int_0^T \norm{\nabla u(t)}_{L^2}^2\,dt \le \frac12\norm{u(0)}_{L^2}^2$. So $u \in L^2(0,T;H^1_0)$ even when $u(0) \notin H^1_0$.
+  \begin{hint}
+    The $w_k$ are orthogonal in $H^1_0$ too, with $\norm{\nabla w_k}_{L^2}^2 = \lambda_k$. So $\norm{\nabla u(t)}_{L^2}^2 = \sum_k \lambda_k a_k^2 e^{-2\lambda_k t}$, and integrating in $t$ gives $\sum_k a_k^2 \frac{1 - e^{-2\lambda_k T}}{2}$.
+  \end{hint}
+  \begin{solution}
+    For eigenfunctions, $(\nabla w_j, \nabla w_k) = (-\Delta w_j, w_k) = \lambda_j\delta_{jk}$, so the $w_k$ are orthogonal in $H^1_0$ with $\norm{\nabla w_k}_{L^2}^2 = \lambda_k$. For $t > 0$ the series for $u(t)$ converges in $H^1_0$, and
+
+    \[ \norm{\nabla u(t)}_{L^2}^2 = \sum_k \lambda_k a_k^2 e^{-2\lambda_k t}. \]
+
+    All terms are nonnegative, so integration and summation can be exchanged (monotone convergence):
+
+    \[ \int_0^T \norm{\nabla u}_{L^2}^2\,dt = \sum_k \lambda_k a_k^2\int_0^T e^{-2\lambda_kt}\,dt = \sum_k a_k^2\,\frac{1 - e^{-2\lambda_kT}}{2}
+             \le \frac12\sum_k a_k^2 = \frac12\norm{u(0)}_{L^2}^2. \]
+
+    This is finite for every $u(0) \in L^2$, while $u(0) \in H^1_0$ would need $\sum_k\lambda_k a_k^2 < \infty$. The heat equation gains a derivative on average in time.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Suppose $u \in L^2(0,T;H^1_0(\Omega))$, $u_t \in L^2(0,T;H^{-1}(\Omega))$, and $u_t = \Delta u$. Use the theorem above to show $\norm{u(t)}_{L^2}^2 + 2\int_0^t \norm{\nabla u}_{L^2}^2\,ds = \norm{u(0)}_{L^2}^2$. Deduce that this solution is determined by $u(0)$.
+  \begin{hint}
+    From Sobolev spaces~(\S\ref{p:sobolev-spaces}), $\langle \Delta u, u\rangle = -\norm{\nabla u}_{L^2}^2$. Integrate $\frac{d}{dt}\norm{u}_{L^2}^2 = 2\langle u_t, u\rangle$ from $0$ to $t$. For uniqueness, apply the identity to the difference of two solutions, which is again a solution, with zero initial value.
+  \end{hint}
+  \begin{solution}
+    The equation $u_t = \Delta u$ in $L^2(0,T;H^{-1})$ means $\langle u_t, v\rangle = -\int\nabla u\cdot\nabla v$ for $v \in H^1_0$ and a.e. $t$. By the theorem, $t \mapsto \norm{u(t)}_{L^2}^2$ is absolutely continuous with
+
+    \[ \frac{d}{dt}\norm{u(t)}_{L^2}^2 = 2\langle u_t, u\rangle = -2\norm{\nabla u(t)}_{L^2}^2 \quad\text{for a.e. } t. \]
+
+    Integrating from $0$ to $t$ gives $\norm{u(t)}_{L^2}^2 + 2\int_0^t\norm{\nabla u}_{L^2}^2 = \norm{u(0)}_{L^2}^2$.
+
+    If $u_1, u_2$ are two such solutions with the same initial value, $w = u_1 - u_2$ is again one (the equation is linear) with $w(0) = 0$. The identity gives $\norm{w(t)}_{L^2}^2 \le 0$, so $w \equiv 0$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §5.9 (the theorem is §5.9.2, Theorem 3).
+\end{itemize}
+
+\neededfor{Maximal regularity for parabolic equations~(\S\ref{p:parabolic-regularity}), Strong, weak, and renormalized solutions~(\S\ref{p:notions-of-solution}), The Faedo--Galerkin method~(\S\ref{p:galerkin}), Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness})}

@@ -1,0 +1,79 @@
+% Elliptic regularity: the Lamé system and the Neumann Laplacian
+% Converted from notes/pde/elliptic-regularity.html. Edit freely: this file is now the master copy.
+
+\section{Elliptic regularity: the Lamé system and the Neumann Laplacian}\label{p:elliptic-regularity}
+
+\prereqs{Weak derivatives and Sobolev spaces~(\S\ref{p:sobolev-spaces})}
+
+\subsection*{The idea}
+
+For an elliptic operator, knowing the operator applied to $u$ in $L^p$ gives all second derivatives of $u$ in $L^p$. In evolution problems this is used "frozen in time": rewrite the equation as (elliptic operator)$(u)$ = (everything else), and read off two derivatives of $u$ from bounds on everything else.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem (Lamé system, Dirichlet condition)}
+Let $\Omega\subset\R^3$ be bounded with smooth boundary, $\Lame u = \mu\Delta u+(\lambda+\mu)\nabla\dv u$ with $\mu> 0$ and $\lambda+2\mu> 0$, and $1< p< \infty$. If $u\in W^{1,p}_0(\Omega)$ and $\Lame u = F\in L^p$, then $u\in W^{2,p}(\Omega)$ and $\norm{u}_{W^{2,p}}\le C\norm{F}_{L^p}$, with $C$ depending on $\Omega, p, \mu, \lambda$.
+\end{thmbox}
+
+\begin{thmbox}{Theorem (Laplacian, Neumann condition)}
+If $\phi\in H^1(\Omega)$ is a weak solution of $-\Delta\phi = f\in L^2$ with $\partial_\nu\phi = 0$ on $\partial\Omega$, then $\phi\in H^2(\Omega)$ and $\norm{\phi}_{H^2}\le C(\norm{f}_{L^2}+\norm{\phi}_{L^2})$. The same holds in $W^{2,p}$ for $1< p< \infty$.
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+On all of $\R^n$ and for the Laplacian in $L^2$ this is integration by parts twice: $\int|\nabla^2 u|^2 = \int|\Delta u|^2$. The condition $\lambda+2\mu> 0$ is what makes the same identity work for the Lamé operator: it splits into $\mu\Delta$ on the divergence-free part of $u$ and $(\lambda+2\mu)\Delta$ on the gradient part, and both coefficients must be positive. In $L^p$ with $p\ne2$ the identity is replaced by Calderón--Zygmund theory, and near the boundary by flattening it; this is the hard part of the proof.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  For $u \in C_c^\infty(\R^n)$, prove $\int|\nabla^2 u|^2\,dx = \int|\Delta u|^2\,dx$.
+  \begin{hint}
+    Integrate by parts twice: $\int \partial_i\partial_j u\,\partial_i\partial_j u = -\int \partial_j u\,\partial_i\partial_i\partial_j u = \int \partial_j\partial_j u\,\partial_i\partial_i u$, summed over $i, j$.
+  \end{hint}
+  \begin{solution}
+    Sum over $i, j$ and integrate by parts first in $x_i$, then in $x_j$; there are no boundary terms because $u$ has compact support:
+
+    \[ \int|\nabla^2u|^2 = \sum_{i,j}\int\partial_i\partial_ju\,\partial_i\partial_ju = -\sum_{i,j}\int\partial_ju\,\partial_i\partial_i\partial_ju
+             = \sum_{i,j}\int\partial_j\partial_ju\,\partial_i\partial_iu = \int(\Delta u)^2. \]
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Where $\lambda + 2\mu > 0$ comes from. For $u \in C_c^\infty(\R^3;\R^3)$, show $-\int \Lame u\cdot u = \mu\int|\nabla\times u|^2 + (\lambda + 2\mu)\int(\dv u)^2$, using $\int|\nabla u|^2 = \int|\nabla\times u|^2 + \int(\dv u)^2$. Then explain why the right-hand side controls $\int|\nabla u|^2$ exactly when $\mu > 0$ and $\lambda + 2\mu > 0$.
+  \begin{hint}
+    Integrate by parts: $-\int \Lame u\cdot u = \mu\int|\nabla u|^2 + (\lambda+\mu)\int(\dv u)^2$, then substitute the identity. Test with a curl-free field ($u = \nabla\psi$) and with a divergence-free field to see that each coefficient must be positive.
+  \end{hint}
+  \begin{solution}
+    Integrating by parts, $-\int\Delta u\cdot u = \int|\nabla u|^2$ and $-\int\nabla\dv u\cdot u = \int(\dv u)^2$, so
+
+    \[ -\int\Lame u\cdot u = \mu\int|\nabla u|^2 + (\lambda+\mu)\int(\dv u)^2. \]
+
+    For compactly supported $u$, $-\Delta u = \nabla\times\nabla\times u - \nabla\dv u$; dotting with $u$ and integrating by parts gives $\int|\nabla u|^2 = \int|\nabla\times u|^2 + \int(\dv u)^2$. Substituting,
+
+    \[ -\int\Lame u\cdot u = \mu\int|\nabla\times u|^2 + (\lambda+2\mu)\int(\dv u)^2. \]
+
+    If $\mu > 0$ and $\lambda + 2\mu > 0$, this is at least $\min(\mu,\lambda+2\mu)\int|\nabla u|^2$. Conversely, take $u = \nabla\psi$ with $\psi \in C_c^\infty$: then $\nabla\times u = 0$ and the form equals $(\lambda+2\mu)\int(\Delta\psi)^2$, so $\lambda + 2\mu > 0$ is needed. Take $u = \nabla\times\Psi$: then $\dv u = 0$ and the form equals $\mu\int|\nabla\times u|^2$, so $\mu > 0$ is needed.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  The Neumann problem. Show that constants solve $-\Delta\phi = 0$ with $\partial_\nu\phi = 0$, so the estimate cannot hold without the term $\norm{\phi}_{L^2}$. Show also that $-\Delta\phi = f$ with the Neumann condition can have a solution only if $\int_\Omega f = 0$.
+  \begin{hint}
+    Integrate the equation over $\Omega$ and use the divergence theorem: $\int_\Omega \Delta\phi = \int_{\partial\Omega}\partial_\nu\phi = 0$.
+  \end{hint}
+  \begin{solution}
+    A constant $\phi = c$ has $\Delta\phi = 0$ and $\partial_\nu\phi = 0$. An estimate $\norm{\phi}_{H^2} \le C\norm{f}_{L^2}$ would give $\norm{c}_{H^2} \le 0$, false for $c \ne 0$; the term $\norm{\phi}_{L^2}$ is what accounts for constants.
+
+    If $-\Delta\phi = f$ with $\partial_\nu\phi = 0$, the divergence theorem gives $\int_\Omega f = -\int_\Omega\Delta\phi = -\int_{\partial\Omega}\partial_\nu\phi = 0$. So $\int f = 0$ is necessary. (It is also sufficient, and the solution is unique up to a constant.)
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §6.3 (H\textsuperscript{2} regularity for scalar equations, Dirichlet case).
+\item S. Agmon, A. Douglis, L. Nirenberg, Estimates near the boundary for solutions of elliptic partial differential equations satisfying general boundary conditions II, \emph{Comm. Pure Appl. Math.} 17 (1964) 35--92 (systems, including Lamé).
+\item D. Gilbarg, N. S. Trudinger, \emph{Elliptic Partial Differential Equations of Second Order}, Springer, Chapter 9 ($W^{2,p}$ estimates).
+\end{itemize}
+
+\neededfor{Maximal regularity for parabolic equations~(\S\ref{p:parabolic-regularity})}

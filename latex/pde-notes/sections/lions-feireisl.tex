@@ -1,0 +1,72 @@
+% Lions–Feireisl theory for compressible flow
+% Converted from notes/pde/lions-feireisl.html. Edit freely: this file is now the master copy.
+
+\section{Lions--Feireisl theory for compressible flow}\label{p:lions-feireisl}
+
+\prereqs{Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness}), Strong, weak, and renormalized solutions~(\S\ref{p:notions-of-solution}), Regularized approximation schemes~(\S\ref{p:regularized-approximation})}
+
+\subsection*{The idea}
+
+The central difficulty for weak solutions of compressible Navier--Stokes: the density converges only weakly, so the weak limit of the pressure $p(\rho_n)$ need not be $p(\rho)$. Lions found a quantity that does behave well under weak limits, the effective viscous flux, and used it to prove strong convergence of the density. Feireisl extended the range of exponents to $\gamma> 3/2$.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem (Feireisl--Novotný--Petzeltová, 2001)}
+Let $\Omega\subset\R^3$ be bounded with smooth boundary and $p(\rho)=a\rho^\gamma$ with $\gamma> 3/2$. For initial data of finite energy, the barotropic compressible Navier--Stokes equations with no-slip boundary condition have a global finite-energy weak solution, and the density satisfies the continuity equation in the renormalized sense. (Lions had proved this for $\gamma\ge9/5$.)
+\end{thmbox}
+
+\begin{rmkbox}{The ingredients}
+\begin{itemize}
+\item \emph{Effective viscous flux.} $F = (\lambda+2\mu)\dv u - p(\rho)$. Although neither term converges strongly, products like $T(\rho_n)F_n$ converge weakly to $\overline{T(\rho)}\,F$: the oscillations of $p(\rho)$ and of $\dv u$ cancel.
+\item \emph{Renormalization} (see notions of solution~(\S\ref{p:notions-of-solution})), applied to truncations $T_k(\rho)$ of the density when $\rho$ is not square integrable.
+\item \emph{Oscillation defect measure.} A bound on how much the truncations can oscillate; finite exactly when $\gamma> 3/2$.
+\end{itemize}
+\end{rmkbox}
+
+\subsection*{Why it is plausible}
+
+Strong convergence of $\rho_n$ is equivalent to $\overline{\rho\log\rho}=\rho\log\rho$ (weak limit equals function of the limit), and by convexity one always has $\ge$. The effective viscous flux identity, combined with the renormalized equations, shows that the defect $\overline{\rho\log\rho}-\rho\log\rho$ satisfies a transport inequality with zero initial data, so it stays zero. Below $\gamma=3/2$ the integrability of $\rho$ is too low for the products in this argument to make sense, even after truncation.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Let $\rho_n \ge 0$, $\rho_n \weakto \rho$ and $\rho_n\log\rho_n \weakto \overline{\rho\log\rho}$ in $L^1(\Omega)$, with $\rho > 0$. Show $\overline{\rho\log\rho} \ge \rho\log\rho$ a.e.
+  \begin{hint}
+    Convexity: $s\log s \ge \rho\log\rho + (1 + \log\rho)(s - \rho)$ for all $s \ge 0$. Put $s = \rho_n$, multiply by a nonnegative test function, and pass to the weak limit (the right-hand side is linear in $\rho_n$; truncate $\log\rho$ if it is unbounded).
+  \end{hint}
+  \begin{solution}
+    $g(s) = s\log s$ is convex on $[0,\infty)$ ($g'' = 1/s > 0$), so it lies above its tangent at $\rho > 0$: $\rho_n\log\rho_n \ge \rho\log\rho + (1 + \log\rho)(\rho_n - \rho)$ pointwise. Fix $k$ and let $\psi \ge 0$ be bounded and supported in $\{1/k \le \rho \le k\}$, so that $(1 + \log\rho)\psi \in L^\infty$. Multiplying by $\psi$ and integrating,
+
+    \[ \int\rho_n\log\rho_n\,\psi \ge \int\rho\log\rho\,\psi + \int(1 + \log\rho)\psi\,(\rho_n - \rho). \]
+
+    Weak convergence in $L^1$ against $L^\infty$ functions gives, in the limit, $\int\overline{\rho\log\rho}\,\psi \ge \int\rho\log\rho\,\psi$. As this holds for all such $\psi$, $\overline{\rho\log\rho} \ge \rho\log\rho$ a.e. on $\{1/k \le \rho \le k\}$; let $k \to \infty$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Strong convergence from "limit of the square equals square of the limit". On a bounded $\Omega$, show that $\rho_n \weakto \rho$ and $\rho_n^2 \weakto \rho^2$ in $L^1$ (with $\rho_n$ bounded in $L^2$) imply $\rho_n \to \rho$ in $L^2$.
+  \begin{hint}
+    $\int(\rho_n - \rho)^2 = \int\rho_n^2 - 2\int\rho_n\rho + \int\rho^2$, and each term converges (test $\rho_n^2$ against $1$ and $\rho_n$ against $\rho$). The argument with $\rho\log\rho$ is the same idea with a different convex function.
+  \end{hint}
+  \begin{solution}
+    $\int(\rho_n - \rho)^2 = \int\rho_n^2 - 2\int\rho_n\rho + \int\rho^2$. Since $\Omega$ is bounded, $1 \in L^\infty$ and $\int\rho_n^2 \to \int\rho^2$. Since $\rho_n$ is bounded in $L^2$ and $\rho_n \weakto \rho$ in $L^1$, also $\rho_n \weakto \rho$ in $L^2$ (every subsequence has an $L^2$-weakly convergent subsequence, whose limit must be $\rho$), and $\rho \in L^2$; so $\int\rho_n\rho \to \int\rho^2$. Hence $\int(\rho_n - \rho)^2 \to \int\rho^2 - 2\int\rho^2 + \int\rho^2 = 0$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  The effective viscous flux in one dimension. For $(\rho u)_t + (\rho u^2)_x + p(\rho)_x = \nu u_{xx}$, show that $F = \nu u_x - p(\rho)$ satisfies $F_x = (\rho u)_t + (\rho u^2)_x$. Explain why this gives $F$ more regularity in $x$ than $u_x$ or $p(\rho)$ have separately.
+  \begin{hint}
+    Rearrange the momentum equation. The right-hand side is controlled by the energy bounds on $\rho u$ and $\rho u^2$, so $F$ gains a derivative, while $u_x$ and $p(\rho)$ alone can oscillate.
+  \end{hint}
+  \begin{solution}
+    Rearranging the momentum equation, $\nu u_{xx} - p(\rho)_x = (\rho u)_t + (\rho u^2)_x$, and the left side is $(\nu u_x - p(\rho))_x = F_x$. The energy bounds control $\rho u$ and $\rho u^2$, so $F_x$ is a combination of a time derivative and a space derivative of bounded quantities, and $F$ itself is, roughly, an $x$-antiderivative of bounded quantities. By contrast, $\nu u_x$ is only in $L^2$ and $p(\rho)$ only in $L^1$, and each can oscillate in $x$; in $F$ their oscillations cancel. This extra regularity in $x$ is what lets $F$ pass to the limit in products such as $T(\rho_n)F_n$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item P.-L. Lions, \emph{Mathematical Topics in Fluid Mechanics, Vol. 2: Compressible Models}, Oxford, 1998.
+\item E. Feireisl, A. Novotný, H. Petzeltová, \emph{J. Math. Fluid Mech.} 3 (2001) 358--392.
+\item A. Novotný, I. Straškraba, \emph{Introduction to the Mathematical Theory of Compressible Flow}, Oxford, 2004, Chapter 7; E. Feireisl, \emph{Dynamics of Viscous Compressible Fluids}, Oxford, 2004.
+\end{itemize}

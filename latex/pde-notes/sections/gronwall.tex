@@ -1,0 +1,73 @@
+% Gronwall’s inequality and continuity arguments
+% Converted from notes/pde/gronwall.html. Edit freely: this file is now the master copy.
+
+\section{Gronwall's inequality and continuity arguments}\label{p:gronwall}
+
+\subsection*{The idea}
+
+Energy estimates usually end with a differential inequality: the quantity you control grows at a rate bounded by itself. Gronwall's inequality turns this into an explicit bound. Its nonlinear relative, the continuity argument, gives bounds for a short time when the growth rate is superlinear.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem (Gronwall, differential form)}
+Let $\eta\ge0$ be absolutely continuous on $[0,T]$ and $\phi,\psi\ge0$ integrable, with $\eta'(t)\le\phi(t)\eta(t)+\psi(t)$ for a.e. $t$. Then
+
+\[ \eta(t)\le e^{\int_0^t\phi}\Big(\eta(0)+\int_0^t\psi\Big)\quad\text{for all } t\in[0,T]. \]
+
+In particular, if $\psi = 0$ and $\eta(0)=0$, then $\eta\equiv0$.
+\end{thmbox}
+
+\begin{thmbox}{Continuity argument}
+Let $\Phi\ge0$ be continuous and nondecreasing on $[0,T]$, and $M$ nondecreasing, with $\Phi(t)\le A\exp\big(C\int_0^t M(\Phi(s))\,ds\big)$ for all $t$. If $0< T_0< \frac{\ln 2}{C\,M(2A)}$, then $\Phi(t)< 2A$ on $[0,\min(T_0,T)]$.
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+For Gronwall: $\big(e^{-\int_0^t\phi}\eta\big)'\le e^{-\int_0^t\phi}\psi$, then integrate. For the continuity argument: as long as $\Phi\le 2A$, the right-hand side is at most $A\exp(C\,t\,M(2A))< 2A$ for $t\le T_0$. So $\Phi$ can never reach the value $2A$ before time $T_0$: the first time it did, the inequality would give a strict contradiction. No formula for $M$ is needed, which is why papers write "for some $M$" and let it change from line to line.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Prove the differential form of Gronwall's inequality.
+  \begin{hint}
+    Let $\Phi(t) = \int_0^t \phi$. Then $\big(e^{-\Phi}\eta\big)' = e^{-\Phi}(\eta' - \phi\eta) \le e^{-\Phi}\psi \le \psi$ a.e. Integrate from $0$ to $t$ and multiply by $e^{\Phi(t)}$.
+  \end{hint}
+  \begin{solution}
+    Let $\Phi(t) = \int_0^t\phi$, absolutely continuous with $\Phi' = \phi$ a.e. The product $e^{-\Phi}\eta$ is absolutely continuous and, a.e.,
+
+    \[ \big(e^{-\Phi}\eta\big)' = e^{-\Phi}\big(\eta' - \phi\eta\big) \le e^{-\Phi}\psi \le \psi, \]
+
+    using $\Phi \ge 0$ and $\psi \ge 0$. Integrating from $0$ to $t$: $e^{-\Phi(t)}\eta(t) \le \eta(0) + \int_0^t\psi$. Multiply by $e^{\Phi(t)}$. If $\psi = 0$ and $\eta(0) = 0$ the right side is $0$, and $\eta \ge 0$ forces $\eta \equiv 0$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Compare the continuity argument with an exact solution. Let $y' = y^2$, $y(0) = A > 0$. (a) Solve it and show $y(t) = A\exp\big(\int_0^t y\big)$, so the continuity argument applies with $C = 1$, $M(s) = s$. (b) Which time does the argument guarantee, and when does $y$ actually reach $2A$?
+  \begin{hint}
+    (a) $y = \frac{A}{1 - At}$, and $\int_0^t y = -\log(1 - At)$. (b) The argument gives $y < 2A$ for $t < \frac{\ln 2}{2A} \approx \frac{0.35}{A}$. In fact $y = 2A$ at $t = \frac{1}{2A}$, and $y$ blows up at $t = \frac1A$. The argument is not sharp, but it needs no formula for the solution.
+  \end{hint}
+  \begin{solution}
+    (a) Separating variables, $-\frac1y = t - \frac1A$, so $y(t) = \frac{A}{1 - At}$ for $t < \frac1A$. Then $\int_0^t y = \int_0^t\frac{A}{1-As}\,ds = -\log(1 - At)$, and $A\exp\big(\int_0^ty\big) = \frac{A}{1-At} = y(t)$. So $\Phi = y$ satisfies the hypothesis of the continuity argument with $C = 1$, $M(s) = s$ (with equality).
+
+    (b) The argument gives $y < 2A$ on $[0, T_0]$ for any $T_0 < \frac{\ln 2}{M(2A)} = \frac{\ln 2}{2A} \approx \frac{0.347}{A}$. Exactly, $\frac{A}{1-At} = 2A$ at $t = \frac{1}{2A}$, and $y$ blows up at $t = \frac1A$. The guaranteed time is about $70\%$ of the true one, without solving anything.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Why $K \in L^1$ matters. Show that $y(t) = t^2$ and $y = 0$ both solve $y' = 2\sqrt{y}$, $y(0) = 0$. Writing the equation as $y' = K(t)y$, explain why Gronwall cannot rule out the nonzero solution.
+  \begin{hint}
+    For $y = t^2$, $K(t) = \frac{2\sqrt{y}}{y} = \frac{2}{t}$, which is not integrable near $t = 0$.
+  \end{hint}
+  \begin{solution}
+    For $t \ge 0$, $y = t^2$ gives $y' = 2t = 2\sqrt{t^2} = 2\sqrt y$, and $y(0) = 0$; $y = 0$ is also a solution. For the nonzero solution, $y' = K(t)y$ with $K = \frac{2\sqrt y}{y} = \frac2t$, and $\int_0^T\frac2t\,dt = \infty$. Gronwall needs $\phi = K \in L^1(0,T)$: its bound $e^{\int_0^tK}\cdot y(0)$ becomes the meaningless $\infty\cdot 0$. The non-Lipschitz right side $2\sqrt y$ at $y = 0$ is exactly what lets a solution leave $0$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, Appendix B.2 (Gronwall's inequality, differential and integral forms).
+\item T. Tao, \emph{Nonlinear Dispersive Equations: Local and Global Analysis}, AMS, 2006, §1.3 (continuity arguments).
+\end{itemize}
+
+\neededfor{Energy estimates and a priori bounds~(\S\ref{p:energy-estimates}), Uniqueness by difference estimates~(\S\ref{p:uniqueness-energy})}

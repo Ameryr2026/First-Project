@@ -1,0 +1,74 @@
+% Energy estimates and a priori bounds
+% Converted from notes/pde/energy-estimates.html. Edit freely: this file is now the master copy.
+
+\section{Energy estimates and a priori bounds}\label{p:energy-estimates}
+
+\prereqs{Hölder, Young, and L\textsuperscript{\textit{p}} interpolation~(\S\ref{p:elementary-inequalities}), Gronwall's inequality and continuity arguments~(\S\ref{p:gronwall})}
+
+\subsection*{The idea}
+
+An a priori estimate is a bound that every smooth solution must satisfy, proved before knowing that solutions exist. The standard way to find one: multiply the equation by a well-chosen quantity, integrate, integrate by parts, and use the structure of the equation so that the dangerous terms cancel or have a sign. The choice of multiplier is the idea; the rest is the inequality toolkit~(\S\ref{p:elementary-inequalities}).
+
+\subsection*{Statement}
+
+\begin{thmbox}{The method (not a theorem)}
+\begin{enumerate}
+\item Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$.
+\item Integrate by parts, using the boundary conditions, to produce $\frac{d}{dt}$(energy) plus nonnegative dissipation.
+\item Arrange the multipliers so that coupling terms cancel between equations.
+\item Bound what remains by the energy and dissipation (Hölder, Sobolev, Young), absorb the dissipation parts, and close with Gronwall~(\S\ref{p:gronwall}).
+\item For higher regularity, repeat after differentiating the equation in $t$ or $x$.
+\end{enumerate}
+\end{thmbox}
+
+\begin{exbox}{Model example (heat equation)}
+For $u_t-\Delta u=0$ with $u=0$ on $\partial\Omega$, multiplying by $u$ gives $\frac{d}{dt}\frac12\norm{u}_{L^2}^2+\norm{\nabla u}_{L^2}^2=0$, and multiplying by $u_t$ gives $\norm{u_t}_{L^2}^2+\frac{d}{dt}\frac12\norm{\nabla u}_{L^2}^2=0$.
+\end{exbox}
+
+\subsection*{Why it is plausible}
+
+Physical systems usually dissipate energy, and the mathematical energy is the physical one. Kinetic energy, internal (pressure) energy and potential energy together cannot grow; each piece then bounds a norm of the unknowns. When the energy contains a term with no sign, the first job is to show it is still bounded below, typically by interpolation against a conserved quantity.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Derive the two identities for the heat equation in the model example, with every integration by parts and boundary term. Conclude that $u_0 \in H^1_0$ gives $u \in L^\infty(0,T;H^1_0)$ and $u_t \in L^2(0,T;L^2)$.
+  \begin{hint}
+    $\int u_t u = \frac12\frac{d}{dt}\norm{u}^2$ and $-\int\Delta u\,u = \norm{\nabla u}^2$ (boundary term vanishes since $u = 0$). Similarly $-\int\Delta u\,u_t = \frac12\frac{d}{dt}\norm{\nabla u}^2$ because $u_t = 0$ on $\partial\Omega$. Integrate in time.
+  \end{hint}
+  \begin{solution}
+    Multiplying by $u$: $\int u_tu = \frac12\frac{d}{dt}\norm{u}^2$ and $-\int\Delta u\,u = \int|\nabla u|^2 - \int_{\partial\Omega}u\,\partial_\nu u = \norm{\nabla u}^2$ since $u = 0$ on $\partial\Omega$. So $\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = 0$.
+
+    Multiplying by $u_t$: $-\int\Delta u\,u_t = \int\nabla u\cdot\nabla u_t - \int_{\partial\Omega}u_t\,\partial_\nu u = \frac12\frac{d}{dt}\norm{\nabla u}^2$, because $u_t = 0$ on $\partial\Omega$ ($u$ vanishes there for all $t$). So $\norm{u_t}^2 + \frac12\frac{d}{dt}\norm{\nabla u}^2 = 0$.
+
+    Integrating: $\norm{u(t)}^2 \le \norm{u_0}^2$ and $\norm{\nabla u(t)}^2 + 2\int_0^t\norm{u_t}^2 = \norm{\nabla u_0}^2$. So $u \in L^\infty(0,T;H^1_0)$ and $u_t \in L^2(0,T;L^2)$ when $u_0 \in H^1_0$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  A nonlinear term with a sign. For $u_t - \Delta u = u - u^3$ with $\partial_\nu u = 0$, multiply by $u$ and show $\norm{u(t)}_{L^2}^2 \le \norm{u_0}_{L^2}^2 + \frac{|\Omega|}{2}t$.
+  \begin{hint}
+    $\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = \int(u^2 - u^4)$, and $s^2 - s^4 \le \frac14$ for all real $s$.
+  \end{hint}
+  \begin{solution}
+    Multiplying by $u$ and using $\partial_\nu u = 0$: $\frac12\frac{d}{dt}\norm{u}^2 + \norm{\nabla u}^2 = \int_\Omega(u^2 - u^4)$. Since $s^2 - s^4 = \frac14 - (s^2 - \frac12)^2 \le \frac14$, the right side is at most $\frac{|\Omega|}{4}$. Dropping $\norm{\nabla u}^2 \ge 0$, $\frac{d}{dt}\norm{u}^2 \le \frac{|\Omega|}{2}$, and integrating, $\norm{u(t)}^2 \le \norm{u_0}^2 + \frac{|\Omega|}{2}t$. The cubic term was not estimated at all: its sign did the work.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Choosing the multiplier. For the wave equation $u_{tt} = u_{xx}$ on $(0,1)$ with $u = 0$ at both ends, find a multiplier that shows $\int_0^1 (u_t^2 + u_x^2)\,dx$ is constant in time.
+  \begin{hint}
+    Multiply by $u_t$: $u_{tt}u_t = \frac12(u_t^2)_t$ and $\int u_{xx}u_t = -\int u_x u_{xt} = -\frac12\frac{d}{dt}\int u_x^2$, since $u_t = 0$ at the ends.
+  \end{hint}
+  \begin{solution}
+    Multiply by $u_t$ and integrate over $(0,1)$. First, $\int u_{tt}u_t = \frac12\frac{d}{dt}\int u_t^2$. Second, $\int u_{xx}u_t = \big[u_xu_t\big]_0^1 - \int u_xu_{xt} = -\frac12\frac{d}{dt}\int u_x^2$, since $u_t = 0$ at $x = 0, 1$. So $\frac{d}{dt}\int_0^1(u_t^2 + u_x^2)\,dx = 0$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §2.3.4 and §7.1.2 (energy methods for the heat equation and for linear parabolic equations).
+\end{itemize}
+
+\neededfor{The Faedo--Galerkin method~(\S\ref{p:galerkin}), Uniqueness by difference estimates~(\S\ref{p:uniqueness-energy}), Regularized approximation schemes~(\S\ref{p:regularized-approximation})}

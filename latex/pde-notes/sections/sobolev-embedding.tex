@@ -1,0 +1,75 @@
+% Sobolev embeddings
+% Converted from notes/pde/sobolev-embedding.html. Edit freely: this file is now the master copy.
+
+\section{Sobolev embeddings}\label{p:sobolev-embedding}
+
+\prereqs{Weak derivatives and Sobolev spaces~(\S\ref{p:sobolev-spaces})}
+
+\subsection*{The idea}
+
+Control of derivatives in $L^p$ gives control of the function itself in a better $L^q$, or even uniformly. This is how an energy bound on $\nabla u$ becomes a bound on $u$ in $L^6$, and how $\rho \in W^{1,q}$ with $q > 3$ gives $\rho \in L^\infty$.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem}
+Let $\Omega\subset\R^n$ be bounded with Lipschitz boundary and $1\le p < \infty$.
+
+\begin{itemize}
+\item \emph{If $p < n$:} $W^{1,p}(\Omega)\subset L^{q}(\Omega)$ for $1 \le q \le p^* = \frac{np}{n-p}$, with $\norm{u}_{L^{q}} \le C\norm{u}_{W^{1,p}}$.
+\item \emph{If $p > n$:} $W^{1,p}(\Omega)\subset C^{0,1-n/p}(\overline\Omega)$; in particular $\norm{u}_{L^\infty}\le C\norm{u}_{W^{1,p}}$.
+\item \emph{Zero boundary values:} for $u\in W^{1,p}_0(\Omega)$, $p < n$, the bound holds with $\norm{\nabla u}_{L^p}$ alone on the right. For $n=3$: $\norm{u}_{L^6}\le C\norm{\nabla u}_{L^2}$ for $u\in H^1_0$.
+\end{itemize}
+\end{thmbox}
+
+In three dimensions, the cases used constantly: $H^1\subset L^6$, $W^{1,q}\subset L^\infty$ for $q> 3$, and $W^{1,\gamma}\subset L^{3\gamma/(3-\gamma)}$ for $\gamma< 3$.
+
+\subsection*{Why it is plausible}
+
+The exponent $p^*$ is forced by scaling. Replace $u(x)$ by $u(\lambda x)$ on $\R^n$. Then $\norm{u}_{L^q}$ scales like $\lambda^{-n/q}$ and $\norm{\nabla u}_{L^p}$ like $\lambda^{1-n/p}$. An inequality $\norm{u}_{L^q}\le C\norm{\nabla u}_{L^p}$ can hold for all $\lambda$ only if $-\frac nq = 1 - \frac np$, that is, $q = p^*$. The same count shows where things break: one derivative in $L^p$ is worth $n/p$ "units of singularity", and when that is less than 1 the function is bounded.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Carry out the scaling argument. For $u \in C_c^\infty(\R^n)$ and $u_\lambda(x) = u(\lambda x)$, compute $\norm{u_\lambda}_{L^q}$ and $\norm{\nabla u_\lambda}_{L^p}$ in terms of $u$ and $\lambda$, and show that $\norm{u}_{L^q} \le C\norm{\nabla u}_{L^p}$ for all $u$ forces $q = \frac{np}{n-p}$.
+  \begin{hint}
+    Change variables $y = \lambda x$: $\norm{u_\lambda}_{L^q} = \lambda^{-n/q}\norm{u}_{L^q}$ and $\norm{\nabla u_\lambda}_{L^p} = \lambda^{1-n/p}\norm{\nabla u}_{L^p}$. If the exponents of $\lambda$ differ, let $\lambda \to 0$ or $\lambda \to \infty$ to contradict the inequality.
+  \end{hint}
+  \begin{solution}
+    With $y = \lambda x$, $dx = \lambda^{-n}dy$: $\norm{u_\lambda}_{L^q}^q = \int|u(\lambda x)|^q\,dx = \lambda^{-n}\norm{u}_{L^q}^q$, so $\norm{u_\lambda}_{L^q} = \lambda^{-n/q}\norm{u}_{L^q}$. Since $\nabla u_\lambda(x) = \lambda(\nabla u)(\lambda x)$, similarly $\norm{\nabla u_\lambda}_{L^p} = \lambda^{1-n/p}\norm{\nabla u}_{L^p}$.
+
+    If $\norm{v}_{L^q} \le C\norm{\nabla v}_{L^p}$ for all $v$, apply it to $v = u_\lambda$ with a fixed $u \ne 0$:
+
+    \[ \norm{u}_{L^q} \le C\lambda^{\alpha}\norm{\nabla u}_{L^p}, \qquad \alpha = 1 - \frac np + \frac nq, \quad\text{for every }\lambda > 0. \]
+
+    If $\alpha > 0$, let $\lambda \to 0$; if $\alpha < 0$, let $\lambda \to \infty$; either way $\norm{u}_{L^q} = 0$, a contradiction. So $\alpha = 0$, i.e. $\frac1q = \frac1p - \frac1n$, $q = \frac{np}{n-p}$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  The one-dimensional case by hand. For $u \in C^1([0,1])$ with $u(0) = 0$, show $\norm{u}_{L^\infty} \le \norm{u'}_{L^2}$ and $|u(x) - u(y)| \le |x-y|^{1/2}\norm{u'}_{L^2}$. Compare with the theorem for $n = 1$, $p = 2$.
+  \begin{hint}
+    $u(x) - u(y) = \int_y^x u'$, then Cauchy--Schwarz. Here $p = 2 > n = 1$, and the Hölder exponent $1 - \frac{n}{p} = \frac12$ is exactly what you found.
+  \end{hint}
+  \begin{solution}
+    For $x, y \in [0,1]$, $u(x) - u(y) = \int_y^x u'(t)\,dt$, and Cauchy--Schwarz gives $|u(x) - u(y)| \le |x - y|^{1/2}\big(\int_0^1|u'|^2\big)^{1/2}$. With $y = 0$ and $u(0) = 0$: $|u(x)| \le x^{1/2}\norm{u'}_{L^2} \le \norm{u'}_{L^2}$. For $n = 1$, $p = 2 > n$, the theorem predicts $W^{1,2} \subset C^{0,1-1/2} = C^{0,1/2}$: exactly the exponent $\frac12$ found here.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Sharpness in $\R^3$. Using Exercise 2 in Sobolev spaces~(\S\ref{p:sobolev-spaces}), show that for every $q > 6$ there is $u \in H^1(B)$ with $u \notin L^q(B)$. So $H^1 \subset L^6$ cannot be improved.
+  \begin{hint}
+    $|x|^{-s} \in H^1(B)$ for $s < \frac12$, and $|x|^{-s} \notin L^q(B)$ when $sq \ge 3$. Both hold for $s \in [\frac3q, \frac12)$, which is nonempty exactly when $q > 6$.
+  \end{hint}
+  \begin{solution}
+    By Exercise 2 in Sobolev spaces with $n = 3$, $p = 2$: $|x|^{-s} \in H^1(B)$ iff $s < \frac12$. On the other hand $\int_B|x|^{-sq}\,dx = 4\pi\int_0^1 r^{2-sq}\,dr = \infty$ iff $sq \ge 3$. Given $q > 6$, we have $\frac3q < \frac12$, so any $s \in [\frac3q, \frac12)$ gives $u \in H^1(B)\setminus L^q(B)$. For $q \le 6$ no such $s$ exists, consistent with $H^1 \subset L^6$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §5.6 (Gagliardo--Nirenberg--Sobolev inequality and Morrey's inequality).
+\item H. Brezis, \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations}, Springer, 2011, Chapter 9.
+\end{itemize}
+
+\neededfor{Gagliardo--Nirenberg inequalities~(\S\ref{p:gagliardo-nirenberg}), The transport (continuity) equation~(\S\ref{p:transport-equation}), Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness})}

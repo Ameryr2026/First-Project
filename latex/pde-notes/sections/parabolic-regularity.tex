@@ -1,0 +1,67 @@
+% Maximal regularity for parabolic equations
+% Converted from notes/pde/parabolic-regularity.html. Edit freely: this file is now the master copy.
+
+\section{Maximal regularity for parabolic equations}\label{p:parabolic-regularity}
+
+\prereqs{Spaces of time-dependent functions~(\S\ref{p:bochner-spaces}), Elliptic regularity: the Lamé system and the Neumann Laplacian~(\S\ref{p:elliptic-regularity})}
+
+\subsection*{The idea}
+
+For a heat-type equation $\phi_t - D\Delta\phi = f$, a source $f$ in $L^p$ in space and time gives both $\phi_t$ and all second space derivatives of $\phi$ in the same $L^p$. "Maximal" means nothing is lost: the solution is exactly as regular as the equation allows.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem}
+Let $\Omega\subset\R^3$ be bounded with smooth boundary, $1< p< \infty$, $\sigma, D> 0$, $b\ge0$, and $Q_T=\Omega\times(0,T)$. Consider
+
+\[ \sigma\phi_t - D\Delta\phi + b\phi = f \text{ in } Q_T,\qquad \partial_\nu\phi = 0 \text{ on } \partial\Omega,\qquad \phi(0)=\phi_0. \]
+
+If $f\in L^p(Q_T)$ and $\phi_0\in W^{2-2/p,\,p}(\Omega)$ (with the compatible boundary condition when $p> 3$), then there is a unique solution with $\norm{\phi_t}_{L^p(Q_T)}+\norm{\nabla^2\phi}_{L^p(Q_T)}\le C\big(\norm{f}_{L^p(Q_T)}+\norm{\phi_0}_{W^{2-2/p,p}}\big)$.
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+The equation balances one time derivative against two space derivatives, so whatever regularity $f$ has, $\phi_t$ and $\nabla^2\phi$ share it. The odd exponent $2-\frac2p$ for the initial data is the trace: a function with $\phi_t,\nabla^2\phi\in L^p$ has, at a fixed time, exactly $2-\frac2p$ space derivatives in $L^p$ (one loses $\frac1p$ of a time derivative, which is worth $\frac2p$ space derivatives).
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  The case $p = 2$ by hand. Let $\phi_t - \Delta\phi = f$ in $\Omega\times(0,T)$ with $\partial_\nu\phi = 0$ and $\phi(0) = \phi_0$. Test with $-\Delta\phi$ to show that for every $t$, $\norm{\nabla\phi(t)}_{L^2}^2 + \int_0^t\norm{\Delta\phi}_{L^2}^2 \le \norm{\nabla\phi_0}_{L^2}^2 + \int_0^t\norm{f}_{L^2}^2$, then bound $\int_0^T\norm{\phi_t}_{L^2}^2$. The data needed is $\phi_0 \in H^1 = W^{2-2/p,\,p}$ for $p = 2$.
+  \begin{hint}
+    $\int\phi_t(-\Delta\phi) = \int\nabla\phi_t\cdot\nabla\phi = \frac12\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2$, with no boundary term because $\partial_\nu\phi = 0$. Bound $-\int f\Delta\phi \le \frac12\norm{f}^2 + \frac12\norm{\Delta\phi}^2$ and absorb. For $\phi_t$, use the equation: $\phi_t = f + \Delta\phi$. The $H^2$ bound then follows from elliptic regularity.
+  \end{hint}
+  \begin{solution}
+    For a smooth solution, multiply the equation by $-\Delta\phi$ and integrate. Since $\partial_\nu\phi = 0$,
+
+    \[ \int\phi_t(-\Delta\phi) = \int\nabla\phi_t\cdot\nabla\phi = \frac12\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2, \qquad
+             \int(-\Delta\phi)(-\Delta\phi) = \norm{\Delta\phi}_{L^2}^2, \]
+
+    and $-\int f\Delta\phi \le \frac12\norm{f}_{L^2}^2 + \frac12\norm{\Delta\phi}_{L^2}^2$. Absorbing, $\frac{d}{dt}\norm{\nabla\phi}_{L^2}^2 + \norm{\Delta\phi}_{L^2}^2 \le \norm{f}_{L^2}^2$, and integrating from $0$ to $t$:
+
+    \[ \norm{\nabla\phi(t)}_{L^2}^2 + \int_0^t\norm{\Delta\phi}_{L^2}^2 \le \norm{\nabla\phi_0}_{L^2}^2 + \int_0^t\norm{f}_{L^2}^2. \]
+
+    From the equation, $\phi_t = f + \Delta\phi$, so $\norm{\phi_t}^2 \le 2\norm{f}^2 + 2\norm{\Delta\phi}^2$ and $\int_0^T\norm{\phi_t}_{L^2}^2 \le 2\norm{\nabla\phi_0}_{L^2}^2 + 4\int_0^T\norm{f}_{L^2}^2$. Elliptic regularity for the Neumann Laplacian turns $\Delta\phi \in L^2$ into $\phi \in H^2$ (with $\norm{\phi}_{L^2}$, bounded by testing with $\phi$). The data enter only through $\nabla\phi_0 \in L^2$: $\phi_0 \in H^1 = W^{2-2/p,p}$ for $p = 2$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Show that the heat equation is invariant under $x \mapsto \lambda x$, $t \mapsto \lambda^2 t$, and that $\norm{\phi_t}_{L^p(Q)}$ and $\norm{\nabla^2\phi}_{L^p(Q)}$ scale with the same power of $\lambda$. This is why one time derivative is worth two space derivatives.
+  \begin{hint}
+    For $\phi_\lambda(x,t) = \phi(\lambda x, \lambda^2 t)$, both $\partial_t\phi_\lambda$ and $\nabla^2\phi_\lambda$ carry a factor $\lambda^2$, and the change of variables in $Q$ contributes $\lambda^{-(n+2)/p}$ to both norms.
+  \end{hint}
+  \begin{solution}
+    Let $\phi_\lambda(x,t) = \phi(\lambda x, \lambda^2t)$. By the chain rule, $\partial_t\phi_\lambda = \lambda^2(\phi_t)(\lambda x,\lambda^2t)$ and $\nabla^2\phi_\lambda = \lambda^2(\nabla^2\phi)(\lambda x,\lambda^2t)$; so $\phi_t = \Delta\phi$ implies the same for $\phi_\lambda$. Changing variables $(y,s) = (\lambda x,\lambda^2t)$, $dx\,dt = \lambda^{-n-2}dy\,ds$:
+
+    \[ \norm{\partial_t\phi_\lambda}_{L^p} = \lambda^{2 - \frac{n+2}{p}}\norm{\phi_t}_{L^p}, \qquad
+             \norm{\nabla^2\phi_\lambda}_{L^p} = \lambda^{2 - \frac{n+2}{p}}\norm{\nabla^2\phi}_{L^p}, \]
+
+    the same power, while $\norm{\nabla\phi_\lambda}_{L^p}$ carries $\lambda^{1 - \frac{n+2}{p}}$. One $t$-derivative costs what two $x$-derivatives cost.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item E. Feireisl, A. Novotný, \emph{Singular Limits in Thermodynamics of Viscous Fluids}, Birkhäuser, 2009, Theorem 10.22.
+\item A. Novotný, I. Straškraba, \emph{Introduction to the Mathematical Theory of Compressible Flow}, Oxford, 2004, Lemma 7.37.
+\end{itemize}

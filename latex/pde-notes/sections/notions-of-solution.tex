@@ -1,0 +1,97 @@
+% Strong, weak, and renormalized solutions
+% Converted from notes/pde/notions-of-solution.html. Edit freely: this file is now the master copy.
+
+\section{Strong, weak, and renormalized solutions}\label{p:notions-of-solution}
+
+\prereqs{Spaces of time-dependent functions~(\S\ref{p:bochner-spaces}), The transport (continuity) equation~(\S\ref{p:transport-equation})}
+
+\subsection*{The idea}
+
+"Solution" means different things depending on how much regularity one can prove. Classical solutions have all derivatives continuous. Strong solutions have enough weak derivatives that the equation holds almost everywhere. Weak solutions satisfy the equation only after multiplying by test functions and integrating by parts. Each weaker notion is easier to construct and harder to make unique.
+
+\subsection*{Statement}
+
+\begin{defnbox}{Strong solution}
+All derivatives appearing in the equation exist as functions (in some $L^p$), and the equation holds almost everywhere in $\Omega\times(0,T)$. The precise spaces are part of the definition; for example, the chemotaxis case study asks $\rho\in C([0,T];W^{1,q})$, $u\in C([0,T];D^2\cap D^1_0)\cap L^2(0,T;D^{2,q})$, $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$.
+\end{defnbox}
+
+\begin{defnbox}{Weak (distributional) solution}
+The equation holds in $\mathcal{D}'$: multiplied by any smooth compactly supported test function and integrated by parts so that no derivative falls on the unknown beyond what its integrability allows. A \emph{finite-energy} weak solution additionally satisfies the energy inequality, which is part of the definition.
+\end{defnbox}
+
+\begin{defnbox}{Renormalized solution of the continuity equation}
+$\rho$ solves $\rho_t+\dv(\rho u)=0$ in the renormalized sense if, for every $b\in C^1([0,\infty))$ with suitable growth (e.g. $b'$ bounded), $b(\rho)_t+\dv(b(\rho)u)+\big(b'(\rho)\rho-b(\rho)\big)\dv u=0$ in $\mathcal{D}'$.
+\end{defnbox}
+
+\begin{defnbox}{Compatibility condition}
+A condition on the initial data saying that the equation, evaluated at $t=0$, is consistent with the regularity being asked for. In compressible flow with vacuum: if $\sqrt\rho\,u_t\in L^\infty(0,T;L^2)$ is required, then at $t=0$ the momentum equation forces $\Lame u_0-\nabla p(\rho_0)+(\text{forces}) = \sqrt{\rho_0}\,g$ with $g\in L^2$.
+\end{defnbox}
+
+\subsection*{Why it is plausible}
+
+Renormalization is the chain rule: for smooth solutions, multiplying the equation by $b'(\rho)$ gives the renormalized form. For weak solutions this is not automatic, and asking for it is what allows nonlinear functions of $\rho$ (like the pressure) to be handled after weak limits. The compatibility condition is the same idea at $t=0$: the solution's regularity at the initial time cannot exceed what the data give, so the data must already have it.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Write the weak formulation of $u_t - \Delta u = f$ in $\Omega\times(0,T)$ with $u = 0$ on $\partial\Omega$ and $u(0) = u_0$. Show that a weak solution that is smooth up to the boundary is a classical solution.
+  \begin{hint}
+    Multiply by $\varphi \in C_c^\infty(\Omega\times[0,T))$, integrate by parts in $x$ and $t$; the initial value enters through $\int u_0\varphi(0)$. For a smooth weak solution, integrate back by parts: $\int(u_t - \Delta u - f)\varphi = 0$ for all $\varphi$ gives the equation, and then the remaining terms give the initial condition.
+  \end{hint}
+  \begin{solution}
+    Multiply by $\varphi \in C_c^\infty(\Omega\times[0,T))$ and integrate. In time, $\int_0^T u_t\varphi = -\int_0^T u\varphi_t - u(0)\varphi(0)$; in space, $-\int\Delta u\,\varphi = \int\nabla u\cdot\nabla\varphi$. A weak solution is $u \in L^2(0,T;H^1_0)$ with
+
+    \[ -\int_0^T\!\!\int_\Omega u\,\varphi_t + \int_0^T\!\!\int_\Omega\nabla u\cdot\nabla\varphi = \int_0^T\!\!\int_\Omega f\varphi + \int_\Omega u_0\,\varphi(\cdot,0)
+             \quad\text{for all such }\varphi. \]
+
+    If $u$ is smooth up to the boundary, integrate back by parts: $\int\!\!\int(u_t - \Delta u - f)\varphi + \int(u(\cdot,0) - u_0)\varphi(\cdot,0) = 0$. Taking $\varphi$ supported in $\Omega\times(0,T)$, the fundamental lemma gives $u_t - \Delta u = f$. Then $\int(u(\cdot,0) - u_0)\varphi(\cdot,0) = 0$ for all $\varphi$, so $u(0) = u_0$. Finally, $u(t) \in H^1_0$ and continuous up to $\partial\Omega$ means $u = 0$ there.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Renormalization. For smooth $\rho > 0$ and $u$ solving $\rho_t + \dv(\rho u) = 0$, verify the renormalized equation. Write it out for $b(\rho) = \rho\log\rho$; this is the form used in the Lions--Feireisl argument.
+  \begin{hint}
+    $b(\rho)_t + \dv(b(\rho)u) = b'(\rho)(\rho_t + u\cdot\nabla\rho) + b(\rho)\dv u = -\big(b'(\rho)\rho - b(\rho)\big)\dv u$. For $b = \rho\log\rho$: $b'(\rho)\rho - b(\rho) = \rho$, so $(\rho\log\rho)_t + \dv(\rho\log\rho\,u) + \rho\,\dv u = 0$.
+  \end{hint}
+  \begin{solution}
+    Using $\rho_t = -\dv(\rho u) = -u\cdot\nabla\rho - \rho\,\dv u$:
+
+    \[ b(\rho)_t + \dv(b(\rho)u) = b'(\rho)\big(\rho_t + u\cdot\nabla\rho\big) + b(\rho)\,\dv u = -\big(b'(\rho)\rho - b(\rho)\big)\dv u. \]
+
+    For $b(\rho) = \rho\log\rho$, $b'(\rho) = 1 + \log\rho$ and $b'(\rho)\rho - b(\rho) = \rho$, so $(\rho\log\rho)_t + \dv(\rho\log\rho\,u) + \rho\,\dv u = 0$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Weak solutions need not be unique. For Burgers' equation $u_t + (\frac12u^2)_x = 0$ with $u_0 = 0$, check that $u = -1$ on $-\frac t2 < x < 0$, $u = 1$ on $0 < x < \frac t2$, and $u = 0$ elsewhere is a weak solution. Show that its energy $\int\frac12u^2$ increases, so an energy inequality rules it out.
+  \begin{hint}
+    A piecewise constant function is a weak solution exactly when each jump moves with speed $s = \frac{[\frac12u^2]}{[u]}$ (Rankine--Hugoniot; derive it by testing across the jump). Check the three jumps: speeds $-\frac12$, $0$, $\frac12$. The energy is $\frac t2$.
+  \end{hint}
+  \begin{solution}
+    \emph{Rankine--Hugoniot.} A function is a weak solution if $\int_0^\infty\!\int(u\varphi_t + \frac12u^2\varphi_x)\,dx\,dt + \int u_0\varphi(x,0)\,dx = 0$ for all test functions. On each region where $u$ is constant the equation holds classically; integrating by parts region by region, only the jump lines contribute. On a line $x = st$ the contribution is $\int(s[u] - [\frac12u^2])\varphi\,d\ell$ up to a positive factor, where $[\cdot]$ is right value minus left value. So $u$ is a weak solution iff every jump satisfies $s = [\frac12u^2]/[u]$.
+
+    Check the three jumps: at $x = -\frac t2$, from $0$ to $-1$: $\frac{1/2 - 0}{-1 - 0} = -\frac12$. At $x = 0$, from $-1$ to $1$: $\frac{1/2 - 1/2}{2} = 0$. At $x = \frac t2$, from $1$ to $0$: $\frac{0 - 1/2}{0 - 1} = \frac12$. All match, and $u \to 0 = u_0$ as $t \to 0$.
+
+    Its energy is $\int\frac12u^2\,dx = \frac12\cdot\frac t2 + \frac12\cdot\frac t2 = \frac t2$, which increases from $0$, while $u \equiv 0$ is another weak solution with the same data. Requiring that the energy not increase rules out the first.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Compatibility for the heat equation. Suppose $u_t = \Delta u$ with $u = 0$ on $\partial\Omega$, and $u_t$ is continuous up to $t = 0$ and to the boundary. Show that the data must satisfy $\Delta u_0 = 0$ on $\partial\Omega$.
+  \begin{hint}
+    $u = 0$ on $\partial\Omega$ for all $t$, so $u_t = 0$ there; at $t = 0$ the equation gives $u_t(0) = \Delta u_0$.
+  \end{hint}
+  \begin{solution}
+    For $x \in \partial\Omega$, $u(x,t) = 0$ for all $t$, so $u_t(x,t) = 0$ for $t > 0$, and by continuity also at $t = 0$. By the equation and continuity at $t = 0$, $u_t(x,0) = \Delta u(x,0) = \Delta u_0(x)$. Hence $\Delta u_0 = 0$ on $\partial\Omega$. This is a condition on the data alone: smooth data that violate it cannot produce a solution with $u_t$ continuous up to $t = 0$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item E. Feireisl, A. Novotný, \emph{Singular Limits in Thermodynamics of Viscous Fluids}, Birkhäuser, 2009, §10.18 (renormalized solutions).
+\item P.-L. Lions, \emph{Mathematical Topics in Fluid Mechanics, Vol. 2: Compressible Models}, Oxford, 1998.
+\item Y. Cho, H. J. Choe, H. Kim, Unique solvability of the initial boundary value problems for compressible viscous fluids, \emph{J. Math. Pures Appl.} 83 (2004) 243--275 (strong solutions with vacuum and the compatibility condition).
+\end{itemize}
+
+\neededfor{Lions--Feireisl theory for compressible flow~(\S\ref{p:lions-feireisl})}

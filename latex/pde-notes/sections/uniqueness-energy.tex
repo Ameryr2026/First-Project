@@ -1,0 +1,63 @@
+% Uniqueness by difference estimates
+% Converted from notes/pde/uniqueness-energy.html. Edit freely: this file is now the master copy.
+
+\section{Uniqueness by difference estimates}\label{p:uniqueness-energy}
+
+\prereqs{Energy estimates and a priori bounds~(\S\ref{p:energy-estimates}), Gronwall's inequality and continuity arguments~(\S\ref{p:gronwall})}
+
+\subsection*{The idea}
+
+To show two solutions with the same data coincide, subtract them and estimate the difference. The trick is to measure the difference in a weaker norm than the solutions themselves live in, so that the regularity of the two solutions can be used freely as coefficients.
+
+\subsection*{Statement}
+
+\begin{thmbox}{The scheme}
+\begin{enumerate}
+\item Write the equations for the difference $(\bar\rho,\bar u,\bar\phi)$ of two solutions. Nonlinear terms become linear in the difference, with coefficients built from the two solutions.
+\item Run an energy estimate for the difference at a low level (typically $L^2$), producing $\frac{d}{dt}Y + \text{dissipation}\le K(t)\,Y$.
+\item Check $K\in L^1(0,T)$ using the regularity of the solutions, and apply Gronwall~(\S\ref{p:gronwall}) with $Y(0)=0$.
+\end{enumerate}
+
+A variant: \emph{weak--strong uniqueness} compares a weak solution with a strong one with the same data, using the energy inequality of the weak solution in place of the equation, and shows they coincide.
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+Uniqueness asks less than existence: one does not need new bounds, only that the bounds already available are strong enough to control the coefficient $K(t)$. That is why uniqueness theorems are usually stated in the same class where existence of strong solutions was proved, and why uniqueness of weak solutions is often open.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  Let $u_1, u_2 \in L^\infty(\Omega\times(0,T))$ be solutions of $u_t - \Delta u = u^2$ with the same data and $u = 0$ on $\partial\Omega$. Show $u_1 = u_2$ by an $L^2$ estimate for $w = u_1 - u_2$.
+  \begin{hint}
+    $w_t - \Delta w = (u_1 + u_2)w$. Testing with $w$: $\frac12\frac{d}{dt}\norm{w}^2 + \norm{\nabla w}^2 \le \norm{u_1 + u_2}_{L^\infty}\norm{w}^2$. Gronwall with $w(0) = 0$; here $K(t) = 2\norm{u_1 + u_2}_{L^\infty}$.
+  \end{hint}
+  \begin{solution}
+    $w = u_1 - u_2$ satisfies $w_t - \Delta w = u_1^2 - u_2^2 = (u_1 + u_2)w$, $w = 0$ on $\partial\Omega$, $w(0) = 0$. Testing with $w$:
+
+    \[ \frac12\frac{d}{dt}\norm{w}^2 + \norm{\nabla w}^2 = \int(u_1 + u_2)w^2 \le \norm{u_1 + u_2}_{L^\infty}\norm{w}^2. \]
+
+    So $Y = \norm{w}^2$ satisfies $Y' \le KY$ with $K = 2\norm{u_1 + u_2}_{L^\infty} \in L^1(0,T)$, and $Y(0) = 0$. By Gronwall, $Y \equiv 0$. The boundedness of the two solutions was used only as a coefficient.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Viscous Burgers on $(0,1)$: $u_t + uu_x = u_{xx}$, $u = 0$ at both ends. For two solutions, find the coefficient $K(t)$ in the $L^2$ estimate for the difference, and say which norms of $u_1, u_2$ must be integrable in time.
+  \begin{hint}
+    For $w = u_1 - u_2$: $w_t + u_1w_x + u_{2,x}w = w_{xx}$. Bound $|\int u_1ww_x| \le \frac12\norm{w_x}^2 + \frac12\norm{u_1}_{L^\infty}^2\norm{w}^2$ and $|\int u_{2,x}w^2| \le \norm{u_{2,x}}_{L^\infty}\norm{w}^2$. So $K = \norm{u_1}_{L^\infty}^2 + 2\norm{u_{2,x}}_{L^\infty}$ must be in $L^1(0,T)$.
+  \end{hint}
+  \begin{solution}
+    Since $u_1u_{1,x} - u_2u_{2,x} = u_1w_x + wu_{2,x}$, the difference satisfies $w_t + u_1w_x + u_{2,x}w = w_{xx}$. Testing with $w$:
+
+    \[ \frac12\frac{d}{dt}\norm{w}^2 + \norm{w_x}^2 = -\int u_1ww_x - \int u_{2,x}w^2. \]
+
+    Bound $|\int u_1ww_x| \le \norm{u_1}_{L^\infty}\norm{w}\norm{w_x} \le \frac12\norm{w_x}^2 + \frac12\norm{u_1}_{L^\infty}^2\norm{w}^2$ and $|\int u_{2,x}w^2| \le \norm{u_{2,x}}_{L^\infty}\norm{w}^2$. Absorbing, $\frac{d}{dt}\norm{w}^2 \le \big(\norm{u_1}_{L^\infty}^2 + 2\norm{u_{2,x}}_{L^\infty}\big)\norm{w}^2$. So uniqueness holds whenever $u_1 \in L^2(0,T;L^\infty)$ and $u_{2,x} \in L^1(0,T;L^\infty)$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §7.1.2 (Theorem 4, uniqueness for linear parabolic equations).
+\item X. Huo, A. Jüngel, Global existence and weak-strong uniqueness for chemotaxis compressible Navier--Stokes equations modeling vascular network formation, \emph{J. Math. Fluid Mech.} 26 (2024) 11.
+\end{itemize}

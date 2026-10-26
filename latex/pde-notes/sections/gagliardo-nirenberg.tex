@@ -1,0 +1,71 @@
+% Gagliardo–Nirenberg inequalities
+% Converted from notes/pde/gagliardo-nirenberg.html. Edit freely: this file is now the master copy.
+
+\section{Gagliardo--Nirenberg inequalities}\label{p:gagliardo-nirenberg}
+
+\prereqs{Sobolev embeddings~(\S\ref{p:sobolev-embedding}), Hölder, Young, and L\textsuperscript{\textit{p}} interpolation~(\S\ref{p:elementary-inequalities})}
+
+\subsection*{The idea}
+
+A refinement of Sobolev embedding: an intermediate norm is bounded by a product of a high norm and a low norm, with powers. This is what lets a nonlinear term be split so that the high norm appears with a power below 2 and can be absorbed by Young's inequality.
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem (on $\R^n$)}
+Let $1\le q, r\le\infty$, $j < m$ integers, and $\frac{j}{m}\le a\le 1$ with
+
+\[ \frac1p = \frac jn + a\Big(\frac1r - \frac mn\Big) + \frac{1-a}{q}. \]
+
+Then $\norm{\nabla^j u}_{L^p}\le C\norm{\nabla^m u}_{L^r}^{a}\norm{u}_{L^q}^{1-a}$, except that $a = 1$ is not allowed when $1< r< \infty$ and $m - j - n/r$ is a nonnegative integer. On a bounded Lipschitz domain the same holds with an extra lower-order term, e.g. $+\,C\norm{u}_{L^q}$, on the right.
+\end{thmbox}
+
+\begin{exbox}{The form used most in 3D}
+For $f\in H^1(\Omega)$, $\Omega\subset\R^3$ bounded and Lipschitz: $\norm{f}_{L^3}\le C\norm{f}_{L^2}^{1/2}\norm{f}_{H^1}^{1/2}$. Applied to $f=\nabla u$: $\norm{\nabla u}_{L^3}\le C\norm{\nabla u}_{L^2}^{1/2}\norm{\nabla u}_{H^1}^{1/2}$.
+\end{exbox}
+
+\subsection*{Why it is plausible}
+
+The example is just two facts in a row: interpolate $L^3$ between $L^2$ and $L^6$ (the weights are $\frac12,\frac12$ because $\frac13 = \frac{1/2}{2} + \frac{1/2}{6}$), then bound $L^6$ by $H^1$ with Sobolev. The general exponent relation is again forced by scaling, exactly as for Sobolev embedding.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  In $\R^3$, prove $\norm{f}_{L^4} \le C\norm{f}_{L^2}^{1/4}\norm{f}_{H^1}^{3/4}$ by interpolation and Sobolev. Then check the exponent $a = \frac34$ against the general formula with $j = 0$, $m = 1$, $r = q = 2$, $n = 3$.
+  \begin{hint}
+    Interpolate $L^4$ between $L^2$ and $L^6$: $\frac14 = \frac{\eta}{2} + \frac{1-\eta}{6}$ gives $\eta = \frac14$. Then $\norm{f}_{L^6} \le C\norm{f}_{H^1}$. The formula reads $\frac14 = a(\frac12 - \frac13) + \frac{1-a}{2} = \frac12 - \frac a3$.
+  \end{hint}
+  \begin{solution}
+    Interpolation: $\frac14 = \frac\eta2 + \frac{1-\eta}{6}$; multiplying by $12$, $3 = 6\eta + 2 - 2\eta$, so $\eta = \frac14$ and $\norm{f}_{L^4} \le \norm{f}_{L^2}^{1/4}\norm{f}_{L^6}^{3/4}$. Sobolev on a bounded Lipschitz domain in $\R^3$ gives $\norm{f}_{L^6} \le C\norm{f}_{H^1}$, so $\norm{f}_{L^4} \le C\norm{f}_{L^2}^{1/4}\norm{f}_{H^1}^{3/4}$.
+
+    The general formula with $j = 0$, $m = 1$, $r = q = 2$, $n = 3$ reads $\frac14 = a\big(\frac12 - \frac13\big) + \frac{1-a}{2} = \frac12 - \frac a3$, so $a = \frac34$, the same exponent.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  Find the exponent $a$ in $\norm{f}_{L^4(\R^2)} \le C\norm{\nabla f}_{L^2}^{a}\norm{f}_{L^2}^{1-a}$ (Ladyzhenskaya's inequality) from the formula, and confirm it by the scaling $f(x) \mapsto f(\lambda x)$.
+  \begin{hint}
+    With $n = 2$ the formula gives $\frac14 = a\cdot 0 + \frac{1-a}{2}$, so $a = \frac12$. Under scaling, $\norm{f}_{L^4} \sim \lambda^{-1/2}$, $\norm{\nabla f}_{L^2} \sim \lambda^0$ and $\norm{f}_{L^2} \sim \lambda^{-1}$.
+  \end{hint}
+  \begin{solution}
+    For $n = 2$: $\frac14 = a\big(\frac12 - \frac12\big) + \frac{1-a}{2}$, so $a = \frac12$. Scaling $f_\lambda(x) = f(\lambda x)$ on $\R^2$: $\norm{f_\lambda}_{L^4} = \lambda^{-1/2}\norm{f}_{L^4}$, $\norm{\nabla f_\lambda}_{L^2} = \lambda^{0}\norm{\nabla f}_{L^2}$, $\norm{f_\lambda}_{L^2} = \lambda^{-1}\norm{f}_{L^2}$. For the inequality to survive all $\lambda$, the powers must match: $-\frac12 = 0\cdot a - (1-a)$, again $a = \frac12$.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  The convection term in Step 1 of the case study. For $u \in H^1_0 \cap H^2(\Omega)$, $\Omega \subset \R^3$, show $\norm{u\cdot\nabla u}_{L^2} \le C\norm{\nabla u}_{L^2}^{3/2}\norm{\nabla u}_{H^1}^{1/2}$. Then show that $\norm{\nabla u}_{H^1} \le C\big(A + \norm{u\cdot\nabla u}_{L^2}\big)$ implies $\norm{\nabla u}_{H^1} \le C'\big(A + \norm{\nabla u}_{L^2}^3\big)$.
+  \begin{hint}
+    Hölder: $\norm{u\cdot\nabla u}_{L^2} \le \norm{u}_{L^6}\norm{\nabla u}_{L^3}$. Use $\norm{u}_{L^6} \le C\norm{\nabla u}_{L^2}$ and the 3D form above for $\nabla u$. For the second part, write $X = \norm{\nabla u}_{H^1}$, $K = \norm{\nabla u}_{L^2}$, and use Young: $CK^{3/2}X^{1/2} \le \frac12 X + C''K^3$. The power $\frac12$ of $X$ is below $1$: this is "absorbed".
+  \end{hint}
+  \begin{solution}
+    Hölder with $\frac12 = \frac16 + \frac13$: $\norm{u\cdot\nabla u}_{L^2} \le \norm{u}_{L^6}\norm{\nabla u}_{L^3}$. Since $u \in H^1_0$, $\norm{u}_{L^6} \le C\norm{\nabla u}_{L^2}$. Since $u \in H^2$, $\nabla u \in H^1$, and the 3D form gives $\norm{\nabla u}_{L^3} \le C\norm{\nabla u}_{L^2}^{1/2}\norm{\nabla u}_{H^1}^{1/2}$. Multiplying, $\norm{u\cdot\nabla u}_{L^2} \le C_1K^{3/2}X^{1/2}$ with $K = \norm{\nabla u}_{L^2}$, $X = \norm{\nabla u}_{H^1}$.
+
+    Then $X \le CA + CC_1K^{3/2}X^{1/2}$. By Young with $p = q = 2$, $CC_1K^{3/2}X^{1/2} \le \frac12X + \frac12(CC_1)^2K^3$. So $\frac12X \le CA + \frac12(CC_1)^2K^3$, i.e. $X \le C'(A + K^3)$. The term was absorbed because $X$ appeared on the right with a power below $1$.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item L. Nirenberg, On elliptic partial differential equations, \emph{Ann. Scuola Norm. Sup. Pisa} 13 (1959) 115--162 (the original statement).
+\item A. Fiorenza, M. R. Formica, T. Roskovec, F. Soudský, Detailed proof of classical Gagliardo--Nirenberg interpolation inequality with historical remarks, \emph{Z. Anal. Anwend.} 40 (2021) 217--236.
+\end{itemize}

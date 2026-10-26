@@ -1,0 +1,73 @@
+% Regularized approximation schemes
+% Converted from notes/pde/regularized-approximation.html. Edit freely: this file is now the master copy.
+
+\section{Regularized approximation schemes}\label{p:regularized-approximation}
+
+\prereqs{Energy estimates and a priori bounds~(\S\ref{p:energy-estimates}), The Faedo--Galerkin method~(\S\ref{p:galerkin})}
+
+\subsection*{The idea}
+
+When a system is too degenerate to solve directly, add small terms that make it solvable, prove estimates uniform in the small parameters, and remove the terms one at a time. Each added term must keep the energy structure intact, otherwise the uniform estimates are lost. Designing the regularization is often where the new idea of a paper lives.
+
+\subsection*{Statement}
+
+\begin{thmbox}{The standard scheme for compressible Navier--Stokes (Feireisl--Novotný--Petzeltová)}
+\[
+      \begin{gathered}
+      \rho_t+\dv(\rho u)=\varepsilon\Delta\rho,\\
+      (\rho u)_t+\dv(\rho u\otimes u)+\nabla p(\rho)+\delta\nabla\rho^\beta+\varepsilon\nabla\rho\cdot\nabla u
+       =\mu\Delta u+(\lambda+\mu)\nabla\dv u,
+      \end{gathered}
+    \]
+
+\begin{itemize}
+\item $\varepsilon\Delta\rho$ (artificial viscosity) makes the continuity equation parabolic: $\rho$ becomes smooth and positive.
+\item $\varepsilon\nabla\rho\cdot\nabla u$ cancels the energy produced by $\varepsilon\Delta\rho$, so the energy law survives.
+\item $\delta\rho^\beta$ with $\beta$ large (artificial pressure) gives extra integrability of $\rho$ for the intermediate limits.
+\end{itemize}
+
+Limits are taken in order: Galerkin index $\to\infty$, then $\varepsilon\to0$, then $\delta\to0$.
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+Each regularization fixes one defect and costs one limit. The order matters: $\varepsilon\to0$ is done while $\delta\rho^\beta$ still provides integrability, and $\delta\to0$ last, when only the genuine pressure is left. In a coupled system, a regularization of one equation can break the energy balance with another, and then a new term must be invented to restore it.
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  For $\rho_t + \dv(\rho u) = \varepsilon\Delta\rho$ with $u = 0$ and $\partial_\nu\rho = 0$ on $\partial\Omega$, show that the mass is conserved. With $P(\rho) = \frac{\rho^\gamma}{\gamma-1}$ and $p(\rho) = \rho^\gamma$, show $\frac{d}{dt}\int P(\rho) + \varepsilon\int P''(\rho)|\nabla\rho|^2 = -\int p(\rho)\,\dv u$. The artificial viscosity only adds dissipation.
+  \begin{hint}
+    Multiply by $P'(\rho)$ and integrate. The viscosity term gives $-\varepsilon\int P''(\rho)|\nabla\rho|^2$. For the transport term, $\rho P''(\rho) = p'(\rho)$, so $\int P'(\rho)\dv(\rho u) = -\int\rho P''(\rho)\nabla\rho\cdot u = -\int\nabla p\cdot u = \int p\,\dv u$.
+  \end{hint}
+  \begin{solution}
+    Mass: $\frac{d}{dt}\int\rho = \varepsilon\int_{\partial\Omega}\partial_\nu\rho - \int_{\partial\Omega}\rho\,u\cdot\nu = 0$.
+
+    Multiply the equation by $P'(\rho)$ and integrate. With $\partial_\nu\rho = 0$, $\varepsilon\int P'(\rho)\Delta\rho = -\varepsilon\int P''(\rho)|\nabla\rho|^2$. Since $\rho P''(\rho) = \gamma\rho^{\gamma-1} = p'(\rho)$ and $u = 0$ on $\partial\Omega$,
+
+    \[ \int P'(\rho)\dv(\rho u) = -\int P''(\rho)\nabla\rho\cdot\rho u = -\int\nabla p(\rho)\cdot u = \int p(\rho)\dv u. \]
+
+    So $\frac{d}{dt}\int P(\rho) + \varepsilon\int P''(\rho)|\nabla\rho|^2 = -\int p(\rho)\dv u$. The right side is the pressure work that cancels against the momentum equation; the new term $\varepsilon\int P''|\nabla\rho|^2 \ge 0$ is extra dissipation.
+  \end{solution}
+\end{exercise}
+
+\begin{exercise}
+  The balancing term. Show $\frac{\varepsilon}{2}\int\Delta\rho\,|u|^2 = -\varepsilon\int(\nabla\rho\cdot\nabla)u\cdot u$ when $u = 0$ on $\partial\Omega$. This is why adding $\varepsilon\nabla\rho\cdot\nabla u$ to the momentum equation cancels the extra kinetic energy created by $\varepsilon\Delta\rho$.
+  \begin{hint}
+    Integrate by parts once: $\int\Delta\rho\,|u|^2 = -\int\nabla\rho\cdot\nabla|u|^2$, and $\partial_j|u|^2 = 2u_i\partial_ju_i$.
+  \end{hint}
+  \begin{solution}
+    Integrating by parts once, $\int\Delta\rho\,|u|^2 = -\int\nabla\rho\cdot\nabla|u|^2 = -2\int\partial_j\rho\,u_i\partial_ju_i = -2\int(\nabla\rho\cdot\nabla)u\cdot u$, with no boundary term since $u = 0$ on $\partial\Omega$. Multiply by $\frac\varepsilon2$.
+
+    Why this matters: testing $(\rho u)_t + \dv(\rho u\otimes u)$ with $u$ gives $\frac{d}{dt}\int\frac12\rho|u|^2 + \frac12\int\big(\rho_t + \dv(\rho u)\big)|u|^2$. In the original system the bracket vanishes; in the regularized one it equals $\varepsilon\Delta\rho$, leaving $\frac\varepsilon2\int\Delta\rho|u|^2$, which has no sign. Testing the balancing term $\varepsilon\nabla\rho\cdot\nabla u$ with $u$ gives $\varepsilon\int(\nabla\rho\cdot\nabla)u\cdot u = -\frac\varepsilon2\int\Delta\rho|u|^2$ by the identity. The two cancel exactly, and the kinetic energy balance is the same as without regularization.
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item E. Feireisl, A. Novotný, H. Petzeltová, On the existence of globally defined weak solutions to the Navier--Stokes equations, \emph{J. Math. Fluid Mech.} 3 (2001) 358--392.
+\item A. Novotný, I. Straškraba, \emph{Introduction to the Mathematical Theory of Compressible Flow}, Oxford, 2004, Chapter 7.
+\end{itemize}
+
+\neededfor{Lions--Feireisl theory for compressible flow~(\S\ref{p:lions-feireisl})}
