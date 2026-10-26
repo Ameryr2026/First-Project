@@ -27,8 +27,9 @@
      عند تعديل arabic-math.js غيّر رقم ?v= في سطر تحميله، حتى لا يستخدم المتصفح نسخة قديمة.
      ============================================================ -->
 <script src="geogebra.js?v=3" defer></script>
-<script src="riemann.js?v=3" defer></script>
-<script src="arabic-math.js?v=17"></script>
+<script src="riemann.js?v=4" defer></script>
+<script src="terms.js?v=1"></script>
+<script src="arabic-math.js?v=18"></script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
 <style>
@@ -49,6 +50,7 @@
   /* الرياضيات تبقى من اليسار إلى اليمين داخل النص العربي */
   mjx-container { direction: ltr; unicode-bidi: isolate; }
   mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+  .terms-note { font-size: 16px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; margin-top: 32px; }
   .en { direction: ltr; unicode-bidi: isolate; font-family: Inter, sans-serif; font-size: 0.8em; color: var(--muted); }
 
   nav { border-bottom: 1px solid var(--rule); font-size: 16px; }
@@ -99,22 +101,22 @@
 
   <!-- DRAFT: نص تمهيدي مقترح، راجعه وعدّله بأسلوبك -->
   <p>
-    كيف نحسب المساحة تحت منحنى؟ الفكرة بسيطة: نقسم الفترة $[أ، ب]$ إلى $ن$ من الأجزاء المتساوية،
-    ونبني على كل جزء مستطيلًا ارتفاعه قيمة الدالة عند نقطة منه، ثم نجمع مساحات المستطيلات.
+    كيف نحسب {{area.def}} تحت منحنى؟ الفكرة بسيطة: نقسم {{interval.def}} $[أ، ب]$ إلى $ن$ من الأجزاء المتساوية،
+    ونبني على كل جزء {{rectangle}}ًا ارتفاعه قيمة {{function.def}} عند نقطة منه، ثم نجمع {{area.pl}} {{rectangle.defpl}}.
   </p>
   <p>عرض كل مستطيل هو</p>
   \[ \Delta س = \كسر{ب - أ}{ن}، \]
-  <p>ومجموع المساحات، ويسمى <strong>مجموع ريمان</strong>، هو</p>
-  \[ \مجموع_{ي=1}^{ن} ق(س_ي) \, \Delta س. \]
+  <p>ومجموع {{area.defpl}}، ويسمى <strong>{{riemann-sum}}</strong>، هو</p>
+  \[ \مجموع_{ي=1}^{ن} {{function.sym}}(س_ي) \, \Delta س. \]
   <p>
-    إذا أخذنا أكبر قيمة للدالة في كل جزء نحصل على <strong>المجموع العلوي</strong>، وأصغر قيمة تعطي
-    <strong>المجموع السفلي</strong>. كل مجموع ريمان يقع بينهما، والتكامل كذلك.
+    إذا أخذنا أكبر قيمة ل{{function.def}} في كل جزء نحصل على <strong>{{upper-sum.def}}</strong>، وأصغر قيمة تعطي
+    <strong>{{lower-sum.def}}</strong>. كل {{riemann-sum}} يقع بينهما، و{{integral.def}} كذلك.
   </p>
 
   <h2>جرّب بنفسك</h2>
   <p>
-    اكتب أي دالة، واختر الحدين أ و ب، ثم حرّك عدد المستطيلات ن. راقب كيف يقترب المجموعان العلوي والسفلي
-    من التكامل كلما زاد عدد المستطيلات. تُكتب الدالة بالإنجليزية، مثل:
+    اكتب أي {{function}}، واختر الحدين أ و ب، ثم حرّك عدد {{rectangle.defpl}} ن. راقب كيف يقترب المجموعان العلوي والسفلي
+    من {{integral.def}} كلما زاد عدد {{rectangle.defpl}}. {{function?يُكتب:تُكتب}} {{function.def}} بالإنجليزية، مثل:
     <code dir="ltr">x^2 + 1</code>، <code dir="ltr">sin(x)</code>، <code dir="ltr">e^x</code>، <code dir="ltr">sqrt(x)</code>.
   </p>
 
@@ -125,9 +127,15 @@
   <div class="geogebra" data-id="tqw7qdcx" data-width="800" data-height="600" data-lang="en"></div>
 
   <h2>من المجموع إلى التكامل</h2>
-  <p>كلما زاد عدد المستطيلات صَغُر عرضها، واقترب المجموع من المساحة الحقيقية. نهاية هذا المجموع هي التكامل المحدد:</p>
-  \[ \نها_{ن \الى \لانهاية} \مجموع_{ي=1}^{ن} ق(س_ي) \, \Delta س = \تكامل_أ^ب ق(س) \, دس. \]
+  <p>كلما زاد عدد {{rectangle.defpl}} صَغُر عرضها، واقترب {{sum.def}} من {{area.def}} الحقيقية. {{limit}} هذا {{sum.def}} هي {{definite-integral.def}}:</p>
+  \[ \نها_{ن \الى \لانهاية} \مجموع_{ي=1}^{ن} ق(س_ي) \, \Delta س = \تكامل_أ^ب {{function.sym}}(س) \, دس. \]
   <p><a href="riemann.html">English version of this page</a></p>
+  <p class="terms-note">
+    المصطلحات في هذه الصفحة مكتوبة بمصطلحات الأردن، ويمكن تكييفها لمصطلحات أي بلد عربي من ملف واحد.
+    <a href="?terms=eg">اعرض هذه الصفحة بمصطلحات مصر</a> ·
+    <a href="?terms=jo">بمصطلحات الأردن</a> ·
+    <a href="terms.html">مسرد المصطلحات</a>
+  </p>
 </main>
 
 <footer>

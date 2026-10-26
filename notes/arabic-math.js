@@ -582,7 +582,10 @@
           ]).catch(function () {}).then(function () { return document.fonts.ready; });
         }
         return fontsReady
-          .then(function () { translateEnvironments(document.body); return MathJax.typesetPromise(); })
+          .then(function () {
+            if (window.ArabicTerms) ArabicTerms.apply(document.body, MODE);   // terms.js: {{function}} → the word
+            translateEnvironments(document.body); return MathJax.typesetPromise();
+          })
           .then(function () { mirrorAll(); document.documentElement.setAttribute('data-math-ready', '1'); });
       }
     }
@@ -601,6 +604,7 @@
     environments: ENVIRONMENTS,
     environmentFromLatex: function (env) { return ENV_FROM[env] || null; },
     typeset: function (el) {
+      if (window.ArabicTerms) ArabicTerms.apply(el || document.body, MODE);
       translateEnvironments(el || document.body);
       return MathJax.typesetPromise(el ? [el] : undefined).then(function () { mirrorAll(el); });
     }

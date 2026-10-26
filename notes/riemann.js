@@ -158,19 +158,27 @@
       n: parseInt(box.getAttribute('data-n') || '6', 10),
       rule: box.getAttribute('data-rule') || 'lower'
     };
+    var DEFAULT_WORDS = { '{{function.def}}': 'الاقتران', '{{function.sym}}': 'ق', '{{rectangle.defpl}}': 'المستطيلات',
+      '{{sum.def}}': 'المجموع', '{{lower-sum.def}}': 'المجموع السفلي', '{{upper-sum.def}}': 'المجموع العلوي',
+      '{{riemann-sum}}': 'مجموع ريمان', '{{integral.def}}': 'التكامل' };
     var lang = box.getAttribute('data-lang') === 'en' ? 'en' : 'ar';
     var TXT = lang === 'en'
       ? { f: 'f(x) =', a: 'Lower bound a', b: 'Upper bound b', n: 'Number of rectangles n = ',
           rule: 'Sum', lower: 'Lower sum', upper: 'Upper sum', both: 'Upper and lower', mid: 'Midpoint sum',
           sum: 'Riemann sum', lowerSum: 'Lower sum', upperSum: 'Upper sum', integral: 'Integral',
           diff: 'Difference', gap: 'Upper − lower', aria: 'Riemann sum graph' }
-      : { f: 'الدالة ق(س) =', a: 'الحد الأدنى أ', b: 'الحد الأعلى ب', n: 'عدد المستطيلات ن = ',
-          rule: 'المجموع', lower: 'المجموع السفلي', upper: 'المجموع العلوي', both: 'العلوي والسفلي معًا',
-          mid: 'مجموع المنتصف', sum: 'مجموع ريمان', lowerSum: 'المجموع السفلي', upperSum: 'المجموع العلوي',
-          integral: 'التكامل', diff: 'الفرق', gap: 'العلوي − السفلي', aria: 'رسم مجموع ريمان' };
+      : { f: '{{function.def}} {{function.sym}}(س) =', a: 'الحد الأدنى أ', b: 'الحد الأعلى ب', n: 'عدد {{rectangle.defpl}} ن = ',
+          rule: '{{sum.def}}', lower: '{{lower-sum.def}}', upper: '{{upper-sum.def}}', both: 'العلوي والسفلي معًا',
+          mid: 'مجموع المنتصف', sum: '{{riemann-sum}}', lowerSum: '{{lower-sum.def}}', upperSum: '{{upper-sum.def}}',
+          integral: '{{integral.def}}', diff: 'الفرق', gap: 'العلوي − السفلي', aria: 'رسم {{riemann-sum}}' };
     // data-fn="en": the function is typed in English (f(x) = x^2) even on an Arabic page.
     var fnEnglish = lang === 'en' || box.getAttribute('data-fn') === 'en';
-    if (fnEnglish && lang !== 'en') TXT.f = 'الدالة f(x) =';
+    if (fnEnglish && lang !== 'en') TXT.f = '{{function.def}} f(x) =';
+    // Arabic labels use the site's terminology (terms.js); without it, the default words.
+    for (var k in TXT) {
+      TXT[k] = window.ArabicTerms ? ArabicTerms.expand(TXT[k], 'ar')
+        : TXT[k].replace(/\{\{[^}]+\}\}/g, function (t) { return DEFAULT_WORDS[t] || ''; });
+    }
     if (lang === 'en') box.setAttribute('dir', 'ltr');
     box.innerHTML =
       '<div class="rs-controls">' +
