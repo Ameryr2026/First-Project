@@ -70,7 +70,7 @@ pieces turn with the angle slider, and the flat faces where they are cut show th
 $n$ adds pieces one at a time; ▶ next to the angle turns the region.
 
 ```html
-<script src="ggb-volume.js?v=4" defer></script>
+<script src="ggb-volume.js?v=5" defer></script>
 …
 <div class="ggb-volume" data-f="x" data-a="0" data-b="3"></div>                          <!-- discs about the x-axis -->
 <div class="ggb-volume" data-f="x + 1" data-g="sin(x)" data-axis="horizontal" data-c="-1"
@@ -86,7 +86,7 @@ $n$ adds pieces one at a time; ▶ next to the angle turns the region.
 | `data-axis` | `horizontal` (the axis is $y = c$) or `vertical` ($x = c$) | `horizontal` |
 | `data-c` | where the axis is | 0 |
 | `data-angle` | the starting angle in degrees; below 360 the cut is visible | 270 |
-| `data-nmax` | largest $n$ on the slider (up to 200) | 40 |
+| `data-nmax` | largest $n$ on the slider (up to 200; each piece is several 3D surfaces, so keep it modest) | 20 |
 | `data-color-surface`, `-discs`, `-curve`, `-axis` | colours as `#rrggbb` | blue, orange, black, red |
 | `data-lang`, `data-height` | as above | |
 

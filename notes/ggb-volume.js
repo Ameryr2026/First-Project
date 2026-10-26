@@ -23,7 +23,7 @@
  *   data-axis        horizontal (default) or vertical;   data-c   the axis is y = c or x = c (default 0)
  *   data-method      shells is the same as data-axis="vertical" (kept for older pages)
  *   data-angle       starting angle in degrees (default 270, so the cut is visible)
- *   data-nmax        the largest n on the slider (default 40, at most 200)
+ *   data-nmax        the largest n on the slider (default 20, at most 200; each piece is several 3D surfaces)
  *   data-color-surface, data-color-discs, data-color-curve, data-color-axis   colours as #rrggbb
  *   data-lang        ar for Arabic labels (default: the page's language)
  *   data-height      height of the picture in pixels (default 480)
@@ -183,7 +183,7 @@
       a: num(box.getAttribute('data-a'), 0),
       b: num(box.getAttribute('data-b'), 3),
       angle: Math.max(0, Math.min(360, num(box.getAttribute('data-angle'), 270))),
-      nmax: Math.max(1, Math.min(200, Math.round(num(box.getAttribute('data-nmax'), 40))))
+      nmax: Math.max(1, Math.min(200, Math.round(num(box.getAttribute('data-nmax'), 20))))
     };
     start.n = Math.max(1, Math.min(start.nmax, Math.round(num(box.getAttribute('data-n'), 6))));
     var color = {};
@@ -243,7 +243,7 @@
     });
 
     var api = null;
-    var state = { axis: null, c: null, f: null, g: null, a: null, b: null, n: null };
+    var state = { axis: null, c: null, f: null, g: null, a: null, b: null, n: null, skipG: null };
     var names = { S: [], A: [], X: [['AX', false]] };   // the GeoGebra objects that are drawn
 
     // ---- 7. Numbers in the reader's digits ----
@@ -285,13 +285,33 @@
       });
     }
 
+    // Speed: while we send many commands, GeoGebra should not redraw after each one.
+    function batch(fn) {
+      if (api.setRepaintingActive) api.setRepaintingActive(false);
+      try { fn(); } finally { if (api.setRepaintingActive) api.setRepaintingActive(true); }
+    }
+
+    // Is the lower curve the axis itself (g = c, axis y = c)? Then the surfaces made by turning g have
+    // radius 0 and are not drawn at all: plain discs instead of washers, and half the work.
+    function gIsAxis(axis, g, c) {
+      return axis === 'horizontal' && g !== '' && isFinite(+g) && +g === c;
+    }
+
     // Create (or re-create) the axis, the solid and the pieces for an axis type.
-    function makeObjects(axis) {
+    function makeObjects(axis, skipG) {
       names.S.concat(names.A).concat(names.X).forEach(function (o) { if (api.exists(o[0])) api.deleteObject(o[0]); });
       var M = commands(axis);
+      var skip = skipG ? { S2: true, A2: true } : {};
       names = { S: [], A: [], X: [['AX', false]] };
-      M.solid.forEach(function (c) { if (cmd(c[0] + ' = ' + c[1])) names.S.push([c[0], c[2] === 'cut']); });
-      M.pieces.forEach(function (c) { if (cmd(c[0] + ' = ' + c[1])) names.A.push([c[0], c[2] === 'cut']); });
+      function make(list, into) {
+        list.forEach(function (c) {
+          if (skip[c[0]] || !cmd(c[0] + ' = ' + c[1])) return;
+          into.push([c[0], c[2] === 'cut']);
+          cmd('SetLevelOfDetail(' + c[0] + ', 0)');   // coarser surfaces: much faster, still smooth
+        });
+      }
+      make(M.solid, names.S);
+      make(M.pieces, names.A);
       cmd(M.axisLine);
       cmd(M.exact); cmd(M.approx); hide('V'); hide('D');
       paintAll();
@@ -345,24 +365,41 @@
       var r1 = setCurve('f', inF.value.trim()), r2 = setCurve('g', inG.value.trim() || '0');
       if (!r1 || !r2) return;
       var changedShape = r1 === 'changed' || r2 === 'changed';
-      if (a !== state.a) { api.setValue('a', a); state.a = a; changedShape = true; }
-      if (b !== state.b) { api.setValue('b', b); state.b = b; changedShape = true; }
-      if (c !== state.c) { api.setValue('c', c); state.c = c; changedShape = true; }
-      if (n !== state.n) { api.setValue('n', n); state.n = n; }
-      if (axis !== state.axis) { makeObjects(axis); state.axis = axis; changedShape = true; }
-      if (changedShape && refit !== false) fit();
+      var skipG = gIsAxis(axis, state.g, c);
+      batch(function () {
+        if (a !== state.a) { api.setValue('a', a); state.a = a; changedShape = true; }
+        if (b !== state.b) { api.setValue('b', b); state.b = b; changedShape = true; }
+        if (c !== state.c) { api.setValue('c', c); state.c = c; changedShape = true; }
+        if (n !== state.n) { api.setValue('n', n); state.n = n; }
+        if (axis !== state.axis || skipG !== state.skipG) {
+          makeObjects(axis, skipG); state.axis = axis; state.skipG = skipG; changedShape = true;
+        }
+        if (changedShape && refit !== false) fit();
+      });
       readout();
     }
 
+    // The slider moves smoothly, but GeoGebra gets the new angle at most every 70 ms: every surface
+    // is recomputed for each angle, and sending more often only queues work.
+    var angleSent = 0, angleTimer = null, angleWanted = null;
     function setAngle(deg) {
       inT.value = deg; showAngle(deg);
-      if (api) api.setValue('t', deg * Math.PI / 180);
+      angleWanted = deg;
+      if (!api || angleTimer) return;
+      var wait = Math.max(0, 70 - (Date.now() - angleSent));
+      angleTimer = setTimeout(function () {
+        angleTimer = null; angleSent = Date.now();
+        api.setValue('t', angleWanted * Math.PI / 180);
+      }, wait);
     }
 
     // ---- 10. When GeoGebra is ready: create everything once ----
     function onLoad(ggb) {
       api = ggb;
       api.setErrorDialogsActive && api.setErrorDialogsActive(false);
+      batch(function () { create(); });
+    }
+    function create() {
       cmd('a = ' + start.a); cmd('b = ' + start.b); cmd('n = ' + start.n); cmd('c = ' + start.c);
       cmd('t = ' + (start.angle * Math.PI / 180));
       ['a', 'b', 'n', 'c', 't'].forEach(hide);
@@ -381,7 +418,8 @@
       cmd('pf = Curve(u, f(u), 0, u, a, b)'); cmd('pg = Curve(u, g(u), 0, u, a, b)');
       cmd('SetVisibleInView(xOyPlane, -1, false)');  // a cleaner picture: no grey floor
       state.a = start.a; state.b = start.b; state.c = start.c; state.n = start.n;
-      makeObjects(start.axis); state.axis = start.axis;
+      state.skipG = gIsAxis(start.axis, start.g, start.c);
+      makeObjects(start.axis, state.skipG); state.axis = start.axis;
       fit();
       readout();
     }
@@ -422,7 +460,7 @@
       if (+inN.value >= +inN.max) inN.value = 1;
       playN.textContent = T.stop;
       update(false);
-      var delay = Math.max(120, Math.min(600, 6000 / +inN.max));   // about 6 seconds for the whole slider
+      var delay = Math.max(350, Math.min(800, 7000 / +inN.max));   // 3D needs time to rebuild the pieces
       nTimer = setInterval(function () {
         if (+inN.value >= +inN.max) return stopN();
         inN.value = +inN.value + 1;
@@ -463,23 +501,44 @@
     return { params: params, id: gid, fail: function () { $('#' + gid).textContent = T.failed; } };
   }
 
-  // ---- 12. Load GeoGebra once, then start every widget ----
+  // ---- 12. Load GeoGebra once; start each picture only when the reader scrolls near it ----
+  // A 3D GeoGebra picture is heavy, so a page with three of them should not start all three at once.
+  var loading = null;
+  function loadGeoGebra() {
+    if (window.GGBApplet) return Promise.resolve();
+    if (!loading) {
+      loading = new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = SCRIPT;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+    return loading;
+  }
+  function launch(w) {
+    if (w.started) return;
+    w.started = true;
+    loadGeoGebra().then(function () {
+      try { new window.GGBApplet(w.params, true).inject(w.id); }
+      catch (e) { w.fail(); }
+    }, function () { w.fail(); });
+  }
   function start() {
     var boxes = document.querySelectorAll('.ggb-volume');
     if (!boxes.length) return;
     var widgets = Array.prototype.map.call(boxes, build);
-    function run() {
-      widgets.forEach(function (w) {
-        try { new window.GGBApplet(w.params, true).inject(w.id); }
-        catch (e) { w.fail(); }
+    if (!('IntersectionObserver' in window)) return widgets.forEach(launch);
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = Array.prototype.indexOf.call(boxes, e.target);
+        io.unobserve(e.target);
+        launch(widgets[i]);
       });
-    }
-    if (window.GGBApplet) return run();
-    var s = document.createElement('script');
-    s.src = SCRIPT;
-    s.onload = run;
-    s.onerror = function () { widgets.forEach(function (w) { w.fail(); }); };
-    document.head.appendChild(s);
+    }, { rootMargin: '300px 0px' });
+    Array.prototype.forEach.call(boxes, function (b) { io.observe(b); });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
