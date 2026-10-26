@@ -53,7 +53,9 @@
           loading: 'Loading GeoGebra 3D…',
           failed: 'GeoGebra could not be loaded. Check the connection and reload the page.',
           help: 'Write the functions in English: sqrt(x), x^2, sin(x) + 1, 2x - x^2. Drag the picture to turn it.',
-          settings: 'Settings', nmax: 'Largest n on the slider', show: 'Show' },
+          settings: 'Settings', nmax: 'Largest n on the slider', show: 'Show',
+          surfaces: 'Surfaces', lines: 'Lines', colorW: 'Color', opacity: 'Opacity', thick: 'Thickness', style: 'Style',
+          styles: ['Solid', 'Long dashes', 'Short dashes', 'Dotted', 'Dash-dot'] },
     ar: { f: 'المنحنى العلوي f(x) =', g: 'المنحنى السفلي g(x) =', a: 'من أ =', b: 'إلى ب =',
           n: 'عدد القطع ن = ', angle: 'دوّر المنطقة: ', axis: 'محور الدوران',
           axisH: 'مستقيم أفقي y = c  (أقراص وحلقات)', axisV: 'مستقيم رأسي x = c  (قشرات أسطوانية)', c: 'c =',
@@ -67,7 +69,9 @@
           loading: 'جارٍ تحميل جيوجبرا ثلاثي الأبعاد…',
           failed: 'تعذّر تحميل جيوجبرا. تحقّق من الاتصال وأعد تحميل الصفحة.',
           help: 'اكتب الاقترانات بالإنجليزية: sqrt(x)، x^2، sin(x) + 1، 2x - x^2. اسحب الرسم لتدويره.',
-          settings: 'الإعدادات', nmax: 'أكبر قيمة لـ ن على المؤشر', show: 'اعرض' }
+          settings: 'الإعدادات', nmax: 'أكبر قيمة لـ ن على المؤشر', show: 'اعرض',
+          surfaces: 'الأسطح', lines: 'الخطوط', colorW: 'اللون', opacity: 'التعتيم', thick: 'السُّمك', style: 'النمط',
+          styles: ['متصل', 'متقطع طويل', 'متقطع قصير', 'منقّط', 'شرطة ونقطة'] }
   };
 
   // ---- 2. Colours ----
@@ -79,6 +83,11 @@
                      cuts: 'data-color-cuts', pieces: 'data-color-discs', prof: 'data-color-curve',
                      axis: 'data-color-axis' };
   var PART = { S1: 'outer', S2: 'inner', S3: 'ends', S4: 'ends', S5: 'cuts', S6: 'cuts' };
+  // Opacity of each part of the solid (0 = invisible, 1 = solid), and the thickness (1 to 13) and style of
+  // each line. GeoGebra's line styles: 0 solid, 1 long dashes, 2 short dashes, 3 dotted, 4 dash-dot.
+  var DEFAULT_OPACITY = { outer: 0.4, inner: 0.4, ends: 0.4, cuts: 0.7 };
+  var DEFAULT_LINE = { prof: { thick: 7, style: 0 }, axis: { thick: 6, style: 1 } };
+  var LINE_STYLES = [0, 1, 2, 3, 4];
   function rgb(hex) {
     var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || '');
     return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : null;
@@ -168,6 +177,12 @@
     '.ggb-volume .gv-set { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: end; padding: 10px 0; }' +
     '.ggb-volume .gv-set input[type=number] { width: 7em; }' +
     '.ggb-volume .gv-set input[type=color] { width: 3em; height: 2em; padding: 0; cursor: pointer; }' +
+    '.ggb-volume table.gv-tab { border-collapse: collapse; font-size: 14px; }' +
+    '.ggb-volume table.gv-tab th { text-align: start; font-weight: 600; padding: 4px 10px 4px 0; }' +
+    '.ggb-volume table.gv-tab td { padding: 4px 10px 4px 0; vertical-align: middle; }' +
+    '.ggb-volume table.gv-tab input[type=range] { width: 8em; vertical-align: middle; }' +
+    '.ggb-volume table.gv-tab .gv-val { display: inline-block; min-width: 3em; text-align: end; }' +
+    '.ggb-volume .gv-set { flex-direction: column; align-items: stretch; }' +
     '.ggb-volume button { font: inherit; font-size: 14px; padding: 4px 10px; border: 1px solid var(--rule, #d0ccc2);' +
     '  border-radius: 4px; background: var(--bg, #fff); color: inherit; cursor: pointer; white-space: nowrap; }' +
     '@media (max-width: 600px) { .ggb-volume .gv-controls { grid-template-columns: 1fr; } }';
@@ -232,9 +247,24 @@
       '<div class="gv-graph"><div id="' + gid + '">' + T.loading + '</div></div>' +
       '<div class="gv-out"></div>' +
       '<details class="gv-more"><summary>' + T.settings + '</summary><div class="gv-set">' +
-      [['outer', T.outer], ['inner', T.inner], ['ends', T.ends], ['cuts', T.cuts], ['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
-        return '  <div><label>' + p[1] + '</label><input type="color" data-k="' + p[0] + '"></div>';
-      }).join('') +
+      // Surfaces: a colour and an opacity for each part of the solid.
+      '<table class="gv-tab"><tr><th>' + T.surfaces + '</th><th>' + T.colorW + '</th><th>' + T.opacity + '</th></tr>' +
+      [['outer', T.outer], ['inner', T.inner], ['ends', T.ends], ['cuts', T.cuts]].map(function (p) {
+        return '<tr><td>' + p[1] + '</td><td><input type="color" data-k="' + p[0] + '"></td>' +
+          '<td><input type="range" class="gv-op" data-k="' + p[0] + '" min="0" max="100" step="5">' +
+          ' <span class="gv-val" data-v="' + p[0] + '"></span></td></tr>';
+      }).join('') + '</table>' +
+      // Lines: a colour, a thickness and a style for the curves and the axis.
+      '<table class="gv-tab"><tr><th>' + T.lines + '</th><th>' + T.colorW + '</th><th>' + T.thick + '</th><th>' +
+      T.style + '</th></tr>' +
+      [['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
+        return '<tr><td>' + p[1] + '</td><td><input type="color" data-k="' + p[0] + '"></td>' +
+          '<td><input type="range" class="gv-th" data-k="' + p[0] + '" min="1" max="13" step="1">' +
+          ' <span class="gv-val" data-v="' + p[0] + '"></span></td>' +
+          '<td><select class="gv-st" data-k="' + p[0] + '">' + LINE_STYLES.map(function (st) {
+            return '<option value="' + st + '">' + T.styles[st] + '</option>';
+          }).join('') + '</select></td></tr>';
+      }).join('') + '</table>' +
       '</div></details>';
     if (lang === 'ar') box.setAttribute('dir', 'rtl');
 
@@ -248,6 +278,19 @@
     inT.value = start.angle;
     Array.prototype.forEach.call(box.querySelectorAll('input[type=color]'), function (el) {
       el.value = color[el.getAttribute('data-k')];
+    });
+    var opacity = {}, line = {};
+    Object.keys(DEFAULT_OPACITY).forEach(function (k) { opacity[k] = DEFAULT_OPACITY[k]; });
+    Object.keys(DEFAULT_LINE).forEach(function (k) { line[k] = { thick: DEFAULT_LINE[k].thick, style: DEFAULT_LINE[k].style }; });
+    function showVal(k, text) { box.querySelector('.gv-val[data-v="' + k + '"]').textContent = text; }
+    Array.prototype.forEach.call(box.querySelectorAll('.gv-op'), function (el) {
+      var k = el.getAttribute('data-k'); el.value = Math.round(opacity[k] * 100);
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('.gv-th'), function (el) {
+      el.value = line[el.getAttribute('data-k')].thick;
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('.gv-st'), function (el) {
+      el.value = line[el.getAttribute('data-k')].style;
     });
 
     var api = null;
@@ -280,10 +323,14 @@
       api.setFixed(name, true, false);
     }
     function paintAll() {
-      names.S.forEach(function (o) { paint(o[0], PART[o[0]], o[1] ? 0.7 : 0.4); });
+      names.S.forEach(function (o) { paint(o[0], PART[o[0]], opacity[PART[o[0]]]); });
       names.A.forEach(function (o) { paint(o[0], 'pieces', o[1] ? 0.85 : 0.55); });
-      ['pf', 'pg'].forEach(function (o) { paint(o, 'prof'); api.setLineThickness(o, 7); });
-      paint('AX', 'axis'); api.setLineThickness('AX', 6); api.setLineStyle && api.setLineStyle('AX', 1);
+      [['pf', 'prof'], ['pg', 'prof'], ['AX', 'axis']].forEach(function (o) {
+        if (!api.exists(o[0])) return;
+        paint(o[0], o[1]);
+        api.setLineThickness(o[0], line[o[1]].thick);
+        if (api.setLineStyle) api.setLineStyle(o[0], line[o[1]].style);
+      });
     }
     function applyVisibility() {
       Array.prototype.forEach.call(box.querySelectorAll('.gv-show'), function (el) {
@@ -473,11 +520,35 @@
       turning = requestAnimationFrame(step);
     });
 
-    // Settings: the colours.
+    // Settings: colours, opacities, line thickness and style.
     Array.prototype.forEach.call(box.querySelectorAll('input[type=color]'), function (el) {
       el.addEventListener('input', function () {
         color[el.getAttribute('data-k')] = el.value;
         if (api) { paintAll(); readout(); }
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('.gv-op'), function (el) {
+      var k = el.getAttribute('data-k');
+      showVal(k, digits(el.value) + (lang === 'ar' ? '٪' : '%'));
+      el.addEventListener('input', function () {
+        opacity[k] = +el.value / 100;
+        showVal(k, digits(el.value) + (lang === 'ar' ? '٪' : '%'));
+        if (api) paintAll();
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('.gv-th'), function (el) {
+      var k = el.getAttribute('data-k');
+      showVal(k, digits(el.value));
+      el.addEventListener('input', function () {
+        line[k].thick = +el.value;
+        showVal(k, digits(el.value));
+        if (api) paintAll();
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('.gv-st'), function (el) {
+      el.addEventListener('change', function () {
+        line[el.getAttribute('data-k')].style = +el.value;
+        if (api) paintAll();
       });
     });
 
