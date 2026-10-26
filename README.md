@@ -13,7 +13,7 @@ This repository is the whole website. It has three parts:
    and uniqueness proofs, with exercises, hints and solutions, built around a real case study.
 3. **The same PDE notes as a LaTeX book** (`latex/pde-notes/`): editable source and a printable PDF.
 
-مستودع موقع عامر الرواشدة: صفحات رياضيات بالعربية كاملة (برموز عربية أو لاتينية)، ومحرر للرياضيات
+مستودع موقع عامر رواشدة: صفحات رياضيات بالعربية كاملة (برموز عربية أو لاتينية)، ومحرر للرياضيات
 العربية، ومحوّل من LaTeX الإنجليزي، ونظام مصطلحات يمكن تكييفه لأي بلد عربي. كل شيء مفتوح المصدر
 ويمكن نسخه وتعديله.
 
