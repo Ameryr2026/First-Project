@@ -7,7 +7,7 @@
 <title>Test: Riemann sums with GeoGebra · Amer Rawashdeh</title>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
 <script src="terms.js?v=1"></script>
-<script src="ggb-riemann.js?v=1" defer></script>
+<script src="ggb-riemann.js?v=3" defer></script>
 <style>
   :root { --bg: #fbfaf7; --text: #1f2328; --muted: #5b6470; --accent: #0c4a6e; --rule: #e3e0d8; }
   @media (prefers-color-scheme: dark) { :root { --bg: #14171b; --text: #e6e6e3; --muted: #a0a7b0; --accent: #7cc4ec; --rule: #2a2f36; } }
@@ -24,7 +24,9 @@
   <h1>Test: Riemann sums with GeoGebra as the graph</h1>
   <p>A test page, not linked from the site. The inputs are on this page; GeoGebra only draws.
      Zoom with the mouse wheel or two fingers, drag to move.</p>
-  <div class="ggb-riemann" data-f="x^2" data-a="0" data-b="2" data-n="6" data-sum="both"></div>
+  <div class="ggb-riemann" data-f="x^2" data-a="0" data-b="2" data-n="6" data-sum="both" data-nmax="300"
+       data-color-upper="#7c3aed" data-color-lower="#0891b2"></div>
+  <p style="font-size:15px;color:var(--muted)">This one is set with <code>data-nmax="300"</code>, a purple upper sum and a teal lower sum. Readers can change both under "Settings".</p>
 
   <h2 class="ar" dir="rtl">النسخة العربية</h2>
   <div class="ggb-riemann ar" data-lang="ar" data-f="sin(x)" data-a="0" data-b="3.14159" data-n="8" data-sum="both"></div>

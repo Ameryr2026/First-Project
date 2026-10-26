@@ -9,10 +9,14 @@
  *
  * Settings on the tag (all optional):
  *   data-f      the function, in GeoGebra's English syntax: x^2, sin(x), sqrt(x), exp(x), 1/x
- *   data-a, data-b, data-n   the interval [a, b] and the number of rectangles (1 to 100)
+ *   data-a, data-b, data-n   the interval [a, b] and the number of rectangles
+ *   data-nmax   the largest number of rectangles on the slider (default 100, at most 1000)
+ *   data-color-upper, data-color-lower, data-color-sum, data-color-curve
+ *               colours as #rrggbb (defaults: blue, orange, green, near-black)
  *   data-sum    which sum is shown first: lower, upper, both, left, right, mid
  *   data-lang   ar for Arabic labels (default: the page's language)
  *   data-height height of the graph in pixels (default 460)
+ * Readers can also change the slider's maximum and the colours, under "Settings" below the graph.
  *
  * How it talks to GeoGebra: the page creates an empty GeoGebra graph and sends it commands
  * (f(x) = ..., UpperSum(f, a, b, n), ...) through GeoGebra's Apps API; GeoGebra recalculates
@@ -30,18 +34,25 @@
           gap: 'Upper − lower', value: 'Sum', bad: 'GeoGebra could not read this function.',
           order: 'a must be less than b.', loading: 'Loading GeoGebra…',
           failed: 'GeoGebra could not be loaded. Check the connection and reload the page.',
-          help: 'Write the function in English: x^2 + 1, sin(x), sqrt(x), exp(x), ln(x), abs(x).' },
+          help: 'Write the function in English: x^2 + 1, sin(x), sqrt(x), exp(x), ln(x), abs(x).',
+          othersum: 'Left, right, midpoint sums', settings: 'Settings', nmax: 'Largest n on the slider', curve: 'Graph of f', colors: 'Colours' },
     ar: { f: 'f(x) =', a: 'من أ =', b: 'إلى ب =', n: 'عدد المستطيلات ن = ', sum: 'المجموع',
           lower: 'المجموع السفلي', upper: 'المجموع العلوي', both: 'العلوي والسفلي معًا', left: 'الأطراف اليسرى',
           right: 'الأطراف اليمنى', mid: 'منتصفات الفترات', integral: 'التكامل', fit: 'ملاءمة الرسم',
           gap: 'العلوي − السفلي', value: 'المجموع', bad: 'لم يفهم جيوجبرا هذا الاقتران.',
           order: 'يجب أن يكون أ أصغر من ب.', loading: 'جارٍ تحميل جيوجبرا…',
           failed: 'تعذّر تحميل جيوجبرا. تحقّق من الاتصال وأعد تحميل الصفحة.',
-          help: 'اكتب الاقتران بالإنجليزية: x^2 + 1، sin(x)، sqrt(x)، exp(x)، ln(x)، abs(x).' }
+          help: 'اكتب الاقتران بالإنجليزية: x^2 + 1، sin(x)، sqrt(x)، exp(x)، ln(x)، abs(x).',
+          othersum: 'مجاميع الأطراف والمنتصفات', settings: 'الإعدادات', nmax: 'أكبر قيمة لـ ن على المؤشر', curve: 'منحنى الاقتران', colors: 'الألوان' }
   };
 
-  // Colours: upper sum blue, lower sum orange (as on the other Riemann pages), others green.
-  var COLOR = { U: [37, 99, 235], L: [234, 88, 12], S: [22, 163, 74], f: [31, 35, 40] };
+  // Default colours: upper sum blue, lower sum orange (as on the other Riemann pages), other sums green.
+  var DEFAULT_COLOR = { U: '#2563eb', L: '#ea580c', S: '#16a34a', f: '#1f2328' };
+  var COLOR_ATTR = { U: 'data-color-upper', L: 'data-color-lower', S: 'data-color-sum', f: 'data-color-curve' };
+  function rgb(hex) {
+    var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || '');
+    return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : null;
+  }
 
   var css = document.createElement('style');
   css.textContent =
@@ -61,8 +72,11 @@
     '  overflow: hidden; background: #fff; }' +
     '.ggb-riemann .gr-out { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 10px; font-size: 16px; }' +
     '.ggb-riemann .gr-out b { font-weight: 600; }' +
-    '.ggb-riemann .gr-out .U { color: rgb(37,99,235); } .ggb-riemann .gr-out .L { color: rgb(234,88,12); }' +
-    '.ggb-riemann .gr-out .S { color: rgb(22,163,74); }' +
+    '.ggb-riemann details.gr-more { margin-top: 10px; font-size: 15px; }' +
+    '.ggb-riemann details.gr-more summary { cursor: pointer; color: var(--muted, #5b6470); }' +
+    '.ggb-riemann .gr-set { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: end; padding: 10px 0; }' +
+    '.ggb-riemann .gr-set input[type=number] { width: 7em; }' +
+    '.ggb-riemann .gr-set input[type=color] { width: 3em; height: 2em; padding: 0; cursor: pointer; }' +
     '.ggb-riemann button { font: inherit; font-size: 14px; padding: 4px 10px; border: 1px solid var(--rule, #d0ccc2);' +
     '  border-radius: 4px; background: var(--bg, #fff); color: inherit; cursor: pointer; }' +
     '@media (max-width: 600px) { .ggb-riemann .gr-controls { grid-template-columns: 1fr; } }';
@@ -83,9 +97,15 @@
       f: box.getAttribute('data-f') || 'x^2',
       a: num(box.getAttribute('data-a'), 0),
       b: num(box.getAttribute('data-b'), 2),
-      n: Math.max(1, Math.min(100, Math.round(num(box.getAttribute('data-n'), 6)))),
+      nmax: Math.max(1, Math.min(1000, Math.round(num(box.getAttribute('data-nmax'), 100)))),
       sum: box.getAttribute('data-sum') || 'both'
     };
+    start.n = Math.max(1, Math.min(start.nmax, Math.round(num(box.getAttribute('data-n'), 6))));
+    var color = {};                       // this widget's colours, as #rrggbb
+    Object.keys(DEFAULT_COLOR).forEach(function (k) {
+      var c = box.getAttribute(COLOR_ATTR[k]);
+      color[k] = rgb(c) ? c : DEFAULT_COLOR[k];
+    });
     var height = num(box.getAttribute('data-height'), 460);
     var gid = 'ggb-riemann-' + index;
 
@@ -95,7 +115,7 @@
       '    <div class="gr-help">' + T.help + '</div></div>' +
       '  <div><label>' + T.a + '</label><input class="gr-a" type="number" step="any"></div>' +
       '  <div><label>' + T.b + '</label><input class="gr-b" type="number" step="any"></div>' +
-      '  <div><label>' + T.n + '<span class="gr-nv"></span></label><input class="gr-n" type="range" min="1" max="100"></div>' +
+      '  <div><label>' + T.n + '<span class="gr-nv"></span></label><input class="gr-n" type="range" min="1"></div>' +
       '  <div><label>' + T.sum + '</label><select class="gr-sum">' +
       ['both', 'lower', 'upper', 'left', 'right', 'mid'].map(function (k) {
         return '<option value="' + k + '">' + T[k] + '</option>';
@@ -104,12 +124,23 @@
       '<div class="gr-msg" role="status"></div>' +
       '<div class="gr-graph"><div id="' + gid + '">' + T.loading + '</div></div>' +
       '<div class="gr-out"></div>' +
-      '<div style="margin-top:8px"><button type="button" class="gr-fit">' + T.fit + '</button></div>';
+      '<div style="margin-top:8px"><button type="button" class="gr-fit">' + T.fit + '</button></div>' +
+      '<details class="gr-more"><summary>' + T.settings + '</summary><div class="gr-set">' +
+      '  <div><label>' + T.nmax + '</label><input class="gr-nmax" type="number" min="1" max="1000" step="1"></div>' +
+      [['U', T.upper], ['L', T.lower], ['S', T.othersum], ['f', T.curve]].map(function (p) {
+        return '  <div><label>' + p[1] + '</label><input type="color" data-k="' + p[0] + '"></div>';
+      }).join('') +
+      '</div></details>';
     if (lang === 'ar') box.setAttribute('dir', 'rtl');
 
     var $ = function (c) { return box.querySelector(c); };
     var inF = $('.gr-f'), inA = $('.gr-a'), inB = $('.gr-b'), inN = $('.gr-n'), inSum = $('.gr-sum');
     var msg = $('.gr-msg'), out = $('.gr-out'), nv = $('.gr-nv');
+    var inMax = $('.gr-nmax');
+    inN.max = start.nmax; inMax.value = start.nmax;
+    Array.prototype.forEach.call(box.querySelectorAll('input[type=color]'), function (el) {
+      el.value = color[el.getAttribute('data-k')];
+    });
     inF.value = start.f; inA.value = start.a; inB.value = start.b; inN.value = start.n; inSum.value = start.sum;
     nv.textContent = fmtInt(start.n);
 
@@ -130,8 +161,9 @@
     // GeoGebra commands. evalCommand returns false when GeoGebra rejects a command.
     function cmd(c) { return api.evalCommand(c); }
     function hide(name) { api.setVisible(name, false); api.setAuxiliary && api.setAuxiliary(name, true); }
-    function style(name, rgb, fill) {
-      api.setColor(name, rgb[0], rgb[1], rgb[2]);
+    function style(name, hex, fill) {
+      var c = rgb(hex);
+      api.setColor(name, c[0], c[1], c[2]);
       if (fill !== undefined) api.setFilling(name, fill);
       api.setLabelVisible(name, false);
       api.setFixed(name, true, false);          // cannot be dragged or selected by the reader
@@ -140,12 +172,12 @@
     // The sums currently on the graph, as GeoGebra objects U, L, S.
     function drawSums(kind) {
       ['U', 'L', 'S'].forEach(function (o) { if (api.exists(o)) api.deleteObject(o); });
-      if (kind === 'both' || kind === 'upper') { cmd('U = UpperSum(f, a, b, n)'); style('U', COLOR.U, 0.25); }
-      if (kind === 'both' || kind === 'lower') { cmd('L = LowerSum(f, a, b, n)'); style('L', COLOR.L, 0.35); }
+      if (kind === 'both' || kind === 'upper') { cmd('U = UpperSum(f, a, b, n)'); style('U', color.U, 0.25); }
+      if (kind === 'both' || kind === 'lower') { cmd('L = LowerSum(f, a, b, n)'); style('L', color.L, 0.35); }
       if (kind === 'left') cmd('S = LeftSum(f, a, b, n)');
       if (kind === 'right') cmd('S = RectangleSum(f, a, b, n, 1)');
       if (kind === 'mid') cmd('S = RectangleSum(f, a, b, n, 0.5)');
-      if (api.exists('S')) style('S', COLOR.S, 0.3);
+      if (api.exists('S')) style('S', color.S, 0.3);
     }
 
     // Zoom so that [a, b] and the graph over it are in view.
@@ -160,9 +192,12 @@
 
     function readout() {
       var parts = [];
-      if (api.exists('U')) parts.push('<span class="U"><b>' + T.upper + ':</b> ' + fmt(api.getValue('U')) + '</span>');
-      if (api.exists('L')) parts.push('<span class="L"><b>' + T.lower + ':</b> ' + fmt(api.getValue('L')) + '</span>');
-      if (api.exists('S')) parts.push('<span class="S"><b>' + T.value + ':</b> ' + fmt(api.getValue('S')) + '</span>');
+      var item = function (k, label) {
+        return '<span style="color:' + color[k] + '"><b>' + label + ':</b> ' + fmt(api.getValue(k)) + '</span>';
+      };
+      if (api.exists('U')) parts.push(item('U', T.upper));
+      if (api.exists('L')) parts.push(item('L', T.lower));
+      if (api.exists('S')) parts.push(item('S', T.value));
       parts.push('<span><b>' + T.integral + ':</b> ' + fmt(api.getValue('I')) + '</span>');
       if (api.exists('U') && api.exists('L')) {
         parts.push('<span><b>' + T.gap + ':</b> ' + fmt(api.getValue('U') - api.getValue('L')) + '</span>');
@@ -185,7 +220,7 @@
           if (state.f) cmd('f(x) = ' + state.f);   // keep the last function that worked
           return;
         }
-        style('f', COLOR.f); api.setLineThickness('f', 6);
+        style('f', color.f); api.setLineThickness('f', 6);
         state.f = f; changedShape = true;
       }
       if (a !== state.a) { api.setValue('a', a); state.a = a; changedShape = true; }
@@ -204,7 +239,7 @@
       ['a', 'b', 'n'].forEach(hide);
       if (!cmd('f(x) = ' + start.f)) cmd('f(x) = x^2');
       state.f = inF.value = api.exists('f') ? start.f : 'x^2';
-      style('f', COLOR.f); api.setLineThickness('f', 6);
+      style('f', color.f); api.setLineThickness('f', 6);
       // The integral (value only: its shading is hidden) and the range of f, for the readout and the zoom.
       cmd('I = Integral(f, a, b)'); hide('I');
       cmd('ys = Sequence(f(a + (b - a) k / 200), k, 0, 200)'); hide('ys');
@@ -239,6 +274,22 @@
     inN.addEventListener('input', function () { update(false); });
     inSum.addEventListener('change', function () { update(false); });
     $('.gr-fit').addEventListener('click', function () { if (api) fit(); });
+    // Settings: the slider's maximum, and the colours.
+    inMax.addEventListener('change', function () {
+      var m = Math.max(1, Math.min(1000, Math.round(num(inMax.value, start.nmax))));
+      inMax.value = m; inN.max = m;
+      if (+inN.value > m) inN.value = m;
+      update(false);
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('input[type=color]'), function (el) {
+      el.addEventListener('input', function () {
+        var k = el.getAttribute('data-k');
+        color[k] = el.value;
+        if (!api || !api.exists(k)) return;
+        if (k === 'f') style('f', color.f); else style(k, color[k], k === 'U' ? 0.25 : k === 'L' ? 0.35 : 0.3);
+        readout();
+      });
+    });
 
     return { params: params, id: gid, fail: function () { $('#' + gid).textContent = T.failed; } };
   }
