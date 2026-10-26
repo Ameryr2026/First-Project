@@ -327,7 +327,7 @@ class Page:
             return f'<em id="term{len(self.terms)}">{self.inline(word)}</em>', j
         if name == 'today':
             return '', k
-        if name in ('vspace', 'hspace', 'phantom', 'hphantom', 'vphantom', 'index', 'hypertarget',
+        if name in ('vspace', 'hspace', 'phantom', 'hphantom', 'vphantom', 'hypertarget',
                     'addcontentsline', 'markboth', 'markright', 'setlength', 'addtocounter', 'setcounter'):
             if name in ('addcontentsline', 'setlength', 'addtocounter', 'setcounter', 'markboth', 'hypertarget'):
                 for _ in range({'addcontentsline': 3}.get(name, 2)):
@@ -671,7 +671,38 @@ def build_page(info, reg, author):
         if missing:
             warn(info['file'], 'links to ' + ', '.join(missing) + ' but they are not in \\conceptsused')
     out += ['', '</body>', '</html>', '']
+    info['terms'] = p.terms
     return '\n'.join(out)
+
+
+def build_term_index(infos, reg, author):
+    p = Page('index', {'top': 'section'}, reg)
+    entries = {}                                   # (term, subterm) -> list of links
+    for inf in infos:
+        for n, entry in enumerate(inf['terms'], 1):
+            entry = entry.split('|')[0]            # drop |textbf, |see{...}
+            levels = [x.split('@')[-1].strip() for x in entry.split('!')]
+            key = (levels[0], levels[1] if len(levels) > 1 else '')
+            link = f'<a href="{inf["id"]}.html#term{n}">{inf["title"]}</a>'
+            entries.setdefault(key, [])
+            if link not in entries[key]:
+                entries[key].append(link)
+    items, last = [], None
+    for (term, sub) in sorted(entries, key=lambda k: (k[0].casefold(), k[1].casefold())):
+        links = ', '.join(entries[(term, sub)])
+        if sub:
+            if term != last and (term, '') not in entries:
+                items.append(f'<li>{p.inline(term)}</li>')
+            items.append(f'<li class="sub">{p.inline(sub)}: {links}</li>')
+        else:
+            items.append(f'<li>{p.inline(term)}: {links}</li>')
+        last = term
+    return '\n'.join([
+        HEAD.format(title='Index of terms', author=author, id='term-index', file='the \\index entries'),
+        NAV.format(hub='    <a href="index.html">PDE analysis</a>\n'),
+        '<main>', '<h1>Index of terms</h1>',
+        '<ul class="term-index">', *items, '</ul>',
+        '</main>', '', '</body>', '</html>', ''])
 
 
 def build_hub(book_title, author, intro, reg):
@@ -693,6 +724,8 @@ def build_hub(book_title, author, intro, reg):
         '',
         '<h2>Case studies</h2>',
         '<div id="case-list"></div>',
+        '',
+        '<p><a href="term-index.html">Index of terms</a></p>',
         '',
         '<h2>Reading path</h2>',
         '<p class="muted">Each layer uses only the layers before it.</p>',
@@ -797,12 +830,13 @@ def main():
         if write(inf['id'] + '.html', build_page(inf, reg, author)):
             changed.append(inf['id'] + '.html')
     for name, text in (('index.html', build_hub(book_title, author, intro, reg)),
+                       ('term-index.html', build_term_index(infos, reg, author)),
                        ('registry.js', build_registry(layers, infos)),
                        ('mathjax-config.js', build_mathjax())):
         if write(name, text):
             changed.append(name)
     # pages that are no longer in main.tex
-    made = {inf['id'] + '.html' for inf in infos} | {'index.html'}
+    made = {inf['id'] + '.html' for inf in infos} | {'index.html', 'term-index.html'}
     for f in sorted(os.listdir(WEB)):
         if f.endswith('.html') and f not in made:
             head = open(os.path.join(WEB, f), encoding='utf-8').read(600)
