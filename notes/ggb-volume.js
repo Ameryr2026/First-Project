@@ -88,7 +88,7 @@
 
   // The exact solid (S…) and the n pieces (A…). Names ending in "cut" are the flat faces at angle 0 and t.
   // In GeoGebra: xk(j) is the j-th division point, mk(j) the midpoint of the j-th piece.
-  /*function commands(axis) {
+  function commands(axis) {
     var R = function (X, Y, ang) { return rot(axis, X, Y, ang); };
     var mid = 'g(u) + s (f(u) - g(u))';                     // a point of the region above x = u
     var F = 'f(mk(k))', G = 'g(mk(k))', X0 = 'xk(k - 1)', X1 = 'xk(k)';
@@ -105,12 +105,13 @@
         ['S6', 'Surface(' + R('u', mid, 't') + ', u, a, b, s, 0, 1)', 'cut']                           // region at t
       ],
       pieces: [
-        ['A1', 'Sequence(Surface(' + R('u', F, 'v') + ', u, ' + X0 + ', ' + X1 + ', v, 0, t), k, 1, n)'],
+        // The pieces (discs, washers, shells) are turned off: these lines are not sent to GeoGebra.
+        /*['A1', 'Sequence(Surface(' + R('u', F, 'v') + ', u, ' + X0 + ', ' + X1 + ', v, 0, t), k, 1, n)'],
         ['A2', 'Sequence(Surface(' + R('u', G, 'v') + ', u, ' + X0 + ', ' + X1 + ', v, 0, t), k, 1, n)'],
         ['A3', 'Sequence(Surface(' + R(X0, G + ' + s (' + F + ' - ' + G + ')', 'v') + ', s, 0, 1, v, 0, t), k, 1, n)'],
         ['A4', 'Sequence(Surface(' + R(X1, G + ' + s (' + F + ' - ' + G + ')', 'v') + ', s, 0, 1, v, 0, t), k, 1, n)'],
         ['A5', 'Sequence(' + rect('0') + ', k, 1, n)', 'cut'],
-        ['A6', 'Sequence(' + rect('t') + ', k, 1, n)', 'cut']
+        ['A6', 'Sequence(' + rect('t') + ', k, 1, n)', 'cut']*/
       ],
       axisLine: axis === 'vertical' ? 'AX = Line((c, 0, 0), (c, 1, 0))' : 'AX = Line((0, c, 0), (1, c, 0))',
       // Volumes. About y = c a cross-section is a washer with radii |f − c| and |g − c|, or a full disc
@@ -119,12 +120,13 @@
         ? 'V = 2 pi NIntegral(abs(x - c) abs(f(x) - g(x)), a, b)'
         : 'V = pi NIntegral(If((f(x) - c) (g(x) - c) >= 0, abs((f(x) - c)^2 - (g(x) - c)^2), ' +
           'Max((f(x) - c)^2, (g(x) - c)^2)), a, b)',
-      approx: axis === 'vertical'
+      // The sum of the pieces is turned off with them.
+      /*approx: axis === 'vertical'
         ? 'D = 2 pi (b - a) / n Sum(Sequence(abs(mk(k) - c) abs(' + F + ' - ' + G + '), k, 1, n))'
         : 'D = pi (b - a) / n Sum(Sequence(If((' + F + ' - c) (' + G + ' - c) >= 0, abs((' + F + ' - c)^2 - (' + G +
-          ' - c)^2), Max((' + F + ' - c)^2, (' + G + ' - c)^2)), k, 1, n))'
+          ' - c)^2), Max((' + F + ' - c)^2, (' + G + ' - c)^2)), k, 1, n))'*/
     };
-  }*/
+  }
 
   // ---- 4. Styles (written once for every widget on the page) ----
   var css = document.createElement('style');
@@ -205,16 +207,12 @@
       '  <div class="gv-wide"><label>' + T.axis + '</label><div class="gv-axis"><select class="gv-ax">' +
       '    <option value="horizontal">' + T.axisH + '</option><option value="vertical">' + T.axisV + '</option></select>' +
       '    <input class="gv-c" type="number" step="any" aria-label="c" title="c" placeholder="c"></div></div>' +
-      '  <div><label>' + T.n + '<span class="gv-nv"></span></label><div class="gv-slide">' +
-      '    <button type="button" class="gv-playn" title="' + T.playN + '">' + T.play + '</button>' +
-      '    <input class="gv-n" type="range" min="1"></div></div>' +
       '  <div><label>' + T.angle + '<span class="gv-tv"></span></label><div class="gv-slide">' +
       '    <button type="button" class="gv-playt" title="' + T.playT + '">' + T.play + '</button>' +
       '    <input class="gv-t" type="range" min="0" max="360" step="1"></div></div>' +
       '  <div class="gv-wide gv-row">' +
       '    <span>' + T.show + ':</span>' +
       '    <label><input type="checkbox" class="gv-show" data-k="S" checked> ' + T.surface + '</label>' +
-      '    <label><input type="checkbox" class="gv-show" data-k="A" checked> <span class="gv-pname"></span></label>' +
       '    <label><input type="checkbox" class="gv-show" data-k="X" checked> ' + T.axisLine + '</label>' +
       '    <button type="button" class="gv-fit">' + T.fit + '</button>' +
       '  </div>' +
@@ -223,8 +221,7 @@
       '<div class="gv-graph"><div id="' + gid + '">' + T.loading + '</div></div>' +
       '<div class="gv-out"></div>' +
       '<details class="gv-more"><summary>' + T.settings + '</summary><div class="gv-set">' +
-      '  <div><label>' + T.nmax + '</label><input class="gv-nmax" type="number" min="1" max="200" step="1"></div>' +
-      [['surf', T.surface], ['pieces', T.piecesH + ' / ' + T.piecesV], ['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
+      [['surf', T.surface], ['prof', T.curve], ['axis', T.axisLine]].map(function (p) {
         return '  <div><label>' + p[1] + '</label><input type="color" data-k="' + p[0] + '"></div>';
       }).join('') +
       '</div></details>';
@@ -232,12 +229,12 @@
 
     var $ = function (c) { return box.querySelector(c); };
     var inF = $('.gv-f'), inG = $('.gv-g'), inA = $('.gv-a'), inB = $('.gv-b'), inAx = $('.gv-ax'), inC = $('.gv-c'),
-        inN = $('.gv-n'), inT = $('.gv-t'), inMax = $('.gv-nmax');
-    var msg = $('.gv-msg'), out = $('.gv-out'), nv = $('.gv-nv'), tv = $('.gv-tv');
-    var playN = $('.gv-playn'), playT = $('.gv-playt');
+        inT = $('.gv-t');
+    var msg = $('.gv-msg'), out = $('.gv-out'), tv = $('.gv-tv');
+    var playT = $('.gv-playt');
     inF.value = start.f; inG.value = start.g; inA.value = start.a; inB.value = start.b;
     inAx.value = start.axis; inC.value = start.c;
-    inN.max = start.nmax; inMax.value = start.nmax; inN.value = start.n; inT.value = start.angle;
+    inT.value = start.angle;
     Array.prototype.forEach.call(box.querySelectorAll('input[type=color]'), function (el) {
       el.value = color[el.getAttribute('data-k')];
     });
@@ -257,10 +254,8 @@
       var s = Math.abs(x) >= 1e5 || (Math.abs(x) < 1e-4 && x !== 0) ? x.toExponential(3) : String(+x.toFixed(4));
       return digits(s);
     }
-    function showN(n) { nv.textContent = digits(String(n)); }
     function showAngle(deg) { tv.textContent = digits(String(Math.round(deg))) + '°'; }
-    function pieceName() { $('.gv-pname').textContent = inAx.value === 'vertical' ? T.piecesV : T.piecesH; }
-    showN(start.n); showAngle(start.angle); pieceName();
+    showAngle(start.angle);
 
     // ---- 8. Talking to GeoGebra ----
     function cmd(c) { return api.evalCommand(c); }
@@ -311,9 +306,10 @@
         });
       }
       make(M.solid, names.S);
-      make(M.pieces, names.A);
+      // make(M.pieces, names.A);          // pieces turned off
       cmd(M.axisLine);
-      cmd(M.exact); cmd(M.approx); hide('V'); hide('D');
+      cmd(M.exact); hide('V');
+      // cmd(M.approx); hide('D');          // sum of the pieces turned off
       paintAll();
       applyVisibility();
     }
@@ -333,11 +329,9 @@
     }
 
     function readout() {
-      var v = inAx.value === 'vertical', D = api.getValue('D'), V = api.getValue('V');
+      var v = inAx.value === 'vertical', V = api.getValue('V');
       out.innerHTML =
-        '<span style="color:' + color.pieces + '"><b>' + (v ? T.approxV : T.approxH) + ':</b> ' + fmt(D) + '</span>' +
-        '<span style="color:' + color.surf + '"><b>' + (v ? T.exactV : T.exactH) + ':</b> ' + fmt(V) + '</span>' +
-        '<span><b>' + T.gap + ':</b> ' + fmt(D - V) + '</span>';
+        '<span style="color:' + color.surf + '"><b>' + (v ? T.exactV : T.exactH) + ':</b> ' + fmt(V) + '</span>';
     }
 
     // Send a new formula for f or g; keep the old one if GeoGebra rejects it.
@@ -357,8 +351,6 @@
     function update(refit) {
       if (!api) return;
       var axis = inAx.value, c = num(inC.value, 0), a = num(inA.value, NaN), b = num(inB.value, NaN);
-      var n = Math.round(num(inN.value, 6));
-      showN(n); pieceName();
       msg.textContent = '';
       if (!(a < b)) { msg.textContent = T.order; return; }
       if (axis === 'vertical' && c > a && c < b) { msg.textContent = T.cross; return; }
@@ -370,7 +362,7 @@
         if (a !== state.a) { api.setValue('a', a); state.a = a; changedShape = true; }
         if (b !== state.b) { api.setValue('b', b); state.b = b; changedShape = true; }
         if (c !== state.c) { api.setValue('c', c); state.c = c; changedShape = true; }
-        if (n !== state.n) { api.setValue('n', n); state.n = n; }
+        // if (n !== state.n) { api.setValue('n', n); state.n = n; }   // pieces turned off
         if (axis !== state.axis || skipG !== state.skipG) {
           makeObjects(axis, skipG); state.axis = axis; state.skipG = skipG; changedShape = true;
         }
@@ -400,16 +392,18 @@
       batch(function () { create(); });
     }
     function create() {
-      cmd('a = ' + start.a); cmd('b = ' + start.b); cmd('n = ' + start.n); cmd('c = ' + start.c);
+      cmd('a = ' + start.a); cmd('b = ' + start.b); cmd('c = ' + start.c);
+      // cmd('n = ' + start.n);            // number of pieces: turned off
       cmd('t = ' + (start.angle * Math.PI / 180));
-      ['a', 'b', 'n', 'c', 't'].forEach(hide);
+      ['a', 'b', 'c', 't'].forEach(hide);
       if (!cmd('f(x) = ' + start.f)) { start.f = 'x'; cmd('f(x) = x'); }
       if (!cmd('g(x) = ' + start.g)) { start.g = '0'; cmd('g(x) = 0'); }
       hide('f'); hide('g');
       state.f = inF.value = start.f; state.g = inG.value = start.g;
       // Division points and midpoints, as GeoGebra functions of the piece number.
-      cmd('xk(j) = a + j (b - a) / n'); cmd('mk(j) = a + (j - 0.5) (b - a) / n');
-      hide('xk'); hide('mk');
+      // Turned off with the pieces:
+      // cmd('xk(j) = a + j (b - a) / n'); cmd('mk(j) = a + (j - 0.5) (b - a) / n');
+      // hide('xk'); hide('mk');
       // The range of both curves on [a, b], for the zoom.
       cmd('ys = Join(Sequence(f(a + (b - a) j / 100), j, 0, 100), Sequence(g(a + (b - a) j / 100), j, 0, 100))');
       cmd('ymin = Min(ys)'); cmd('ymax = Max(ys)');
@@ -417,7 +411,7 @@
       // The two curves on [a, b], in the plane z = 0.
       cmd('pf = Curve(u, f(u), 0, u, a, b)'); cmd('pg = Curve(u, g(u), 0, u, a, b)');
       cmd('SetVisibleInView(xOyPlane, -1, false)');  // a cleaner picture: no grey floor
-      state.a = start.a; state.b = start.b; state.c = start.c; state.n = start.n;
+      state.a = start.a; state.b = start.b; state.c = start.c;
       state.skipG = gIsAxis(start.axis, start.g, start.c);
       makeObjects(start.axis, state.skipG); state.axis = start.axis;
       fit();
@@ -445,27 +439,10 @@
     function soon() { clearTimeout(timer); timer = setTimeout(update, 300); }
     [inF, inG, inA, inB, inC].forEach(function (el) { el.addEventListener('input', soon); });
     inAx.addEventListener('change', function () { update(); });
-    inN.addEventListener('input', function () { stopN(); update(false); });
     inT.addEventListener('input', function () { stopT(); setAngle(+inT.value); });
     $('.gv-fit').addEventListener('click', function () { if (api) fit(); });
     Array.prototype.forEach.call(box.querySelectorAll('.gv-show'), function (el) {
       el.addEventListener('change', function () { if (api) applyVisibility(); });
-    });
-
-    // ▶ next to n: n goes up one step at a time, to the slider's maximum (from 1 if already there).
-    var nTimer = null;
-    function stopN() { if (nTimer) { clearInterval(nTimer); nTimer = null; playN.textContent = T.play; } }
-    playN.addEventListener('click', function () {
-      if (nTimer) return stopN();
-      if (+inN.value >= +inN.max) inN.value = 1;
-      playN.textContent = T.stop;
-      update(false);
-      var delay = Math.max(350, Math.min(800, 7000 / +inN.max));   // 3D needs time to rebuild the pieces
-      nTimer = setInterval(function () {
-        if (+inN.value >= +inN.max) return stopN();
-        inN.value = +inN.value + 1;
-        update(false);
-      }, delay);
     });
 
     // ▶ next to the angle: turn the region up to 360° (from 0° if already there), in about four seconds.
@@ -484,13 +461,7 @@
       turning = requestAnimationFrame(step);
     });
 
-    // Settings: the slider's maximum, and the colours.
-    inMax.addEventListener('change', function () {
-      var m = Math.max(1, Math.min(200, Math.round(num(inMax.value, start.nmax))));
-      inMax.value = m; inN.max = m;
-      if (+inN.value > m) inN.value = m;
-      update(false);
-    });
+    // Settings: the colours.
     Array.prototype.forEach.call(box.querySelectorAll('input[type=color]'), function (el) {
       el.addEventListener('input', function () {
         color[el.getAttribute('data-k')] = el.value;
