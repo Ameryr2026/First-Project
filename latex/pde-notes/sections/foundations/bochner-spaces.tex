@@ -1,9 +1,9 @@
 % Spaces of time-dependent functions
-% Converted from notes/pde/bochner-spaces.html. Edit freely: this file is now the master copy.
 
 \section{Spaces of time-dependent functions}\label{p:bochner-spaces}
 
-\prereqs{Weak derivatives and Sobolev spaces~(\S\ref{p:sobolev-spaces})}
+\status{stub}
+\prereqs{sobolev-spaces}
 
 \subsection*{The idea}
 
@@ -16,7 +16,7 @@ Let $X$ be a Banach space. $L^p(0,T;X)$ is the space of strongly measurable $u:(
 \end{defnbox}
 
 \begin{thmbox}{Theorem (gaining continuity in time)}
-If $u \in L^2(0,T;H^1_0(\Omega))$ and $u_t \in L^2(0,T;H^{-1}(\Omega))$, then $u \in C([0,T];L^2(\Omega))$ after modification on a set of measure zero, and $t\mapsto\norm{u(t)}_{L^2}^2$ is absolutely continuous with $\frac{d}{dt}\norm{u(t)}_{L^2}^2 = 2\langle u_t, u\rangle$ for a.e. $t$, where $\langle\cdot,\cdot\rangle$ is the pairing between $H^{-1}$ and $H^1_0$ (see Sobolev spaces~(\S\ref{p:sobolev-spaces})).
+If $u \in L^2(0,T;H^1_0(\Omega))$ and $u_t \in L^2(0,T;H^{-1}(\Omega))$, then $u \in C([0,T];L^2(\Omega))$ after modification on a set of measure zero, and $t\mapsto\norm{u(t)}_{L^2}^2$ is absolutely continuous with $\frac{d}{dt}\norm{u(t)}_{L^2}^2 = 2\langle u_t, u\rangle$ for a.e. $t$, where $\langle\cdot,\cdot\rangle$ is the pairing between $H^{-1}$ and $H^1_0$ (see \pref{sobolev-spaces}{Sobolev spaces}).
 \end{thmbox}
 
 \subsection*{Why it is plausible}
@@ -66,7 +66,7 @@ The theorem is what makes energy estimates legitimate: the formula $\frac{d}{dt}
 \begin{exercise}
   Suppose $u \in L^2(0,T;H^1_0(\Omega))$, $u_t \in L^2(0,T;H^{-1}(\Omega))$, and $u_t = \Delta u$. Use the theorem above to show $\norm{u(t)}_{L^2}^2 + 2\int_0^t \norm{\nabla u}_{L^2}^2\,ds = \norm{u(0)}_{L^2}^2$. Deduce that this solution is determined by $u(0)$.
   \begin{hint}
-    From Sobolev spaces~(\S\ref{p:sobolev-spaces}), $\langle \Delta u, u\rangle = -\norm{\nabla u}_{L^2}^2$. Integrate $\frac{d}{dt}\norm{u}_{L^2}^2 = 2\langle u_t, u\rangle$ from $0$ to $t$. For uniqueness, apply the identity to the difference of two solutions, which is again a solution, with zero initial value.
+    From \pref{sobolev-spaces}{Sobolev spaces}, $\langle \Delta u, u\rangle = -\norm{\nabla u}_{L^2}^2$. Integrate $\frac{d}{dt}\norm{u}_{L^2}^2 = 2\langle u_t, u\rangle$ from $0$ to $t$. For uniqueness, apply the identity to the difference of two solutions, which is again a solution, with zero initial value.
   \end{hint}
   \begin{solution}
     The equation $u_t = \Delta u$ in $L^2(0,T;H^{-1})$ means $\langle u_t, v\rangle = -\int\nabla u\cdot\nabla v$ for $v \in H^1_0$ and a.e. $t$. By the theorem, $t \mapsto \norm{u(t)}_{L^2}^2$ is absolutely continuous with
@@ -85,4 +85,4 @@ The theorem is what makes energy estimates legitimate: the formula $\frac{d}{dt}
 \item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §5.9 (the theorem is §5.9.2, Theorem 3).
 \end{itemize}
 
-\neededfor{Maximal regularity for parabolic equations~(\S\ref{p:parabolic-regularity}), Strong, weak, and renormalized solutions~(\S\ref{p:notions-of-solution}), The Faedo--Galerkin method~(\S\ref{p:galerkin}), Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness})}
+\neededfor

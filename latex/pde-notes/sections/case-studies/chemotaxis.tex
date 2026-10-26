@@ -1,35 +1,31 @@
 % Chemotaxis compressible Navier–Stokes (vascular network formation)
-% Converted from notes/pde/case-chemotaxis.html. Edit freely: this file is now the master copy.
 
 \chapter{Chemotaxis compressible Navier--Stokes equations}\label{p:case-chemotaxis}
+\status{draft}
+\blurb{Huang, Rababah, Rawashdeh, J. Differential Equations 480 (2026). Local strong solutions with vacuum; global weak solutions for $\gamma > 3/2$.}
 
 \begin{byline}Based on T. Huang, B. Rababah, A. Rawashdeh, \emph{On existence of chemotaxis compressible Navier--Stokes equations modeling vascular network formation}, J. Differential Equations 480 (2026) 114655. \href{https://doi.org/10.1016/j.jde.2026.114655}{doi:10.1016/j.jde.2026.114655}\end{byline}
 
 This page walks through a complete existence theory for one nonlinear system. The aim is to show how the standard tools of PDE analysis fit together in a real argument. Every tool is linked to its own concept page, which states it precisely and points to a proof. Steps are tagged \routine{} when a standard tool is used in the standard way, and \newidea{} when the argument does something that cannot be taken off the shelf.
 
-\begin{conceptsbox}
-\begin{multicols}{2}\small\raggedright
-\begin{itemize}[leftmargin=*,itemsep=1pt]
-\item Weak derivatives and Sobolev spaces~(\S\ref{p:sobolev-spaces})
-\item Spaces of time-dependent functions~(\S\ref{p:bochner-spaces})
-\item Weak and weak* convergence~(\S\ref{p:weak-convergence})
-\item Hölder, Young, and L\textsuperscript{\textit{p}} interpolation~(\S\ref{p:elementary-inequalities})
-\item Sobolev embeddings~(\S\ref{p:sobolev-embedding})
-\item Gagliardo--Nirenberg inequalities~(\S\ref{p:gagliardo-nirenberg})
-\item Gronwall's inequality and continuity arguments~(\S\ref{p:gronwall})
-\item Elliptic regularity: the Lamé system and the Neumann Laplacian~(\S\ref{p:elliptic-regularity})
-\item Maximal regularity for parabolic equations~(\S\ref{p:parabolic-regularity})
-\item The transport (continuity) equation~(\S\ref{p:transport-equation})
-\item Strong, weak, and renormalized solutions~(\S\ref{p:notions-of-solution})
-\item Energy estimates and a priori bounds~(\S\ref{p:energy-estimates})
-\item The Faedo--Galerkin method~(\S\ref{p:galerkin})
-\item Uniqueness by difference estimates~(\S\ref{p:uniqueness-energy})
-\item Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness})
-\item Regularized approximation schemes~(\S\ref{p:regularized-approximation})
-\item Lions--Feireisl theory for compressible flow~(\S\ref{p:lions-feireisl})
-\end{itemize}
-\end{multicols}
-\end{conceptsbox}
+\conceptsused{%
+  sobolev-spaces,
+  bochner-spaces,
+  weak-convergence,
+  elementary-inequalities,
+  sobolev-embedding,
+  gagliardo-nirenberg,
+  gronwall,
+  elliptic-regularity,
+  parabolic-regularity,
+  transport-equation,
+  notions-of-solution,
+  energy-estimates,
+  galerkin,
+  uniqueness-energy,
+  compactness,
+  regularized-approximation,
+  lions-feireisl}
 
 \section{The model}
 
@@ -91,7 +87,7 @@ Let $\gamma > 3/2$. Suppose $0 \le \rho_0 \in L^\gamma$ with $\rho_0 \not\equiv 
 
 \begin{proofslot}Proof of Theorem B: to be written. The map in Section 5 lists the steps in order.\end{proofslot}
 
-What "strong solution" and "finite-energy weak solution" mean, with the exact function spaces, is on Strong, weak, and renormalized solutions~(\S\ref{p:notions-of-solution}); the spaces themselves are on Sobolev spaces~(\S\ref{p:sobolev-spaces}) and spaces of time-dependent functions~(\S\ref{p:bochner-spaces}).
+What "strong solution" and "finite-energy weak solution" mean, with the exact function spaces, is on \pref{notions-of-solution}{Strong, weak, and renormalized solutions}; the spaces themselves are on \pref{sobolev-spaces}{Sobolev spaces} and \pref{bochner-spaces}{spaces of time-dependent functions}.
 
 \section{The energy structure}
 
@@ -107,13 +103,13 @@ For smooth solutions, $\displaystyle \frac{d}{dt}E(t) = -\int_\Omega \Big( \tfra
 
 Test the momentum equation with $u$ and the $\phi$-equation with $\frac{\chi}{a}\phi_t$. The chemotactic work $\int \chi\rho\nabla\phi\cdot u$ is rewritten with the continuity equation as $\frac{d}{dt}\int\chi\rho\phi - \int\chi\rho\phi_t$, and the second piece cancels against the $\phi$-equation. Choosing the multipliers so that the cross terms cancel is the whole point.
 
-\uses{energy estimates~(\S\ref{p:energy-estimates}).}
+\uses{\pref{energy-estimates}{energy estimates}.}
 \end{step}
 
 \begin{stepnew}{\newidea{}The energy is bounded below for $\gamma > 4/3$ (Proposition 2.2)}
 Let $E_+$ be the energy without the cross term. Using only conservation of mass, $\int\rho = m$, one shows $\abs{\int\chi\rho\phi} \le C m^{q_0} + \frac12 E_+(t)$, so $E \ge \frac12 E_+ - Cm^{q_0}$. The cross term is split by Hölder, then $\norm{\rho}_{L^l}$ is interpolated between the conserved $L^1$ norm and the energy's $L^\gamma$ norm, and $\norm{\phi}_{L^{l'}}$ between $L^2$ and $H^1$. The exponents close (the power of $E_+$ stays below 1) exactly when $\gamma > 4/3$. Earlier work needed $\gamma > 8/5$. There are three cases, $\gamma > 2$, $\gamma = 2$, and $4/3 < \gamma < 2$; the last is where the exponent bookkeeping is delicate.
 
-\uses{Hölder, Young, and L\textsuperscript{\textit{p}} interpolation~(\S\ref{p:elementary-inequalities}), Gagliardo--Nirenberg~(\S\ref{p:gagliardo-nirenberg}), Sobolev embeddings~(\S\ref{p:sobolev-embedding}).}
+\uses{\pref{elementary-inequalities}{Hölder, Young, and L\textsuperscript{\textit{p}} interpolation}, \pref{gagliardo-nirenberg}{Gagliardo--Nirenberg}, \pref{sobolev-embedding}{Sobolev embeddings}.}
 \end{stepnew}
 
 \section{Map of the proof of Theorem A}
@@ -130,43 +126,43 @@ and the goal of Section 3 of the paper is the inequality $\Phi(t) \le \exp\big[C
 \begin{step}{\routine{}Step 1. Second derivatives of $u$ from the equation (Lemma 3.2)}
 Read the momentum equation as $\Lame u = \rho u_t + \rho u\cdot\nabla u + \nabla p(\rho) - \chi\rho\nabla\phi + \alpha\rho u$ for the Lamé operator $\Lame$. Elliptic regularity bounds $\norm{\nabla u}_{H^1}$ by the right-hand side in $L^2$. The convection term produces $\norm{\nabla u}_{H^1}$ again, at a power below 2, so it is absorbed. Result: $\norm{\nabla u}_{H^1} \le M(\Phi)$.
 
-\uses{elliptic regularity~(\S\ref{p:elliptic-regularity}), Sobolev embeddings~(\S\ref{p:sobolev-embedding}), Gagliardo--Nirenberg~(\S\ref{p:gagliardo-nirenberg}), Young's inequality~(\S\ref{p:elementary-inequalities}).}
+\uses{\pref{elliptic-regularity}{elliptic regularity}, \pref{sobolev-embedding}{Sobolev embeddings}, \pref{gagliardo-nirenberg}{Gagliardo--Nirenberg}, \pref{elementary-inequalities}{Young's inequality}.}
 \end{step}
 
 \begin{step}{\routine{}Step 2. The time derivative $\sqrt\rho\, u_t$ (Lemmas 3.3--3.4)}
 Differentiate the momentum equation in $t$, test with $u_t$, and estimate the six resulting terms. The value at $t = 0$, $\norm{\sqrt{\rho_0}\,u_t(0)}_{L^2}$, is exactly $\norm{g}_{L^2}$ from the compatibility condition \eqref{eq:compat}. This is why that condition is needed: without it the estimate has no starting value when $\rho_0$ vanishes somewhere.
 
-\uses{energy estimates~(\S\ref{p:energy-estimates}), compatibility conditions~(\S\ref{p:notions-of-solution}), Sobolev embeddings~(\S\ref{p:sobolev-embedding}).}
+\uses{\pref{energy-estimates}{energy estimates}, \pref{notions-of-solution}{compatibility conditions}, \pref{sobolev-embedding}{Sobolev embeddings}.}
 \end{step}
 
 \begin{step}{\routine{}Step 3. The density (Lemma 3.5)}
 The continuity equation is a transport equation: it carries $\rho$ along the flow and never smooths it. Its $W^{1,q}$ norm grows at most like $\exp\big(C\int_0^t \norm{\nabla u}_{H^1 \cap D^{1,q}}\big)$. So one needs $\nabla u \in L^1(0,T; W^{1,q})$ with $q > 3$, which comes from the $W^{2,q}$ estimate for the Lamé system and Step 2.
 
-\uses{the transport equation~(\S\ref{p:transport-equation}), elliptic regularity~(\S\ref{p:elliptic-regularity}).}
+\uses{\pref{transport-equation}{the transport equation}, \pref{elliptic-regularity}{elliptic regularity}.}
 \end{step}
 
 \begin{step}{\routine{}Step 4. The chemical (Lemma 3.6)}
 Take the gradient of the $\phi$-equation, test with $\nabla\phi_t$, and use the Neumann condition. This bounds $\norm{\Delta\phi}_{L^2}$, hence $\norm{\phi}_{H^2}$ by elliptic regularity for the Neumann Laplacian.
 
-\uses{parabolic regularity~(\S\ref{p:parabolic-regularity}), elliptic regularity~(\S\ref{p:elliptic-regularity}).}
+\uses{\pref{parabolic-regularity}{parabolic regularity}, \pref{elliptic-regularity}{elliptic regularity}.}
 \end{step}
 
 \begin{step}{\routine{}Step 5. Closing the estimate}
 Combine Steps 1--4 into the inequality for $\Phi$ above. A Gronwall-type continuity argument gives $T_0 > 0$, depending only on the data, with $\sup_{[0,T_0]}\Phi \le C\exp(C\norm{g}_{L^2})$.
 
-\uses{Gronwall and continuity arguments~(\S\ref{p:gronwall}).}
+\uses{\pref{gronwall}{Gronwall and continuity arguments}.}
 \end{step}
 
 \begin{step}{\routine{}Step 6. Construction (Section 4.1)}
 Lift the density to $\rho_0 + \delta$ so there is no vacuum, adjusting $u_0$ so that the compatibility condition still holds with the same $g$. Project $u$ onto finitely many eigenfunctions of the Lamé operator; solve the continuity and $\phi$ equations exactly and the projected momentum equation as an ODE system (the mass matrix is invertible because $\rho \ge \delta > 0$). The bounds of Step 5 hold uniformly in the number of modes and in $\delta$, so one can pass to weak limits, first in the number of modes and then $\delta \to 0$.
 
-\uses{the Faedo--Galerkin method~(\S\ref{p:galerkin}), weak and weak* convergence~(\S\ref{p:weak-convergence}), spaces of time-dependent functions~(\S\ref{p:bochner-spaces}).}
+\uses{\pref{galerkin}{the Faedo--Galerkin method}, \pref{weak-convergence}{weak and weak* convergence}, \pref{bochner-spaces}{spaces of time-dependent functions}.}
 \end{step}
 
 \begin{step}{\routine{}Step 7. Uniqueness (Section 4.2)}
 Subtract two solutions. Estimate the difference in the lower norm $\norm{\sqrt{\rho_1}\,u}_{L^2}^2 + \norm{\rho}_{L^2}^2 + \norm{\phi}_{H^1}^2$, using the regularity of the two solutions only as coefficients. The result is a linear Gronwall inequality with zero initial value, so the difference vanishes.
 
-\uses{uniqueness by difference estimates~(\S\ref{p:uniqueness-energy}), Gronwall's inequality~(\S\ref{p:gronwall}).}
+\uses{\pref{uniqueness-energy}{uniqueness by difference estimates}, \pref{gronwall}{Gronwall's inequality}.}
 \end{step}
 
 \section{Map of the proof of Theorem B}
@@ -188,19 +184,19 @@ Weak solutions are built through a chain of regularized problems, each removing 
 
 The first three regularizations are the standard Feireisl--Novotný--Petzeltová scheme: artificial viscosity $\varepsilon\Delta\rho$, a balancing term $\varepsilon\nabla\rho\cdot\nabla u$, and artificial pressure $\delta\rho^\beta$. The new difficulty: the artificial viscosity creates the term $-\varepsilon\int\phi\,\Delta\rho = -\varepsilon\int\rho\,\Delta\phi$ in the energy balance. Handled in the usual way, it leads to a term like $\varepsilon\int\rho^2$, which the energy controls only when $\gamma \ge 2$. The quasi-linear biharmonic term is designed for the range $3/2 < \gamma < 2$. It adds $\frac{\varepsilon\chi}{a(p_0+2)}\int|\Delta\phi|^{p_0+2}$ to the energy, and $p_0$ is chosen so that $p_0 + 2$ and $\gamma$ are conjugate exponents, so Young's inequality splits $\varepsilon\int\rho\,\Delta\phi$ between $\int\rho^\gamma$ and the new term.
 
-\uses{regularized approximation schemes~(\S\ref{p:regularized-approximation}), Young's inequality~(\S\ref{p:elementary-inequalities}).}
+\uses{\pref{regularized-approximation}{regularized approximation schemes}, \pref{elementary-inequalities}{Young's inequality}.}
 \end{stepnew}
 
 \begin{step}{\routine{}Step 2. Uniform energy bounds (Lemma 5.1)}
 The energy identity of Section 3, redone for the regularized system, with the extra terms controlled as in Step 1 and the lower bound of Proposition 2.2. The constants do not depend on the Galerkin index, $\varepsilon$, or $\delta$.
 
-\uses{energy estimates~(\S\ref{p:energy-estimates}), Gronwall's inequality~(\S\ref{p:gronwall}).}
+\uses{\pref{energy-estimates}{energy estimates}, \pref{gronwall}{Gronwall's inequality}.}
 \end{step}
 
 \begin{step}{\routine{}Step 3. Removing the regularizations}
 The Galerkin limit and $\varepsilon \to 0$ follow the compressible Navier--Stokes theory, using compactness to get strong convergence where the nonlinear terms need it. The biharmonic term disappears because the energy bounds $\varepsilon\int|\Delta\phi|^{p_0+2}$, so the term itself is $O(\varepsilon^{1/(p_0+2)})$ in the weak sense. The limit $\delta \to 0$ needs a little more integrability of $\rho$ than $L^\gamma$; this is where the pressure and the effective viscous flux enter.
 
-\uses{compactness~(\S\ref{p:compactness}), Lions--Feireisl theory~(\S\ref{p:lions-feireisl}), weak convergence~(\S\ref{p:weak-convergence}).}
+\uses{\pref{compactness}{compactness}, \pref{lions-feireisl}{Lions--Feireisl theory}, \pref{weak-convergence}{weak convergence}.}
 \end{step}
 
 \begin{step}{\routine{}Step 4. Why $\gamma > 3/2$}
@@ -212,7 +208,7 @@ For $\rho\nabla\phi$ to make sense in the weak formulation, $\nabla\phi$ must li
 
 The same threshold is where the Feireisl theory for compressible Navier--Stokes stops, so both obstructions meet at $3/2$.
 
-\uses{maximal parabolic regularity~(\S\ref{p:parabolic-regularity}), Sobolev embeddings~(\S\ref{p:sobolev-embedding}).}
+\uses{\pref{parabolic-regularity}{maximal parabolic regularity}, \pref{sobolev-embedding}{Sobolev embeddings}.}
 \end{step}
 
 \section{Exercises}
@@ -243,7 +239,7 @@ These rebuild the paper's key computations by hand.
 \begin{exercise}
   Proposition 2.2 in its simplest case. Assume $b > 0$ and $\gamma > 2$. Using the mass $m$, show $\big|\int\chi\rho\phi\big| \le \frac12E_+ + Cm$, where $E_+$ contains $\frac\theta\gamma\int\rho^\gamma$ and $\frac{\chi b}{2a}\int\phi^2$.
   \begin{hint}
-    $|\int\rho\phi| \le \norm{\rho}_{L^2}\norm{\phi}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}\norm{\phi}_{L^2}$ with $\eta = \frac{\gamma-2}{2(\gamma-1)}$ (Exercise 3 in Hölder, Young, and L\textsuperscript{\textit{p}} interpolation~(\S\ref{p:elementary-inequalities})). Use Young with three exponents: $\norm{\rho}_{L^\gamma}^{1-\eta}$ to the power $\frac{\gamma}{1-\eta}$, $\norm{\phi}_{L^2}$ to the power $2$, and $m^\eta$ to the power $r$ with $\frac{1-\eta}{\gamma} + \frac12 + \frac1r = 1$. You should find $r = \frac1\eta$, which needs $\gamma > 2$.
+    $|\int\rho\phi| \le \norm{\rho}_{L^2}\norm{\phi}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}\norm{\phi}_{L^2}$ with $\eta = \frac{\gamma-2}{2(\gamma-1)}$ (Exercise 3 in \pref{elementary-inequalities}{Hölder, Young, and L\textsuperscript{\textit{p}} interpolation}). Use Young with three exponents: $\norm{\rho}_{L^\gamma}^{1-\eta}$ to the power $\frac{\gamma}{1-\eta}$, $\norm{\phi}_{L^2}$ to the power $2$, and $m^\eta$ to the power $r$ with $\frac{1-\eta}{\gamma} + \frac12 + \frac1r = 1$. You should find $r = \frac1\eta$, which needs $\gamma > 2$.
   \end{hint}
   \begin{solution}
     By Hölder and Exercise 3 in the inequalities section ($\rho \ge 0$, $\int\rho = m$): $\big|\int\rho\phi\big| \le \norm{\rho}_{L^2}\norm{\phi}_{L^2} \le m^\eta\norm{\rho}_{L^\gamma}^{1-\eta}\norm{\phi}_{L^2}$ with $\eta = \frac{\gamma-2}{2(\gamma-1)}$, so $1 - \eta = \frac{\gamma}{2(\gamma-1)}$.

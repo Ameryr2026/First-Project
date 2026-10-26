@@ -9,7 +9,7 @@
 \RequirePackage[sc]{mathpazo}
 \linespread{1.05}
 \RequirePackage[skip=6pt plus 1pt]{parskip}
-\RequirePackage{amsmath,amssymb,mathtools}
+\RequirePackage{amsmath,amssymb,mathtools,amsthm}
 \RequirePackage{microtype}
 \RequirePackage{enumitem}
 \RequirePackage{multicol}
@@ -60,8 +60,78 @@
 \newcommand{\routine}{\fcolorbox{black!30}{black!5}{\sffamily\scriptsize\strut routine}\ }
 \newcommand{\newidea}{\fcolorbox{newidea!60}{newidea!10}{\sffamily\scriptsize\color{newidea}\strut new idea}\ }
 \newcommand{\uses}[1]{\par\smallskip{\small\color{black!70}\textit{Uses:} #1\par}}
-\newcommand{\prereqs}[1]{\noindent{\small\color{black!70}\textit{Before reading this:} #1\par}\medskip}
-\newcommand{\neededfor}[1]{\par\medskip\noindent{\small\color{black!70}\textit{Needed for:} #1\par}}
+
+% ================= Links between pages (the website builds its links from these too) =================
+% Every page starts with \section{Title}\label{p:<id>} (a case study: \chapter{...}\label{p:<id>}),
+% where <id> is the page's name on the website: <id>.html.
+%
+%   \pref{gronwall}{Gronwall's inequality}   text linked to a page: "Gronwall's inequality (§2.4)" here, a link on the website
+%   \pref{gronwall}{}                         the same with the page's own title as the text
+%   \status{stub}                             stub, draft or done: the badge on the website (nothing in the PDF)
+%   \prereqs{sobolev-spaces, gronwall}        "Before reading this" (concept pages)
+%   \neededfor                                "Needed for": filled in automatically from the other pages' \prereqs
+%   \conceptsused{sobolev-spaces, ...}        the box of concepts at the top of a case study
+%   \blurb{...}                               one line under the case study's link on the website's hub (nothing in the PDF)
+%   \begin{pdfonly} ... \end{pdfonly}         printed in the PDF only
+%   \begin{webonly} ... \end{webonly}         shown on the website only
+\newcommand{\pref}[2]{\ifx\relax#2\relax\nameref*{p:#1}\else#2\fi~(\S\ref{p:#1})}
+\newcommand{\status}[1]{}
+\newcommand{\blurb}[1]{}
+\newenvironment{pdfonly}{}{}
+\NewEnviron{webonly}{}
+% remember the id of the page being typeset (the last \label{p:<id>})
+\gdef\pde@page{}
+\def\pde@checklabel#1:#2:#3\@nil{\def\pde@tmpa{#1}\def\pde@tmpb{p}\ifx\pde@tmpa\pde@tmpb\gdef\pde@page{#2}\fi}
+\AddToHook{begindocument/end}{%
+  \let\pde@origlabel\label
+  \renewcommand\label[1]{\pde@origlabel{#1}\pde@checklabel#1::\@nil}}
+\ExplSyntaxOn
+\bool_new:N \g__pde_first_bool
+\cs_new_protected:Npn \pde@sep { \bool_if:NTF \g__pde_first_bool { \bool_gset_false:N \g__pde_first_bool } { ,~ } }
+% "Needed for" lists travel through the .aux file: page B's \prereqs{A} writes \pde@needed{A}{B}
+\cs_new_protected:Npn \pde@needed #1#2
+  {
+    \cs_if_exist:cF { pde@seen@#1@#2 }
+      {
+        \cs_gset:cpn { pde@seen@#1@#2 } { }
+        \tl_if_exist:cF { g__pde_nf_#1_tl } { \tl_new:c { g__pde_nf_#1_tl } }
+        \tl_gput_right:cn { g__pde_nf_#1_tl } { \pde@sep \pref{#2}{} }
+      }
+  }
+\NewDocumentCommand \prereqs { m }
+  {
+    \clist_set:Nn \l_tmpa_clist {#1}
+    \clist_map_inline:Nn \l_tmpa_clist
+      { \iow_now:Nx \@auxout { \token_to_str:N \pde@needed {##1} { \pde@page } } }
+    \noindent
+    { \small \color{black!70} \textit{Before~reading~this:} ~
+      \bool_gset_true:N \g__pde_first_bool
+      \clist_map_inline:Nn \l_tmpa_clist { \pde@sep \pref{##1}{} }
+      \par }
+    \medskip
+  }
+\NewDocumentCommand \neededfor { }
+  {
+    \tl_if_exist:cT { g__pde_nf_\pde@page _tl }
+      {
+        \par \medskip \noindent
+        { \small \color{black!70} \textit{Needed~for:} ~
+          \bool_gset_true:N \g__pde_first_bool
+          \tl_use:c { g__pde_nf_\pde@page _tl } \par }
+      }
+  }
+\NewDocumentCommand \conceptsused { m }
+  {
+    \clist_set:Nn \l_tmpa_clist {#1}
+    \begin{conceptsbox}
+    \begin{multicols}{2} \small \raggedright
+    \begin{itemize}[leftmargin=*,itemsep=1pt]
+    \clist_map_inline:Nn \l_tmpa_clist { \item \pref{##1}{} }
+    \end{itemize}
+    \end{multicols}
+    \end{conceptsbox}
+  }
+\ExplSyntaxOff
 
 % ================= Exercises =================
 % Write the hint and the solution inside the exercise:

@@ -1,7 +1,7 @@
 % Weak derivatives and Sobolev spaces
-% Converted from notes/pde/sobolev-spaces.html. Edit freely: this file is now the master copy.
 
 \section{Weak derivatives and Sobolev spaces}\label{p:sobolev-spaces}
+\status{stub}
 
 \subsection*{The idea}
 
@@ -46,7 +46,7 @@ $W^{k,p}$ is a Banach space; $H^k$ is a Hilbert space; for $1 \le p < \infty$ sm
 
 The definition is forced: it is the only one that agrees with the classical derivative for smooth $u$ and makes sense when $u$ is merely integrable. A function like $|x|$ on $(-1,1)$ has weak derivative $\operatorname{sign}(x)$, but $\operatorname{sign}(x)$ has no weak derivative in $L^1$: a jump is the first thing weak differentiation cannot absorb.
 
-$H^{-1}$ is where one derivative of an $L^2$ function lives: $H^1_0$ functions have one derivative more than $L^2$, and elements of $H^{-1}$ have one derivative less. For example, if $u \in H^1_0(\Omega)$ then $\Delta u \in H^{-1}$, since $\langle \Delta u, v\rangle = -\int_\Omega \nabla u \cdot \nabla v\,dx$ is bounded by $\norm{\nabla u}_{L^2}\norm{v}_{H^1}$. So for the heat equation $u_t = \Delta u$ with $u \in L^2(0,T;H^1_0)$, the time derivative $u_t$ lies in $L^2(0,T;H^{-1})$: exactly the setting of the continuity theorem on spaces of time-dependent functions~(\S\ref{p:bochner-spaces}). In one dimension the point evaluation $v \mapsto v(0)$ belongs to $H^{-1}(-1,1)$, because $H^1$ functions are continuous there; in two or more dimensions it does not.
+$H^{-1}$ is where one derivative of an $L^2$ function lives: $H^1_0$ functions have one derivative more than $L^2$, and elements of $H^{-1}$ have one derivative less. For example, if $u \in H^1_0(\Omega)$ then $\Delta u \in H^{-1}$, since $\langle \Delta u, v\rangle = -\int_\Omega \nabla u \cdot \nabla v\,dx$ is bounded by $\norm{\nabla u}_{L^2}\norm{v}_{H^1}$. So for the heat equation $u_t = \Delta u$ with $u \in L^2(0,T;H^1_0)$, the time derivative $u_t$ lies in $L^2(0,T;H^{-1})$: exactly the setting of the continuity theorem on \pref{bochner-spaces}{spaces of time-dependent functions}. In one dimension the point evaluation $v \mapsto v(0)$ belongs to $H^{-1}(-1,1)$, because $H^1$ functions are continuous there; in two or more dimensions it does not.
 
 \subsection*{Exercises}
 
@@ -112,4 +112,4 @@ $H^{-1}$ is where one derivative of an $L^2$ function lives: $H^1_0$ functions h
 \item H. Brezis, \emph{Functional Analysis, Sobolev Spaces and Partial Differential Equations}, Springer, 2011, Chapters 8--9.
 \end{itemize}
 
-\neededfor{Spaces of time-dependent functions~(\S\ref{p:bochner-spaces}), Weak and weak* convergence~(\S\ref{p:weak-convergence}), Sobolev embeddings~(\S\ref{p:sobolev-embedding}), Elliptic regularity: the Lamé system and the Neumann Laplacian~(\S\ref{p:elliptic-regularity}), The transport (continuity) equation~(\S\ref{p:transport-equation})}
+\neededfor

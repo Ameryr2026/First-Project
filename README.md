@@ -11,7 +11,7 @@ This repository is the whole website. It has three parts:
    terminology system that adapts the pages to each country's mathematical vocabulary.
 2. **The analysis of nonlinear PDEs** (`notes/pde/`): an English wiki of the tools behind existence
    and uniqueness proofs, with exercises, hints and solutions, built around a real case study.
-3. **The same PDE notes as a LaTeX book** (`latex/pde-notes/`): editable source and a printable PDF.
+3. **The same PDE notes as a LaTeX book** (`latex/pde-notes/`): the source of both the PDF and the web pages.
 
 مستودع موقع عامر رواشدة: صفحات رياضيات بالعربية كاملة (برموز عربية أو لاتينية)، ومحرر للرياضيات
 العربية، ومحوّل من LaTeX الإنجليزي، ونظام مصطلحات يمكن تكييفه لأي بلد عربي. كل شيء مفتوح المصدر
@@ -39,9 +39,9 @@ notes/                  Arabic pages and the shared Arabic-math system
   terms.html              glossary page
   ggb-riemann.js, ggb-volume.js  interactive GeoGebra widgets (inputs on our page, GeoGebra draws)
   ggb-template.js         the smallest widget, to copy when building a new one
-  pde/                    the English PDE wiki (registry in wiki.js)
-latex/pde-notes/        the PDE notes as a LaTeX book (master copy for print)
-tools/                  scripts: PDE pages → PDF, PDE pages → LaTeX project
+  pde/                    the English PDE wiki (made from latex/pde-notes/; do not edit the .html files)
+latex/pde-notes/        the PDE notes in LaTeX: the one source for the PDF and the web pages
+tools/                  tex-to-web.py: the PDE notes' LaTeX → the web pages
 docs/                   the guides
 ```
 

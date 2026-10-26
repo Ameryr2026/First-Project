@@ -1,0 +1,49 @@
+% TEMPLATE FOR A NEW CONCEPT PAGE
+%
+% 1. Copy this file to sections/foundations/<id>.tex, where <id> is a short name (e.g. maximum-principle).
+%    The same name is the page's address on the website: notes/pde/<id>.html.
+% 2. Replace every <...> below.
+% 3. In main.tex, add  \input{sections/foundations/<id>}  under the chapter (layer) it belongs to.
+%    The order of the \input lines is the reading order (previous / next links on the website).
+%
+% Links to other pages: \pref{gronwall}{Gronwall's inequality}  prints "Gronwall's inequality (§2.4)"
+% in the PDF and is a link on the website. \pref{gronwall}{} uses the page's own title.
+
+\section{<Title>}\label{p:<id>}
+
+\status{stub}                      % stub (statement + reference only), draft, or done
+\prereqs{<id-1>, <id-2>}           % pages to read first; delete the line if there are none
+
+\subsection*{The idea}
+
+<What the tool is for, in plain words.>
+
+\subsection*{Statement}
+
+\begin{thmbox}{Theorem (<name>)}
+<The precise statement, with every hypothesis.>
+\end{thmbox}
+
+\subsection*{Why it is plausible}
+
+<A heuristic instead of a proof: a scaling argument, a picture, a model example.>
+
+\subsection*{Exercises}
+
+\begin{exercise}
+  <A problem that makes the reader do the idea by hand.>
+  \begin{hint}
+    <The key step, without the full solution.>
+  \end{hint}
+  \begin{solution}
+    <The solution.>
+  \end{solution}
+\end{exercise}
+
+\subsection*{Where to find a proof}
+
+\begin{itemize}
+\item <Author>, \emph{<Book>}, <section and theorem number>.
+\end{itemize}
+
+\neededfor                          % "Needed for": filled in from the other pages' \prereqs

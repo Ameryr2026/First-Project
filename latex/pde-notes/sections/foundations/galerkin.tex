@@ -1,9 +1,9 @@
 % The Faedo–Galerkin method
-% Converted from notes/pde/galerkin.html. Edit freely: this file is now the master copy.
 
 \section{The Faedo--Galerkin method}\label{p:galerkin}
 
-\prereqs{Energy estimates and a priori bounds~(\S\ref{p:energy-estimates}), Weak and weak* convergence~(\S\ref{p:weak-convergence}), Spaces of time-dependent functions~(\S\ref{p:bochner-spaces})}
+\status{stub}
+\prereqs{energy-estimates, weak-convergence, bochner-spaces}
 
 \subsection*{The idea}
 
@@ -55,7 +55,7 @@ Testing the approximate equation with $u_m$ itself is allowed, because $u_m$ is 
 \begin{exercise}
   Passing to the limit. If $u_m \weakto u$ in $L^2(0,T;H^1_0)$, show $\int_0^T(\nabla u_m,\nabla w)\psi\,dt \to \int_0^T(\nabla u,\nabla w)\psi\,dt$ for fixed $w \in H^1_0$ and $\psi \in C_c^\infty(0,T)$. Explain why $\int_0^T\!\int u_m^2 w\,\psi$ need not converge to the same expression with $u$.
   \begin{hint}
-    The map $v \mapsto \int_0^T(\nabla v,\nabla w)\psi$ is a bounded linear functional on $L^2(0,T;H^1_0)$. Squares are not linear: see the $\sin(nx)$ example in weak and weak* convergence~(\S\ref{p:weak-convergence}).
+    The map $v \mapsto \int_0^T(\nabla v,\nabla w)\psi$ is a bounded linear functional on $L^2(0,T;H^1_0)$. Squares are not linear: see the $\sin(nx)$ example in \pref{weak-convergence}{weak and weak* convergence}.
   \end{hint}
   \begin{solution}
     $\ell(v) = \int_0^T(\nabla v, \nabla w)\psi\,dt$ is linear and $|\ell(v)| \le \norm{\nabla w}_{L^2}\norm{\psi}_{L^2(0,T)}\norm{v}_{L^2(0,T;H^1_0)}$, so $\ell$ is a bounded linear functional on $L^2(0,T;H^1_0)$ and $\ell(u_m) \to \ell(u)$ by definition of weak convergence.
@@ -72,4 +72,4 @@ Testing the approximate equation with $u_m$ itself is allowed, because $u_m$ is 
 \item H. J. Choe, H. Kim, Strong solutions of the Navier--Stokes equations for isentropic compressible fluids, \emph{J. Differential Equations} 190 (2003) 504--523.
 \end{itemize}
 
-\neededfor{Regularized approximation schemes~(\S\ref{p:regularized-approximation})}
+\neededfor

@@ -121,24 +121,37 @@ be able to look it up, and see what it depends on, without reading a textbook fr
 - **Case studies** walk through a real proof and link every tool they use.
 - **Layers** order the concepts so that each uses only earlier ones; this is the reading path.
 
-`wiki.js` holds the list of pages with their layer and prerequisites, and builds every page's links from
-it. The pages themselves contain no navigation, so moving a page or changing a prerequisite is a
-one-line change.
+`registry.js` holds the list of pages with their layer and prerequisites, and `wiki.js` builds every
+page's links from it. The pages themselves contain no navigation, so moving a page or changing a
+prerequisite is a one-line change in the LaTeX.
 
 ---
 
-## From web pages to LaTeX and PDF
+## One LaTeX source for the PDF and the web pages
 
-`tools/build-pde-pdf.py` reads the registry (by running `wiki.js` with Node.js), parses each HTML page
-with BeautifulSoup, and converts it element by element: headings to sections, boxes to `tcolorbox`
-environments, links between pages to section references, and math copied unchanged (MathJax and LaTeX
-read the same notation). It compiles with pdfLaTeX through `latexmk`.
+The notes were first written as web pages and exported once to LaTeX. Keeping two copies in step by hand
+does not last, so the direction was reversed: the LaTeX in `latex/pde-notes/` is now the only source, and
+`tools/tex-to-web.py` turns it into the web pages on every change (run by a GitHub Action, together with
+pdfLaTeX for the PDF).
 
-`tools/export-pde-latex.py` does the same but writes an editable project, one file per section, with
-the style in `pdenotes.sty`. Exercises keep their hint and solution inside them; the style collects
-these into the appendices with a small piece of LaTeX (`environ` captures each hint and solution, and
-they are stored and printed at `\printhints` / `\printsolutions`). An earlier attempt with the `answers`
-package failed inside the exercise boxes, which is why the collector is custom.
+The converter is a small hand-written reader for the LaTeX these notes use, in plain Python with no
+packages: paragraphs, headings, lists, text commands, and the boxes of `pdenotes.sty`. Math is not
+converted at all: it is copied to the page and MathJax draws it, since MathJax and LaTeX read the same
+notation, and the macros are copied from `pdenotes.sty` into `mathjax-config.js`. A general converter
+such as Pandoc was not used because the notes' own boxes, exercises and page links matter more than
+general LaTeX coverage, and a short script is easy to extend when a new command appears. Anything it does
+not know is reported as a warning rather than silently dropped.
+
+The links between pages are written with ids (`\pref{gronwall}{...}`, `\prereqs{gronwall}`), not page
+numbers, so both outputs can use them: LaTeX prints titles and section numbers through `\nameref` and
+`\ref`, and the converter makes links. The "Needed for" lists are the reverse of the prerequisites; in
+LaTeX they travel through the `.aux` file (each `\prereqs` writes a line that the page it names reads on
+the next run), on the website `wiki.js` computes them.
+
+Exercises keep their hint and solution inside them; the style collects these into the appendices with a
+small piece of LaTeX (`environ` captures each hint and solution, and they are stored and printed at
+`\printhints` / `\printsolutions`). An earlier attempt with the `answers` package failed inside the
+exercise boxes, which is why the collector is custom. On the web, they become "click to open" boxes.
 
 pdfLaTeX with the Palatino-like `mathpazo` fonts was chosen because it compiles everywhere, including
 Overleaf's default settings. Arabic LaTeX would need XeLaTeX or LuaLaTeX instead.

@@ -1,9 +1,9 @@
 % Lions–Feireisl theory for compressible flow
-% Converted from notes/pde/lions-feireisl.html. Edit freely: this file is now the master copy.
 
 \section{Lions--Feireisl theory for compressible flow}\label{p:lions-feireisl}
 
-\prereqs{Compactness: Rellich--Kondrachov and Aubin--Lions~(\S\ref{p:compactness}), Strong, weak, and renormalized solutions~(\S\ref{p:notions-of-solution}), Regularized approximation schemes~(\S\ref{p:regularized-approximation})}
+\status{stub}
+\prereqs{compactness, notions-of-solution, regularized-approximation}
 
 \subsection*{The idea}
 
@@ -18,7 +18,7 @@ Let $\Omega\subset\R^3$ be bounded with smooth boundary and $p(\rho)=a\rho^\gamm
 \begin{rmkbox}{The ingredients}
 \begin{itemize}
 \item \emph{Effective viscous flux.} $F = (\lambda+2\mu)\dv u - p(\rho)$. Although neither term converges strongly, products like $T(\rho_n)F_n$ converge weakly to $\overline{T(\rho)}\,F$: the oscillations of $p(\rho)$ and of $\dv u$ cancel.
-\item \emph{Renormalization} (see notions of solution~(\S\ref{p:notions-of-solution})), applied to truncations $T_k(\rho)$ of the density when $\rho$ is not square integrable.
+\item \emph{Renormalization} (see \pref{notions-of-solution}{notions of solution}), applied to truncations $T_k(\rho)$ of the density when $\rho$ is not square integrable.
 \item \emph{Oscillation defect measure.} A bound on how much the truncations can oscillate; finite exactly when $\gamma> 3/2$.
 \end{itemize}
 \end{rmkbox}
@@ -70,3 +70,5 @@ Strong convergence of $\rho_n$ is equivalent to $\overline{\rho\log\rho}=\rho\lo
 \item E. Feireisl, A. Novotný, H. Petzeltová, \emph{J. Math. Fluid Mech.} 3 (2001) 358--392.
 \item A. Novotný, I. Straškraba, \emph{Introduction to the Mathematical Theory of Compressible Flow}, Oxford, 2004, Chapter 7; E. Feireisl, \emph{Dynamics of Viscous Compressible Fluids}, Oxford, 2004.
 \end{itemize}
+
+\neededfor

@@ -1,9 +1,9 @@
 % Uniqueness by difference estimates
-% Converted from notes/pde/uniqueness-energy.html. Edit freely: this file is now the master copy.
 
 \section{Uniqueness by difference estimates}\label{p:uniqueness-energy}
 
-\prereqs{Energy estimates and a priori bounds~(\S\ref{p:energy-estimates}), Gronwall's inequality and continuity arguments~(\S\ref{p:gronwall})}
+\status{stub}
+\prereqs{energy-estimates, gronwall}
 
 \subsection*{The idea}
 
@@ -15,7 +15,7 @@ To show two solutions with the same data coincide, subtract them and estimate th
 \begin{enumerate}
 \item Write the equations for the difference $(\bar\rho,\bar u,\bar\phi)$ of two solutions. Nonlinear terms become linear in the difference, with coefficients built from the two solutions.
 \item Run an energy estimate for the difference at a low level (typically $L^2$), producing $\frac{d}{dt}Y + \text{dissipation}\le K(t)\,Y$.
-\item Check $K\in L^1(0,T)$ using the regularity of the solutions, and apply Gronwall~(\S\ref{p:gronwall}) with $Y(0)=0$.
+\item Check $K\in L^1(0,T)$ using the regularity of the solutions, and apply \pref{gronwall}{Gronwall} with $Y(0)=0$.
 \end{enumerate}
 
 A variant: \emph{weak--strong uniqueness} compares a weak solution with a strong one with the same data, using the energy inequality of the weak solution in place of the equation, and shows they coincide.
@@ -61,3 +61,5 @@ Uniqueness asks less than existence: one does not need new bounds, only that the
 \item L. C. Evans, \emph{Partial Differential Equations}, 2nd ed., AMS, 2010, §7.1.2 (Theorem 4, uniqueness for linear parabolic equations).
 \item X. Huo, A. Jüngel, Global existence and weak-strong uniqueness for chemotaxis compressible Navier--Stokes equations modeling vascular network formation, \emph{J. Math. Fluid Mech.} 26 (2024) 11.
 \end{itemize}
+
+\neededfor

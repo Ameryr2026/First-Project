@@ -3,32 +3,29 @@
 % 1. Copy this file to sections/case-studies/<short-name>.tex (e.g. ericksen.tex).
 % 2. Replace every <...> below, and delete the parts you do not need.
 % 3. In main.tex, add  \input{sections/case-studies/<short-name>}  under \part{Case studies}.
+%    That line is what puts it in the PDF and on the website (as notes/pde/case-<short-name>.html).
 %
 % Labels: start every label in this file with the short name, so they never clash with
 % another case study: \label{p:case-<short-name>}, \label{eq:<short-name>-system}, ...
-% Links to Part I: \S\ref{p:energy-estimates}, \S\ref{p:galerkin}, ... (the label is the
-% file name in sections/foundations/ with p: in front).
+% Links to Part I: \pref{energy-estimates}{energy estimates} prints "energy estimates (§5.1)" in the
+% PDF and is a link on the website. The id is the file name in sections/foundations/;
+% \pref{galerkin}{} uses the page's own title as the text.
 %
 % Boxes: \begin{step}{\routine{}Step 1. <title>} for a standard tool used in the standard way,
 %        \begin{stepnew}{\newidea{}Step 2. <title>} for what is new in the paper.
 
 \chapter{<Title of the case study>}\label{p:case-<short-name>}
+\status{draft}  % stub, draft or done
+\blurb{<One line shown under the link on the website's PDE page: the paper, and what it proves.>}
 
 \begin{byline}Based on <Authors>, \emph{<Title of the paper>}, <Journal> <volume> (<year>) <pages>. \href{https://doi.org/<doi>}{doi:<doi>}\end{byline}
 
 <One paragraph: what system this is, and what the paper proves about it.>
 Steps are tagged \routine{} when a standard tool is used in the standard way, and \newidea{} when the argument does something that cannot be taken off the shelf.
 
-\begin{conceptsbox}
-\begin{multicols}{2}\small\raggedright
-\begin{itemize}[leftmargin=*,itemsep=1pt]
-% Keep only the concepts this case study uses.
-\item Energy estimates and a priori bounds~(\S\ref{p:energy-estimates})
-\item The Faedo--Galerkin method~(\S\ref{p:galerkin})
-\item <Concept>~(\S\ref{p:<concept-file-name>})
-\end{itemize}
-\end{multicols}
-\end{conceptsbox}
+% The concepts this case study uses (ids = file names in sections/foundations/). This makes the box
+% here and the "Used in" lists on those concept pages.
+\conceptsused{energy-estimates, galerkin, <concept-file-name>}
 
 \section{The model}
 

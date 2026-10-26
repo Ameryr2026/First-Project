@@ -1,13 +1,13 @@
 % Energy estimates and a priori bounds
-% Converted from notes/pde/energy-estimates.html. Edit freely: this file is now the master copy.
 
 \section{Energy estimates and a priori bounds}\label{p:energy-estimates}
 
-\prereqs{Hölder, Young, and L\textsuperscript{\textit{p}} interpolation~(\S\ref{p:elementary-inequalities}), Gronwall's inequality and continuity arguments~(\S\ref{p:gronwall})}
+\status{stub}
+\prereqs{elementary-inequalities, gronwall}
 
 \subsection*{The idea}
 
-An a priori estimate is a bound that every smooth solution must satisfy, proved before knowing that solutions exist. The standard way to find one: multiply the equation by a well-chosen quantity, integrate, integrate by parts, and use the structure of the equation so that the dangerous terms cancel or have a sign. The choice of multiplier is the idea; the rest is the inequality toolkit~(\S\ref{p:elementary-inequalities}).
+An a priori estimate is a bound that every smooth solution must satisfy, proved before knowing that solutions exist. The standard way to find one: multiply the equation by a well-chosen quantity, integrate, integrate by parts, and use the structure of the equation so that the dangerous terms cancel or have a sign. The choice of multiplier is the idea; the rest is the \pref{elementary-inequalities}{inequality toolkit}.
 
 \subsection*{Statement}
 
@@ -16,7 +16,7 @@ An a priori estimate is a bound that every smooth solution must satisfy, proved 
 \item Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$. How to choose it is explained under \emph{Choosing the multiplier} below.
 \item Integrate by parts, using the boundary conditions, to produce $\frac{d}{dt}$(energy) plus nonnegative dissipation.
 \item Arrange the multipliers so that coupling terms cancel between equations.
-\item Bound what remains by the energy and dissipation (Hölder, Sobolev, Young), absorb the dissipation parts, and close with Gronwall~(\S\ref{p:gronwall}).
+\item Bound what remains by the energy and dissipation (Hölder, Sobolev, Young), absorb the dissipation parts, and close with \pref{gronwall}{Gronwall}.
 \item For higher regularity, repeat after differentiating the equation in $t$ or $x$.
 \end{enumerate}
 \end{thmbox}
@@ -158,4 +158,4 @@ Physical systems usually dissipate energy, and the mathematical energy is the ph
 \item J. L. Vázquez, \emph{The Porous Medium Equation: Mathematical Theory}, Oxford University Press, 2007 ($L^1$ estimates and $L^1$ contraction with smoothed sign functions).
 \end{itemize}
 
-\neededfor{The Faedo--Galerkin method~(\S\ref{p:galerkin}), Uniqueness by difference estimates~(\S\ref{p:uniqueness-energy}), Regularized approximation schemes~(\S\ref{p:regularized-approximation})}
+\neededfor

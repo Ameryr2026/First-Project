@@ -10,9 +10,8 @@ self-contained: jump to the task you need.
 - [5. Terminology (اقتران / دالة / تابع)](#5-terminology)
 - [6. Interactive pieces: Riemann sums, GeoGebra, JSXGraph](#6-interactive-pieces)
 - [7. The editor, converter and commands pages](#7-the-editor-converter-and-commands-pages)
-- [8. The PDE wiki](#8-the-pde-wiki)
-- [9. The PDE notes in LaTeX and PDF](#9-the-pde-notes-in-latex-and-pdf)
-- [10. Checking your work and fixing problems](#10-checking-your-work-and-fixing-problems)
+- [8. The PDE notes (website pages and PDF)](#8-the-pde-notes)
+- [9. Checking your work and fixing problems](#9-checking-your-work-and-fixing-problems)
 
 ---
 
@@ -226,67 +225,42 @@ appears in them.
 
 ---
 
-## 8. The PDE wiki
+## 8. The PDE notes
 
-English pages in `notes/pde/`, connected by a registry, `notes/pde/wiki.js`. The registry is the only file
-that connects pages: from it, every page gets its "Before reading this" box, "Used in" list,
-previous/next links, and the hub's reading path.
+The PDE notes are written **once, in LaTeX**, in `latex/pde-notes/`. Both the printable PDF and the English
+web pages in `notes/pde/` are made from those `.tex` files. Never edit the `.html` files in `notes/pde/`:
+they are rebuilt from the LaTeX on every change.
 
-**Add a concept page:**
+`latex/pde-notes/README.md` is the full guide (the commands for links, boxes, exercises, and what the website
+understands). In short:
 
-1. Copy `concept-template.html` to `<id>.html` (e.g. `maximum-principle.html`) and set
-   `<body data-page="maximum-principle">`.
-2. Add an entry to `PAGES` in `wiki.js`:
+- **Change a page:** edit its `.tex` file in `latex/pde-notes/sections/` and commit. A couple of minutes
+  later a GitHub Action (`.github/workflows/build-pde-notes.yml`) has rebuilt `main.pdf` and the web pages
+  and committed them. Watch it, and see any error, under the **Actions** tab.
+- **Add a page:** copy `sections/foundations/_template.tex` (or `sections/case-studies/_template.tex`),
+  fill it in, and add one `\input` line to `main.tex`. The chapter it sits under is its layer on the reading
+  path; the order of the `\input` lines is the reading order.
+- **Link to another page:** `\pref{gronwall}{Gronwall's inequality}` (a § reference in the PDF, a link on
+  the website). Prerequisites: `\prereqs{sobolev-spaces, gronwall}` near the top of the file.
+- **Macros** (`\R`, `\norm{}`, `\weakto`, …): add them to the "Math macros" section of
+  `latex/pde-notes/pdenotes.sty`; they then work in the PDF and on every web page.
 
-   ```js
-   { id: 'maximum-principle', kind: 'concept', layer: 3, status: 'stub',
-     title: 'The maximum principle', prereqs: ['sobolev-spaces'] },
-   ```
+What is made from what:
 
-   `layer` places it on the reading path; `status` is `'stub'`, `'draft'` or `'done'`.
+| Web file in `notes/pde/` | Made from |
+|---|---|
+| `<id>.html` | `sections/foundations/<id>.tex` or `sections/case-studies/<name>.tex` |
+| `index.html` (the hub) | the Introduction in `main.tex`, plus the list of pages |
+| `registry.js` (layers, order, prerequisites, status) | `main.tex` and each file's `\status`, `\prereqs`, `\conceptsused`, `\blurb` |
+| `mathjax-config.js` | the "Math macros" section of `pdenotes.sty` |
+| `wiki.js`, `pde.css` | not made: the code that draws the link boxes, and the page style |
 
-**Add a case study:** copy `case-chemotaxis.html`, add an entry with `kind: 'case'` and a `uses: [...]`
-list of the concepts it relies on.
-
-**Exercises** (in any page):
-
-```html
-<div class="exercise">
-  <p><span class="label">Exercise 1.</span> Show that …</p>
-  <details class="hint"><summary>Hint</summary><p>…</p></details>
-  <details class="solution"><summary>Solution</summary><p>…</p></details>
-</div>
-```
-
-**Macros** for all PDE pages (`\R`, `\norm{}`, `\weakto`, …) are in `notes/pde/mathjax-config.js`.
-If you add one, add it to `tools/pdenotes.sty` too so the LaTeX version understands it.
+To build the pages on your own computer: `python3 tools/tex-to-web.py` (Python 3 only, nothing to install),
+then open them through the local server (section 1).
 
 ---
 
-## 9. The PDE notes in LaTeX and PDF
-
-**The LaTeX book** is in `latex/pde-notes/` and is the master copy for print. Its own
-`README.md` explains the files, boxes, the exercise system, and how to add a case study
-(copy `sections/case-studies/_template.tex`, then add one `\input` line to `main.tex`).
-
-Edit the `.tex` files directly on GitHub (or in a clone and push). You never compile by hand: a GitHub
-Action (`.github/workflows/build-pde-notes.yml`) recompiles `main.pdf` whenever a `.tex` or `.sty` file in
-`latex/pde-notes/` changes, and commits it back. If the build fails, the **Actions** tab shows the LaTeX error.
-
-**Regenerating from the website** (optional; needs Python 3 with `beautifulsoup4`, Node.js and a TeX
-installation):
-
-```
-python3 tools/build-pde-pdf.py            # one PDF of the website pages → build/pde-analysis.pdf
-python3 tools/export-pde-latex.py         # a fresh LaTeX project        → build/pde-notes/
-```
-
-These write to `build/` only and never overwrite `latex/pde-notes/`. If you have edited the LaTeX book,
-do not replace it with a fresh export; compare and copy across what you need.
-
----
-
-## 10. Checking your work and fixing problems
+## 9. Checking your work and fixing problems
 
 **Before pushing**, open the changed page through the local server (section 1) and check:
 equations draw without red error text; both symbol views work (the switch at the top); the browser's
@@ -294,6 +268,7 @@ developer console (F12) shows no red errors.
 
 | Problem | Likely cause and fix |
 |---|---|
+| A PDE page or the PDF did not change | Open the **Actions** tab: the run "Build the PDE notes" must finish (green). A red run means a LaTeX error (open the failed step for the log); yellow notes on the run's page list LaTeX the website did not understand. |
 | Change does not appear online | Wait two minutes; hard-refresh (Ctrl+Shift+R). For shared scripts, bump `?v=` (section 1). Check the repository's Actions tab for a failed Pages build. |
 | Equation shows in red | A LaTeX error: unknown command or unbalanced `{ }`. Hover over it for the message. Try the formula in the editor. |
 | `{{something}}` appears on the page | The key is not in `terms.js` (check spelling), or the page does not load `terms.js` before `arabic-math.js`. |

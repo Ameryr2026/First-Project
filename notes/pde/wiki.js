@@ -1,111 +1,15 @@
 /* ==================================================================
-   PDE ANALYSIS WIKI — the registry
+   PDE ANALYSIS WIKI — draws the links between pages
    ------------------------------------------------------------------
-   This is the ONLY file you edit to connect pages. Every page in
-   notes/pde/ is listed here once. From this list the script builds,
-   on every page:
-     - the "Before reading this" box   (from prereqs)
-     - the "Used in" box               (from the uses lists of case studies)
-     - the previous / next links       (reading-path order below)
+   The list of pages (LAYERS and PAGES) is in registry.js, which
+   tools/tex-to-web.py makes from the LaTeX notes. From it this script
+   builds, on every page:
+     - the "Before reading this" box   (from \prereqs)
+     - the "Used in" box               (from \conceptsused of case studies)
+     - the "Needed for" box            (from the other pages' \prereqs)
+     - the previous / next links       (the order of \input lines in main.tex)
      - the reading path and case-study list on the hub (index.html)
-
-   To add a CONCEPT page:
-     1. copy concept-template.html to <id>.html and write it
-     2. add an entry below with kind: 'concept', a layer, and prereqs
-   To add a CASE STUDY:
-     1. copy case-chemotaxis.html as a starting point
-     2. add an entry with kind: 'case' and the concepts it uses
-   The "Used in" lists on concept pages then update themselves.
-
-   status: 'stub' (statement + reference only), 'draft', or 'done'.
-   ================================================================== */
-
-const LAYERS = [
-  { n: 1, title: 'The language: function spaces' },
-  { n: 2, title: 'The inequality toolkit' },
-  { n: 3, title: 'Linear building blocks' },
-  { n: 4, title: 'What "solution" means' },
-  { n: 5, title: 'A priori estimates' },
-  { n: 6, title: 'Existence by approximation' },
-  { n: 7, title: 'Uniqueness' },
-  { n: 8, title: 'Global weak solutions' }
-];
-
-const PAGES = [
-  // ---- Layer 1 ----
-  { id: 'sobolev-spaces', kind: 'concept', layer: 1, status: 'stub',
-    title: 'Weak derivatives and Sobolev spaces', prereqs: [] },
-  { id: 'bochner-spaces', kind: 'concept', layer: 1, status: 'stub',
-    title: 'Spaces of time-dependent functions', prereqs: ['sobolev-spaces'] },
-  { id: 'weak-convergence', kind: 'concept', layer: 1, status: 'stub',
-    title: 'Weak and weak* convergence', prereqs: ['sobolev-spaces'] },
-
-  // ---- Layer 2 ----
-  { id: 'elementary-inequalities', kind: 'concept', layer: 2, status: 'stub',
-    title: 'Hölder, Young, and Lᵖ interpolation', prereqs: [] },
-  { id: 'sobolev-embedding', kind: 'concept', layer: 2, status: 'stub',
-    title: 'Sobolev embeddings', prereqs: ['sobolev-spaces'] },
-  { id: 'gagliardo-nirenberg', kind: 'concept', layer: 2, status: 'stub',
-    title: 'Gagliardo–Nirenberg inequalities',
-    prereqs: ['sobolev-embedding', 'elementary-inequalities'] },
-  { id: 'gronwall', kind: 'concept', layer: 2, status: 'stub',
-    title: 'Gronwall’s inequality and continuity arguments', prereqs: [] },
-
-  // ---- Layer 3 ----
-  { id: 'elliptic-regularity', kind: 'concept', layer: 3, status: 'stub',
-    title: 'Elliptic regularity: the Lamé system and the Neumann Laplacian',
-    prereqs: ['sobolev-spaces'] },
-  { id: 'parabolic-regularity', kind: 'concept', layer: 3, status: 'stub',
-    title: 'Maximal regularity for parabolic equations',
-    prereqs: ['bochner-spaces', 'elliptic-regularity'] },
-  { id: 'transport-equation', kind: 'concept', layer: 3, status: 'stub',
-    title: 'The transport (continuity) equation',
-    prereqs: ['sobolev-spaces', 'sobolev-embedding'] },
-
-  // ---- Layer 4 ----
-  { id: 'notions-of-solution', kind: 'concept', layer: 4, status: 'stub',
-    title: 'Strong, weak, and renormalized solutions',
-    prereqs: ['bochner-spaces', 'transport-equation'] },
-
-  // ---- Layer 5 ----
-  { id: 'energy-estimates', kind: 'concept', layer: 5, status: 'stub',
-    title: 'Energy estimates and a priori bounds',
-    prereqs: ['elementary-inequalities', 'gronwall'] },
-
-  // ---- Layer 6 ----
-  { id: 'galerkin', kind: 'concept', layer: 6, status: 'stub',
-    title: 'The Faedo–Galerkin method',
-    prereqs: ['energy-estimates', 'weak-convergence', 'bochner-spaces'] },
-
-  // ---- Layer 7 ----
-  { id: 'uniqueness-energy', kind: 'concept', layer: 7, status: 'stub',
-    title: 'Uniqueness by difference estimates',
-    prereqs: ['energy-estimates', 'gronwall'] },
-
-  // ---- Layer 8 ----
-  { id: 'compactness', kind: 'concept', layer: 8, status: 'stub',
-    title: 'Compactness: Rellich–Kondrachov and Aubin–Lions',
-    prereqs: ['sobolev-embedding', 'bochner-spaces', 'weak-convergence'] },
-  { id: 'regularized-approximation', kind: 'concept', layer: 8, status: 'stub',
-    title: 'Regularized approximation schemes',
-    prereqs: ['energy-estimates', 'galerkin'] },
-  { id: 'lions-feireisl', kind: 'concept', layer: 8, status: 'stub',
-    title: 'Lions–Feireisl theory for compressible flow',
-    prereqs: ['compactness', 'notions-of-solution', 'regularized-approximation'] },
-
-  // ---- Case studies ----
-  { id: 'case-chemotaxis', kind: 'case', status: 'draft',
-    title: 'Chemotaxis compressible Navier–Stokes (vascular network formation)',
-    blurb: 'Huang, Rababah, Rawashdeh, J. Differential Equations 480 (2026). Local strong solutions with vacuum; global weak solutions for γ > 3/2.',
-    uses: ['sobolev-spaces', 'bochner-spaces', 'weak-convergence',
-           'elementary-inequalities', 'sobolev-embedding', 'gagliardo-nirenberg', 'gronwall',
-           'elliptic-regularity', 'parabolic-regularity', 'transport-equation',
-           'notions-of-solution', 'energy-estimates', 'galerkin', 'uniqueness-energy',
-           'compactness', 'regularized-approximation', 'lions-feireisl'] }
-];
-
-/* ==================================================================
-   Nothing below needs editing.
+   You do not need to edit this file.
    ================================================================== */
 (function () {
   const byId = Object.fromEntries(PAGES.map(p => [p.id, p]));

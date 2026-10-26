@@ -1,7 +1,9 @@
-# Recompiles the PDE notes (latex/pde-notes/main.tex) and the CV (cv/cv.tex) and commits
-# the new PDFs, whenever a .tex or .sty file in those folders changes on the main branch.
-# It can also be started by hand: Actions tab -> "Build PDFs (PDE notes and CV)" -> Run workflow.
-name: Build PDFs (PDE notes and CV)
+# Builds everything that comes from the LaTeX notes, and commits the results:
+#   - the website's PDE pages (notes/pde/*.html, registry.js, mathjax-config.js), by tools/tex-to-web.py
+#   - the PDF of the notes (latex/pde-notes/main.pdf) and the CV (cv/cv.pdf), by pdfLaTeX
+# It runs whenever a .tex or .sty file in those folders changes on the main branch.
+# It can also be started by hand: Actions tab -> "Build the PDE notes (website pages and PDF) and the CV" -> Run workflow.
+name: Build the PDE notes (website pages and PDF) and the CV
 
 on:
   push:
@@ -10,6 +12,8 @@ on:
       - 'latex/pde-notes/**.tex'
       - 'latex/pde-notes/**.sty'
       - 'cv/**.tex'
+      - 'tools/tex-to-web.py'
+      - '.github/workflows/build-pde-notes.yml'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +29,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Warnings (an unknown LaTeX command, a page id that does not exist, ...) appear
+      # as yellow notes on the run's summary page; the pages are built anyway.
+      - name: Make the website pages from the .tex files
+        run: python3 tools/tex-to-web.py
+
       - name: Compile main.tex with pdfLaTeX
+        id: notes
+        continue-on-error: true
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
@@ -33,20 +44,34 @@ jobs:
           latexmk_use_lualatex: false
 
       - name: Compile the CV
+        id: cv
+        continue-on-error: true
         uses: xu-cheng/latex-action@v3
         with:
           root_file: cv.tex
           working_directory: cv
 
-      - name: Commit the new PDF
+      - name: Commit the new pages and PDFs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
-          git add latex/pde-notes/main.pdf cv/cv.pdf
+          git add -A notes/pde
+          # a PDF is only kept when its LaTeX run succeeded
+          if [ "${{ steps.notes.outcome }}" = "success" ]; then git add latex/pde-notes/main.pdf; fi
+          if [ "${{ steps.cv.outcome }}" = "success" ]; then git add cv/cv.pdf; fi
           if git diff --cached --quiet; then
-            echo "PDF unchanged."
+            echo "Nothing changed."
           else
-            git commit -m "Rebuild PDFs"
+            git commit -m "Rebuild the PDE pages and PDFs"
+            git restore .        # drop a half-built PDF that was not committed, so the pull can rebase
             git pull --rebase origin main
             git push
           fi
+
+      # The website pages are committed even when LaTeX fails; this step then marks the run as
+      # failed, so the error is easy to find (open the failed compile step to see the LaTeX log).
+      - name: Report a LaTeX error
+        if: steps.notes.outcome == 'failure' || steps.cv.outcome == 'failure'
+        run: |
+          echo "::error::LaTeX failed (notes: ${{ steps.notes.outcome }}, CV: ${{ steps.cv.outcome }}). The PDF was not updated; the website pages were."
+          exit 1
