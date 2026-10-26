@@ -18,7 +18,10 @@
 \RequirePackage{environ}
 \RequirePackage{titlesec}
 \RequirePackage{fancyhdr}
+\RequirePackage{imakeidx}
+\makeindex[intoc]
 \RequirePackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+
 
 % ================= Math macros (same as the website) =================
 \newcommand{\R}{\mathbb{R}}
@@ -29,6 +32,7 @@
 \newcommand{\Lame}{\mathcal{L}}
 \newcommand{\weakto}{\rightharpoonup}
 \newcommand{\weakstarto}{\overset{*}{\rightharpoonup}}
+\newcommand{\term}[1]{\emph{#1}\index{#1}}
 \providecommand{\lt}{<}
 \providecommand{\gt}{>}
 
