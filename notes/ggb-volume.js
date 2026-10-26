@@ -461,6 +461,10 @@
     function onLoad(ggb) {
       api = ggb;
       api.setErrorDialogsActive && api.setErrorDialogsActive(false);
+      // The 3D app opens with its algebra list beside the picture even when asked for the 3D view only, so
+      // switch to the 3D view again once it is loaded. The reader cannot edit that list, and the Settings
+      // already show and hide every part.
+      if (api.setPerspective) api.setPerspective('T');
       batch(function () { create(); });
     }
     function create() {
