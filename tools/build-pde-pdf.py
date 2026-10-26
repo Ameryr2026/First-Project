@@ -273,7 +273,7 @@ def hub_intro():
     for c in hub.main.children:
         if isinstance(c, Tag) and c.name == 'h2':
             break                                       # the introduction ends at the first heading
-        if isinstance(c, Tag) and c.name == 'p':
+        if isinstance(c, Tag) and c.name == 'p' and 'downloads' not in (c.get('class') or []):
             paras.append(hub.inline(c))
     return '\n\n'.join(paras), hub.main.find('h1').get_text().strip()
 

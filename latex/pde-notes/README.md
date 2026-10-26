@@ -51,3 +51,8 @@ A paper or a set of notes needs `pdenotes.sty` and the section file:
     \end{document}
 
 Cross-references to sections not included will show as ??; delete or reword them.
+
+## License
+
+© Amer Rawashdeh. Licensed under [Creative Commons Attribution 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/):
+you may share and adapt this material for any purpose, as long as you give credit.
