@@ -13,7 +13,8 @@ window.MathJax = {
       abs: ["\\left\\lvert #1\\right\\rvert", 1],
       Lame: "\\mathcal{L}",
       weakto: "\\rightharpoonup",
-      weakstarto: "\\overset{*}{\\rightharpoonup}"
+      weakstarto: "\\overset{*}{\\rightharpoonup}",
+      term: ["\\emph{#1}\\index{#1}", 1]
     }
   },
   chtml: { scale: 1.0 }
