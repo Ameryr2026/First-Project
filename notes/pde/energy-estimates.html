@@ -40,7 +40,7 @@
     <p><span class="label">The method (not a theorem).</span>
     </p>
     <ol>
-      <li>Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$.</li>
+      <li>Multiply each equation by a multiplier (often the unknown itself, its time derivative, or $\Delta$ of it) and integrate over $\Omega$. How to choose it is explained under <a href="#choosing">Choosing the multiplier</a> below.</li>
       <li>Integrate by parts, using the boundary conditions, to produce $\frac{d}{dt}$(energy) plus nonnegative dissipation.</li>
       <li>Arrange the multipliers so that coupling terms cancel between equations.</li>
       <li>Bound what remains by the energy and dissipation (Hölder, Sobolev, Young), absorb the dissipation parts, and close with <a href="gronwall.html">Gronwall</a>.</li>
@@ -52,6 +52,62 @@
       For $u_t-\Delta u=0$ with $u=0$ on $\partial\Omega$, multiplying by $u$ gives
       $\frac{d}{dt}\frac12\norm{u}_{L^2}^2+\norm{\nabla u}_{L^2}^2=0$, and multiplying by $u_t$ gives
       $\norm{u_t}_{L^2}^2+\frac{d}{dt}\frac12\norm{\nabla u}_{L^2}^2=0$.
+    </p>
+  </div>
+
+  <h2 id="choosing">Choosing the multiplier</h2>
+  <p>
+    The multiplier is not guessed. First decide which quantity you want to bound; the multiplier is its derivative.
+  </p>
+  <div class="thm">
+    <p><span class="label">The multiplier rule.</span>
+      To control $\int_\Omega \Phi(u)\,dx$, multiply the equation by $\Phi'(u)$. By the chain rule the time term becomes
+      exactly the time derivative of that quantity:
+      $$\int_\Omega \Phi'(u)\,u_t\,dx=\frac{d}{dt}\int_\Omega \Phi(u)\,dx.$$
+      For the diffusion term, integration by parts gives
+      $$-\int_\Omega \Delta u\,\Phi'(u)\,dx=\int_\Omega \Phi''(u)\,\abs{\nabla u}^2\,dx-\int_{\partial\Omega}\Phi'(u)\,\partial_\nu u\,dS .$$
+      The boundary term vanishes under Neumann conditions ($\partial_\nu u=0$), or under Dirichlet conditions ($u=0$) when
+      $\Phi'(0)=0$. If $\Phi$ is convex, $\Phi''\ge 0$, so the remaining term is nonnegative: it is dissipation, which can be
+      kept or dropped.
+    </p>
+  </div>
+  <p>The standard choices for $u_t-\Delta u=f$:</p>
+  <ul>
+    <li>$\Phi(s)=\frac12 s^2$, multiplier $u$. Dissipation $\norm{\nabla u}_{L^2}^2$. This is the basic energy estimate.</li>
+    <li>$\Phi(s)=\frac1p\abs{s}^p$ ($p\ge 2$), multiplier $\abs{u}^{p-2}u$. Dissipation $(p-1)\int\abs{u}^{p-2}\abs{\nabla u}^2$. Controls $\norm{u}_{L^p}$.</li>
+    <li>$\Phi(s)=s\log s$ (for $u>0$), multiplier $\log u+1$. Dissipation $\int \abs{\nabla u}^2/u$. This is the entropy, the standard functional for chemotaxis (Keller–Segel) models.</li>
+    <li>$\Phi(s)=\abs{s}$, multiplier $\operatorname{sign}(u)$. Controls $\norm{u}_{L^1}$, natural for densities and mass. Since $\abs{s}$ is not differentiable at $0$, it has to be smoothed first (next example).</li>
+  </ul>
+  <div class="ex">
+    <p><span class="label">The smoothed sign and the $L^1$ estimate.</span>
+      Take $u_t-\Delta u=f$ with $u=0$ on $\partial\Omega$. Replace $\abs{s}$ by the smooth convex function
+      $$\Phi_\delta(s)=\sqrt{s^2+\delta^2},\qquad
+      \Phi_\delta'(s)=\frac{s}{\sqrt{s^2+\delta^2}}\;\longrightarrow\;\operatorname{sign}(s),\qquad
+      \Phi_\delta''(s)=\frac{\delta^2}{(s^2+\delta^2)^{3/2}}\ge 0 .$$
+      Since $\Phi_\delta'(0)=0$, the boundary term vanishes, and multiplying by $\Phi_\delta'(u)$ gives
+      $$\frac{d}{dt}\int_\Omega \Phi_\delta(u)\,dx+\int_\Omega \Phi_\delta''(u)\abs{\nabla u}^2\,dx=\int_\Omega f\,\frac{u}{\sqrt{u^2+\delta^2}}\,dx\le \norm{f}_{L^1}.$$
+      Drop the nonnegative term and integrate in time. Since $\abs{s}\le\Phi_\delta(s)\le\abs{s}+\delta$, letting $\delta\to 0$ gives
+      $$\norm{u(t)}_{L^1}\le \norm{u_0}_{L^1}+\int_0^t\norm{f(s)}_{L^1}\,ds .$$
+      Applied to the difference of two solutions of a linear problem, the same computation gives $L^1$ contraction, and hence uniqueness.
+    </p>
+  </div>
+  <p><strong>Multipliers with derivatives.</strong> The same rule applies when the quantity you want involves derivatives of $u$:</p>
+  <ul>
+    <li>To control $\frac12\norm{\nabla u}_{L^2}^2$: its time derivative is $\int\nabla u\cdot\nabla u_t=\int(-\Delta u)\,u_t$, so the multiplier is $-\Delta u$. Equivalently, apply $\partial_i$ to the equation and multiply by $\partial_i u$: this is the basic estimate for $\nabla u$.</li>
+    <li>To control $\frac12\norm{\Delta u}_{L^2}^2$: the multiplier is $\Delta^2 u$.</li>
+    <li>The multiplier $u_t$ gives $\norm{u_t}_{L^2}^2+\frac{d}{dt}\frac12\norm{\nabla u}_{L^2}^2$. It controls the time derivative, which is what compactness (Aubin–Lions) needs.</li>
+  </ul>
+  <div class="rmk">
+    <p><span class="label">Reading off the function spaces.</span>
+      Every estimate above has the form
+      $$E(t)+\int_0^t D(s)\,ds\le E(0)\quad(\text{plus data terms}),$$
+      with $E\ge 0$ the energy and $D\ge 0$ the dissipation. Each term of $E$ is bounded at every time, so it gives a space
+      that is $L^\infty$ in time. Each term of $D$ is bounded only after integrating in time; since it appears squared, it
+      gives a space that is $L^2$ in time. For the heat equation, the estimate at level $s$ (multiplier $u$, $-\Delta u$,
+      $\Delta^2u$, …) gives
+      $$u\in L^\infty(0,T;H^s)\cap L^2(0,T;H^{s+1}).$$
+      The level is chosen by the nonlinearity, not by the estimate: you go up until the nonlinear terms can be bounded,
+      typically until $s>d/2$, where $H^s\subset L^\infty$.
     </p>
   </div>
 
@@ -112,10 +168,48 @@ $u_t = 0$ at the ends.</p>
       $\frac{d}{dt}\int_0^1(u_t^2 + u_x^2)\,dx = 0$.</p>
     </details>
   </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 4.</span>
+      The $L^p$ estimate. For $u_t - \Delta u = 0$ with $u = 0$ on $\partial\Omega$ and $p \ge 2$, show that
+$\norm{u(t)}_{L^p} \le \norm{u_0}_{L^p}$ for all $t \ge 0$.
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Use the multiplier rule with $\Phi(s) = \frac1p\abs{s}^p$. Check that $\Phi'(0) = 0$ and $\Phi'' \ge 0$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Multiply by $\Phi'(u) = \abs{u}^{p-2}u$, which vanishes on $\partial\Omega$. The time term is
+      $\int \abs{u}^{p-2}u\,u_t = \frac1p\frac{d}{dt}\int\abs{u}^p$. The diffusion term is
+      $-\int \Delta u\,\abs{u}^{p-2}u = \int \nabla u\cdot\nabla(\abs{u}^{p-2}u) = (p-1)\int\abs{u}^{p-2}\abs{\nabla u}^2 \ge 0$,
+      using $\Phi''(s) = (p-1)\abs{s}^{p-2}$ (continuous since $p \ge 2$). So $\frac{d}{dt}\norm{u}_{L^p}^p \le 0$, and integrating,
+      $\norm{u(t)}_{L^p}^p \le \norm{u_0}_{L^p}^p$.</p>
+    </details>
+  </div>
+  <div class="exercise">
+    <p><span class="label">Exercise 5.</span>
+      A higher-order estimate. On the torus $\mathbb{T}^d$ (periodic boundary conditions, so integration by parts has no
+boundary terms), let $u_t - \Delta u = f$. Multiply by $\Delta^2 u$ and show
+$$\frac{d}{dt}\norm{\Delta u}_{L^2}^2 + \norm{\nabla\Delta u}_{L^2}^2 \le \norm{\nabla f}_{L^2}^2 .$$
+Which spaces does this put $\Delta u$ and $\nabla\Delta u$ in?
+    </p>
+    <details class="hint"><summary>Hint</summary>
+      <p>Integrate by parts twice in the time term and once in the other two. Finish with Cauchy–Schwarz and Young:
+$ab \le \frac12a^2 + \frac12b^2$.</p>
+    </details>
+    <details class="solution"><summary>Solution</summary>
+      <p>Time term: $\int u_t\,\Delta^2u = \int \Delta u_t\,\Delta u = \frac12\frac{d}{dt}\norm{\Delta u}^2$. Diffusion term:
+      $-\int\Delta u\,\Delta^2u = \int\nabla\Delta u\cdot\nabla\Delta u = \norm{\nabla\Delta u}^2$. Forcing:
+      $\int f\,\Delta^2u = -\int\nabla f\cdot\nabla\Delta u \le \norm{\nabla f}\norm{\nabla\Delta u} \le \frac12\norm{\nabla f}^2 + \frac12\norm{\nabla\Delta u}^2$.
+      Absorbing the last term into the left side and multiplying by $2$ gives the inequality.</p>
+      <p>Integrating in time, $\Delta u \in L^\infty(0,T;L^2)$ and $\nabla\Delta u \in L^2(0,T;L^2)$ whenever $\Delta u_0 \in L^2$
+      and $\nabla f \in L^2(0,T;L^2)$: the level-2 spaces $L^\infty(0,T;H^2)\cap L^2(0,T;H^3)$, up to lower-order terms.</p>
+    </details>
+  </div>
 
   <h2>Where to find a proof</h2>
   <ul>
     <li>L. C. Evans, <em>Partial Differential Equations</em>, 2nd ed., AMS, 2010, §2.3.4 and §7.1.2 (energy methods for the heat equation and for linear parabolic equations).</li>
+    <li>J. C. Robinson, J. L. Rodrigo, W. Sadowski, <em>The Three-Dimensional Navier–Stokes Equations: Classical Theory</em>, Cambridge University Press, 2016 (higher-order energy estimates written out line by line).</li>
+    <li>J. L. Vázquez, <em>The Porous Medium Equation: Mathematical Theory</em>, Oxford University Press, 2007 ($L^1$ estimates and $L^1$ contraction with smoothed sign functions).</li>
   </ul>
 
   <div id="used-in"></div>
