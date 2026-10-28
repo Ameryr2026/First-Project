@@ -61,6 +61,12 @@
 \newtcolorbox{conceptsbox}{enhanced,breakable,colback=boxbg,colframe=boxbg,arc=2pt,
   title={Concepts used in this case study},coltitle=accent,colbacktitle=boxbg,fonttitle=\bfseries\small}
 \newenvironment{byline}{\begin{quote}\small}{\end{quote}}
+% a calculation: printed here in the PDF; on the website a closed "Show the calculation" box the reader can open
+%   \begin{calc} ... \end{calc}          or  \begin{calc}[Show why the determinant is zero] ... \end{calc}
+% (the optional text is the website's button; the PDF prints "Calculation")
+\newtcolorbox{calc}[1][]{enhanced,breakable,colback=white,colframe=black!18,boxrule=0pt,leftrule=1.5pt,arc=0pt,
+  left=8pt,right=6pt,top=3pt,bottom=3pt,before skip=6pt,after skip=10pt,
+  before upper={{\small\sffamily\color{black!55}Calculation}\par\smallskip}}
 \newcommand{\routine}{\fcolorbox{black!30}{black!5}{\sffamily\scriptsize\strut routine}\ }
 \newcommand{\newidea}{\fcolorbox{newidea!60}{newidea!10}{\sffamily\scriptsize\color{newidea}\strut new idea}\ }
 \newcommand{\uses}[1]{\par\smallskip{\small\color{black!70}\textit{Uses:} #1\par}}
@@ -78,6 +84,7 @@
 %   \blurb{...}                               one line under the case study's link on the website's hub (nothing in the PDF)
 %   \begin{pdfonly} ... \end{pdfonly}         printed in the PDF only
 %   \begin{webonly} ... \end{webonly}         shown on the website only
+%   \begin{calc} ... \end{calc}               a calculation: printed in the PDF, a "Show the calculation" box on the website
 \newcommand{\pref}[2]{\ifx\relax#2\relax\nameref*{p:#1}\else#2\fi~(\S\ref{p:#1})}
 \newcommand{\status}[1]{}
 \newcommand{\blurb}[1]{}

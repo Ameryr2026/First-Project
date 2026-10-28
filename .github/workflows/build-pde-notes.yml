@@ -1,6 +1,7 @@
 # Builds everything that comes from the LaTeX notes, and commits the results:
 #   - the website's PDE pages (notes/pde/*.html, registry.js, mathjax-config.js), by tools/tex-to-web.py
-#   - the PDF of the notes (latex/pde-notes/main.pdf) and the CV (cv/cv.pdf), by pdfLaTeX
+#   - the PDF of the notes (latex/pde-notes/main.pdf), the CV (cv/cv.pdf) and the project PDFs (latex/projects/*.pdf), by pdfLaTeX
+#   - the project pages (notes/projects/*.html), also by tools/tex-to-web.py
 # It runs whenever a .tex or .sty file in those folders changes on the main branch.
 # It can also be started by hand: Actions tab -> "Build the PDE notes (website pages and PDF) and the CV" -> Run workflow.
 name: Build the PDE notes (website pages and PDF) and the CV
@@ -12,6 +13,7 @@ on:
       - 'latex/pde-notes/**.tex'
       - 'latex/pde-notes/**.sty'
       - 'cv/**.tex'
+      - 'latex/projects/**.tex'
       - 'tools/tex-to-web.py'
       - '.github/workflows/build-pde-notes.yml'
   workflow_dispatch:
@@ -43,6 +45,14 @@ jobs:
           working_directory: latex/pde-notes
           latexmk_use_lualatex: false
 
+      - name: Compile the project write-ups (latex/projects)
+        id: projects
+        continue-on-error: true
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: '*.tex'
+          working_directory: latex/projects
+
       - name: Compile the CV
         id: cv
         continue-on-error: true
@@ -55,10 +65,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
-          git add -A notes/pde
+          git add -A notes/pde notes/projects
           # a PDF is only kept when its LaTeX run succeeded
           if [ "${{ steps.notes.outcome }}" = "success" ]; then git add latex/pde-notes/main.pdf; fi
           if [ "${{ steps.cv.outcome }}" = "success" ]; then git add cv/cv.pdf; fi
+          if [ "${{ steps.projects.outcome }}" = "success" ]; then git add latex/projects/*.pdf; fi
           if git diff --cached --quiet; then
             echo "Nothing changed."
           else
@@ -71,7 +82,7 @@ jobs:
       # The website pages are committed even when LaTeX fails; this step then marks the run as
       # failed, so the error is easy to find (open the failed compile step to see the LaTeX log).
       - name: Report a LaTeX error
-        if: steps.notes.outcome == 'failure' || steps.cv.outcome == 'failure'
+        if: steps.notes.outcome == 'failure' || steps.cv.outcome == 'failure' || steps.projects.outcome == 'failure'
         run: |
-          echo "::error::LaTeX failed (notes: ${{ steps.notes.outcome }}, CV: ${{ steps.cv.outcome }}). The PDF was not updated; the website pages were."
+          echo "::error::LaTeX failed (notes: ${{ steps.notes.outcome }}, CV: ${{ steps.cv.outcome }}, projects: ${{ steps.projects.outcome }}). The PDF was not updated; the website pages were."
           exit 1

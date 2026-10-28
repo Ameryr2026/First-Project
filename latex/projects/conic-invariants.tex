@@ -1,0 +1,458 @@
+% Invariants of conic sections: a course project (MAT 7470, Winter 2024), written up for the website.
+% The website page notes/projects/conic-invariants.html and the PDF are both made from this file.
+% Calculations go in \begin{calc} ... \end{calc}: printed in the PDF, a "Show the calculation" box on the website.
+\documentclass[11pt]{article}
+\usepackage{pdenotes}
+\hypersetup{pdftitle={Invariants of Conic Sections},pdfauthor={Amer Rawashdeh}}
+\pagestyle{plain}
+\title{Invariants of Conic Sections}
+\author{Amer Rawashdeh}
+\date{}
+
+\begin{document}
+\begin{pdfonly}
+\begin{center}
+{\LARGE\bfseries Invariants of Conic Sections\par}\medskip
+{\large Amer Rawashdeh\par}
+\end{center}
+\end{pdfonly}
+
+\begin{byline}
+Course project for MAT 7470, Wayne State University, Winter 2024, with Prof.~Candelori. Written up for this site in October 2026.
+\end{byline}
+
+\begin{webonly}
+The calculations are hidden: open a ``Show the calculation'' box to see one.
+Also as a \href{../../latex/projects/conic-invariants.pdf}{printable PDF}, with every calculation written out.
+\end{webonly}
+
+Move an ellipse in the plane, by turning it or sliding it, and its equation changes completely, yet it is the same curve. This project answers the natural question: which numbers, computed from the equation, do \emph{not} change? Two such numbers turn out to be enough. Two conics with the same two numbers are the same curve in different positions.
+
+\section{The setting}
+
+A \emph{conic} is the set of points $(x,y)$ in the plane where a quadratic polynomial vanishes:
+\begin{equation}\label{eq:conic}
+p(x,y) = ax^2 + 2bxy + cy^2 + 2dx + 2ey + f = 0, \qquad (a,b,c) \neq (0,0,0).
+\end{equation}
+The factors $2$ are there so that the coefficients fit into a symmetric matrix. With $v = (x,y,1)^T$,
+\[
+p(x,y) = v^T M v, \qquad
+M = \begin{pmatrix} a & b & d \\ b & c & e \\ d & e & f \end{pmatrix}, \qquad
+M_0 = \begin{pmatrix} a & b \\ b & c \end{pmatrix},
+\]
+where $M_0$, the top-left corner of $M$, holds the quadratic terms alone.
+
+\begin{calc}
+Multiply out:
+\[
+v^T M v = \begin{pmatrix} x & y & 1 \end{pmatrix}
+\begin{pmatrix} ax + by + d \\ bx + cy + e \\ dx + ey + f \end{pmatrix}
+= ax^2 + bxy + dx + bxy + cy^2 + ey + dx + ey + f = p(x,y).
+\]
+\end{calc}
+
+Three numbers are made from the matrix:
+\[
+T = a + c = \operatorname{tr} M_0, \qquad
+\delta = ac - b^2 = \det M_0, \qquad
+\Delta = \det M .
+\]
+
+\paragraph{An equation up to a factor.} The equations $p = 0$ and $\lambda p = 0$, for a number $\lambda \neq 0$, describe the same conic. So a number that truly belongs to the conic, and not to one particular equation of it, must not change when $p$ is replaced by $\lambda p$. Throughout, ``a conic'' means the equation $p=0$ up to such a factor.\footnote{For a non-degenerate conic with real points this is the same as the set of points, since the set determines the equation up to a factor. For an equation like $x^2 + y^2 + 1 = 0$, with no real points at all, the equation carries more information than the (empty) set.}
+
+\section{The main result}
+
+\begin{thmbox}{Theorem 1}
+Suppose $\Delta \neq 0$. The two numbers
+\[
+f_1 = \frac{a + c}{\Delta^{1/3}} = \frac{T}{\Delta^{1/3}}, \qquad
+f_2 = \frac{ac - b^2}{\Delta^{2/3}} = \frac{\delta}{\Delta^{2/3}}
+\]
+(real cube roots) do not change when the equation is multiplied by a nonzero number, nor when the conic is moved by a rigid motion: a rotation, a reflection, a translation, or any combination of them.
+\end{thmbox}
+
+The proof has two independent parts:
+\begin{itemize}
+\item a rigid motion does not change $T$, $\delta$ or $\Delta$ at all (Section~3);
+\item multiplying $p$ by $\lambda$ multiplies $T$, $\delta$, $\Delta$ by $\lambda$, $\lambda^2$, $\lambda^3$, and the powers of $\Delta$ in $f_1$, $f_2$ are exactly the ones that cancel these factors (Section~4).
+\end{itemize}
+Section~5 shows that $f_1$ and $f_2$ \emph{do} change when the conic is enlarged, so they see the size of a conic, not only its shape. Sections~6 and 7 explain where $\Delta$ comes from and what the condition $\Delta \neq 0$ means, and Section~8 shows that $f_1$ and $f_2$ are enough to tell any two conics apart.
+
+\section{Rigid motions}
+
+A \emph{rigid motion} of the plane is a map
+\[
+\begin{pmatrix} x \\ y \end{pmatrix} \longmapsto Q \begin{pmatrix} x \\ y \end{pmatrix} + \begin{pmatrix} t_1 \\ t_2 \end{pmatrix},
+\qquad Q^T Q = I .
+\]
+The matrix $Q$ is \emph{orthogonal}: it keeps lengths and angles. The orthogonal $2\times 2$ matrices are the rotations and the reflections,
+\[
+Q_\theta = \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix} \ (\det Q_\theta = 1),
+\qquad
+\begin{pmatrix} \cos\theta & \sin\theta \\ \sin\theta & -\cos\theta \end{pmatrix} \ (\det = -1).
+\]
+The rotation $Q_\theta$ is multiplication by the complex number $\cos\theta + i\sin\theta$, of absolute value $1$, written as a matrix.
+
+\begin{calc}
+Write $\beta = \cos\theta$, $\gamma = \sin\theta$, so $\beta^2 + \gamma^2 = 1$. Then
+\[
+(\beta + i\gamma)(x + iy) = (\beta x - \gamma y) + i(\gamma x + \beta y),
+\quad\text{that is,}\quad
+\begin{pmatrix} x \\ y \end{pmatrix} \mapsto
+\begin{pmatrix} \beta & -\gamma \\ \gamma & \beta \end{pmatrix}
+\begin{pmatrix} x \\ y \end{pmatrix}.
+\]
+Multiplying by a complex number of absolute value $1$ turns the plane without stretching it.
+\end{calc}
+
+\paragraph{The key observation.} With the extra coordinate $1$, a rigid motion is a single matrix product $v \mapsto Gv$:
+\[
+G = \begin{pmatrix} Q & t \\ 0 \ \ 0 & 1 \end{pmatrix}
+= \begin{pmatrix} q_{11} & q_{12} & t_1 \\ q_{21} & q_{22} & t_2 \\ 0 & 0 & 1 \end{pmatrix},
+\qquad \det G = \det Q = \pm 1 .
+\]
+Substituting the moved point into the equation gives
+\[
+p(Gv) = (Gv)^T M (Gv) = v^T \big( G^T M G \big) v ,
+\]
+so \textbf{the new coefficient matrix is $M' = G^T M G$}. The matrix of the motion appears on the right, and its transpose on the left. (For a rotation the transpose is also the inverse, $Q_\theta^T = Q_{-\theta}$, which is why the left factor looks like the inverse rotation.)
+
+\begin{thmbox}{Proposition 2}
+A rigid motion does not change $T$, $\delta$ and $\Delta$.
+\end{thmbox}
+
+\begin{proof}
+For $\Delta$: $\det M' = \det(G^T)\det M \det G = (\det G)^2 \Delta = \Delta$, because $\det G = \pm 1$.
+
+For $T$ and $\delta$: the top-left corner of $G^T M G$ is $M_0' = Q^T M_0 Q$, whatever the translation $t$ is. Since $Q^T = Q^{-1}$, the matrix $M_0' = Q^{-1} M_0 Q$ is similar to $M_0$, and similar matrices have the same trace and the same determinant.
+\end{proof}
+
+\begin{calc}[Show why the corner of $G^T M G$ is $Q^T M_0 Q$]
+Write $M$ and $G$ in blocks, with $w = (d,e)^T$:
+\[
+M = \begin{pmatrix} M_0 & w \\ w^T & f \end{pmatrix}, \qquad
+G = \begin{pmatrix} Q & t \\ 0 & 1 \end{pmatrix}, \qquad
+G^T = \begin{pmatrix} Q^T & 0 \\ t^T & 1 \end{pmatrix}.
+\]
+Then
+\[
+MG = \begin{pmatrix} M_0 Q & M_0 t + w \\ w^T Q & w^T t + f \end{pmatrix},
+\qquad
+G^T M G = \begin{pmatrix} Q^T M_0 Q & Q^T(M_0 t + w) \\ \ast & \ast \end{pmatrix}.
+\]
+The corner contains no $t$: a translation never changes the quadratic terms.
+\end{calc}
+
+The two basic motions, written out coefficient by coefficient, follow. The primes denote the coefficients of the new equation $p'(x,y) = p(Gv) = a'x^2 + 2b'xy + c'y^2 + 2d'x + 2e'y + f'$.
+
+\paragraph{A rotation.} Substituting $x \mapsto \beta x - \gamma y$, $y \mapsto \gamma x + \beta y$ ($\beta = \cos\theta$, $\gamma = \sin\theta$):
+\[
+\begin{aligned}
+a' &= a\beta^2 + 2b\beta\gamma + c\gamma^2, &
+b' &= (c - a)\beta\gamma + b(\beta^2 - \gamma^2), &
+c' &= a\gamma^2 - 2b\beta\gamma + c\beta^2, \\
+d' &= \beta d + \gamma e, &
+e' &= \beta e - \gamma d, &
+f' &= f .
+\end{aligned}
+\]
+
+\begin{calc}
+Expand $p(\beta x - \gamma y,\ \gamma x + \beta y)$ and collect terms. The quadratic part:
+\[
+\begin{aligned}
+a(\beta x - \gamma y)^2 &= a\big(\beta^2 x^2 - 2\beta\gamma\, xy + \gamma^2 y^2\big),\\
+2b(\beta x - \gamma y)(\gamma x + \beta y) &= 2b\big(\beta\gamma\, x^2 + (\beta^2 - \gamma^2)\, xy - \beta\gamma\, y^2\big),\\
+c(\gamma x + \beta y)^2 &= c\big(\gamma^2 x^2 + 2\beta\gamma\, xy + \beta^2 y^2\big).
+\end{aligned}
+\]
+The coefficient of $x^2$ is $a\beta^2 + 2b\beta\gamma + c\gamma^2$, of $y^2$ is $a\gamma^2 - 2b\beta\gamma + c\beta^2$, and of $xy$ is $2\big[(c-a)\beta\gamma + b(\beta^2 - \gamma^2)\big]$. The linear part:
+\[
+2d(\beta x - \gamma y) + 2e(\gamma x + \beta y) = 2(\beta d + \gamma e)\,x + 2(\beta e - \gamma d)\,y .
+\]
+A direct check: $a' + c' = (a + c)(\beta^2 + \gamma^2) = a + c$. In matrix form the whole substitution is
+\[
+\begin{pmatrix} a' & b' & d' \\ b' & c' & e' \\ d' & e' & f' \end{pmatrix}
+=
+\begin{pmatrix} \beta & \gamma & 0 \\ -\gamma & \beta & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\begin{pmatrix} a & b & d \\ b & c & e \\ d & e & f \end{pmatrix}
+\begin{pmatrix} \beta & -\gamma & 0 \\ \gamma & \beta & 0 \\ 0 & 0 & 1 \end{pmatrix},
+\]
+with both outer matrices of determinant $\beta^2 + \gamma^2 = 1$.
+\end{calc}
+
+\paragraph{A translation.} Substituting $x \mapsto x + t_1$, $y \mapsto y + t_2$ leaves $a, b, c$ unchanged and gives
+\[
+d' = a t_1 + b t_2 + d, \qquad
+e' = b t_1 + c t_2 + e, \qquad
+f' = p(t_1, t_2).
+\]
+
+\begin{calc}
+Expand:
+\[
+\begin{aligned}
+p(x + t_1, y + t_2) &= a(x + t_1)^2 + 2b(x + t_1)(y + t_2) + c(y + t_2)^2 + 2d(x + t_1) + 2e(y + t_2) + f \\
+&= ax^2 + 2bxy + cy^2 + 2(a t_1 + b t_2 + d)\,x + 2(b t_1 + c t_2 + e)\,y + p(t_1, t_2).
+\end{aligned}
+\]
+In matrix form,
+\[
+\begin{pmatrix} a' & b' & d' \\ b' & c' & e' \\ d' & e' & f' \end{pmatrix}
+=
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ t_1 & t_2 & 1 \end{pmatrix}
+\begin{pmatrix} a & b & d \\ b & c & e \\ d & e & f \end{pmatrix}
+\begin{pmatrix} 1 & 0 & t_1 \\ 0 & 1 & t_2 \\ 0 & 0 & 1 \end{pmatrix},
+\]
+and both outer matrices have determinant $1$, so $\Delta' = \Delta$. Since $a, b, c$ do not change, neither do $T$ and $\delta$.
+\end{calc}
+
+\section{Rescaling the equation}
+
+Replacing $p$ by $\lambda p$ replaces $M$ by $\lambda M$, so
+\[
+T \mapsto \lambda T, \qquad \delta \mapsto \lambda^2 \delta, \qquad \Delta \mapsto \lambda^3 \Delta .
+\]
+The reason is degree: $T$ is of degree $1$ in the coefficients, $\delta$ of degree $2$, $\Delta$ of degree $3$. Dividing $T$ by $\Delta^{1/3}$ and $\delta$ by $\Delta^{2/3}$ gives expressions of degree $0$, and these are exactly $f_1$ and $f_2$. This completes the proof of Theorem~1.
+
+\begin{calc}
+$\det(\lambda M) = \lambda^3 \det M$ for a $3 \times 3$ matrix, and $\det(\lambda M_0) = \lambda^2 \det M_0$. Then
+\[
+\frac{\lambda T}{(\lambda^3\Delta)^{1/3}} = \frac{\lambda T}{\lambda\,\Delta^{1/3}} = f_1,
+\qquad
+\frac{\lambda^2 \delta}{(\lambda^3\Delta)^{2/3}} = \frac{\lambda^2 \delta}{\lambda^2\,\Delta^{2/3}} = f_2 .
+\]
+The real cube root satisfies $(\lambda^3 \Delta)^{1/3} = \lambda\,\Delta^{1/3}$ also for negative $\lambda$, which is why real cube roots are used.
+\end{calc}
+
+\begin{rmkbox}{Remark (why $\Delta$ is needed)}
+The quotient $T^2/\delta = (a + c)^2/(ac - b^2)$ is also unchanged by rigid motions and by rescaling, and it does not involve $\Delta$. But it ignores the linear and constant terms completely: every circle gives the value $4$, whatever its radius, and every ellipse $x^2/\alpha^2 + y^2/\beta^2 = 1$ gives $(\alpha^2 + \beta^2)^2/(\alpha\beta)^2$, which depends only on the ratio $\alpha/\beta$. It sees the shape of a conic and not its size. In fact $T^2/\delta = f_1^2/f_2$: it is the combination of $f_1$ and $f_2$ that forgets the size (see the next section).
+\end{rmkbox}
+
+\section{Enlarging is not a rigid motion}
+
+Enlarging the plane by a factor $\mu \neq 0$, that is substituting $x \mapsto \mu x$, $y \mapsto \mu y$, multiplies the quadratic terms by $\mu^2$, the linear terms by $\mu$, and leaves the constant alone. Then
+\[
+T \mapsto \mu^2 T, \qquad \delta \mapsto \mu^4 \delta, \qquad \Delta \mapsto \mu^4 \Delta,
+\qquad\text{so}\qquad
+f_1 \mapsto \mu^{2/3} f_1, \qquad f_2 \mapsto \mu^{4/3} f_2 .
+\]
+So $f_1$ and $f_2$ change (unless $\mu = \pm 1$, and $\mu = -1$ is the rotation by $\pi$). They measure size as well as shape. For example, for the circle $x^2 + y^2 = r^2$,
+\[
+f_1 = -2\, r^{-2/3}, \qquad f_2 = r^{-4/3},
+\]
+so circles of different radii have different values.
+
+\begin{calc}
+The new matrix is $SMS$ with $S = \operatorname{diag}(\mu, \mu, 1)$:
+\[
+\begin{pmatrix} \mu^2 a & \mu^2 b & \mu d \\ \mu^2 b & \mu^2 c & \mu e \\ \mu d & \mu e & f \end{pmatrix}
+= \begin{pmatrix} \mu & 0 & 0 \\ 0 & \mu & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\begin{pmatrix} a & b & d \\ b & c & e \\ d & e & f \end{pmatrix}
+\begin{pmatrix} \mu & 0 & 0 \\ 0 & \mu & 0 \\ 0 & 0 & 1 \end{pmatrix},
+\]
+so $\Delta \mapsto (\det S)^2 \Delta = \mu^4 \Delta$. Then
+\[
+f_1 \mapsto \frac{\mu^2 T}{\mu^{4/3} \Delta^{1/3}} = \mu^{2/3} f_1,
+\qquad
+f_2 \mapsto \frac{\mu^4 \delta}{\mu^{8/3} \Delta^{2/3}} = \mu^{4/3} f_2 .
+\]
+For the circle, $p = x^2 + y^2 - r^2$, so $a = c = 1$, $b = d = e = 0$, $f = -r^2$, and $T = 2$, $\delta = 1$, $\Delta = -r^2$.
+\end{calc}
+
+\section{Where $\Delta$ comes from: the center}
+
+When $\delta \neq 0$, the conic has a \emph{center}: the point $(x_0, y_0)$ where both partial derivatives of $p$ vanish,
+\[
+a x_0 + b y_0 + d = 0, \qquad b x_0 + c y_0 + e = 0,
+\qquad\text{so}\qquad
+x_0 = \frac{be - cd}{\delta}, \quad y_0 = \frac{bd - ae}{\delta}.
+\]
+Translating the center to the origin removes the linear terms (these are the formulas for $d'$, $e'$ in Section~3), and the constant term becomes the value of $p$ at the center:
+
+\begin{thmbox}{Proposition 3}
+If $\delta \neq 0$, then $p(x_0, y_0) = \dfrac{\Delta}{\delta}$, that is, $\Delta = \delta \cdot p(\text{center})$.
+\end{thmbox}
+
+This is where $\Delta$ comes from. A rotation then turns the axes of the conic to the coordinate axes (the spectral theorem: the symmetric matrix $M_0$ is $Q^T \operatorname{diag}(\lambda_1, \lambda_2) Q$ for a rotation $Q$), and the equation becomes
+\begin{equation}\label{eq:normal-central}
+\lambda_1 x^2 + \lambda_2 y^2 + \frac{\Delta}{\delta} = 0,
+\qquad \lambda_1 + \lambda_2 = T, \quad \lambda_1 \lambda_2 = \delta ,
+\end{equation}
+where $\lambda_1, \lambda_2$ are the eigenvalues of $M_0$.
+
+\begin{calc}[Show the calculation (completing the square)]
+Completing the square, first in $x$ and then in $y$, shows the same thing when $a \neq 0$:
+\[
+\begin{aligned}
+p(x,y) &= a\Big(x^2 + \tfrac{2b}{a}xy\Big) + cy^2 + 2dx + 2ey + f \\
+&= a\Big(x + \tfrac{b}{a}y\Big)^2 + \tfrac{ac - b^2}{a}\,y^2 + 2d\Big(x + \tfrac{b}{a}y\Big) + 2\,\tfrac{ae - bd}{a}\,y + f \\
+&= a\Big(x + \tfrac{b}{a}y + \tfrac{d}{a}\Big)^2 + \tfrac{\delta}{a}\,y^2 + 2\,\tfrac{ae - bd}{a}\,y + f - \tfrac{d^2}{a} \\
+&= a\Big(x + \tfrac{b}{a}y + \tfrac{d}{a}\Big)^2 + \tfrac{\delta}{a}\Big(y + \tfrac{ae - bd}{\delta}\Big)^2
++ f - \tfrac{d^2}{a} - \tfrac{(ae - bd)^2}{a\,\delta}.
+\end{aligned}
+\]
+The constant at the end is $\Delta/\delta$: over the common denominator $a\delta$, its numerator is
+\[
+a f \delta - d^2 \delta - (ae - bd)^2
+= a\big(acf - ae^2 - b^2 f + 2bde - cd^2\big) = a\,\Delta ,
+\]
+using the expansion $\Delta = acf - ae^2 - b^2 f + 2bde - cd^2$ of the $3 \times 3$ determinant. Both squares vanish exactly at the center, so the constant is $p(x_0, y_0)$.
+\end{calc}
+
+\paragraph{The parabolic case $\delta = 0$.} Then $T \neq 0$ (if $ac = b^2$ and $a + c = 0$, then $a = b = c = 0$), the eigenvalues of $M_0$ are $0$ and $T$, and there is no center. If moreover $\Delta \neq 0$, a rotation and a translation bring the equation to
+\begin{equation}\label{eq:normal-parabola}
+T y^2 + 2kx = 0, \qquad k^2 = -\frac{\Delta}{T} .
+\end{equation}
+
+\begin{calc}
+After a rotation, $M_0 = \operatorname{diag}(0, T)$, so $p = Ty^2 + 2d'x + 2e'y + f'$, and
+\[
+\Delta = \det \begin{pmatrix} 0 & 0 & d' \\ 0 & T & e' \\ d' & e' & f' \end{pmatrix} = -T d'^2 .
+\]
+So $\Delta \neq 0$ means $d' \neq 0$. Completing the square in $y$ gives $T(y + e'/T)^2 + 2d'x + (\text{constant})$, and a translation in $x$ and in $y$ removes both the $y$ term and the constant. The determinant is unchanged, so $k = d'$ satisfies $\Delta = -Tk^2$.
+\end{calc}
+
+\section{The meaning of $\Delta = 0$}
+
+\begin{thmbox}{Proposition 4}
+If $p$ is a product of two linear polynomials, so that the conic is a pair of lines, then $\Delta = 0$.
+\end{thmbox}
+
+\begin{proof}
+Write $p(x,y) = (u \cdot v)(w \cdot v)$ with $v = (x,y,1)^T$ and two fixed vectors $u, w$. Then $p = v^T u\, w^T v = v^T \big(\tfrac12 (u w^T + w u^T)\big) v$, so $M = \tfrac12(u w^T + w u^T)$. Every column of this matrix is a combination of $u$ and $w$, so its rank is at most $2$ and $\det M = 0$.
+\end{proof}
+
+\begin{calc}
+With $u = (\alpha_1, \beta_1, \gamma_1)$ and $w = (\alpha_2, \beta_2, \gamma_2)$, expanding $(\alpha_1 x + \beta_1 y + \gamma_1)(\alpha_2 x + \beta_2 y + \gamma_2)$ gives
+\[
+a = \alpha_1\alpha_2, \quad 2b = \alpha_1\beta_2 + \alpha_2\beta_1, \quad c = \beta_1\beta_2, \quad
+2d = \alpha_1\gamma_2 + \alpha_2\gamma_1, \quad 2e = \beta_1\gamma_2 + \beta_2\gamma_1, \quad f = \gamma_1\gamma_2,
+\]
+which are exactly the entries of $\tfrac12(u w^T + w u^T)$:
+\[
+M = \frac12 \begin{pmatrix}
+2\alpha_1\alpha_2 & \alpha_1\beta_2 + \alpha_2\beta_1 & \alpha_1\gamma_2 + \alpha_2\gamma_1 \\
+\alpha_1\beta_2 + \alpha_2\beta_1 & 2\beta_1\beta_2 & \beta_1\gamma_2 + \beta_2\gamma_1 \\
+\alpha_1\gamma_2 + \alpha_2\gamma_1 & \beta_1\gamma_2 + \beta_2\gamma_1 & 2\gamma_1\gamma_2
+\end{pmatrix}.
+\]
+\end{calc}
+
+The converse also holds (a standard fact from linear algebra, not proved here): $\Delta = 0$ exactly when $p$ is a product of two linear polynomials, possibly with complex coefficients. So the condition $\Delta \neq 0$ in Theorem~1 says that the conic is \emph{non-degenerate}: a genuine ellipse, hyperbola or parabola, not a pair of lines or a single point.
+
+\paragraph{Can a rigid motion remove the linear and constant terms?} This question was raised in class. The answer is no when $\Delta \neq 0$. Without those terms the equation would be $ax^2 + 2bxy + cy^2 = 0$, whose matrix has last row $(0, 0, 0)$ and so $\Delta = 0$; but a rigid motion does not change $\Delta$. More precisely:
+\begin{itemize}
+\item if $\delta \neq 0$, the linear terms can be removed (move the center to the origin), but the constant term is then $\Delta/\delta \neq 0$, by Proposition~3;
+\item if $\delta = 0$, not even all the linear terms can be removed: one remains, as in \eqref{eq:normal-parabola}.
+\end{itemize}
+The substitution $x \mapsto x + \frac{b}{a} y$ used when completing the square does remove the $xy$ term, but it is a shear, not a rigid motion: it changes the shape of the curve.
+
+\section{Two numbers are enough}
+
+\begin{thmbox}{Theorem 5}
+Two conics with $\Delta \neq 0$ can be moved onto each other by a rigid motion if and only if they have the same values of $f_1$ and $f_2$.
+\end{thmbox}
+
+One direction is Theorem~1. For the other, the values of $f_1$, $f_2$ determine the normal form \eqref{eq:normal-central} or \eqref{eq:normal-parabola}, and two conics with the same normal form are moved onto each other by going through it.
+
+\begin{calc}[Show how $f_1$ and $f_2$ give back the normal form]
+\emph{Central case} ($\delta \neq 0$, equivalently $f_2 \neq 0$). Multiply the equation so that the constant term $\Delta/\delta$ in \eqref{eq:normal-central} equals $-1$; then $\Delta = -\delta = -\lambda_1\lambda_2$, and
+\[
+f_2 = \frac{\lambda_1\lambda_2}{(\lambda_1\lambda_2)^{2/3}} = (\lambda_1\lambda_2)^{1/3},
+\qquad
+f_1 = \frac{\lambda_1 + \lambda_2}{(-\lambda_1\lambda_2)^{1/3}} = -\frac{\lambda_1 + \lambda_2}{f_2}.
+\]
+So $\lambda_1\lambda_2 = f_2^3$ and $\lambda_1 + \lambda_2 = -f_1 f_2$: the numbers $\lambda_1, \lambda_2$ are the two roots of
+\[
+t^2 + f_1 f_2\, t + f_2^3 = 0 ,
+\]
+determined up to their order, and exchanging them is a rotation by $90^\circ$.
+
+\emph{Parabolic case} ($\delta = 0$, equivalently $f_2 = 0$). Multiply the equation so that $T = 1$ in \eqref{eq:normal-parabola}; then $\Delta = -k^2$ and $f_1 = (-k^2)^{-1/3} = -|k|^{-2/3}$, which determines $|k|$. The sign of $k$ is changed by the rotation by $\pi$.
+\end{calc}
+
+\paragraph{The type of a conic.} Since $\Delta^{2/3} > 0$, the sign of $f_2$ is the sign of $\delta$, and the normal forms show what it means. For $\Delta \neq 0$:
+\begin{itemize}
+\item $f_2 > 0$ and $f_1 < 0$: an ellipse;
+\item $f_2 > 0$ and $f_1 > 0$: no real points (like $x^2 + y^2 + 1 = 0$);
+\item $f_2 < 0$: a hyperbola;
+\item $f_2 = 0$: a parabola (then always $f_1 < 0$).
+\end{itemize}
+For the standard equations, with $\alpha, \beta, q > 0$:
+\[
+\begin{aligned}
+&\text{ellipse } \frac{x^2}{\alpha^2} + \frac{y^2}{\beta^2} = 1: &
+f_1 &= -\frac{\alpha^2 + \beta^2}{(\alpha\beta)^{4/3}}, &
+f_2 &= (\alpha\beta)^{-2/3}, \\
+&\text{hyperbola } \frac{x^2}{\alpha^2} - \frac{y^2}{\beta^2} = 1: &
+f_1 &= \frac{\beta^2 - \alpha^2}{(\alpha\beta)^{4/3}}, &
+f_2 &= -(\alpha\beta)^{-2/3}, \\
+&\text{parabola } y^2 = 4qx: &
+f_1 &= -(4q^2)^{-1/3}, &
+f_2 &= 0 .
+\end{aligned}
+\]
+For the ellipse, $f_2$ gives the product $\alpha\beta$ and then $f_1$ gives $\alpha^2 + \beta^2$, so the two half-axes are recovered, as Theorem~5 promises.
+
+\begin{calc}
+\emph{Type.} In \eqref{eq:normal-central} with $\delta = \lambda_1\lambda_2 > 0$, both $\lambda_i$ have the sign of $T$, and there are real points exactly when the constant $\Delta/\delta$ has the opposite sign, that is, when $T\Delta < 0$, that is, when $f_1 < 0$. With $\delta < 0$ the $\lambda_i$ have opposite signs: a hyperbola. In the parabolic case $T\Delta = -T^2k^2 < 0$.
+
+\emph{Ellipse.} Multiply by $\alpha^2\beta^2$: $\beta^2 x^2 + \alpha^2 y^2 - \alpha^2\beta^2 = 0$, so $T = \alpha^2 + \beta^2$, $\delta = \alpha^2\beta^2$, $\Delta = -\alpha^4\beta^4$.
+
+\emph{Hyperbola.} $\beta^2 x^2 - \alpha^2 y^2 - \alpha^2\beta^2 = 0$, so $T = \beta^2 - \alpha^2$, $\delta = -\alpha^2\beta^2$, $\Delta = \alpha^4\beta^4$.
+
+\emph{Parabola.} $y^2 - 4qx = 0$, so $c = 1$, $d = -2q$, all others $0$: $T = 1$, $\delta = 0$, $\Delta = -4q^2$.
+\end{calc}
+
+\section{The geometric definitions agree}
+
+The sign of $\delta = ac - b^2$ can also be read off from the classical definitions of the three curves by distances.
+
+\paragraph{Ellipse and hyperbola.} Let $F_1, F_2$ be two points (the foci) at distance $2m$ from each other, and $d_1, d_2$ the distances from a point $P = (x,y)$ to them. The ellipse is where $d_1 + d_2 = L$, and the hyperbola where $\abs{d_1 - d_2} = L$, for a fixed length $L$. Squaring twice turns either condition into the same polynomial equation,
+\[
+L^4 - 2L^2\big(d_1^2 + d_2^2\big) + \big(d_1^2 - d_2^2\big)^2 = 0,
+\]
+which is quadratic in $x, y$, with
+\[
+\delta = ac - b^2 = 16 L^2 \big(L^2 - 4m^2\big).
+\]
+For the ellipse $L = 2\alpha$ and $\alpha^2 = \beta^2 + m^2$, so $L^2 - 4m^2 = 4\beta^2 > 0$. For the hyperbola $L = 2\alpha$ and $m^2 = \alpha^2 + \beta^2$, so $L^2 - 4m^2 = -4\beta^2 < 0$. (Here $\alpha, \beta$ are the half-axes, as in the standard equations above.)
+
+\begin{calc}
+\emph{Squaring.} From $d_1 \pm d_2 = \pm L$: $d_1^2 + d_2^2 \pm 2d_1 d_2 = L^2$, so $\pm 2 d_1 d_2 = L^2 - (d_1^2 + d_2^2)$. Squaring again,
+\[
+4d_1^2 d_2^2 = L^4 - 2L^2(d_1^2 + d_2^2) + (d_1^2 + d_2^2)^2,
+\]
+and $(d_1^2 + d_2^2)^2 - 4d_1^2d_2^2 = (d_1^2 - d_2^2)^2$ gives the equation above. Every sign choice gives the same equation, which is why the ellipse and the hyperbola lead to the same formula.
+
+\emph{The coefficients.} With $F_i = (h_i, k_i)$, $u = h_2 - h_1$, $w = k_2 - k_1$ (so $u^2 + w^2 = 4m^2$):
+\[
+d_1^2 + d_2^2 = 2x^2 + 2y^2 + (\text{linear}), \qquad
+d_1^2 - d_2^2 = 2ux + 2wy + (\text{constant}).
+\]
+So the quadratic part of the equation is $-4L^2(x^2 + y^2) + 4(ux + wy)^2$, that is,
+\[
+a = 4u^2 - 4L^2, \qquad b = 4uw, \qquad c = 4w^2 - 4L^2,
+\]
+and
+\[
+ac - b^2 = 16\big[(u^2 - L^2)(w^2 - L^2) - u^2w^2\big] = 16\big[L^4 - L^2(u^2 + w^2)\big] = 16L^2(L^2 - 4m^2).
+\]
+\end{calc}
+
+\paragraph{Parabola.} The parabola with focus $(h,k)$ and directrix the line $rx + ty + s = 0$ is the set of points at equal distance from both:
+\[
+\sqrt{(x - h)^2 + (y - k)^2} = \frac{\abs{rx + ty + s}}{\sqrt{r^2 + t^2}} .
+\]
+Its quadratic part is $t^2x^2 - 2rt\,xy + r^2y^2$, so $a = t^2$, $b = -rt$, $c = r^2$, and $\delta = r^2t^2 - r^2t^2 = 0$.
+
+\begin{calc}
+Square and multiply by $r^2 + t^2$:
+\[
+(r^2 + t^2)\big((x - h)^2 + (y - k)^2\big) - (rx + ty + s)^2 = 0 .
+\]
+The quadratic terms are $(r^2 + t^2)(x^2 + y^2) - (r^2x^2 + 2rt\,xy + t^2y^2) = t^2x^2 - 2rt\,xy + r^2y^2$.
+\end{calc}
+
+\end{document}
