@@ -63,17 +63,17 @@ Assume that $B$ is a positive number. Let $\set{x_n}$ be defined by $x_1=1$ and
 Prove that $x_n\rightarrow \sqrt{B}.$
 \begin{solution}
 Note that 
-\begin{align}\label{2020.9.1.1}
+\begin{align}
     x_{n+1}-x_n&=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}-x_n\nonumber\\
     &=\dfrac{3Bx_n+x_n^3-3x_n^3-Bx_n}{3x_n^2+B}\nonumber\\
     &=\dfrac{2Bx_n-2x_n^3}{3x_n^2+B}\nonumber\\
-    &=2x_n\dfrac{B-x_n^2}{3x_n^2+B}
+    &=2x_n\dfrac{B-x_n^2}{3x_n^2+B}\label{2020.9.1.1}
 \end{align}
 and 
-\begin{align}\label{2020.9.1.2}
+\begin{align}
     x_{n+1}-\sqrt{B}&=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}-\sqrt{B}\nonumber\\
     &=\dfrac{3Bx_n+x_n^3-3x_n^2\sqrt{B}-B\sqrt{B}}{3x_n^2+B}\nonumber\\
-    &=\dfrac{(x_n-\sqrt{B})^3}{3x_n^2+B}.
+    &=\dfrac{(x_n-\sqrt{B})^3}{3x_n^2+B}.\label{2020.9.1.2}
 \end{align}
 From (\ref{2020.9.1.2}), by induction, if $1=x_1<\sqrt{B}$, we have $x_n<\sqrt{B}$ for all $n$ and if $1=x_1>\sqrt{B}$ then $x_n>\sqrt{B}$ for all $n$. We consider 3 cases.
 \begin{itemize}
