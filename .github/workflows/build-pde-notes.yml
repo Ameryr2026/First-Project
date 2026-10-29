@@ -105,7 +105,7 @@ jobs:
           ls -la latex/analysis-problems | tr '\n' ' ' | sed 's|^|::notice::|'; echo
           for f in latex/pde-notes/main.log latex/analysis-problems/main.log cv/cv.log latex/projects/*.log; do
             [ -f "$f" ] || continue
-            if grep -q '^!' "$f"; then grep -A3 '^!' "$f" | head -8; else tail -n 8 "$f"; fi | tr '\n' ' ' | sed "s|^|::error file=$f::|"
+            if grep -qE '^!|^\./.*:[0-9]+: ' "$f"; then grep -A3 -E '^!|^\./.*:[0-9]+: ' "$f" | head -8; else tail -n 8 "$f"; fi | tr '\n' ' ' | sed "s|^|::error file=$f::|"
             echo
           done
           echo "::error::LaTeX failed (notes: ${{ steps.notes.outcome }}, problems: ${{ steps.problems.outcome }}, CV: ${{ steps.cv.outcome }}, projects: ${{ steps.projects.outcome }}). The PDF was not updated; the website pages were."
