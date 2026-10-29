@@ -475,6 +475,8 @@ class Page:
             title, j = read_group(b, 0, self.where)
             cls = 'step new' if env == 'stepnew' else 'step'
             return f'<div class="{cls}">\n<h4>{self.inline(title).strip()}</h4>\n{self.blocks(b[j:])}\n</div>'
+        if env == 'rawhtml':
+            return b.strip()          # HTML for the website, copied as it is (nothing in the PDF)
         if env == 'calc':
             opt, j = read_optional(b, 0)
             summary = self.inline(opt).strip() if opt else 'Show the calculation'

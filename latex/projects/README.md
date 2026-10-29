@@ -25,3 +25,9 @@ is a closed "Show the calculation" box that the reader can open. For another but
 
 Copy `conic-invariants.tex` to `<name>.tex`, replace the content, and add a line for it in the
 "English projects" list of `index.html` (link `notes/projects/<name>.html` and the PDF).
+
+## Interactive pieces and code
+
+`\begin{rawhtml} ... \end{rawhtml}` copies HTML as it is into the web page (nothing in the PDF; do not use `%`
+inside it). `valuations.tex` uses it for the two p-adic calculators, whose code is `notes/projects/padic-tools.js`;
+they follow the Python programs in `valuations-code/`, which the PDF prints in its appendix.

@@ -90,6 +90,8 @@
 \newcommand{\blurb}[1]{}
 \newenvironment{pdfonly}{}{}
 \NewEnviron{webonly}{}
+% \begin{rawhtml} ... \end{rawhtml}: HTML copied as it is into the web page (an interactive tool, ...); nothing in the PDF
+\NewEnviron{rawhtml}{}
 % remember the id of the page being typeset (the last \label{p:<id>})
 \gdef\pde@page{}
 \def\pde@checklabel#1:#2:#3\@nil{\def\pde@tmpa{#1}\def\pde@tmpb{p}\ifx\pde@tmpa\pde@tmpb\gdef\pde@page{#2}\fi}
