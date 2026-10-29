@@ -101,5 +101,9 @@ jobs:
       - name: Report a LaTeX error
         if: steps.notes.outcome == 'failure' || steps.problems.outcome == 'failure' || steps.cv.outcome == 'failure' || steps.projects.outcome == 'failure'
         run: |
+          # show the first LaTeX errors of each failed document as annotations on the run's summary page
+          for f in latex/pde-notes/main.log latex/analysis-problems/main.log cv/cv.log latex/projects/*.log; do
+            [ -f "$f" ] && grep -A3 '^!' "$f" | head -8 | tr '\n' ' ' | sed "s|^|::error file=$f::|" && echo
+          done
           echo "::error::LaTeX failed (notes: ${{ steps.notes.outcome }}, problems: ${{ steps.problems.outcome }}, CV: ${{ steps.cv.outcome }}, projects: ${{ steps.projects.outcome }}). The PDF was not updated; the website pages were."
           exit 1
