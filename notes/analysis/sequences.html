@@ -90,17 +90,17 @@
 <p>Prove that $x_n\rightarrow \sqrt{B}.$</p>
 <details class="solution"><summary>Solution</summary>
 <p>Note that</p>
-\begin{align}\label{2020.9.1.1}
+\begin{align}
     x_{n+1}-x_n&amp;=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}-x_n\nonumber\\
     &amp;=\dfrac{3Bx_n+x_n^3-3x_n^3-Bx_n}{3x_n^2+B}\nonumber\\
     &amp;=\dfrac{2Bx_n-2x_n^3}{3x_n^2+B}\nonumber\\
-    &amp;=2x_n\dfrac{B-x_n^2}{3x_n^2+B}
+    &amp;=2x_n\dfrac{B-x_n^2}{3x_n^2+B}\label{2020.9.1.1}
 \end{align}
 <p>and</p>
-\begin{align}\label{2020.9.1.2}
+\begin{align}
     x_{n+1}-\sqrt{B}&amp;=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}-\sqrt{B}\nonumber\\
     &amp;=\dfrac{3Bx_n+x_n^3-3x_n^2\sqrt{B}-B\sqrt{B}}{3x_n^2+B}\nonumber\\
-    &amp;=\dfrac{(x_n-\sqrt{B})^3}{3x_n^2+B}.
+    &amp;=\dfrac{(x_n-\sqrt{B})^3}{3x_n^2+B}.\label{2020.9.1.2}
 \end{align}
 <p>From (\ref{2020.9.1.2}), by induction, if $1=x_1&lt;\sqrt{B}$, we have $x_n&lt;\sqrt{B}$ for all $n$ and if $1=x_1&gt;\sqrt{B}$ then $x_n&gt;\sqrt{B}$ for all $n$. We consider 3 cases.</p>
 <ul>
