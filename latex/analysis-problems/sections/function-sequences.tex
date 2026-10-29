@@ -1,0 +1,380 @@
+\section{Sequences and series of functions}\label{p:function-sequences}
+\blurb{Uniform convergence and what it preserves, equicontinuity, and the Arzelà-Ascoli theorem.}
+
+\begin{problem}
+\label{prob:fn-xn}Let $\set{f_n}$ be a sequence of continuous functions which converges pointwise to a function $f$ on a set $D$ in $\mathbb{R}^d$.
+\begin{itemize}
+    \item[(a)] If $\set{f_n}$ converges uniformly to $f$, prove that 
+    \begin{align*}
+        \lim_{n \to \infty} f_n(x_n) = f(x)
+    \end{align*}
+    for any sequence of points $x_n \in D$ and $x \in D$ such that $x_n \to x$.
+    \item[(b)] Suppose $D$ is compact and $f$ is continuous on $D$. Prove that the convergence condition above implies that $\set{f_n}$ converges uniformly to $f$ on $D$.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] Take any sequence of points $x_n \in D$ and $x \in D$ such that $x_n \to x$. Take $\epsilon > 0$, there is some $N \in \N$ such that 
+    \begin{align*}
+        |f_n(x) - f(x)| < \dfrac{\epsilon}{2},\text{ for all }x \in D, n \ge N.
+    \end{align*}
+    Therefore,
+    \begin{align*}
+        |f_n(x_n) - f(x_n)| < \dfrac{\epsilon}{2},\text{ for all } n \ge N.
+    \end{align*}
+    Note that $f_n$ converges uniformly to $f$ and $f_n$ is continuous imply that $f$ is continuous. Then $x_n \to x$ gives $f(x_n) \to f(x)$.  Thus, there is some $N_1 \ge N$ such that 
+    \begin{align*}
+        |f(x_n) - f(x)| < \dfrac{\epsilon}{2},\text{ for all } n \ge N_1.
+    \end{align*}
+    Thus,
+    \begin{align*}
+        |f_n(x_n)-f(x)|<\epsilon,\text{ for all }n\ge N_1.
+    \end{align*}
+    Therefore, $f_n(x_n) \to f(x)$ as $n \to \infty$.
+    \item[(b)] Assume the opposite. Then $f_n$ does not uniformly converge to $f$, so there is some $\epsilon > 0$ such that
+    \begin{align*}
+        \sup_{x \in D} |f_n(x) - f(x)| > \epsilon, \text{ for infinitely many } n \in \N.
+    \end{align*}
+    Then for each such $n$, we can find some $x_n \in D$ such that $|f_n(x_n) - f(x_n)| > \epsilon/2$. Since $D$ is compact, by taking a subsequence $n_1<n_2<\cdots$ of these $n$ we can assume that $x_{n_k} \to x \in D$. For the indices $n$ which are not of the form $n_k$, put $x_n := x$; then the whole sequence $x_n \to x$. Then the hypothesis gives
+    \begin{align*}
+        \lim_{n \to \infty}|f_n(x_n) - f(x)| = 0,
+    \end{align*}
+    and thus, since $f$ is continuous, \begin{align*} \lim_{n \to \infty}|f_n(x_n) - f(x_n)| = 0,
+    \end{align*}
+    which contradicts $|f_n(x_n) - f(x_n)| > \epsilon/2$ for all $n = n_k$.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Let $\set{f_n}$ be a sequence of continuous functions which converges uniformly to a function $f$ on a set $E \subset \R^d$. Prove that 
+    \begin{align*}
+        \lim_{n \to \infty} f_n(x_n) = f(x)
+    \end{align*}
+    for every sequence of points $x_n \in E$ and $x \in E$ such that $x_n \to x$.
+    \item[(b)] Let $\set{f_n}$ be a sequence of continuous function defined on $[0,\infty)$ as 
+    \begin{align*}
+        f_n(x) = \begin{cases}
+        \sin^2(\pi x), & n \le x \le n+1 \\
+        0, & \text{otherwise}.
+        \end{cases}
+    \end{align*}
+    For any sequence $0 \le x_n < \infty$ and $x_n \to x < \infty$, show that $\lim f_n(x_n) = 0$ but $f_n$ does not converges uniformly to $0$.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] This is part (a) of Problem~\ref{prob:fn-xn}, which is solved there.
+    \item[(b)]  Take any sequence $0\le x_n<\infty$ and $x_n\rightarrow x<\infty$. Then there exists some integer $N\ge -1$ such that $N+1\le x< N+2.$ Thus $N<x<N+3.$ Since $x_n\rightarrow x$, there is some $n_0\in\mathbb{N}$, $n_0> N+3$, such that 
+    \begin{align*}
+        N< x_n<N+3,\text{ for all } n\ge n_0.
+    \end{align*}
+    Then $n_0>N+3$ also implies  that 
+    \begin{align*}
+        x_n\notin [n,n+1],\text{ for all }n\ge n_0.
+    \end{align*}
+    Therefore, $f_n(x_n)=0$ for all $n\ge n_0$ and thus $f_n(x_n)\rightarrow 0.$ We next show that $f_n$ does not converge uniformly to $0.$ We will show that for $\varepsilon=1/2,$ for each $N\in\mathbb{N},$ there is some $n\ge N$ $x\in [0,+\infty)$ such that 
+    \begin{align*}
+        |f_n(x)|>\dfrac{1}{2}.
+    \end{align*}
+    Indeed, take $n=2N+1,x=n+\frac{1}{2}$, we have 
+    \begin{align*}
+        |f_n(x)|=\sin^2{(\pi x)}=\sin^2\left(\pi (2N+1)+\frac{\pi}{2}\right)=1>1/2.
+    \end{align*}
+    Therefore, $f_n$ does not uniformly converge to $0.$
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Let $\{f_n\}$ be a sequence of complex-valued functions defined on a metric space $E$. Suppose that each supremum norm $||f_n||$ (defined as the $\sup\set{|f_n(x)| \mid x \in E}$) is finite. Prove that if the series of numbers $\sum ||f_n||$ converges, then the series of functions $\sum f_n$ converges uniformly on $E$.
+    \item[(b)] Prove that the converse is false. For that purpose consider the series of real-valued functions $\sum f_n$ defined on $[0,1]$ for $n=1,2,\ldots$ by
+    \begin{align*}
+        f_n(x) = \begin{cases}
+        1/n & 1/2^n < x \le 1/2^{n-1}, \\
+        0 & \text{ otherwise}.
+        \end{cases}
+    \end{align*}
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] This is literally the Weierstrass M-test. Here's a proof anyway. Let $\epsilon > 0$. Since the series $\sum ||f_n||$ converges, it is in particular Cauchy, so there exists an $N \in \N$ such that for any $m > n > N$, we have
+    $$ \sum_{i=n+1}^m ||f_i|| < \epsilon. $$
+    Let $x \in E$, $m > n > N$, and consider the partial sums $s_n = \sum_{i=0}^n f_i$. Then
+    \begin{align*}
+        |s_m(x) - s_n(x)| &= \abs{\sum_{i=n+1}^m f_i(x)} \\
+        &\leq \sum_{i=n+1}^m |f_i(x)| \\
+        &\leq \sum_{i=n+1}^m ||f_i|| < \epsilon,
+    \end{align*}
+    so the sequence $\{s_n(x)\}$ is Cauchy. By completeness of $\C$, it converges to some value $s(x)$. It remains to be shown that the sequence $\{s_n\}$ converges uniformly to this function $s$. Let $n > N$. Then
+    \begin{align*}
+        |s(x) - s_n(x)| &= |\lim_{m \to \infty} s_m(x) - s_n(x)| \\
+        &= \lim_{m \to \infty} |s_m(x) - s_n(x)| \\
+        &< \epsilon \text{ when } m > n.
+    \end{align*}
+    Since $N$ did not depend on $x$, the convergence is uniform.
+    
+    \item[(b)] For each $n\in\mathbb{N}$ we have 
+    \begin{align*}
+        \norm{f_n}=\sup\set{|f_n(x)|:x\in [0,1]}=\dfrac{1}{n}.
+    \end{align*}
+    Thus $\sum\norm{f_n}$ does not converge. We next show that $\sum f_n$ converges uniformly, i.e. 
+    \begin{align*}
+        \lim_{n\rightarrow\infty}\sup_{x\in [0,1]}|\sum_{k={n+1}}^\infty f_k(x)|=0
+    \end{align*}
+    Note that $(1/2^i,1/2^{i-1}]$ for all $i\in\mathbb{N}$ does not overlap, we have 
+    \begin{align*}
+        \sup_{x\in [0,1]}|\sum_{k={n+1}}^\infty f_k(x)|=\dfrac{1}{n+1},
+    \end{align*}
+    attained when $x\in (1/2^{n+1},1/2^n]$. Thus 
+    \begin{align*}
+        \lim_{n\rightarrow\infty}\sup_{x\in [0,1]}|\sum_{k={n+1}}^\infty f_k(x)|=0
+    \end{align*}
+    and hence, $\sum f_n$ converges uniformly. 
+    
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $\set{f_n}$ be a sequence of continuously differentiable functions defined on $[a,b]$. Suppose $\set{f_n}$ converges to some function $f$ pointwise on $[a,b]$ and $\set{f'_n}$ converges uniformly to some function $g$ on $[a,b]$. Prove that $f$ is differentiable in $(a,b)$ and $f'(x)=g(x)$ for all $x\in (a,b).$
+\begin{solution}
+Let $\epsilon > 0$ and fix $x_0 \in [a,b]$. Choose an $N$ such that for all $m, n \ge N$, we have 
+\begin{align*}
+    |f_n(x_0) - f_m(x_0)| < \dfrac{\epsilon}{2}
+\end{align*}
+and 
+\begin{align*}
+    |f'_n(t) - f'_m(t)| < \dfrac{\epsilon}{2(b-a)} \quad(a \le t \le b).
+\end{align*}
+Applying the Mean Value Theorem to the function $f_n - f_m$ gives 
+\begin{align*}
+    |f_n(x) - f_m(x) - f_n(t) + f_m(t)| \le \dfrac{|x-t| \epsilon}{2(b - a)} \le \dfrac{\epsilon}{2},
+\end{align*}
+for any $x, t \in [a,b]$ and $m, n \ge N$. Notice that 
+\begin{align*}
+    |f_n(x) - f_m(x)| \le |f_n(x) - f_m(x) - f_n(x_0) + f_m(x_0)| + |f_n(x_0) - f_m(x_0)|,
+\end{align*}
+we have 
+\begin{align*}
+    |f_n(x) - f_m(x)| < \epsilon \quad (a \le x \le b, m, n \ge N).
+\end{align*}
+This means that $f_n$ uniformly converges to $f$. Now fix a point $x \in [a,b]$, and define 
+\begin{align*}
+    \phi_n(t) = \dfrac{f_n(t) - f_n(x)}{t - x}, \quad \phi(t) = \dfrac{f(t) - f(x)}{t - x}, a \le t \le b, t \ne x.
+\end{align*}
+Then 
+\begin{align*}
+    \lim_{t \to x} \phi_n(t) = f'_n(x), \text{ for all } n.
+\end{align*}
+Then 
+\begin{align*}
+    |\phi_n(t) - \phi_m(t)| \le \dfrac{\epsilon}{2(b - a)}, \text{ for all } m, n \ge N.
+\end{align*}
+This means $\phi_n$ converges uniformly for $t \ne x$. Since $f_n \to f$ we have $\phi_n \to \phi$ when $t \ne x$. Thus we have 
+\begin{align*}
+    \lim_{t \to x} \phi(t) = \lim_{n \to \infty} f'_n(x).
+\end{align*}
+This means 
+\begin{align*}
+    f'(x) = g(x) \quad (a \le x \le b).
+\end{align*}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $f_1 \in C([0,1])$ and $c$ is a constant. Define, for all $n \geq 1$,
+$$ f_{n+1}(x) = c + \int_0^x f_n(t) \,dt $$
+for all $x \in [0,1]$. Prove that
+\begin{enumerate}
+    \item[(a)] $\{f_n\}$ converges uniformly to some function $f \in C([0,b])$ for all $b \in (0,1)$;
+    \item[(b)] $f \in C((0,1))$; and
+    \item[(c)] $f(x) = ce^x$ for all $x \in [0,1]$.
+\end{enumerate}
+\begin{solution}
+The following proof shows directly the result \textit{(c)}, and thus it implies also \textit{(a)} and \textit{(b)}. Iteratively, we write:
+\begin{align*}
+    f_2 (x) &= c + \int_0^x f_1(t)dt, \\
+    f_3 (x) &= c + \int_0^x f_2 (t) dt \\
+    &= c + \int_0^x \left( c + \int_0^t f_1 (t_1) dt_1 \right)dt \\
+    &= c + cx + \int_0^x \int_0^t f_1 (t_1) dt_1\ dt,\\
+    f_4 (x) &= c + \int_0^x f_3 (t) dt \\
+    &= c + \int_0^x \left( c + ct + \int_0^t \int_0^{t_1} f_1 (t_2) dt_2\ dt_1 \right)dt  \\
+    &= c + cx + \dfrac{cx^2}{2} + \int_0^x \int_0^{t}\int_0^{t_1} f_1 (t_2) dt_2 \ dt_1\ dt,\\
+    &...,\\
+    f_{n+1}(x) &= c\sum_{k=0}^{n-1} \dfrac{x^k}{k!} + \int_0^x \int_0^t \int_0^{t_1}...\int_0^{t_{n-2}} f_1(t_{n-1})dt_{n-1}\ dt_{n-2} ... dt_1\ dt \\
+    &= g_{n+1}(x) + h_{n+1}(x).
+\end{align*}
+We see from the Taylor expansion theorem that $g_{n+1}$ converges pointwise to $g$, with $g(x):= c e^x$ for all $x\in [0,1]$. Moreover, 
+\begin{align*}
+    \left| \dfrac{x^k}{k!} \right| \le \dfrac{1}{k!}\ \ \text{ for all } k\in \N, x\in [0,1],
+\end{align*}
+and $\sum_{k=0}^{\infty}\dfrac{1}{k!}$ converges by the D'Alembert's ratio test. That implies from the Weierstrass $M$-test that $g_{n+1}$ converges uniformly to $g$ in $[0,1]$.\\
+
+Consider $M>0$ such that $\left|f_1(x)\right| \le M$ for all $x\in [0,1]$ (such $M$ exists as $f_1$ is continuous). Then we have the following inequalities:
+\begin{align*}
+    \left| h_{n+1}(x) \right| &\le \int_0^x \int_0^t \int_0^{t_1}...\int_0^{t_{n-2}} \left| f_1(t_{n-1}) \right| dt_{n-1}\ dt_{n-2} ... dt_1\ dt \\
+    &\le \int_0^x \int_0^t \int_0^{t_1}...\int_0^{t_{n-2}} M dt_{n-1}\ dt_{n-2} ... dt_1\ dt \\
+    &= \int_0^x \int_0^t \int_0^{t_1}...\int_0^{t_{n-3}} M t_{n-2} dt_{n-2} ... dt_1\ dt \\
+    &= \int_0^x \int_0^t \int_0^{t_1}...\int_0^{t_{n-4}} 
+    M\dfrac{t_{n-3}^2}{2}
+    dt_{n-3} ... dt_1\ dt \\
+    &...\\
+    &= M \dfrac{x^n}{n!} \le \dfrac{M}{n!} \ \ \text{ for all } n\in \N \text{ and } x\in [0,1].
+\end{align*}
+Thus $\sup_{[0,1]}\left| h_{n+1}(x) \right| \xrightarrow{n \ri \infty} 0$ and therefore $h_{n+1}$ converges uniformly to $0$ in $[0,1]$. In conclusion, $f_{n+1} = g_{n+1} + h_{n+1}$ converges uniformly to $f$ in $[0,1]$, with $f(x):= ce^x$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Prove the series $\frac{x}{1!}+\frac{x^3}{3!}+\ldots+\dfrac{x^{2n-1}}{(2n-1)!}+\ldots$ and $1+\frac{x^2}{2!}+\ldots+\dfrac{x^{2n}}{(2n)!}+\ldots$ both converge uniformly on any bounded interval of $\R.$
+    \item[(b)] Define $f(x)=\frac{x}{1!}+\frac{x^3}{3!}+\ldots+\dfrac{x^{2n-1}}{(2n-1)!}+\ldots,g(x)=1+\frac{x^2}{2!}+\ldots+\dfrac{x^{2n}}{(2n)!}+\ldots$ on $\R.$ Prove that 
+    \begin{align*}
+        \begin{cases}
+        1+\int_0^xf(t)dt&=g(x),\\
+        \int_0^xg(t)dt&=f(x),
+        \end{cases}\forall x\in\R.
+    \end{align*}
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)]There exists $M>0$ such that for all $x\in (a,b)\subset\R,|x|<M.$ Therefore 
+\begin{align*}
+    \abs{\dfrac{x^{2n-1}}{(2n-1)!}}\le \dfrac{M^{2n-1}}{(2n-1)!}:=a_n,\text{ for all }n\in\N.
+\end{align*}
+Then we have 
+\begin{align*}
+    \dfrac{a_{n+1}}{a_n}=\dfrac{M^{2n+1}}{(2n+1)!}\cdot \dfrac{(2n-1)!}{M^{2n-1}}=\dfrac{M^2}{2n(2n+1)}\to 0 \text{ as }n\to \infty.
+\end{align*}
+By D'Alembert's criterion for series convergence, we have
+\begin{align*}
+    \sum_{n=1}^\infty a_n\text{ converges }.
+\end{align*}
+By Weierstrass criterion, 
+\begin{align*}
+    \sum_{n=1}^\infty \dfrac{x^{2n-1}}{(2n-1)!}\text{ converges uniformly on }(a,b).
+\end{align*}
+Similarly, we have 
+\begin{align*}
+    \sum_{n=1}^\infty \dfrac{x^{2n}}{(2n)!}\text{ converges uniformly on }(a,b).
+\end{align*}
+\item[(b)] Claims are obviously true for $x=0$. If $x>0,$ we have 
+\begin{align*}
+    \sum_{n=1}^\infty \dfrac{t^{2n-1}}{(2n-1)!}\text{ and }\sum_{n=1}^\infty \dfrac{t^{2n}}{(2n)!} \text{ converge uniformly on }[0,x].
+\end{align*}
+Aditionally, $\dfrac{t^{2n-1}}{(2n-1)!}$ and $\dfrac{t^{2n}}{(2n)!}$ are integrable for all $n\in\N$ then 
+\begin{align*}
+    \int_0^xf(t) dt&=\int_0^x\sum_{n=1}^\infty \dfrac{t^{2n-1}}{(2n-1)!} dt\\
+    &=\sum_{n=1}^\infty\int_0^x\dfrac{t^{2n-1}}{(2n-1)!} dt\\
+    &=\sum_{n=1}^\infty\dfrac{x^{2n}}{(2n)!}\\
+    &=g(x)-1,
+\end{align*}
+and 
+\begin{align*}
+    \int_0^xg(t) dt&=\int_0^x\sum_{n=0}^\infty \dfrac{t^{2n}}{(2n)!} dt\\
+    &=\sum_{n=0}^\infty\int_0^x\dfrac{t^{2n}}{(2n)!} dt\\
+    &=\sum_{n=0}^\infty\dfrac{x^{2n+1}}{(2n+1)!}\\
+    &=f(x).
+\end{align*}
+The case $x<0$ is the same by substitution $[0,x]$ by $[x,0].$
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $\mathcal{X}$ be the metric space $C([0,1])$ with the metric
+\begin{align*}
+    d(f,g) = \sup_{x\in [0,1]} |f(x)-g(x)|, \quad f, g \in \mathcal{X}.
+\end{align*}
+Let $\mathcal{S} := \set{f \in \mathcal{X} : f(0) = 0, f \text{ is differentiable, and  } |f'(x)| \le 1, \forall x \in [0,1]}$. Show that $S$ is a pre-compact subset of $\mathcal{X}$.
+\begin{solution}
+First, notice that this metric $d$ is the metric induced by the uniform norm
+$$ ||f||_\infty = \sup_{x \in [0,1]} |f(x)|. $$
+Unrolling the definitions, convergence in this norm is equivalent to uniform convergence.
+
+We want to show that every sequence of functions in $\mathcal{S}$ has a subsequence which uniformly converges to some element of $\mathcal{X}$. By the Arzelà-Ascoli theorem, it suffices to show that every sequence is uniformly bounded and uniformly equicontinuous.
+
+For any $f \in \mathcal{S}$, we have that $f(0) = 0$ and $|f'(x)| \leq 1$ for all $x \in [0,1]$; in particular, it is bounded above by the function which satisfies $g(0) = 0$ and $g'(x) \equiv 1$, i.e. $g(x) = x$. Similarly, it is bounded below by the function which satisfies $h(0) = 0$ and $h'(x) \equiv -1$, i.e. $h(x) = -x$. Therefore, $|f(x)| \leq 1$, and so
+$$ ||f||_\infty = \sup_{x \in [0,1]} |f(x)| \leq 1. $$
+In other words, every sequence is uniformly bounded.
+
+Let $\epsilon > 0$ and $\delta = \epsilon$. Let $f \in \mathcal{S}$, $x \in [0,1]$ and $y \in B(x,\delta)$, the $\delta$-ball around $x$, and furthermore suppose that $x \neq y$. By the Mean Value Theorem, there exists a $c \in [x,y]$ (if $x < y$, and $[y,x]$ if $x > y$) such that $f'(c) = \frac{f(x) - f(y)}{x - y}$. Therefore,
+\begin{align*}
+    |f(x) - f(y)| &= |f'(c)| |x - y| \\
+    &\leq |x - y| \\
+    &< \epsilon.
+\end{align*}
+Since $\delta$ does not depend on $f$ or $x$, every sequence is uniformly equicontinuous.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $f \in C([0,1])$ such that $f(0) = 0$ and
+$$ ||f||_{[0,1]} := \sup_{x \in [0,1]} |f(x)| \leq 1. $$
+Prove that the sequence of powers $f$, $f^2$, $f^3$, \ldots is equicontinuous if and only if $||f||_{[0,1]} < 1$.
+\begin{solution}
+Let $X_0 = \set{x \in [0,1] \mid |f(x)| < 1}$ and $X_1 = \set{x \in [0,1] \mid |f(x)| = 1}$. Clearly, $X_0 \sqcup X_1 = [0,1]$ by assumption, and $f(0) = 0$ implies that $X_0 \neq \emptyset$. For any $x \in X_0$,
+$$ |(f(x))^n| = |f(x)|^n \to 0 $$
+because $|f(x)| < 1$. On the other hand, for any $x \in X_1$,
+$$ |(f(x))^n| = |f(x)|^n = 1^n = 1. $$
+Therefore, the sequence $\{|f|^n\}$ converges (pointwise!) to the function $\Bar{f} = \chi_{X_1}$, the indicator function for $X_1$. (The sequence $\{f^n\}$ itself need not converge at points where $f(x) = -1$, which is why we pass to absolute values.) Notice that, since $X_0 \neq \emptyset$ and $[0,1]$ is connected, $\Bar{f}$ is continuous if and only if $X_1 = \emptyset$.
+
+Moreover, the sup norm is submultiplicative, because for any two $g, h \in C([0,1])$,
+$$ ||gh||_{[0,1]} = \sup_{x \in [0,1]} |g(x)h(x)| \leq (\sup_{x \in [0,1]} |g(x)|) (\sup_{x \in [0,1]} |h(x)|) = (||g||_{[0,1]}) (||h||_{[0,1]}). $$
+It follows that
+$$ ||f^n||_{[0,1]} \leq (||f||_{[0,1]})^n \leq 1, $$
+so $\{f^n\}$ is bounded by $1$.
+\begin{itemize}
+    \item[] $[\implies]$ If the sequence $\{f^n\}$ is equicontinuous, then so is $\{|f|^n\}$, because $\big||a|-|b|\big| \leq |a-b|$. By the Arzelà-Ascoli theorem, the sequence $\{|f|^n\}$, which is bounded by $1$, has a convergent subsequence. This subsequence must converge to $\Bar{f}$. Convergence in the sup norm is equivalent to uniform convergence, and the uniform limit of continuous functions is continuous. Therefore, $\Bar{f}$ is continuous, and so $X_1 = \emptyset$. But since $[0,1]$ is compact, $|f(x)|$ reaches its maximum, so we have
+    $$ ||f||_{[0,1]} = \max_{x \in [0,1]} |f(x)| < 1. $$
+    \item[] $[\impliedby]$ If $X_1 = \emptyset$, then
+    $$ ||f^n||_{[0,1]} \to 0, $$
+    so $\{f^n\}$ converges to $\Bar{f} = 0$ in the sup norm; that is, it converges uniformly. By the Arzelà-Ascoli theorem, $\{f^n\}$ is bounded and equicontinuous.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Construct sequences $\{f_n\} \subset C_c([0,1])$ (the space of continuous functions with compact support in $[0,1]$) that satisfy statements (a), (b), or (c) below (one sequence for each of the statements).
+\begin{enumerate}
+    \item[(a)] $||f_n||_\infty \to \infty$ and $||f_n||_1 \to 0$.
+    \item[(b)] $f_n(x) \to 0$ for all $x$ and $||f_n||_1 \to \infty$.
+    \item[(c)] $||f_n||_1 \to 0$ and $f_n(x)$ does not converge for any $x$.
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] Let
+    $$ f_n(x) = \begin{cases}
+        n - n^3 x & 0 \leq x \leq \frac{1}{n^2}, \\
+        0 & \frac{1}{n^2} < x.
+    \end{cases} $$
+    Then
+    $$ ||f_n||_\infty = \max\{|f_n(x)| \mid x \in [0,1]\} = n \to \infty $$
+    and
+    $$ ||f_n||_1 = \int_0^1 |f_n(x)| \,dx = \sbrac{nx - n^3 \frac{x^2}{2}}_0^{\frac{1}{n^2}} = \frac{1}{n} - \frac{1}{2n} \to 0. $$
+    \item[(b)] Let
+    $$ f_n(x) = \begin{cases}
+        2 n^3 x & 0 \leq x \leq \frac{1}{2n}, \\
+        2 n^2 - 2 n^3 x & \frac{1}{2n} < x \leq \frac{1}{n}, \\
+        0 & \frac{1}{n} < x.
+    \end{cases} $$
+    Then, for any $0 \neq x \in [0,1]$, we have $f_n(x) = 0$ for all $n > \frac{1}{x}$. Moreover, $f_n(0) = 0$ for all $n$, so $f_n(x) \to 0$ for all $x \in [0,1]$. On the other hand,
+    \begin{align*}
+        ||f_n||_1 &= \int_0^1 |f_n(x)| \,dx \\
+        &= \sbrac{n^3 x^2}_0^{\frac{1}{2n}} + \sbrac{2 n^2 x - n^3 x^2}_{\frac{1}{2n}}^{\frac{1}{n}} \\
+        &= \frac{n}{4} + \brac{\brac{2n - n} - \brac{n - \frac{n}{4}}} \\
+        &= \frac{n}{2} \to \infty.
+    \end{align*}
+    \item[(c)] Use moving tents. For $k\geq 1$ and $j=0,1,\ldots,k$ let
+    $$ T_{k,j}(x) = \max\left(0,\ 1-k\left|x-\frac{j}{k}\right|\right), $$
+    a tent of height $1$ centred at $j/k$, of half-width $\frac{1}{k}$. List them in the order $T_{1,0},T_{1,1},T_{2,0},T_{2,1},T_{2,2},T_{3,0},\ldots$ and let $f_n$ be the $n$-th one. Then:
+    \begin{itemize}
+        \item $||T_{k,j}||_1 \leq \frac{1}{k}$, and $k\to\infty$ along the list, so $||f_n||_1 \to 0$.
+        \item Fix $x\in[0,1]$. For each $k$ some centre $j/k$ is within $\frac{1}{2k}$ of $x$, and then $T_{k,j}(x)\geq \frac{1}{2}$. So $f_n(x)\geq \frac{1}{2}$ for infinitely many $n$.
+        \item For $k\geq 3$ at most two of the $k+1\geq 4$ centres $j/k$ are within $\frac{1}{k}$ of $x$, so $T_{k,j}(x)=0$ for some $j$. So $f_n(x)=0$ for infinitely many $n$.
+    \end{itemize}
+    Hence $\{f_n(x)\}_n$ does not converge, for any $x\in[0,1]$.
+\end{enumerate}
+\end{solution}
+\end{problem}

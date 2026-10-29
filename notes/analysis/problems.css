@@ -1,0 +1,13 @@
+/* Extra styles for the "Problems in Analysis" pages (notes/analysis/), on top of ../pde/pde.css. */
+.problem { margin: 18px 0; }
+.problem details.solution summary { font-weight: 500; }
+.toggle-all { margin: 4px 0 20px; }
+.toggle-all button { font-family: Inter, sans-serif; font-size: 13px; color: var(--accent);
+                     background: none; border: 1px solid var(--rule); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.toggle-all button:hover { border-color: var(--accent); }
+figure.contour { margin: 14px auto; text-align: center; }
+figure.contour img { max-width: 100%; width: 340px; height: auto; }
+@media (prefers-color-scheme: dark) { figure.contour img { filter: invert(0.88) hue-rotate(180deg); } }
+.problem .thm { margin: 14px 0; }
+li.labelled { list-style: none; }
+li.labelled > strong:first-child { margin-left: -4px; margin-right: 4px; }

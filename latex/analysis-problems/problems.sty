@@ -1,0 +1,154 @@
+% problems.sty -- style for "Problems in Analysis" (Tran, Beauvais-Feisthauer, Vu, Rawashdeh)
+% Fonts, macros, boxes, problems with solutions, and the contour figures. Compile with pdfLaTeX.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{problems}[2026/10/28 Analysis problems style]
+
+\RequirePackage[letterpaper,margin=1.1in,headheight=14pt]{geometry}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[sc]{mathpazo}
+\linespread{1.05}
+\RequirePackage[skip=6pt plus 1pt]{parskip}
+\RequirePackage{amsmath,amssymb,mathtools,amsthm}
+\RequirePackage[expansion=false]{microtype}
+\RequirePackage{enumitem}
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{tikz}
+\usetikzlibrary{decorations.markings}
+\RequirePackage{fancyhdr}
+\RequirePackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+
+
+% ================= Math macros (same as the website) =================
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\set}[1]{\left\{ #1\right\}}
+\newcommand{\Res}{\operatorname{Res}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\dv}{\operatorname{div}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\gph}{\operatorname{gph}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\dd}{\displaystyle}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\ri}{\rightarrow}
+\newcommand{\pa}{\partial}
+\newcommand{\vp}{\varphi}
+\newcommand{\brac}[1]{\left( #1\right)}
+\newcommand{\sbrac}[1]{\left[ #1\right]}
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\conj}[1]{\overline{#1}}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\fall}[2]{\text{ for all }#1 \in #2}
+\renewcommand{\epsilon}{\varepsilon}
+\providecommand{\hdots}{\cdots}
+\providecommand{\lt}{<}
+\providecommand{\gt}{>}
+% =====================================================================
+
+% ================= Colours and boxes =================
+\definecolor{accent}{HTML}{0C4A6E}
+\definecolor{boxbg}{HTML}{F2F0EA}
+\definecolor{newidea}{HTML}{8A3B12}
+\tcbset{base/.style={enhanced,breakable,colback=boxbg,colframe=accent,boxrule=0pt,leftrule=2.5pt,arc=0pt,
+  left=8pt,right=8pt,top=5pt,bottom=5pt,before skip=10pt,after skip=10pt,
+  fonttitle=\bfseries,coltitle=black,detach title}}
+% \begin{thmbox}{Theorem (name)} ... \end{thmbox}   (likewise defnbox, rmkbox)
+\newtcolorbox{thmbox}[1]{base,title={#1},before upper={\textbf{\tcbtitle}.\ \itshape}}
+\newtcolorbox{defnbox}[1]{base,title={#1},before upper={\textbf{\tcbtitle}.\ }}
+\newtcolorbox{rmkbox}[1]{base,colframe=black!25,title={#1},before upper={\textbf{\tcbtitle}.\ }}
+
+% ================= Problems =================
+% \begin{problem}
+%   statement
+%   \begin{solution} ... \end{solution}
+% \end{problem}
+% Problems are numbered within sections (Problem 3.2). In the PDF the solution is printed under the
+% statement; on the website it is a "click to open" box.
+\newcounter{problem}[section]
+\renewcommand{\theproblem}{\thesection.\arabic{problem}}
+\newtcolorbox{problembox}[1]{enhanced,breakable,colback=white,colframe=accent!45,boxrule=0.6pt,arc=2pt,
+  left=8pt,right=8pt,top=6pt,bottom=6pt,before skip=12pt,after skip=12pt,
+  title={#1},coltitle=accent,colbacktitle=white,fonttitle=\bfseries\sffamily\small,attach title to upper={\ }}
+\newenvironment{problem}{\refstepcounter{problem}\begin{problembox}{Problem \theproblem.}}{\end{problembox}}
+\newenvironment{solution}{\par\smallskip{\color{accent!40}\hrule}\smallskip\noindent\textit{Solution.}\ }{\qed\par}
+
+% \blurb{one line}: the description of a topic on the website's index page (not printed)
+\newcommand{\blurb}[1]{}
+
+% ================= Contour figures =================
+% \contourfig{upper}     the upper half-disk of radius R
+% \contourfig{indented}  the upper half-disk with a small half-circle of radius rho around 0
+% \contourfig{quarters}  the unit circle split into the four arcs I_1, ..., I_4
+% \contourfig{rectangle} the rectangle [a,b]x[c,d], its sides I_1, ..., I_4 and exterior normals
+% \contourfig{disknormal} the unit disk and its exterior normal (x,y)
+% On the website these are the pictures notes/analysis/figures/<name>.svg.
+\tikzset{contour/.style={thick,accent,decoration={markings,mark=at position 0.5 with {\arrow{stealth}}}}}
+\newcommand{\contourfig}[1]{\par\begin{center}\csname contourfig@#1\endcsname\end{center}\par}
+\expandafter\newcommand\csname contourfig@upper\endcsname{%
+  \begin{tikzpicture}[scale=1.1]
+    \draw[->,black!50] (-2.4,0)--(2.6,0) node[right,black]{$\Re z$};
+    \draw[->,black!50] (0,-0.4)--(0,2.5) node[above,black]{$\Im z$};
+    \draw[contour,postaction={decorate}] (-2,0)--(2,0);
+    \draw[contour,postaction={decorate}] (2,0) arc (0:180:2);
+    \node[below] at (-2,0){$-R$}; \node[below] at (2,0){$R$};
+    \node at (1.75,1.65){$C_R$};
+  \end{tikzpicture}}
+\expandafter\newcommand\csname contourfig@indented\endcsname{%
+  \begin{tikzpicture}[scale=1.1]
+    \draw[->,black!50] (-2.4,0)--(2.6,0) node[right,black]{$\Re z$};
+    \draw[->,black!50] (0,-0.4)--(0,2.5) node[above,black]{$\Im z$};
+    \draw[contour,postaction={decorate}] (0.45,0)--(2,0);
+    \draw[contour,postaction={decorate}] (2,0) arc (0:180:2);
+    \draw[contour,postaction={decorate}] (-2,0)--(-0.45,0);
+    \draw[contour,postaction={decorate}] (-0.45,0) arc (180:0:0.45);
+    \node[below] at (-2,0){$-R$}; \node[below] at (2,0){$R$};
+    \node[below] at (1.2,0){$L_1$}; \node[below] at (-1.2,0){$L_2$};
+    \node at (1.75,1.65){$C_R$}; \node at (0,0.75){$C_\rho$};
+  \end{tikzpicture}}
+\expandafter\newcommand\csname contourfig@quarters\endcsname{%
+  \begin{tikzpicture}[scale=1.3]
+    \draw[->,black!50] (-1.6,0)--(1.7,0) node[right,black]{$x$};
+    \draw[->,black!50] (0,-1.6)--(0,1.7) node[above,black]{$y$};
+    \draw[thick,accent] (0,0) circle (1);
+    \node at (-0.95,-0.95){$I_1$}; \node at (0.95,-0.95){$I_2$};
+    \node at (0.95,0.95){$I_3$}; \node at (-0.95,0.95){$I_4$};
+  \end{tikzpicture}}
+\expandafter\newcommand\csname contourfig@rectangle\endcsname{%
+  \begin{tikzpicture}[scale=1.1]
+    \fill[boxbg] (0,0) rectangle (3,2); \draw[thick,accent] (0,0) rectangle (3,2);
+    \node at (1.5,1){$\Omega$};
+    \node[below left] at (0,0){$(a,c)$}; \node[above right] at (3,2){$(b,d)$};
+    \node[below] at (1,0){$I_1$}; \node[right] at (3,1.4){$I_2$}; \node[above] at (1,2){$I_3$}; \node[left] at (0,1.4){$I_4$};
+    \draw[->,thick,newidea] (2,0)--(2,-0.7) node[right]{$n_1$};
+    \draw[->,thick,newidea] (3,0.7)--(3.7,0.7) node[right]{$n_2$};
+    \draw[->,thick,newidea] (2,2)--(2,2.7) node[right]{$n_3$};
+    \draw[->,thick,newidea] (0,0.7)--(-0.7,0.7) node[left]{$n_4$};
+  \end{tikzpicture}}
+\expandafter\newcommand\csname contourfig@disknormal\endcsname{%
+  \begin{tikzpicture}[scale=1.3]
+    \draw[->,black!50] (-1.6,0)--(1.7,0) node[right,black]{$x$};
+    \draw[->,black!50] (0,-1.6)--(0,1.7) node[above,black]{$y$};
+    \fill[boxbg] (0,0) circle (1); \draw[thick,accent] (0,0) circle (1);
+    \draw[dashed,accent] (0,0)--(45:1); \fill[accent] (45:1) circle (1.5pt);
+    \node[below right] at (45:1){$(x,y)$};
+    \draw[->,thick,newidea] (45:1)--(45:1.6) node[right]{$\nu=(x,y)$};
+  \end{tikzpicture}}
+
+% ================= Headings and page style =================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+\endinput

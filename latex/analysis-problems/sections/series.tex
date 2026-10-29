@@ -1,0 +1,217 @@
+\section{Series of numbers}\label{p:series}
+\blurb{Comparison through AM-GM and Cauchy-Schwarz, partial sums and tails, and summation by parts.}
+
+\begin{problem}
+Suppose $\{a_n\}$ is a sequence such that $\displaystyle \sum_{n=1}^\infty a_n^2$ converges. Show that $\displaystyle\sum_{n=1}^\infty \frac{a_n}n $ converges.
+\begin{solution}
+Using the arithmetic and geometric means inequality $a_n^2 + \frac{1}{n^2} \geq 2 ( \sqrt{a_n^2 \cdot \frac{1}{n^2}})= 2 \frac{|a_n|}{n}$, but $\sum a_n^2$ converges and $\sum 1/n^2$ converges it is a $p$-series or we can use the integral test. Thus $\sum \frac{|a_n|}{n}$ converges absolutely by comparison test so it converges.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that $\set{a_n}$ is a positive sequence and $\sum_{n=1}^\infty a_n$ converges. Show that $\sum_{n=1}^\infty \dfrac{\sqrt{a_n}}{n}$ converges.
+\begin{solution}
+Note that $\sum_{n=1}^\infty \dfrac{1}{n^2}$ converges. By the AM-GM inequality, we have 
+\begin{align*}
+    a_n+\dfrac{1}{n^2}\ge 2\dfrac{\sqrt{a_n}}{n},\text{ for all }n\in\mathbb{N}.
+\end{align*}
+This means that 
+\begin{align*}
+    \sum_{n=1}^\infty \dfrac{\sqrt{a_n}}{n}\le \dfrac{1}{2}\sum_{n=1}^\infty a_n+\dfrac{1}{2}\sum_{n=1}^\infty \dfrac{1}{n^2}<\infty.
+\end{align*}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Suppose $a_n \geq 0$ and the series $\sum a_n$ converges. Prove the series
+    $$ \sum \frac{\sqrt{a_n}}{n^{2/3}} $$
+    also converges.
+    \item[(b)] Give an example of a divergent series $\sum a_n$ such that the series
+    $$ \sum \frac{\sqrt{a_n}}{n^{2/3}} $$
+    converges.
+\end{itemize}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] Let $N \in \N$. By the Cauchy-Schwarz inequality with $u_n = \sqrt{a_n}$, $v_n = \frac{1}{n^{2/3}}$, we have that
+    $$ \brac{\sum_{n=1}^N \frac{\sqrt{a_n}}{n^{2/3}}}^2 \leq \brac{\sum_{n=1}^N a_n}\brac{\sum_{n=1}^N \frac{1}{n^{4/3}}}. $$
+    Using that $\sum a_n$ converges by assumption and that $\sum \frac{1}{n^{4/3}}$ converges because $4/3 > 1$, we find
+    $$ \sum_{n=1}^\infty \frac{\sqrt{a_n}}{n^{2/3}} \leq \sqrt{\brac{\sum_{n=1}^\infty a_n}\brac{\sum_{n=1}^\infty \frac{1}{n^{4/3}}}} < \infty. $$
+    
+    \item[(b)] Let $a_n = \frac{1}{n}$. Then $\sum a_n$ diverges, but
+    $$ \sum_{n=1}^\infty \frac{\sqrt{a_n}}{n^{2/3}} = \sum_{n=1}^\infty \frac{\frac{1}{n^{1/2}}}{n^{2/3}} = \sum_{n=1}^\infty \frac{1}{n^{7/6}} $$
+    converges because 7/6 > 1.
+\end{enumerate}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $a_n>0,s_n=a_1+\ldots+a_n$ and $\sum a_n$ diverges.
+\begin{itemize}
+    \item[(a)]Prove that $\dfrac{a_{n+1}}{s_{n+1}}+\ldots+\dfrac{a_{n+k}}{s_{n+k}}\ge 1-\dfrac{s_n}{s_{n+k}}$ for all positive integers $n$ and $k$ and deduce that $\sum\dfrac{a_n}{s_n}$ diverges. 
+    \item[(b)]Prove $\dfrac{a_n}{s_n^2}\le \dfrac{1}{s_{n-1}}-\dfrac{1}{s_n}$ for $n\ge 2$, and deduce that $\sum\dfrac{a_n}{s_n^2}$ converges.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)]Since $a_n>0$ for all $n,$ we have $\set{s_n}$ is a increasing sequence. This gives 
+    \begin{align*}
+        \dfrac{a_{n+1}}{s_{n+1}}+\ldots+\dfrac{a_{n+k}}{s_{n+k}}&\ge \dfrac{a_{n+1}+\ldots+a_{n+k}}{s_{n+k}}\\
+        &=\dfrac{s_{n+k}-s_n}{s_{n+k}}\\
+        &= 1-\dfrac{s_n}{s_{n+k}}.
+    \end{align*}
+    Suppose by contradiction that $\sum\frac{a_n}{s_n}$ converges. Then by Cauchy criterion, with $\epsilon=1/2,$ there is some $N\in\mathbb{N}$ such that 
+\begin{align*}
+     \dfrac{a_{n+1}}{s_{n+1}}+\ldots+\dfrac{a_{n+k}}{s_{n+k}}\le \dfrac{1}{2},\text{ for all }n\ge N,k\in\mathbb{N}.
+\end{align*}
+Then we have 
+\begin{align*}
+    1-\dfrac{s_N}{s_{N+k}}\le \dfrac{1}{2},\text{ for all }k\in\mathbb{N}.
+\end{align*}
+Thus, $2s_N\ge s_{N+k}$ for all $k\in\mathbb{N}.$ Therefore
+\begin{align*}
+    s_N\ge s_{N+k}-s_N=a_{N+1}+\ldots+a_{N+k},\text{ for all }k.
+\end{align*}
+Let $k\rightarrow \infty,$ this gives 
+\begin{align*}
+    s_N\ge \sum_{n=N+1}^\infty a_n,
+\end{align*}
+and hence 
+\begin{align*}
+    \sum_{n=1}^\infty a_n&=\sum_{n=1}^N a_n+\sum_{n=N+1}^\infty a_n\le s_N+s_N=2s_N<\infty,
+\end{align*}
+which is a contradiction.
+\item[(b)] Since $s_n\ge s_{n-1}$ we have 
+\begin{align*}
+    a_n\le \dfrac{a_ns_n}{s_{n-1}}=\dfrac{s_n-s_{n-1}}{s_{n-1}s_n}s_n^2,
+\end{align*}
+or equivalently,
+\begin{align*}
+    \dfrac{a_n}{s_n^2}\le \dfrac{1}{s_{n-1}}-\dfrac{1}{s_{n}}.
+\end{align*}
+Notice that since $\sum a_n$ diverges, $s_n\rightarrow \infty$, or equivalently, $1/s_n\rightarrow0,$ we have 
+\begin{align*}
+    \sum_{n=1}^\infty \dfrac{a_n}{s_n^2}\le \dfrac{a_1}{s_1^2}+ \sum_{n=2}^\infty(\dfrac{1}{s_{n-1}}-\dfrac{1}{s_{n}})=\dfrac{a_1}{s_1^2}+\dfrac{1}{s_1}-\lim\dfrac{1}{s_n}=\dfrac{1}{a_1}+\dfrac{1}{a_1}=\dfrac{2}{a_1}<\infty.
+\end{align*}
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $a_n > 0$, $s_n = a_1 + \cdots + a_n$, and the series $\sum a_n$ diverges.
+\begin{enumerate}
+    \item[(a)] Prove that $\sum \frac{a_n}{1 + a_n}$ diverges.
+    \item[(b)] Prove that
+    $$ \frac{a_n}{s_n^2} \leq \frac{1}{s_{n-1}} - \frac{1}{s_n} $$
+    and deduce that $\sum \frac{a_n}{s_n^2}$ converges.
+\end{enumerate}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] We consider two cases.
+    \begin{itemize}
+        \item[] Case 1. $a_n\rightarrow0$. Then there is some $N\in\mathbb{N}$ such that $a_n<1$ for all $n\ge N.$ Then we have 
+        \begin{align*}
+            \dfrac{a_n}{1+a_n}\ge\dfrac{a_n}{2},\text{ for all }n\ge N.
+        \end{align*}
+        Since $\sum a_n$ diverges, we have $\sum \dfrac{a_n}{1+a_n}=\infty.$
+        \item[]Case 2. $a_n\not \rightarrow0$. Then there is a subsequence $\set{a_{n_k}}$ such that $a_{n_k}\ge \varepsilon>0$ for all $k\in\mathbb{N}.$ Since the function $\dfrac{x}{1+x}$ is increasing on $(0,+\infty),$ we have 
+        \begin{align*}
+            \sum\dfrac{a_n}{1+a_n}\ge \sum\dfrac{{a_{n_k}}}{1+a_{n_k}}\ge \sum\dfrac{\varepsilon}{1+\varepsilon}=\infty.
+        \end{align*}
+    \end{itemize}
+    \item[(b)]We have that 
+    \begin{align*}
+    \dfrac{a_n}{s_{n}^2}&=\dfrac{s_{n}-s_{n-1}}{s_n^2}\le \dfrac{s_{n}-s_{n-1}}{s_n s_{n-1}}=\dfrac{1}{s_{n-1}}-\dfrac{1}{s_n}. 
+    \end{align*}
+  Since $\sum a_n$ diverges, $s_n\rightarrow\infty$, and we have
+    \begin{align*}
+        \sum_{n=1}^\infty \dfrac{a_n}{s_n^2}&\le \dfrac{a_1}{s_1^2}+ \sum_{n=2}^\infty \brac{\dfrac{1}{s_{n-1}}-\dfrac{1}{s_{n}}}\\
+        &= \dfrac{1}{a_1}+\dfrac{1}{s_1}-\lim_{n\rightarrow\infty}\dfrac{1}{s_n}\\
+        &=\dfrac{2}{a_1}<\infty.
+    \end{align*}
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $a_n>0$ and the series $\sum a_n$ converges. Put 
+\begin{align*}
+    r_n=\sum_{m=n}^\infty a_m.
+\end{align*}
+\begin{itemize}
+    \item[(a)] Prove that 
+    \begin{align*}
+        \dfrac{a_m}{r_m}+\ldots+\dfrac{a_n}{r_n}>1-\dfrac{r_n}{r_m}
+    \end{align*}
+    if $m<n,$ and deduce that $\sum \dfrac{a_n}{r_n}$ diverges.
+    \item[(b)] Prove that 
+    \begin{align*}
+        \dfrac{a_n}{\sqrt{r_n}}<2(\sqrt{r_n}-\sqrt{r_{n+1}})
+    \end{align*}
+    and deduce that $\sum\dfrac{a_n}{\sqrt{r_n}}$ converges.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] Take $m<n,$ since $a_n>0$ we have $$r_m=\sum_{k=m}^{\infty}a_k=\sum_{k=n}^{\infty}a_k+\sum_{k=m}^{n-1}a_k=r_n+\sum_{k=m}^{n-1}a_k>r_n.$$Then 
+    \begin{align*}
+          \dfrac{a_m}{r_m}+\ldots+\dfrac{a_n}{r_n}&>\dfrac{a_m}{r_m}+\dfrac{a_{m+1}}{r_m}+\ldots+\dfrac{a_n}{r_m}\\
+          &=\dfrac{a_m+\ldots+a_n}{r_m}\\
+          &=\dfrac{r_m-r_{n+1}}{r_m}\\ &>\dfrac{r_m-r_n}{r_m}=1-\dfrac{r_n}{r_m}.
+    \end{align*}
+    We we will show that $\sum\dfrac{a_n}{r_n}$ diverges. Assume by contradiction that $\sum\dfrac{a_n}{r_n}$ converges. Then by Cauchy criterion, there is some $N\ge 0$ such that \begin{align*}
+        \dfrac{a_m}{r_m}+\ldots+\dfrac{a_n}{r_n}<\dfrac{1}{2},\text{ for all }n>m>N.
+    \end{align*}
+    This means that 
+    \begin{align*}
+        1-\dfrac{r_n}{r_m}<\dfrac{1}{2}\Longleftrightarrow&\dfrac{r_n}{r_m}>\dfrac{1}{2}\Longleftrightarrow r_m<2r_n,\text{ for all }n>m>N.
+    \end{align*}
+    We will prove next that $r_n\rightarrow 0$ as $n\rightarrow\infty.$ If it does not hold, there is some $\varepsilon>0$ such that $r_n \ge \varepsilon$ for all $n\in \mathbb{N}.$ This means 
+    \begin{align*}
+        \sum_{k=n}^\infty a_k \ge \varepsilon\text{ for all }n\in\mathbb{N}.
+    \end{align*}
+    Then 
+    \begin{align*}
+        \sum_{k=1}^\infty a_k=\sum_{k=n}^\infty a_k+\sum_{k=1}^{n-1} a_k\ge \varepsilon+\sum_{k=1}^{n-1} a_k.
+    \end{align*}
+    Let $n\rightarrow \infty$ and since $\sum a_k$ converges, we have $\varepsilon=0,$ which is a contradiction. However, fixing $m>N$ and letting $n\rightarrow\infty$ in $r_m<2r_n$, $r_n\rightarrow 0$ gives $r_m\le 0,$ which is also a contradiction since $r_m>0$. Therefore, $\sum\dfrac{a_n}{r_n}$ diverges.
+    \item[(b)]We have 
+      \begin{align*}
+        &\dfrac{a_n}{\sqrt{r_n}}<2(\sqrt{r_n}-\sqrt{r_{n+1}})\\
+        \Longleftrightarrow &\dfrac{a_n}{\sqrt{r_n}} <2\dfrac{r_n-r_{n+1}}{\sqrt{r_n}+\sqrt{r_{n+1}}}=2\dfrac{a_n}{\sqrt{r_n}+\sqrt{r_{n+1}}}\\
+        \Longleftrightarrow&\sqrt{r_n}+\sqrt{r_{n+1}}<2\sqrt{r_n}\\
+        \Longleftrightarrow&\sqrt{r_{n+1}}<\sqrt{r_n}.
+    \end{align*}
+    Since the latter is true, we have 
+    \begin{align*}
+        \dfrac{a_n}{\sqrt{r_n}}<2(\sqrt{r_n}-\sqrt{r_{n+1}}).
+    \end{align*}
+    Then we have
+     \begin{align*}
+         \sum_{n=1}^\infty \dfrac{a_n}{\sqrt{r_n}} &<2\sum_{n=1}^\infty(\sqrt{r_n}-\sqrt{r_{n+1}})\\
+         &=2\lim_{n\rightarrow\infty}(\sqrt{r_1}-\sqrt{r_{n+1}})=2\sqrt{r_1},
+     \end{align*}
+     since $r_n\rightarrow 0$ as $n\rightarrow\infty.$
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Prove that the series
+$$ \sum_{n=1}^\infty \frac{\cos(nt)}{n} $$
+converges if $0 < t < 2\pi$.
+\begin{solution}
+We will use the Abel's identity which states that 
+\[\sum_{k=0}^n a_k b_k = a_nB_n - \sum_{k=0}^{n-1}(a_{k+1}-a_k)B_k,\;\;\; B_n = \sum_{k=0}^n b_k\]
+Let $b_k = \cos(kt)$ and $a_k = \frac{1}{k}$ then 
+\[\sum_{k=1}^n \frac{\cos(kt)}{k}= \frac{B_n}{n}-\sum_{k=1}^{n-1}\left(\frac{1}{k+1}-\frac{1}{k}\right)B_k\]
+We have the following identity $2\cos(rt)\sin(t/2) = \sin(rt+t/2)-\sin(rt-t/2)$, then we get telescoping sum 
+\[\begin{array}{ccl}
+B_k &=&\displaystyle \cos(t)+\cos(2t) +\cdots + \cos(kt) \\ 
+&=&\displaystyle \left(\cos(t)+\cos(2t) +\cdots + \cos(kt)\right)\frac{2 \sin(t/2)}{2\sin(t/2)} \\ 
+&=& \displaystyle \frac{1}{2\sin(t/2)} \sum_{r=1}^k \sin\left(rt+\frac{t}{2}\right) - \sin\left(rt-\frac{t}{2}\right) =  \frac{1}{2\sin(t/2)} \left(\sin\left(kt+\frac{t}{2}\right) - \sin\left(t-\frac{t}{2}\right) \right) \\ 
+|B_k| &\leq&\displaystyle \frac{1}{|\sin(t/2)|}
+\end{array}\]
+Thus $\frac{B_n}{n}\rightarrow 0$, and since $\frac1k-\frac1{k+1}>0$,
+\[\sum_{k=1}^{n-1}\left|\left(\frac{1}{k+1}-\frac{1}{k}\right)B_k\right| \leq \frac{1}{|\sin(t/2)|}\sum_{k=1}^{n-1}\left(\frac1k-\frac{1}{k+1}\right) = \frac{1}{|\sin(t/2)|}\left(1 - \frac{1}{n}\right)\leq \frac{1}{|\sin(t/2)|},\]
+so the series $\sum_{k}\left(\frac{1}{k+1}-\frac{1}{k}\right)B_k$ converges absolutely. Hence the partial sums $\sum_{k=1}^n \frac{\cos(kt)}{k}$ converge as $n\rightarrow\infty$.
+\end{solution}
+\end{problem}

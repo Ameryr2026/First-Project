@@ -1,0 +1,411 @@
+\section{Continuity, derivatives and the mean value theorem}\label{p:continuity}
+\blurb{Uniform continuity, functional equations, and inequalities between a function and its derivative.}
+
+\begin{problem}
+Find all postive continuous functions $f:\R \to \R$ such that 
+    \[f(x+y) = f(x)f(y),\;\; \forall x,y\in \R\]
+    Prove your conclusion.
+\begin{solution}
+First, $$f(0+x) = f(x)f(0)\Rightarrow f(x)(1-f(0))=0\;\;\;\;(1)$$ if $f(x)=0$ for some $x\in \R$ then $f(y) = f(y-x+x) = f(y-x)f(x)=0$ for any $y\in \R$. So assume $f(x)\ne 0$ for all $x\in \R$. By $(1)$ we get $f(0)=1$. By induction, we get $f(nx) =(f(x))^n$ for $n\in \N$ but $$f(x-x) = f(x)f(-x)=1\Rightarrow f(x) = \frac{1}{f(-x)}$$ extends $f(nx) =(f(x))^n, n\in \Z$, and $$f(x) =f(n(1/n x)) = (f(1/n x))^n\Rightarrow (f(x))^{1/n}= f(1/n x)$$ extends $f(nx)=(f(x))^n, n\in \Q$, and it extends to the real numbers since for any real number $r\in \R$ there is a Cauchy sequence of rational numbers $b_n\to r$ but then by the continuity of $f$
+    \[f(b_n x) = (f(x))^{b_n} \Rightarrow \lim f(b_nx) = \lim (f(x))^{b_n} \Rightarrow f(rx) = (f(x))^r \;\;\; r\in \R\]if we set $f(1) = a$ then for any $x\in \R$ we have $f(x\cdot 1) = (f(1))^x= a^x $ and $a> 0$ since $$a = f(1) = f(1/2+1/2) = (f(1/2))^2> 0$$ 
+    The function should be in the form $f(x) = a^x,\;\; a\in (0,\infty)$\newline
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $f$ is continuous on $\R$ and $f(x)=f(x+\frac{1}{n})$ for all $n=1,2,\ldots $ and $x\in\R.$ Show that $f$ is constant.
+\begin{solution}
+Firstly, for $m \in \N$, by induction, we have 
+\begin{align*}
+    f(x) = f(x + \frac{1}{n}) = f(x + \frac{1}{n} + \frac{1}{n}) = \ldots = f(x + \frac{m}{n}), \text{ for all } x \in \R, n \in \N.
+\end{align*}
+Therefore, $f(x) = f(x+r)$ for all $x \in \R, r \in \Q^+$. By substituting $x-r$ for $x$, we can prove that $f(x) = f(x + r)$ for all $r \in \Q$. In particular, we have 
+\begin{align*}
+    f(0) = f(r), \text{ for all } r \in \Q.
+\end{align*}
+Let $x \in \R$. By the density of $\Q$ in $\R$, there exists a sequence $\set{x_n}_{n \in \N} \subset \Q$ such that $x_n \to x$. By the continuity of $f$, we have 
+\begin{align*}
+    f(x) = \lim_n f(x_n) = \lim_n f(0) = f(0).
+\end{align*}
+Therefore, $f$ is constant on $\R$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Give the precise $\epsilon, \delta$ definition of \textit{uniform continuity} of a function $f$ defined on a subset of $\R$.
+    \item[(b)]  Give an example of a continuous function defined on a bounded interval which is not uniformly continuous. Justify your conclusion.
+    \item[(c)] Prove that if $f: [a,b] \to \R$ is continuous, then $f$ is uniformly continuous, where $a, b$ are finite numbers.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] Let $D$ be a subset of $\R$. A function $f: D \to \R$ is called \emph{uniformly continuous} on $D$ if
+    \begin{align*}
+        \forall \epsilon > 0, \exists \delta > 0 \text{ such that } \forall x, x'\in D, |x - x'| \le \delta \implies |f(x) - f(x')| \le \epsilon.
+    \end{align*}
+    \item[(b)] Consider $f: (0,1) \to \R$ given by
+    \begin{align*}
+        f(x) = \dfrac{1}{x}, \text{ for all } x \in (0,1).
+    \end{align*}
+    Firstly, we prove that $f$ is continuous on $(0,1)$. Indeed, let $x_0 \in (0,1)$. Then 
+    \begin{align*}
+        \lim_{x \to x_0} \dfrac{1}{x} = \dfrac{1}{x_0}. 
+    \end{align*}
+    Therefore, $f$ is continuous at $x_0 \in (0,1)$ for any $x_0$, thus continuous on all of $(0,1)$.
+    
+    \noindent However, take $\epsilon = 1$ and let $\delta > 0$. Because $\lim_n \dfrac{\delta}{n} = 0$, there exists $n_0 \in \N$ such that
+    \begin{align*}
+        0 < \dfrac{\delta}{n_0} < 1.
+    \end{align*}
+    Let $m_0 \in \N$ such that $m_0 \ge [\delta] + 1$ and $x := \dfrac{\delta}{n_0}, x' := \dfrac{\delta}{n_0+m_0}$. Then $x, x' \in (0,1)$ and
+    \begin{align*}
+        |x - x'| = \dfrac{m_0}{n_0(n_0 + m_0)} \delta \le \delta.
+    \end{align*}
+    However,
+    \begin{align*}
+        |f(x) - f(x')| &= \abs{\dfrac{n_0}{\delta} - \dfrac{n_0 + m_0}{\delta}} \\
+        &= \dfrac{m_0}{\delta} \ge \dfrac{[\delta]+1}{\delta} > 1.
+    \end{align*}
+    Therefore, $f$ is not uniformly continous on $(0,1)$.
+    \item[(c)] Take $\epsilon > 0$ abitrarily. Because $f$ is continuous on $[a,b]$, for each $p \in [a,b]$ there exists $\delta_p > 0$ such that
+    \begin{align*}
+        x \in [a,b], |x - p| < \delta_p \implies |f(x) - f(p)| < \epsilon/2.
+    \end{align*}
+    Because $[a,b] \subset \bigcup_{p \in [a,b]} B(p, \delta_p/2)$, there exists finite numbers $p_1, p_2, \ldots, p_n$ such that
+    \begin{align*}
+        [a,b] \subset \bigcup_{k=1}^n B(p_k, \delta_{p_k}/2).
+    \end{align*}
+    Put $\delta = \frac{1}{2} \min\set{\delta_1, \delta_2, \ldots, \delta_n} > 0$. Let $x,y \in [a,b]$ such that $|x - y| < \delta$.
+    Because $[a,b] \subset \bigcup_{k=1}^n B(p_k, \delta_{p_k}/2)$, there exists $k \in \set{1, \ldots, n}$ such that
+    \begin{align*}
+        x \in B(p_k, \delta_{p_k}/2).
+    \end{align*}
+    We then have 
+    \begin{align*}
+        |y - p_k| &\le |y - x| + |x - p_k| \\
+        &\le \delta + \dfrac{\delta_{p_k}}{2} \\
+        &\le \dfrac{\delta_{p_k}}{2} + \dfrac{\delta_{p_k}}{2} \\
+        &= \delta_{p_k}.
+    \end{align*}
+    Thus 
+    \begin{align*}
+        |f(x) - f(y)| \le |f(x) - f(p_{k})| + |f(p_k) - f(y)| \le \dfrac{\epsilon}{2} + \dfrac{\epsilon}{2} = \epsilon.
+    \end{align*}
+    Therefore, $f$ is uniformly continuous on $[a,b]$.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Give the precise $\epsilon - \delta$ definition of a \emph{uniformly continuous mapping} $f$ from a metric space $X$ to a metric space $Y$.
+    \item[(b)] Use only the definitions of uniform continuity and compactness to prove that if $f$ is a continuous mapping of a compact metric space $X$ into a metric space $Y$, then $f$ is uniformly continuous on $X$. You CANNOT simply quote the theorem that states this result.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] A function $f: X \to Y$ is uniformly continuous if for any $\epsilon > 0$ there exists a $\delta > 0$ such that, for any $x, y \in X$,
+    $$ d_X(x,y) < \delta \implies d_Y(f(x), f(y)) < \epsilon. $$
+    \item[(b)] Let $\epsilon > 0$. For any $x \in X$, continuity gives us a $\delta_x > 0$ such that $d_Y(f(x), f(y)) < \epsilon/2$ for any $y \in X$ such that $d_X(x,y) < \delta_x$. Consider the open cover $\{B(x, \delta_x/2)\}_{x \in X}$. By compactness, there exists a finite subcover $B(x_0, \delta_0/2), \ldots, B(x_n, \delta_n/2)$. Let $\delta = \min(\delta_0/2, \ldots, \delta_n/2)$.
+    
+    Let $x \in X$. Since we have an open cover, there exists an $x_i$ such that $d_X(x, x_i) < \delta_i/2$. Then, for any $y \in X$ such that $d_X(x, y) < \delta$,
+    $$ d_X(x_i, y) \leq d_X(x_i,x) + d_X(x,y) < \delta_i/2 + \delta \leq \delta_i, $$
+    which implies that
+    $$ d_Y(f(x), f(y)) \leq d_Y(f(x), f(x_i)) + d_Y(f(x_i), f(y)) < \epsilon/2 + \epsilon/2 = \epsilon.$$
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $f:[0,1]\to \R$ be continuous on $[0,1]$ and differentiable in $(0,1)$ such that \begin{itemize}
+        \item $f(0)=0$
+        \item and there exists $M>0$ such that $|f'(x)|\leq M |f(x)|$ for all $x\in (0,1)$
+    \end{itemize}
+    Show that $f(x)=0$ for all $x\in [0,1]$.
+\begin{solution}
+Let $a_1 \in (0,1)$ then by the mean value theorem there exists $a_2 \in (0,a_1)$ such that 
+    \[\frac{f(a_1)-f(0)}{a_1-0} = f'(a_2)\Rightarrow |f(a_1)| = |a_1||f'(a_2)| \leq Ma_1 |f(a_2)|\]
+    the last term due to the assumption that $|f'(x)|\leq M |f(x)|$. Keep that by induction we get a sequence $a_1 > a_2 > a_3 >\cdots $ such that $$|f(a_n)| \leq M(a_{n})|f(a_{n+1})| $$
+    Hence we get 
+    $$|f(a_1)| \leq \prod_{i=1}^{n-1} (a_i M) |f(a_n)|$$ Now take $a_1 < \frac{1}{2M}$. Then every factor satisfies $a_iM < \frac12$, and $|f(a_n)|\leq \max_{[0,1]}|f|$, so $|f(a_1)|\leq \frac{1}{2^{n-1}}\max_{[0,1]}|f| \to 0$ as $n\to \infty$. Thus $f(a_1)=0$, and since $a_1$ was arbitrary, $f=0$ on $[0,\frac{1}{2M})$. (Without the restriction on $a_1$ the factors $a_iM$ need not tend to $0$: the decreasing sequence $a_n$ need not tend to $0$.) Finally, if $f=0$ on $[0,c]$, the same argument with $c$ in place of $0$ (using $f(c)=0$) gives $f=0$ on $[c,c+\frac{1}{2M})\cap[0,1]$; after finitely many steps, $f=0$ on $[0,1]$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that $f$ is differentiable function defined on reals, $f(0)=0$ and $|f'(x)|\le |f(x)|$ for all $x.$ Prove that $f$ is identically $0.$
+\begin{solution}
+Firstly, we prove that $f$ vanishes on $[-1/2,1/2].$ Since $|f|$ is continuous on $[-1/2,1/2],$ $|f|$ attains it maximum $M_n$ on $[-1/2,1/2].$ Then we have 
+\begin{align*}
+    |f'(x)|\le |f(x)|\le M_n,\text{ for all }x\in [-1/2,1/2].
+\end{align*}
+By Lagrange theorem for all $x\in [-1/2,1/2]$ there is some $c$ between $x$ and $0$ such that 
+\begin{align*}
+    \dfrac{f(x)-f(0)}{x-0}=f'(c).
+\end{align*}
+This means $|f(x)|\le |f'(c)||x|\le M_n |x|,$ for all $x\in [-1/2,1/2].$ Then 
+\begin{align*}
+    M_n \le \dfrac{M_n}{2},
+\end{align*}
+which shows that $M_n=0,$ or $f=0$ on $[-1/2,1/2].$
+Next we will prove that $f(x)=0$ on $\sbrac{\dfrac{k-1}{2},\dfrac{k+1}{2}}$ for all $k\in \mathbb{N}.$ Defining $g(x)=f(x+\dfrac{k}{2})$, where $x\in \sbrac{-1/2,1/2} $  gives us 
+\begin{align*}
+    |g'(x)|=|f'(x+\dfrac{k}{2})|\le |f(x+\dfrac{k}{2})|=|g(x)|,\text{ for all }x\in \sbrac{-1/2,1/2}.
+\end{align*}
+Moreover, $g(0)=f(k/2)=0.$ By the same arguments, we get $g(x)=0$ for all $x\in \sbrac{-1/2,1/2}$, or equivalently, $f(x)=0$ on $\sbrac{\dfrac{k-1}{2},\dfrac{k+1}{2}}$. Therefore, $f(x)=0$ on $[-1/2,+\infty).$ The same argument gives $f(x)=0$ on $(-\infty,1/2].$ Therefore, $f(x)=0$ for all $x.$
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $f: [1, \infty) \to \R$ is differentiable with continuous derivative and
+\begin{enumerate}
+    \item[(a)] $f(1) = 1$.
+    \item[(b)] $x f'(x) \leq \frac{1}{2} f(x)$.
+\end{enumerate}
+Show that $f(x) \leq x^{1/2}$ for all $x \geq 1$.
+\begin{solution}
+Let $g(x) = f(x) / \sqrt{x}$ for all $x \ge 1$. By the second condition, we have 
+\begin{align*}
+    x\brac{g(x)\sqrt{x}}' &\le \dfrac{1}{2} g(x)\sqrt{x}, \text{ for all } x \ge 1 \\
+    xg'(x)\sqrt{x} + xg(x)\dfrac{1}{2\sqrt{x}} &\le \dfrac{1}{2} g(x)\sqrt{x}, \text{ for all } x \ge 1 \\
+    xg'(x)\sqrt{x} &\le 0, \text{ for all } x \ge 1 \\
+    g'(x) &\le 0, \text{ for all } x \ge 1.
+\end{align*}
+Therefore, $g(x) \le g(1) = 1$ for all $x \ge 1$, or equivalently,
+\begin{align*}
+    f(x) \le x^\frac{1}{2}, \text{ for all } x \ge 1.
+\end{align*}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+If $f$ is a bounded continuously differentiable function defined on the reals satisfying 
+\begin{align*}
+    |f(x)+f'(x)|\le 1
+\end{align*}
+for all $x,$ prove that $|f(x)|\le 1$ for all $x.$
+\begin{solution}
+Define $g(x)=e^xf(x),$ we have $g'(x)=e^x(f(x)+f'(x))$. Therefore,
+\begin{align*}
+    |g'(x)|\le e^x\Longleftrightarrow -e^x\le g'(x)\le e^x,\text{ for all }x\in\mathbb{R}.
+\end{align*}
+Integrating three sides gives 
+\begin{align*}
+    &\int_{a}^b-e^xdx\le \int_{a}^b g'(x)dx\le\int_a^b e^xdx\\
+    \Longleftrightarrow& e^a-e^b \le g(b)-g(a)\le e^b-e^a.
+\end{align*}
+Since $f$ is bounded, 
+\begin{align*}
+    \lim_{a\rightarrow-\infty} g(a)=\lim_{a\rightarrow-\infty}(e^af(a))=0.
+\end{align*}
+Therefore,
+\begin{align*}
+   -e^b\le g(b)\le e^b,\text{ for all }b\in\mathbb{R}.
+\end{align*}
+This gives $|g(x)|\le e^x$ or equivalently, $|f(x)|\le 1$ for all $x\in\mathbb{R}.$
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose the real constants $C_0,\cdots , C_n$ satisfy 
+    \[C_0 + \frac{C_1}2 + \cdots + \frac{C_{n-1}}n + \frac{C_n}{n+1}= 0\]
+    Prove that the equation 
+    \[ C_0 + C_1 x + C_2 x^2 +\cdots + C_{n-1}x^{n-1}+ C_n x^n =0\]
+    has at least one real root between $0$ and $1$.
+\begin{solution}
+I will show that $f(x) = \sum_{i=0}^n C_i x^i$ will change the sign on the interval $[0,1]$ then by intermediate value theorem we get a zero of the function. Note that if $f(x) \geq 0$ on the interval $[0,1]$ then by the linearity of integration we get $\int_0^1 f(x) \; dx \geq 0$, and if $f(x)\leq 0$ on $[0,1]$ we get $\int_0^1 f(x) \; dx \leq 0$.  \newline 
+
+We have  \[C_0 + \frac{C_1}2 + \cdots + \frac{C_{n-1}}n + \frac{C_n}{n+1}= 0 = \sum_{i=0}^n \frac{C_i}{i+1}\]
+    Consider $$\int_0^1 \sum_{i=0}^n C_i x^i \; dx = \left.\sum_{i=0}^n\frac{C_i x^{i+1}}{i+1}\right|_0^1 = \sum_{i=0}^n \frac{C_i}{i+1}=0 $$
+    Since the integral is zero, either $f\equiv 0$ on $[0,1]$ (and then every point is a root), or $f$ takes both positive and negative values on $[0,1]$ (a continuous $f\geq 0$ which is not identically zero has a positive integral, and similarly for $f\leq 0$). In the second case the intermediate value theorem gives a root strictly between a point where $f>0$ and a point where $f<0$, hence in $(0,1)$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $f: \R \to \R$ is a differentiable function that satisfies $f \circ f(x) = x$ for all $x \in \R$.
+\begin{enumerate}
+    \item[(a)] Prove $f$ is either strictly increasing or strictly decreasing.
+    \item[(b)] In the case $f$ is strictly increasing prove that $f(x) = x$ for all $x \in \R$.
+    \item[(c)] In the case $f$ is strictly decreasing prove that there exists $x_0 \in \R$ such that $f(x_0) = x_0$ and $f'(x_0) = -1$.
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] By differentiating the relation $f(f(x)) = x$ we find
+    $$ f'(f(x)) f'(x) = 1, $$
+    which implies that $f'(x) \neq 0$ for all $x \in \R$. Since a derivative has the intermediate value property (Darboux's theorem), the derivative never changes sign, so $f$ is strictly monotone.
+    \item[(b)] Fix $x \in \R$ and let $f(x) = y$. Notice that we also have $f(y) = x$ by assumption. If $x \neq y$, then by the Mean Value Theorem, there exists a $c \in [x,y]$ such that
+    $$ f'(c) = \frac{x - y}{y - x} = -1, $$
+    so $f$ is not strictly increasing.
+    \item[(c)] Let $f(0) = a$. If $a \geq 0$, then since $f$ is strictly decreasing there must exist a point $x_0 \in [0,a]$ such that the graph of $f$ intersects the line $x = y$, i.e. such that $f(x_0) = x_0$. Similarly, if $a \leq 0$ then there exists a point $x_0 \in [a,0]$ such that $f(x_0) = x_0$.
+    
+    By the relation we derived in (a), we have that
+    $$ 1 = f'(f(x_0)) f'(x_0) = (f'(x_0))^2. $$
+    It follows that $f'(x_0) = \pm 1$; since $f$ is strictly decreasing, it must be the case that $f'(x_0) = -1$.
+\end{enumerate}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $f$ is a twice-differentiable real function defined on $(0,\infty)$. Let $M_0 = \sup_{(0,\infty)} |f(x)|$, $M_1 = \sup_{(0,\infty)} |f'(x)|$, and $M_2 = \sup_{(0,\infty)} |f''(x)|$. Prove that
+$$ M_1^2 \leq 4 M_0 M_2. $$
+Hint: Apply the Taylor's expansion.
+\begin{solution}
+Fix $x \in (0,\infty)$. As $f$ is twice-differentiable on $(0,\infty)$ which is a neighborhood of $x$, the Taylor's expansion theorem says that with $h>0$, there is $\xi \in (x,x+2h)$ such that 
+\begin{align*}
+    f(x+2h) = f(x) + f'(x)2h + \dfrac{f''(\xi)(2h)^2}{2}.
+\end{align*}
+Thus one can write:
+\begin{align*}
+    f'(x) = \dfrac{1}{2h}\left[ f(x+2h) - f(x) \right] - h f'' (\xi) .
+\end{align*}
+And then 
+\begin{align*}
+    \left| f'(x) \right| \le \dfrac{1}{2h}(M_0 + M_0) + h M_2 = \dfrac{M_0}{h} + h M_2.
+\end{align*}
+Since $x$ does not depend on $h$, taking the infimum of both sides with respect to all $h>0$ gives us:
+\begin{align*}
+    \left| f'(x) \right| \le \inf\limits_{h>0} \left( \dfrac{M_0}{h} + hM_2\right) = 2 \sqrt{M_0 M_2}.
+\end{align*}
+As the above inequality is true for $x$ taken arbitrarily in $(0,\infty)$, we deduce that $M_1 = \sup_{(0,\infty)}|f'(x)| \le 2 \sqrt{M_0 M_2}$ and thus $M_1^2 \le 4 M_0 M_2$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Assume $f$ and $g$ are two differentiable functions defined in an open neighborhood of a compact subset $K$ of $\R$ such that 
+    \begin{align*}
+        [f(x) - g(x)]^2 + [f'(x) - g'(x)]^2 \ne 0 \fall{x}{K}.
+    \end{align*}
+    Prove that either $f(x) \ne g(x)$ for all $x \in K$ or $f(x) = g(x)$ only at finitely many $x \in K$.
+    \item[(b)] Is the following generalization of part (a) to higher dimensions true: 
+    Assume $f$ and $g$ are two differentiable functions defined in an open neighborhood of a compact subset $K$ of $\R^n$ such that
+    \begin{align*}
+        [f(x) - g(x)]^2 + |\nabla f(x) - \nabla g(x)|^2 \ne 0 \fall{x}{K},
+    \end{align*}
+    where $\nabla f$ is the gradient vector of $f$. Then $f(x) \ne g(x)$ for all $x \in K$ or $f(x) = g(x)$ only at finitely only many $x \in K$.
+\end{itemize}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] Notice that $[f(x) - g(x)]^2 \geq 0$ and $[f'(x) - g'(x)]^2 \geq 0$ for all $x \in K$ because every square of a real number is non-negative. Furthermore, at any $x \in K$ it must be the case that either $[f(x) - g(x)]^2 > 0$ or $[f'(x) - g'(x)]^2 > 0$ (or both).
+    
+    Suppose that the set $E = \set{x \in K \mid f(x) = g(x)}$ is infinite. Since $E$ is an infinite subset of a compact set, it must have a limit point $x_0 \in K$. Let $\{x_n\}_{n=1}^\infty$ be a sequence of elements of $E$ which witnesses the fact that $x_0$ is a limit point. We must have $x_0 \in E$, because, since $f$ and $g$ are continuous,
+    $$ f(x_0) = f(\lim_{n \to \infty} x_n) = \lim_{n \to \infty} f(x_n) = \lim_{n \to \infty} g(x_n) = g(\lim_{n \to \infty} x_n) = g(x_0). $$
+    Our assumption implies that $[f'(x_0) - g'(x_0)]^2 > 0$, so that $y := (f - g)'(x_0) = f'(x_0) - g'(x_0) \neq 0$.
+    
+    By the definition of derivative, there exists an $h > 0$ such that for any $x \in (x_0 - h, x_0 + h)$, $x\neq x_0$,
+    $$ \abs{\frac{(f - g)(x) - (f - g)(x_0)}{x - x_0} - y} < \abs{\frac{y}{2}}. $$
+    Hence $\frac{(f-g)(x)}{x-x_0}\neq 0$, that is, $(f-g)(x)\neq 0$, for $0<|x-x_0|<h$: this interval contains no root other than $x_0$. This contradicts the fact that $x_0$ is a limit point. Therefore, $E$ is at most finite.
+    
+    \item[(b)] This is false. Take any pair of $f$ and $g$ that satisfy the hypothesis in (a), such that $f(x) = g(x)$ at at least one point $x = x_0 \in K$. Define two new functions with domain $K \times [0,1]$ as
+    \begin{align*}
+        \Tilde{f}(x,t) &= f(x) \\
+        \Tilde{g}(x,t) &= g(x).
+    \end{align*}
+    Then $K \times [0,1]$ is also compact, and
+    \begin{align*}
+        [\Tilde{f}(x,t) - \Tilde{g}(x,t)]^2 + |\nabla \Tilde{f}(x,t) - \nabla \Tilde{g}(x,t)|^2 &= [f(x) - g(x)]^2 + \abs{\begin{bmatrix}
+           f'(x) \\
+           0
+         \end{bmatrix} - \begin{bmatrix} g'(x) \\
+           0
+         \end{bmatrix}}^2 \\
+         &= [f(x) - g(x)]^2 + [f'(x) - g'(x)]^2 \\
+         &\ne 0 \fall{(x,t)}{K \times [0,1]}.
+    \end{align*}
+    However, $\Tilde{f}(x_0,t) - \Tilde{g}(x_0,t) = 0$ for all (uncountably many) $t \in [0,1]$.
+\end{enumerate}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Give an example of a differentiable function which is not continuously differentiable.
+    \item[(b)]Give an example of a continuously differentiable function which is not twice differentiable.
+    \item[(c)]Give an example of an infinitely continuously differentiable function which is is not analytic.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] Consider the function $f:\mathbb{R}\rightarrow\mathbb{R}$ given by
+    \begin{align*}
+        f(x)=\begin{cases}
+        x^2\sin\dfrac{1}{x},&x>0,\\
+        0,&x\le 0.
+        \end{cases}
+    \end{align*}
+    Then we have 
+      \begin{align*}
+            &\lim_{x\rightarrow 0^+}\dfrac{f(x)-f(0)}{x-0}=\lim_{x\rightarrow 0^+}\dfrac{x^2\sin\dfrac{1}{x}}{x}=\lim_{x\rightarrow 0^+}(x\sin\dfrac{1}{x})=0,\\
+            &\lim_{x\rightarrow 0^-}\dfrac{f(x)-f(0)}{x-0}=\lim_{x\rightarrow 0^-}\dfrac{0}{x}=0.
+        \end{align*}
+        Thus, $f'(0)=0$, and moreover,
+        \begin{align*}
+            f'(x)=\begin{cases}
+            2x\sin\dfrac{1}{x}-\cos\dfrac{1}{x},&x>0,\\
+            0,&x\le 0.
+            \end{cases}
+        \end{align*}
+        However, take $x_n=\dfrac{1}{2n\pi}\rightarrow0,$ we have 
+        \begin{align*}
+            2x_n\sin\dfrac{1}{x_n}-\cos\dfrac{1}{x_n}=2x_n\sin(2n\pi)-\cos(2n\pi)=-1,\text{ for all }n\in\mathbb{N}.
+        \end{align*}
+        Therefore, the limit of $f'(x)$ at $0$ will not be $f'(0)=0$, i.e. $f'(x)$ does not continuous at $0.$
+    \item[(b)]Consider function $g:\mathbb{R}\rightarrow\mathbb{R}$ given by
+    \begin{align*}
+        g(x)=\begin{cases}
+        x^2,&x\ge 0,\\
+        -x^2,&x<0.
+        \end{cases}
+        \end{align*}
+        Then we have 
+        \begin{align*}
+            &\lim_{x\rightarrow 0^+}\dfrac{g(x)-g(0)}{x-0}=\lim_{x\rightarrow 0^+}\dfrac{x^2}{x}=\lim_{x\rightarrow 0^+}x=0,\\
+            &\lim_{x\rightarrow 0^-}\dfrac{g(x)-g(0)}{x-0}=\lim_{x\rightarrow 0^-}\dfrac{-x^2}{x}=\lim_{x\rightarrow 0^-}(-x)=0.
+        \end{align*}
+        Thus we have $g'(0)=0.$ Moreover,
+        \begin{align*}
+            g'(x)=\begin{cases}
+            2x,&x>0,\\
+            0,&x=0,\\
+            -2x,&x<0
+            \end{cases}=2|x|
+        \end{align*}
+        which is continuous but not differentiable. Therefore, $g$ is  a continuously differentiable function which is not twice differentiable.
+        \item[(c)] Consider the function $h: \R \to \R$ given by
+        $$ h(x) = \begin{cases}
+        e^{-\frac{1}{x^2}} & x \neq 0, \\
+        0 & x = 0.
+        \end{cases} $$
+        Then $h$ is $C^\infty$ but not analytic at 0, because its Taylor expansion at $x = 0$ is the 0 series.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Consider the function $f: \R \to \R$ defined by
+$$ f(x) = \begin{cases}
+    e^{-\frac{1}{x}}, & x > 0 \\
+    0, & x \leq 0
+\end{cases} $$
+Prove that $f$ is infinitely continuously differentiable ($C^\infty$) but not real analytic.
+\begin{solution}
+We claim that
+$$ \frac{d^n}{dx^n} e^{-\frac{1}{x}} = p_n\brac{\frac{1}{x}} e^{-\frac{1}{x}} $$
+where $p_n$ is some polynomial, for any $n \geq 0$. This is clearly the case for $n = 0$, with $p_0 = 1$. Suppose this holds for $n$. Then
+\begin{align*}
+    \frac{d^{n+1}}{dx^{n+1}} e^{-\frac{1}{x}} &= \frac{d}{dx} \brac{\frac{d^n}{dx^n} e^{-\frac{1}{x}}} \\
+    &= \frac{d}{dx} \brac{p_n\brac{\frac{1}{x}} e^{-\frac{1}{x}}} \\
+    &= \brac{-\frac{1}{x^2} p'_n\brac{\frac{1}{x}} + \frac{1}{x^2} p_n\brac{\frac{1}{x}}} e^{-\frac{1}{x}}
+\end{align*}
+and the bracketed expression is a polynomial since the derivative of a polynomial stays a polynomial. By induction, we have proved our claim.
+
+Away from $x = 0$, $f$ is either identically 0 or a composite of two $C^\infty$ functions, so it is $C^\infty$. It remains to be shown that $f$ is $C^\infty$ at $x = 0$. It's easy to see that $\lim_{x \to 0^-} \frac{d^n}{dx^n} f(x) = \lim_{x \to 0^-} 0 = 0$. On the other hand,
+\begin{align*}
+    \lim_{x \to 0^+} \frac{d^n}{dx^n} f(x) &= \lim_{x \to 0^+} \frac{d^n}{dx^n} e^{-\frac{1}{x}} \\
+    &= \lim_{x \to 0^+} p_n\brac{\frac{1}{x}} e^{-\frac{1}{x}} \\
+    &= \lim_{x \to \infty} p_n(x) e^{-x} \\
+    &= \lim_{x \to \infty} \frac{p_n(x)}{e^x} \\
+    &= 0
+\end{align*}
+by repeated application of L'Hôpital's rule ($\deg p_n$ times). Therefore $f$ is $C^\infty$ at $x = 0$ with all derivatives being $0$.
+
+It follows that $f$ is not real-analytic, because the series expansion of $f$ at 0 is the 0 series, but $f(x) > 0$ for all $x > 0$.
+\end{solution}
+\end{problem}

@@ -1,0 +1,219 @@
+\section{Background}\label{p:background}
+\blurb{The standard inequalities, convergence tests and theorems of real and complex analysis that the solutions use.}
+
+\subsection{Inequalities}
+\begin{thmbox}{Proposition (Triangle inequalities)}
+    Let $(X,d)$ be a metric space. For $x,y,z \in X$, we have:
+    \begin{enumerate}
+        \item The triangle inequality: $d(x,z) \leq d(x,y) + d(y,z)$.
+        \item The reverse triangle inequality: $d(x,z) \geq |d(x,y) - d(y,z)|$.
+    \end{enumerate}
+\end{thmbox}
+
+\begin{thmbox}{Theorem (AM-GM inequality)}
+    Let $a, b \geq 0$. Then
+    $$ \frac{a + b}{2} \geq \sqrt{ab}. $$
+\end{thmbox}
+\begin{proof}
+Notice that
+\begin{align*}
+    0 &\leq (a - b)^2 \\
+    &= a^2 - 2ab + b^2 \\
+    &= a^2 + 2ab + b^2 - 4ab \\
+    &= (a + b)^2 - 4ab.
+\end{align*}
+Therefore
+$$ 4ab \leq (a + b)^2 \implies \sqrt{ab} \leq \frac{a + b}{2}. $$
+\end{proof}
+
+\begin{thmbox}{Theorem (Cauchy-Schwarz inequality)}
+    Let $(V,\cdot)$ be an inner product space. For $u, v \in V$, we have:
+    $$ |u \cdot v|^2 \leq (u \cdot u)(v \cdot v). $$
+\end{thmbox}
+
+\begin{thmbox}{Corollary}
+    \begin{enumerate}
+        \item Let $V = \R^n$ with the standard dot product. Then for $(u_1, \ldots, u_n)$, $(v_1, \ldots, v_n) \in \R^n$, the Cauchy-Schwarz inequality reads
+        $$ \brac{\sum_{i=1}^n u_i v_i}^2 \leq \brac{\sum_{i=1}^n u_i^2}\brac{\sum_{i=1}^n v_i^2}. $$
+
+        \item Generalizing the previous example, let $V = \ell^2(\N)$ be the space of all \emph{square-summable} complex-valued sequences, with the usual dot product
+        $$ (a_i)_{i\ge 1} \cdot (b_i)_{i\ge 1} = \sum_{i=1}^\infty a_i \conj{b_i}. $$
+        Then the Cauchy-Schwarz inequality reads:
+        $$ \abs{\sum_{i=1}^\infty a_i \conj{b_i}}^2 \leq \brac{\sum_{i=1}^\infty |a_i|^2} \brac{\sum_{i=1}^\infty |b_i|^2}. $$
+
+        \item Generalizing further, let $V = L^2(X)$ be the space of all square-integrable complex-valued functions on a space $X$. Notice this includes all continuous functions with compact support. Then the Cauchy-Schwarz inequality reads:
+        $$ \abs{\int_X f(x) \conj{g(x)} \,dx}^2 \leq \brac{\int_X |f(x)|^2 \,dx} \brac{\int_X |g(x)|^2 \,dx}. $$
+    \end{enumerate}
+\end{thmbox}
+
+\begin{thmbox}{Theorem (Hölder's inequality)}
+Let $(S, \mu)$ be a measure space, let $p, q \in [1,\infty]$ satisfy $\frac{1}{p} + \frac{1}{q} = 1$, and let $f \in L^p(S)$ and $g \in L^q(S)$. Then
+$$ \int |f(x)g(x)| \,d\mu \leq \left( \int |f(x)|^p \,d\mu \right)^{\frac{1}{p}} \left( \int |g(x)|^q \,d\mu \right)^{\frac{1}{q}} $$
+\end{thmbox}
+
+\begin{thmbox}{Theorem (Jensen's inequality)}
+For any $\Omega \subseteq \R^k$ of measure $|\Omega| = 1$, if $f: \Omega \to \R$ is integrable and $\phi: \R \to \R$ is convex, then
+$$ \phi\brac{\int_\Omega f(x) \,dx} \leq \int_\Omega \phi(f(x)) \,dx. $$
+\end{thmbox}
+
+\subsection{Convergence of series}
+\begin{thmbox}{Proposition (D'Alembert criterion)}
+Given positive series $\displaystyle{\sum_{n=1}^\infty} a_n$. If
+\begin{align*}
+    \lim_{n \to \infty} \frac{a_{n+1}}{a_n}<1
+\end{align*}
+then $\displaystyle{\sum_{n=1}^\infty}a_n$ converges.
+\end{thmbox}
+
+\begin{thmbox}{Proposition (Dirichlet's test)}
+Let $\{a_n\}$ be a sequence of real numbers and $\{b_n\}$ a sequence of complex numbers. If
+\begin{itemize}
+    \item $\{a_n\}$ is monotonic,
+    \item $\lim_{n \to \infty} a_n = 0$, and
+    \item there exists an $M > 0$ such that
+    $$ \abs{\sum_{i=0}^n b_i} < M $$
+    for all $n > 0$,
+\end{itemize}
+then the series
+$$ \sum_{i=0}^\infty a_i b_i $$
+converges.
+\end{thmbox}
+
+\begin{thmbox}{Proposition (Abel's identity)} If we have the following series $\displaystyle \sum_{k=0}^\infty a_kb_k$ then
+we have the following identity
+\[\sum_{k=0}^N a_k b_k = a_NB_N - \sum_{k=0}^{N-1} (a_{k+1}-a_k)B_k,\; B_n =\sum_{k=0}^n b_k\]
+\end{thmbox}
+\begin{proof}
+By induction, for $N=1$ we have
+\[R.H.S= a_1B_1 - (a_1-a_0)B_0= a_1(b_0+b_1)-(a_1-a_0)b_0=a_1b_1+a_0b_0 = L.H.S\]
+Assume it is true for $N$, we want to show it for $N+1$
+\[\begin{array}{ccl}
+\displaystyle \sum_{k=0}^{N+1} a_kb_k &=&\displaystyle a_{N+1}b_{N+1} +  \sum_{k=0}^N a_k b_k \\
+&=& \displaystyle a_{N+1}b_{N+1} + a_N B_N - \sum_{k=0}^{N-1} (a_{k+1}-a_k)B_k \\
+&=&\displaystyle a_{N+1}b_{N+1} + a_{N+1}B_{N}-a_{N+1}B_{N} + a_N B_N - \sum_{k=0}^{N-1} (a_{k+1}-a_k)B_k\\
+&=&\displaystyle a_{N+1}(b_{N+1} + B_{N})-B_{N}(a_{N+1} - a_N ) - \sum_{k=0}^{N-1} (a_{k+1}-a_k)B_k \\
+&=& \displaystyle a_{N+1}B_{N+1} - \sum_{k=0}^{N} (a_{k+1}-a_k)B_k
+\end{array}\]
+\end{proof}
+
+\subsection{Sequences and series of functions}
+\begin{defnbox}{Definition}
+Let $\{f_n\}$ be a sequence of real-valued functions on a metric space $D$.
+\begin{itemize}
+    \item The sequence is called \emph{uniformly bounded} if there exists an $M > 0$ such that
+    $$ |f_n(x)| < M $$
+    for all $x \in D$ and $n \in \N$.
+    \item The sequence is called \emph{uniformly equicontinuous} if for all $\epsilon > 0$ there exists a $\delta > 0$ such that, for any $x, y \in D$ such that $d(x,y) < \delta$, we have
+    $$ |f_n(x) - f_n(y)| < \epsilon $$
+    for all $n \in \N$. (In other words, not only are all the functions uniformly continuous, but there is a single $\delta$ that works for all functions at once.)
+    \item The sequence is called \emph{uniformly convergent} if there exists a function $f$ such that for all $\epsilon > 0$, there exists an $N \in \N$ such that for all $n \ge N$ and for all $x\in D$, we have
+    \begin{align*}
+        |f_n(x) - f(x)| < \epsilon.
+    \end{align*}
+\end{itemize}
+\end{defnbox}
+\begin{thmbox}{Theorem (Arzelà-Ascoli)}
+Let $X$ be a compact metric space. Recall that $C(X)$ is a normed vector space with norm
+$$ ||f||_\infty = \sup_{x \in X} |f(x)|. $$
+Let $F \subseteq C(X)$ be a set of continuous real-valued functions on $X$. Then $F$ is relatively compact (its closure is compact) if and only if it is bounded with respect to this norm and equicontinuous.
+\end{thmbox}
+\begin{thmbox}{Proposition}
+The series of functions $\displaystyle{\sum_{n=1}^\infty} a_n(x)$ converges uniformly on $D$ iff
+\begin{align*}
+    \forall \epsilon > 0, \exists n_\epsilon \in \N, \forall m,n \in \N, m > n \ge n_\epsilon \Rightarrow \abs{\sum_{k=n+1}^m a_k(x)} < \epsilon, \forall x \in D.
+\end{align*}
+\end{thmbox}
+\begin{thmbox}{Proposition (Weierstrass M-test)}
+Suppose that $|f_n(x)| \le a_n$ for all $n \in \N$ and $x \in D$. Then, if $\displaystyle{\sum_{n=1}^\infty} a_n$ converges, $\displaystyle{\sum_{n=1}^\infty} f_n(x)$ converges uniformly.
+\end{thmbox}
+\begin{thmbox}{Proposition}
+Given $\displaystyle{\sum_{n=1}^\infty f_n(x)} $ converges uniformly to $f(x)$ on $[a,b]$. Then, if for all $n \in \N, f_n$ is integrable on $[a,b]$, then $f$ is integrable on $[a,b]$. Furthermore, we have
+\begin{align*}
+    \int_a^b f(x) \,dx =\int_a^b \brac{\sum_{n=1}^\infty f_n(x)} \,dx = \sum_{n=1}^\infty \int_a^b f_n(x) \,dx.
+\end{align*}
+\end{thmbox}
+
+\subsection{Topology}
+\begin{defnbox}{Definition}
+Let $X$ be a topological space. A subset $A \subset X$ is called dense in $X$ if $\closure{A} = X$. Equivalently, $A$ is dense iff $A \cap U \neq \emptyset$ for any nonempty open subset $U \subseteq X$.
+\end{defnbox}
+
+\begin{thmbox}{Lemma (Lebesgue's Covering Lemma / number lemma)}
+Let $(X,d)$ be a compact metric space, and $\{U_i\}_{i \in I}$ an open cover of $X$. Then there exists an $\epsilon > 0$ such that, for any $x \in X$, $B(x,\epsilon) \subseteq U_i$ for some $i \in I$. (The lemma gets its name because this $\epsilon$ is usually called the \emph{Lebesgue number} for the cover.)
+\end{thmbox}
+
+\subsection{Inverse Function Theorem}
+\begin{thmbox}{Theorem}
+Let $D$ be an open subset of $\R^n$, $f: D \to \R^n$ is continuously differentiable on $D$ and $a\in D.$ If ${\rm det}f'(a)\ne 0$, there exists open subset $U\subset D$ containing $a,$ $V$ containing $f(a)$ such that $f:U\to V$ is bijective and $f^{-1}:V\to U$ is also continuously differentiable given by
+\begin{align*}
+    (f^{-1})'(y)=\big[f'(f^{-1}(y))\big]^{-1},\forall y\in V,
+\end{align*}
+the inverse of the Jacobian matrix.
+\end{thmbox}
+
+\subsection{Complex analysis}
+\begin{thmbox}{Theorem (Open Mapping Principle)}
+Any non-constant analytic function on a domain maps open sets to open sets.
+\end{thmbox}
+\begin{thmbox}{Theorem (Maximum Modulus Principle)}
+Let $f: U \to \C$ be a holomorphic function on a domain. If $\left|f\right|$ has a local maximum, then $f$ is constant.
+\end{thmbox}
+\begin{thmbox}{Theorem (Liouville's theorem)}
+Let $f: \C \to \C$ be entire. If $f$ is bounded, then $f$ is constant.
+\end{thmbox}
+\begin{thmbox}{Theorem (Residue Theorem)}
+Let $C$ be a simple closed contour, described in the positive sense. If a function $f$ is analytic inside and on $C$ except for a finite number of singular points $z_k,k=1,2,\ldots,n$ inside $C$, then
+\begin{align*}
+    \int_C f(z) \,dz = 2\pi i \sum_{k=1}^n \Res_{z = z_k} f(z).
+\end{align*}
+\end{thmbox}
+\begin{thmbox}{Corollary}
+Suppose that a function $f$ is continuous on a closed bounded region $R$ and that it is analytic and not constant in the interior of $R$. Then the maximum value of $|f(z)|$ in $R$, which is always reached, occurs somewhere on the boundary of $R$ and never in the interior.
+\end{thmbox}
+\begin{thmbox}{Theorem (Jordan's lemma)}
+Suppose that $f$ is analytic in all points in the upper half plane above circle $|z|=R_0$, and let $C_R$ denote the upper half of the circle $|z|=R$. If, for $R>R_0$ and each $z\in C_R$, we have $|f(z)|\le M_R$ with $M_R\rightarrow 0$ as $R\rightarrow\infty$, then
+\begin{align*}
+    \lim_{R\rightarrow\infty}\int_{C_R} e^{iaz}f(z)dz=0\quad(a>0).
+\end{align*}
+\end{thmbox}
+\begin{thmbox}{Theorem (Small half-circles)}
+Suppose that $f$ has a simple pole at $z=x_0$ on the real line with a Laurent series representation in a punctured disk $0<|z-x_0|<R_2$ with residue $B_0.$ If $C_\rho$ denote the upper half of a circle $|z-x_0|=\rho,$ where $\rho<R_2,$ and clockwise oriented, then
+\begin{align*}
+\lim_{\rho\rightarrow0}    \int_{C_\rho}f(z)dz=-B_0\pi i.
+\end{align*}
+\end{thmbox}
+\begin{thmbox}{Theorem (Rouché's theorem)}
+Let $C$ denote a simple closed contour, and suppose that
+\begin{enumerate}
+    \item[(a)] Two functions $f(z)$ and $g(z)$ are analytic inside and on $C$;
+    \item[(b)] $|f(z)| > |g(z)|$ at each point on $C$.
+\end{enumerate}
+Then $f(z)$ and $f(z)+g(z)$ have the same number of zeros, counting multiplicities, inside $C$.
+\end{thmbox}
+\begin{thmbox}{Theorem (Schwarz lemma)}
+Let $D = \set{z \mid |z| < 1}$ be the unit open disk on the complex plane and $f: D \to \C$ be an analytic function such that $f(0) = 0$ and $|f(z)| \le 1$ for all $z \in D$. Then $|f(z)| \le |z|$ and $|f'(0)| \le 1$. Moreover, if there is some nonzero $z$ such that $|f(z)| = |z|$, or if $|f'(0)| = 1$, then $f(z) = az$ with $|a|=1$.
+\end{thmbox}
+\begin{proof}
+Since $f(0) = 0$, $f(z)/z$ has a removable singularity at $z = 0$, hence there is some function $g$ analytic on $D$ such that $f(z) = z g(z)$. Then by the Maximum Modulus Principle, for $z \in D$ and $|z| < r < 1$, we have
+\begin{align*}
+    |g(z)| \le \max_{0 < \theta < 2\pi} \frac{|f(re^{i\theta})|}{r} \le \dfrac{1}{r}.
+\end{align*}
+Letting $r \to 1$, we find that $|g(z)| \le 1$ for all $z \in D$, or equivalently, $|f(z)| \le |z|$ for all $z \in D$. Moreover,
+\begin{align*}
+    f'(0) = g(0) + 0 g'(0) = g(0),
+\end{align*}
+so we have $|f'(0)| \le 1$. If $|g(z)| = 1$ for some $z \ne 0$, or $|g(0)| = 1$, the Maximum Modulus Principle gives that $g$ is constant. Therefore, $f(z) = a z$ with $|a|=1$.
+\end{proof}
+\begin{thmbox}{Theorem (Morera's theorem)}
+Let $f: D \to \C$ be a continuous function on a domain $D$. If, for every closed curve $\gamma$ in $D$, we have
+$$ \oint_\gamma f(z) \,dz = 0, $$
+then $f$ is holomorphic on $D$. (The converse is not true: $f = 1/z$ on the punctured unit disk is a counterexample.)
+\end{thmbox}
+\begin{thmbox}{Theorem (Riemann Mapping Theorem)}
+If $U \subset \C$ is a simply-connected open subset of $\C$ which is not all of $\C$, then there exists a biholomorphism (a bijective holomorphic map with a holomorphic inverse)
+$$ f: U \to \set{z \in \C \mid |z| < 1}. $$
+\end{thmbox}
+\begin{thmbox}{Theorem (Riemann's theorem)}
+Suppose that a function $f$ is analytic and bounded in some deleted neighborhood $0 < |z - z_0| < \varepsilon$ of a point $z_0$. If $f$ is not analytic at $z_0$, then it has
+a removable singularity there.
+\end{thmbox}
