@@ -1,2 +1,11 @@
 build/
 __pycache__/
+# LaTeX build files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+__pycache__/

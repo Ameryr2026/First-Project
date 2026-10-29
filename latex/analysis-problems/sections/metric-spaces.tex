@@ -1,0 +1,289 @@
+\section{Metric spaces and topology}\label{p:metric-spaces}
+\blurb{Compactness, connectedness, completeness, dense and perfect sets.}
+
+\begin{problem}
+Show that a convergent sequence in a metric space is bounded.
+\begin{solution}
+Let $(X,d)$ be a metric space and $a_n$ a convergent sequence which converges to $a$. Then for $\epsilon = 1$ there exists $N$ such that \[d(a_n,a) < 1 \; , \forall n>N\]
+    Then let $M = \max_{i\in \{1,\cdots N\}}\{d(a_i,a)\}$ let $M' = \max\{M,1\}$ clearly for any $n$ we have $d(a_n,a)\leq M'$, so $a_n \in B(a,M'+1)$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Define a compact metric space
+    \item[(b)] Suppose $f: X \to Y$ is a continuous function from a compact metric space $X$ to a metric space $Y.$ Show that $f$ is bounded.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] A topological space $(X,d)$ is said to be compact metric if $(X,d)$ is a metric space and $X$ is a compact set. Note that $(X,d)$ is a metric space if 
+    \begin{itemize}
+        \item For any $x,y\in X,$ $d(x,y)\ge 0$ and $d(x,y)=0$ if and only if $x=y.$
+        \item For any $x,y\in X,d(x,y)=d(y,x).$
+        \item For any $x,y,z\in X, d(x,y)\le d(x,z)+d(y,z).$
+    \end{itemize}
+    The set $X$ is said to be compact if for any sequence $\set{x_n}\subset X$, there is some subsequence $\set{x_{n_k}}$ converging to some $\bar x\in X.$
+    \item[(b)]We will prove that $f(X)$ is a compact set. Firstly, we prove the closednees. Take any convergent sequence $\set{y_n}\subset f(X)$, then there is a sequence $\set{x_n}\subset X$ such that 
+    \begin{align*}
+        y_n=f(x_n),\text{ for all }n\in\mathbb{N}.
+    \end{align*}
+    Since $X$ is compact, there is a subsequence $\set{x_{n_k}}$ of $\set{x_n}$ such that $x_{n_k}\rightarrow \bar x\in X.$ The continuity of $f$ implies that $y_{n_k}=f(x_{n_k})\rightarrow f(\bar x)\in f(X).$ Since $\set{y_n}$ converges, we deduce that $y_n\rightarrow f(\bar x)\in f(X)$.
+    
+    We next show the boundedness of $f(X).$ Assume by contradiction that there is some sequence ${y_n}\subset f(X)$ which is unbounded. Fixing $y_0\in Y$, this means that we can choose the sequence so that $d(y_0,y_n)\rightarrow \infty.$ Note that there is some sequence $\set{x_n}\subset X$ such that 
+    \begin{align*}
+        y_n=f(x_n),\text{ for all }n\in\mathbb{N}.
+    \end{align*}
+    Since $\set{x_n}\subset X,$ by taking subsequence, we can also assume that $x_n$ converges to some $\bar x\in X.$ The continuity of $f$ implies that $y_n=f(x_n)\rightarrow f(\bar x)\in f(X).$ This contradicts the fact that $d(y_0,y_n)\rightarrow \infty$, since a convergent sequence is bounded.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] State the definition of a compact set in a metric space.
+    \item[(b)] Let $X$ be a metric space in which every infinite subset has a limit point. Prove $X$ is compact.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] Given a metric space $X$, a subset $K \subseteq X$ is compact if for any sequence $a_i$ in $K$ there exists a subsequence $a_{n_i}$ which converges to some $a \in K$.
+    \item[(b)] Let $a_i$ be a sequence in $X$. The set $A = \{x \in X \mid x = a_n \text{ for some } n \geq 0\}$ is either finite or infinite.
+    
+    If $A$ is finite, by the pigeonhole principle there exists an $a \in A$ such that $a = a_n$ for infinitely many $n$. This gives a constant subsequence, which clearly converges to $a$.
+    
+    If $A$ is infinite, by hypothesis there exists an $a \in X$ which is a limit point of $A$, i.e. such that any open set containing $a$ contains infinitely many elements of $A$. In particular, there exists an $n_1$ such that $a_{n_1} \in B(a,1)$. Now suppose we have an $n_i$ such that $a_{n_i} \in B(a,\frac{1}{i})$. Since $a$ is a limit point, there are infinitely many $n$ such that $d(a_n,a) < \frac{1}{i+1}$; in particular, there exists an $n_{i+1} > n_i$ such that $d(a_{n_{i+1}},a) < \frac{1}{i+1}$. By induction, this gives a subsequence $\{a_{n_i}\}_{i \geq 1}$ which converges to $a$, so $X$ is compact.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] State the Heine-Borel Theorem for a Euclidean space.
+    \item[(b)] Prove the Heine-Borel Theorem.
+    \item[(c)] Give a counter-example to the Heine-Borel Theorem in a general metric space. Justify your example.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] For a subset of Euclidean space $\mathbb{R}^m$, the following two statements are equivalent
+    \begin{itemize}
+        \item[(i)] $S$ is closed, and bounded;
+        \item[(ii)] $S$ is compact, i.e. every open cover of $S$ has a finite subcover.
+    \end{itemize}
+    \item[(b)] \begin{itemize}
+        \item[](i)$\Rightarrow$(ii) \quad Suppose that $S$ is closed and bounded. Then there is some $a>0$ such that $S\subset B(0,a)$. Since  $ B(0,a)\subset [-a,a]^m$, we have
+        \begin{align*}
+            S\subset T:=[-a,a]^m.
+        \end{align*}
+        Note that closed subset of a compact set is compact, it suffices to show that $T$ is compact. Since $[-a,a]$ is a closed interval in $\mathbb{R},$ it is compact. We show that $T$ is compact using sequences (in a metric space, compactness is equivalent to sequential compactness). Let $\set{t_k}$ be a sequence in $T$. Its first coordinates lie in $[-a,a]$, so by the Bolzano-Weierstrass theorem a subsequence has convergent first coordinates; a further subsequence has convergent second coordinates, and so on. After $m$ steps we get a subsequence which converges to a point of $T$, because $[-a,a]$ is closed. So $T$ is compact. Since closed subset of compact set is compact, we have $S$ is compact.
+        \item[](ii)$\Rightarrow$(i) Suppose that $S$ is compact. Then take the open cover $\set{B(x,1)|x\in S}$ of $S.$ Then there are $x_1,\ldots,x_n\in S$ such that \begin{align*}
+            S\subset \bigcup_{i=1}^nB(x_i,1).
+        \end{align*}
+        Define 
+        \begin{align*}
+            r=2+\max_{i\ne j}\norm{x_i-x_j},
+        \end{align*}
+        we will prove that $S\subset B(x_1,r).$ Indeed, for any $x\in S,$ there is some $i$ such that $x\in B(x_i,1).$ Then 
+        \begin{align*}
+        \norm{x-x_1}\le \norm{x-x_i}+\norm{x_i-x_1}\le 1+\max_{i\ne j}\norm{x_i-x_j}=r-1<r.
+        \end{align*}
+        Therefore, $x\in B(x_1,r).$ This showed that $S$ is bounded. 
+        
+        Next we will show that $S$ is closed. Assume by contradiction that $S$ is not closed, i.e. there is some $a\in\mathbb{R}^m$ which is a limit point of $S$ but does not belong to $S.$ Then for any $x\in S$, define 
+        \begin{align*}
+            r_x=\dfrac{1}{2}\norm{x-a}.
+        \end{align*}
+        Then we have 
+        \begin{align*}
+            S\subset \bigcup_{x\in S}B(x,r_x):=\mathcal{O}
+        \end{align*}
+        and $a\notin \mathcal{O}.$ Since $S$ is compact, there  are $x_1,\ldots,x_n\in S$ such that \begin{align*}
+            S\subset \bigcup_{i=1}^nB(x_i,r_{x_i}).
+        \end{align*}
+        Write $r_i=r_{x_i}$. For $y\in B(x_i,r_i)$ we have
+        \begin{align*}
+            \norm{y-a}\geq\norm{x_i-a}-\norm{y-x_i}>2r_i-r_i=r_i.
+        \end{align*}
+        Then define $r=\min_{1\le i\le n} r_i$, we have $B(a,r)$ does not intersect $\bigcup_{i=1}^nB(x_i,r_i)$, and thus $S,$ which contradicts with the fact that $a$ is a limit point of $S.$
+     \end{itemize}
+    \item[(c)] Take the discrete metric on an infinite set. Then every subset is bounded (by 1) as well as closed, but only the finite subsets are compact. 
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $(X,d)$ and $(Y,\delta)$ are metric spaces. Assume $K$ is a compact subset of $X.$ Recall the graph of function $f: K \to Y$ is the set
+\begin{align*}
+    \gph(f) = \set{(x,f(x)) : x \in K}.
+\end{align*}
+Prove that if $f$ is continuous is and only if $\gph(f)$ is compact.
+\begin{solution}
+\begin{itemize}
+    \item[$(\Rightarrow)$] Suppose that $f$ is continuous. Let $(x_n,f(x_n))$ be an arbitrary sequence in $\gph(f)$. Because $\set{x_n}_{n\in\N}\subset K$, there exists a subsequence $\set{x_{n_k}}_{k\in\N}$ such that 
+\begin{align*}
+    x_{n_k}\to x\in K.
+\end{align*}
+Since $f$ is continuous on $K,$ $f(x_{n_k})\to f(x),$ thus $(x_{n_k},f(x_{n_k}))\to (x,f(x))\in \gph(f)$. Therefore, $\gph(f)$ is sequentially compact. Since $\gph(f)$ is a metric space, it is compact.
+
+Alternatively, we can remark that, if we set $g = (1 \times f) \circ \Delta: K \to K \times K \to K \times Y$, then $g(K) = \gph(f)$. Since $f$ is continuous, $g$ is continuous. Since the continuous image of a compact set is compact, this implies that $\gph(f)$ is compact.
+
+\item[$(\Leftarrow)$] Assume that $\gph(f)$ is compact. Let $x$ is a point in $K$ and $\set{x_n}_{n \in \N} \subset K, x_n \to x$. It suffices to prove that $f(x_n) \to f(x)$. Since $\gph(f)$ is compact and $\set{(x_n, f(x_n))}_{n \in \N} \subset \gph(f)$, there exists a subsequence $\set{(x_{n_k}, f(x_{n_k}))}_{k \in \N}$ such that 
+\begin{align*}
+    (x_{n_k}, f(x_{n_k})) \to (x, f(x)) \in \gph(f).
+\end{align*}
+If $f(x_n) \not \to f(x)$, there exist $\epsilon > 0$ and a subsequence $\set{x_{n_l}}$ such that $x_{n_l}\to x$ but
+\begin{align*}
+    |f(x_{n_l}) - f(x)| > \epsilon, \forall l \in \N.
+\end{align*}
+However, $\set{(x_{n_l},f(x_{n_l})} \subset \gph (f)$, so the latter being compact implies that there exists a subsequence $\set{(x_{n_{l_i}}, f(x_{n_{l_i}})}$ such that
+\begin{align*}
+    (x_{n_{l_i}}, f(x_{n_{l_i}})) \to (x, f(x)) \text{ as } i \to \infty.
+\end{align*}
+For this reason,
+\begin{align*}
+    |f(x_{n_{l_i}}) - f(x)| \to 0 \text{ as } i \to \infty.
+\end{align*}
+This contradicts the fact that $|f(x_{n_l}) - f(x)| > \epsilon, \forall l \in \N$. Therefore, $f(x_n) \to f(x)$.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that $K$ is a compact subset of $\mathbb{R}$ and $f:K\rightarrow\mathbb{R}$ is a continuous function which is one-to-one. Prove that inverse of $f$ is continuous.
+\begin{solution}
+Notice that $f:K\rightarrow f(K)$ is bijective and we need to prove that $f^{-1}:f(K)\rightarrow K$ is continuous. Take some closed $A\subset K$, we will prove $f(A)$ is closed. Since $K$ is compact and any closed subset of compact set is compact, we have $A$ is compact. Take any sequence $\set{y_n}\subset f(A)$ converging to some $y_0.$ Then there is a sequence $\set{x_n}\subset A$ such that $y_n=f(x_n)$. Since $A$ is compact, there is a subsequence $\set{x_{n_k}}$ converging to some $x_0.$ Since $f$ is continuous
+\begin{align*}
+    y_{n_k}=f(x_{n_k}) \rightarrow f(x_0),
+\end{align*}
+or equivalently, $y_0=f(x_0)$. Therefore, $f(A)$ is closed. Finally, take $A\subset K$ is open, we will show that $f(A)$ is open. Note that $K\setminus A$ is closed in $K$, hence compact, and $f$ is one to one and onto $f(K)$, so by the first part $f(K\setminus A)=f(K)\setminus f(A)$ is closed, that is, $f(A)$ is open in $f(K)$. Therefore, $f^{-1}$ is continuous.
+
+Alternative proof: Notice that $f^{-1}$ is continuous iff the preimages of open sets by $f^{-1}$ are open, iff the preimages of closed sets by $f^{-1}$ are closed, iff the images of closed sets by $f$ are closed. If $C \subseteq K$ is closed, then it is compact, because all closed subsets of compact spaces are compact. Then the image $f(C)$ is compact, because continuous functions map compact sets to compact sets. Finally, $f(C)$ is closed because $\R$ is Hausdorff and compact sets are closed in Hausdorff spaces.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $X = \set{f: [0,1] \to \R \mid f \text{ is continuous}}$.
+\begin{enumerate}
+    \item[(a)] Prove that $d(f,g) = \int_0^1 \abs{f(t) - g(t)} \,dt$ is a metric on $X$.
+    \item[(b)] Give an example, without proof, of a Cauchy sequence in $X$ which does not converge under this metric.
+\end{enumerate}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] For any $f,g,h \in X$, we have
+    \begin{itemize}
+        \item If $f = g$, it is clear that $d(f,g) = \int_0^1 |f(t)-f(t)| \,dt = 0$.
+        
+        Conversely, if $f \ne g$, there is some $x_0 \in [0,1]$ such that $f(x_0) \ne g(x_0)$. We can assume that $f(x_0) > g(x_0)$ and put $\epsilon := \frac{f(x_0) - g(x_0)}{2} > 0$. By the continuity of $f - g$, there is some $\delta > 0$ such that if $x \in A := (x_0-\delta, x_0+\delta) \cap [0,1]$, we always have 
+        \begin{align*}
+            f(x) - g(x) > f(x_0) - g(x_0) - \epsilon = \epsilon.
+        \end{align*}
+        Notice that $x_0 \in [0,1]$, we always have $A := (x_0-\delta, x_0+\delta) \cap [0,1]$ is a nonempty interval. Therefore, 
+        \begin{align*}
+            \int_{0}^1 |f(t)-g(t)| \,dt \ge \int_A |f(t)-g(t)| \,dt \ge \int_A \epsilon \,dt > 0
+        \end{align*}
+        Thus we have $d(f,g) = 0$ if and only if $f = g$.
+        \item $d(f,g) = \int_0^1 |f(t) - g(t)| \,dt = d(g,f)$.
+        \item \begin{align*}
+            d(f,h) &= \int_0^1 |f(t)-h(t)| \,dt \\
+            &= \int_0^1 |f(t) - g(t) + g(t) - h(t)| \,dt \\
+            &\le \int_0^1 (|f(t) - g(t)| + |g(t) - h(t)|) \,dt \\
+            &= d(f,g) + d(g,h).
+        \end{align*}
+    \end{itemize}
+    \item[(b)] Let $f_n: [0,1] \to \R$ be given by
+    \begin{align*}
+        f_n(x) = \begin{cases}
+        0, &x \in [0,1/2], \\
+        n(x-1/2), &x \in (1/2, 1/2 + 1/n], \\
+        1, &x \in (1/2 + 1/n, 1].
+        \end{cases}
+    \end{align*}
+    \end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+If $\set{\O_n : n \in \N}$ is a countable collection of open dense subsets of $\R$. Show that $\bigcap_{n=1}^\infty \O_n$ is dense in $\R$.
+\begin{solution}
+A subset is dense iff it intersects every nonempty open set non-trivially. Let $U \subseteq \R$ be open and nonempty. It suffices to show that there exists $x \in U$ such that $x \in \O_n$ for all $n$.
+
+Since $\O_1$ is dense, there exists $x_1 \in U \cap \O_1$. Moreover, the latter set is open, so we can find $0 < r_1 < 1$ such that $\overline{B}(x_1, r_1) \subseteq U \cap \O_1$. By induction, for any $n$ we can find $x_n$ and $0 < r_n < \frac{1}{n}$ such that $\overline{B}(x_n, r_n) \subseteq B(x_{n-1}, r_{n-1}) \cap \O_n$. Since the sequence $x_i$ is Cauchy, it converges to a point $x \in \R$. By closedness, $x \in \overline{B}(x_n, r_n)$ for all $n$, so $x \in \O_n$ for all $n$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Prove each of the following assertion using the definition of connectedness
+\begin{itemize}
+    \item[(a)] If $A$ and $B$ are connected sets in a metric space $(X,d)$ such that $A\cap B\ne \emptyset$ then $A\cup B$ is connected.
+    \item[(b)] Every interval $I$ in $\R$ is connected.
+    \item[(c)] If $X$ is a connected metric space and $f:X \to \R^d$ is continuous, then the range $f(X)$ of $f$ is connected.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)]Suppose by contradiction that $M := A \cup B$ is not connected. Then there are two disjoint open sets $C$, $D$ such that $C$ and $D$ intersect $M$ and $M \subset C \cup D$.  We will show that $M$ is contained entirely in $C$ or $D$. Firstly, since
+    $$ A \subset M \subset C \cup D \implies C \cap D = \emptyset$$ and $A$ is connected, $A$ must be contained entirely in $C$ or $D$. Similarly, $B$ must be contained entirely in $C$ or $D$. However, $A \cap B \ne \emptyset$, $C \cap D = \emptyset$ implies that $A$ and $B$ are contained entirely in the same set $C$ or $D$. Without loss of generality, we can assume that $A, B \subset C$. Then $M = A \cup B \subset C$. This contradicts the fact that $D$ intersects $M$ but does not intersect $C$. Therefore, $A \cup B$ is connected.
+    \item[(b)] We will prove that $I \subset \R$ is connected if and only if $x, y \in I$, $x < z < y$ implies $ z \in I$. 
+    
+    Suppose the property fails for some $x,y,z$, i.e. $x, y \in I, x < z < y$ but $z \notin I$. Then define $A = (-\infty, z)$, $B = (z,+\infty)$, we have $A, B$ intersect $I$ but $A \cap B = \emptyset$, which means $I$ is not connected.
+    
+    Conversely, suppose that $I$ is not connected, then there are two numbers $x < y$, and two disjoint open subsets $A,B\subset \mathbb{R}$ both intersect $I$ such that $I\subset A\cup B,$ $x\in A,y\in B.$ Then consider \begin{align*}
+        S:=A\cap [x,y]\ne \emptyset.
+    \end{align*}
+    Define $z=\sup S.$ Since $y\in B$ which does not intersect $A$ and $B$ is open, we have $z<y$. If we have $z\in A$, the fact $A$ is open implies that $z$ is not $\sup S.$ Therefore, $z\notin A.$
+    
+    Since $x\in A$ and $A$ is open, $x<z$ Thus if we have $z\in B,$ the fact that $B$ is open implies that $z$ is not $\sup S.$ Thus $z\notin B.$ But $z\in [x,y]\subset I\subset A\cup B$ by the property, a contradiction. We complete the statement.
+    
+    Next, for an interval $I,$ since the property holds, we have $I$ is connected.
+    \item[(c)] Suppose that $f(X)$ is not connected. Then there are two disjoint open sets $C,D$ intersect $f(X)$ such  that $f(X)\subset C\cup D$. This means that $X\subset f^{-1}(C\cup D)=f^{-1}(C)\cup f^{-1}(D)$. Since $C,D$ are open and does not intersect, the continuity of $f$ implies $f^{-1}(C),f^{-1}(D)$ are open and moreover,
+    \begin{align*}
+        f^{-1}(C)\cap f^{-1}(D)=f^{-1}(C\cap D)=\emptyset.
+    \end{align*}
+    Therefore, $X$ is not connected.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] Give the definition of a perfect set in a metric space.
+    \item[(b)] Let $P$ be a nonempty perfect set in $\mathbb{R}^k$. Prove $P$ is uncountable.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] A set $S$ of a metric space $X$ is said to be perfect if $S$ is closed and it does not have any isolated point, i.e. any element of $S$ is a limit point of $S.$  
+    \item[(b)]If $P$ is finite, any point of $P$ is isolated, which is a contradiction. Suppose $P$ is countable infinite, and let $P = \{p_1, p_2, \ldots\}$. Let $U_0$ be any bounded neighborhood of $p_1$, then obviously, $U_0\cap P\ne\emptyset.$
+    
+    Suppose we have an open set $U_i$ such that $U_i \cap P \neq
+    \emptyset$. Then since $P$ is perfect, there exists an open subset $U_{i+1}$ of $\R^k$ such that $\closure{U_{i+1}} \subset U_i$, $p_{i+1} \notin \closure{U_{i+1}}$, and $U_{i+1} \cap P \neq \emptyset$. By induction with the existence of $U_0$, we have such an $U_i$ for all $i \in \N$.
+    
+    Notice that $\closure{U_i} \cap P$ is closed because every perfect set is closed, and bounded because $U_0$ is bounded, so it is compact. Then
+    $$ \closure{U_0} \cap P \supset \closure{U_1} \cap P \supset \cdots $$
+    is a descending chain of compact subsets of $\R^k$. Moreover, they are all non-empty, so by Cantor's intersection theorem,
+    $$ \bigcap_{i \in \N} (\closure{U_i} \cap P)\neq \emptyset. $$
+    But by construction, no $p_i$ can be contained in this intersection. This is a contradiction.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{enumerate}
+    \item[(a)] Prove every open subset $\O$ of $\R^1$ is an at most countable union of disjoint open intervals $\{I_k\}_k$. Then one can define the \emph{measure} of $\O$ to be
+    $$ |\O| = \sum_k |I_k| $$
+    where $|I_k|$ is the length of the interval $I_k$, if the right-hand sum is finite.
+    \item[(b)] Construct a closed subset $F$ of the interval $[0,1]$ so that $|\O \cap (0,1)| = \frac{1}{2}$ where $\O = \R \setminus F$ is the complement of $F$ in $\R$.
+    
+    Hint: Modify the construction of the Cantor set properly.
+\end{enumerate}
+\begin{solution}
+\begin{itemize}
+    \item[(a)]For each $x\in \O,$ let $I_x$ be the largest interval containing $x$ and contained in $\O.$ More precisely, since $\O$ is open, $x$ is contained in some small interval, and therefore, if we define 
+    \begin{align*}
+        a_x=\inf \set{a<x:(a,x)\subset \O}\quad b_x=\sup\set{b>x:(x,b)\subset \O}
+    \end{align*}
+    then $I_x=(a_x,b_x).$ Then we must have 
+    \begin{align*}
+        \O=\bigcup_{x\in \O}I_x.
+    \end{align*}
+    Now suppose that two intervals $I_x$ and $I_y$ intersect. Then their union, which is also an interval, is contained in $\O$ and contains $x.$ Since $I_x$ is maximal, we must have $I_x\cup I_y\subset I_x$, and similarly $I_x\cup I_y\subset I_y.$ This only happens when $I_x=I_y.$ Therefore, two distinct intervals in $\mathcal{I}=\set{I_x}_{x\in \O}$ must be disjoint. It remains to show that there are only countable intervals in $\mathcal{I}.$ Indeed, since every open interval $I_x$ contain a rational number. Since different intervals are disjoint, they must contain different rationals, and therefore $\mathcal{I}$ is countable.
+    \item[(b)] Let $F = [0,\frac{1}{2}]$. It is closed, and $|(\R \setminus [0,\frac{1}{2}]) \cap (0,1)| = |(\frac{1}{2},1)| = \frac{1}{2}$.
+\end{itemize}
+\end{solution}
+\end{problem}

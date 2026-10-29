@@ -1,0 +1,346 @@
+\section{Analytic functions}\label{p:analytic-functions}
+\blurb{Cauchy's estimates, Liouville, the maximum modulus principle, Schwarz's lemma, residues and harmonic functions.}
+
+\begin{problem}
+Let $p(z)$ be a polynomial of degree $n$ and take $R>0$ so large that the circle $\gamma(t) = Re^{it}, 0\leq t \leq 2\pi$, encloses all the zeros of $p$ in its interior. Prove that 
+    \[\int_\gamma \frac{p'(z)}{p(z)}\; dz = 2\pi ni\]
+\begin{solution}
+Suppose we have $k$ zeros $z_1,\cdots, z_k$ with each $z_i$ with multiplicity $e_i$, then $$p(z) = \prod_{i=1}^k (z-z_i)^{e_i} \Rightarrow p'(z) = \sum_{i=1}^k e_i(z-z_i)^{e_i-1}\prod_{j=1,j\ne i}^{k}(z-z_j)^{e_j}$$
+    Thus 
+    $$\frac{p'(z)}{p(z)} = \sum_{i=1}^k e_i(z-z_i)^{-1}$$
+    Then by the reisude theorem we get 
+    \[\int \frac{p'(z)}{p(z)} = 2\pi i \sum e_i = 2\pi i n\]
+    since $\int \frac{e_i}{z-z_i} \; dz = 2\pi i e_i$ and the sum of multiplicities is the ploynomial degree.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $p(z) = (z-a_1)(z-a_2)\cdots (z-a_n)$ be a polynomial of degree $n$ with distinct complex zeros $a_1,a_2,\cdots , a_n$ and $n\geq 2$. Take $R>0$ so large that the circle $|z|=R$ encloses all the zeros of $p$ in its interior. Prove that 
+    \begin{itemize}
+        \item [(a)] \[ \int_{|z|=R} \frac{dz}{p(z)} = 2\pi i \sum_{k=1}^n \frac{1}{\prod_{j\ne k} (a_k-a_j)}\]
+        \item [(b)] 
+        \[\sum_{k=1}^n \frac{1}{\prod_{j\ne k} (a_k-a_j)} = 0\]
+    \end{itemize}
+\begin{solution}
+First part residue theorem. The second part, parametrize the contour $|z|=R$ by $z = Re^{i\theta}$ then 
+\[\left|\int_0^{2\pi} \frac{1}{\prod_{i=1}^n (Re^{i\theta}-a_i)} \; Ri e^{i\theta}\; d\theta \right|\leq 2\pi R \frac{1}{(R-|a_j|)^n} \;\;\;\;\;\;(*)\]
+Where $a_j$ is the farthest zero of $p(z)$ from the origin, so that $|Re^{i\theta}-a_i|\geq R-|a_i|\geq R-|a_j|$ for every $i$. By the residue theorem 
+\[ \int_{|z|=R} \frac{dz}{p(z)} = 2\pi i \sum_{k=1}^n \frac{1}{\prod_{j\ne k} (a_k-a_j)}\]
+That holds for any $|z|=R$ that contains all zeros, thus taking the limit as $R\to \infty$ in $(*)$ and $n\geq 2$ give us the desired. 
+
+$(\Rightarrow )$Another approach, note that if we use partial fractions we get 
+\[\frac{1}{\prod (z-a_i)} = \sum_{i=1}^n \frac{b_i}{z-a_i}\;\;\;\;\;(*)\]
+To find $b_i's$ we choose a small circle $C_i:|z-a_i|=\epsilon$ such that $a_j$ is not inside $C_i$ for $j\ne i$. Then using the residue theorem we get 
+\[ \int_{C_i} \frac{1}{p(z)} dz = \int_{C_i} \sum_{k=1}^n \frac{b_k}{z-a_k} dz \]
+Hence 
+\[ 2\pi i \frac{1}{\prod_{k\ne i} (a_i-a_k)} = 2\pi i b_i\]
+So 
+\[b_i = \frac{1}{\prod_{k\ne i }(a_i-a_k) } \]
+
+But from $(*)$ we get 
+\[1 = \sum_{i=1}^n \frac{\prod_{j=1}^n (z-a_j) b_i}{z-a_i}\]
+Thus the coefficient of $z^{n-1}$ on the right hand side would be $\sum_{i=1}^n b_i = \sum_{i=1}^n \frac{1}{\prod_{k\ne i} (a_i - a_k)} =0$ because the coefficient of $z^{n-1}$ on the left hand side is $0$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that the function $f(z)$ has a simple pole at $z = a$, and let $g(z)$ be an analytic function defined in an open set containing $a$. Show that $\Res(fg; a) = g(a) \Res(f; a)$, where $\Res(f; a)$ means the residue of $f$ at $z = a$.
+\begin{solution}
+Since $f$ has a simple pole at $a$ and $g$ is analytic at $a$,
+\begin{align*}
+    f(z) &= \sum_{i = -1}^\infty b_i (z - a)^i, \\
+    g(z) &= \sum_{i =  0}^\infty c_i (z - a)^i
+\end{align*}
+for all $z$ in a small enough neighborhood of $a$. In that same neighborhood, we can directly compute
+$$ (fg)(z) = \frac{b_{-1} c_0}{z-a} + (b_{-1} c_1 + b_0 c_0) + (b_{-1} c_2 + b_0 c_1 + b_1 c_0)(z-a) + \cdots. $$
+Therefore,
+$$ \Res(fg;a) = b_{-1} c_0 = \Res(f;a) g(a). $$
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that $f$ is an entire function, and it satisfies
+\begin{align*}
+    |f(z)|\le A+B|z|^k
+\end{align*}
+for all complex numbers $z$ and $k>0.$ Prove that $f$ is a polynomial.
+\begin{solution}
+Let us recall the corollary of Cauchy integral theorem.
+\begin{thmbox}{Corollary}
+If a function $f$ is analytic at a point $z_0$ then 
+\begin{align*}
+    f^{(n)}(z_0)=\dfrac{n!}{2\pi i}\int_C \dfrac{f(s)ds}{(s-z_0)^{n+1}}
+\end{align*}
+where $C$ is a simple, closed contour and $z_0$ is a interior point of $C.$
+\end{thmbox}
+Define $C_r=\set{z\in \C \mid |z|=r}$. We have 
+\begin{align*}
+    f^{(n)}(0)=\dfrac{n!}{2\pi i}\int_{C_r} \dfrac{f(s)ds}{s^{n+1}}.
+\end{align*}
+Since $$\sup_{|s|=r} |f(s)|\le \sup_{|s|=r} (A+B|s|^k)=A+B|r|^k,$$ for every integer $n> k$ we have
+\begin{align*}
+    |f^{(n)}(0)|\le \dfrac{n!}{2\pi}\dfrac{A+B|r|^k}{|r|^{n+1}}\cdot 2\pi r={n!}\dfrac{A+B|r|^k}{|r|^{n}}\rightarrow 0,\text{ as }r\rightarrow\infty.
+\end{align*}
+Therefore,
+\begin{align*}
+    f(z)=\sum_{0\le n\le k}a_nz^n,\text{ for all }z\in\mathbb{C},\text{ where }a_n=\dfrac{f^{(n)}(0)}{n!}.
+\end{align*}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $f(z) = u(x,y)+iv(x,y)\;\;(z=x+iy)$ is an entire function, and it satisfies 
+    $$|Du(x,y)| = (u_x^2 + u_y^2)^{1/2}\leq A+B|z|$$
+    for all complex numbers $z$, where $A,B$ are positive numbers. Prove that $f$ is either a quadratic polynomial or an affine function.
+\begin{solution}
+Note that $u_y = -v_x$ and $f'(z) =u_x + i v_x$, thus $(u_x^2 + u_y^2)^{1/2}= |f'(z)|\leq A+B|z|$. Then since $f(z)$ is entire by the Cauchy integral formula we have for any $a\in \mathbb{C}$
+    \[\int_{|z|=R} \frac{f'(z)}{(z-a)^3}= \pi i f'''(a)\]
+    Hence we will have for any $R$
+    \[\pi |f'''(a)| \leq \int_0^{2\pi} \left|\frac{f'(Re^{i\theta})}{R^3(e^{i\theta}-\frac{a}{R})^3} iRe^{i\theta} \; d\theta \right|\leq \int_0^{2\pi} \frac{A+BR}{R^3 m^3} R \; d\theta =  \frac{2\pi}{R} \frac{A/R + B}{m^3}\to 0, \text{ as } R\to \infty  \]
+where $m=\min_\theta\left|e^{i\theta}-\frac{a}{R}\right|\geq 1-\frac{|a|}{R}\geq \frac12$ for $R\geq 2|a|$. Hence $f'''(a)=0$ for every $a\in\mathbb{C}$, so $f'$ is a polynomial of degree at most $1$, and $f$ is a polynomial of degree at most $2$: a quadratic polynomial or an affine function.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $f$ be an entire function and assume that for each $n \in \N$ we have
+$$ |f(z)| \leq \abs{f\brac{\frac{z}{2}}} + \frac{1}{2^n} \quad \text{if} \quad 2^n \leq |z| \leq 2^{n+1}. $$
+Prove that $f$ is a constant function.
+\begin{solution}
+Since $f$ is entire, it is in particular continuous, so it is bounded on the compact set $D = \set{z \in \C \mid |z| \leq 2}$. Let $|f(z)| \leq M$ for all $z \in D$.
+
+Let $2^n \leq |z| \leq 2^{n+1}$. Then
+\begin{align*}
+    |f(z)| &\leq \abs{f\brac{\frac{z}{2}}} + \frac{1}{2^n} \\
+    &\leq \abs{f\brac{\frac{z}{4}}} + \frac{1}{2^{n-1}} + \frac{1}{2^n} \\
+    &\leq \abs{f\brac{\frac{z}{8}}} + \frac{1}{2^{n-2}} + \frac{1}{2^{n-1}} + \frac{1}{2^n} \\
+    &\quad \vdots \\
+    &\leq \abs{f\brac{\frac{z}{2^{n}}}} + \sum_{i=1}^n \frac{1}{2^i} \\ &\leq M + 1.
+\end{align*}
+Every $z$ with $|z|\geq 2$ lies in one of these annuli, and $|f|\leq M$ for $|z|\leq 2$. Therefore $f$ is a bounded entire function, so by Liouville's theorem, it is constant.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item[(a)] If $f$ is an entire function which possesses no or finitely many roots, is it true that $f$ is a polynomial function? Justify your answer. 
+    \item[(b)] If $g$ is an entire function such that there exists a $R > 0$ such that $\Re g(z) > 0$ for all $z$ with $|z| > R$, prove $g$ is a constant function.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] Let $f(z) = e^z$. Indeed, we have 
+    \begin{align*}
+        |f(a + bi)| = |e^{a + bi}| = e^a |e^{bi}| = e^a|\cos b + i\sin b| = e^a > 0.
+    \end{align*}
+    Alternatively, every polynomial function is surjective, because $\C$ is algebraically closed. So a non-constant function with no roots cannot be a polynomial.
+
+    \item[(b)] Let $f(z) = e^{-g(z)}$. Notice that $f$ is entire because it is the composite of two entire functions. Then, for $|z| > R$,
+    $$ |f(z)| = |e^{-g(z)}| = e^{-\Re g(z)} < e^0 = 1. $$
+    We also have that $f$ is bounded on $\{z \mid |z| \leq R\}$ because it is a continuous function evaluated on a compact set. Therefore, $f$ is bounded on all of $\C$; being an entire function, it is constant. This implies that $g$ is also constant.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $f$ be an entire function and suppose that $|f(z)|=|z|$ for $|z|<1$. Prove that $f(z)=\lambda z$ for some $\lambda\in \mathbb{ C}$ with $|\lambda|=1.$
+\begin{solution}
+Define $D = \set{z \in \C \mid |z| < 1}$. Then for any $z \in D$, we have $|f(z)| < 1$ and $f(0) = 0$. Since $f$ is entire and $f(0)=0,$ we define the function
+\begin{align*}
+    g(z)=\begin{cases}
+    \dfrac{f(z)}{z},&z\ne 0,\\
+    f'(0),&z=0
+    \end{cases}.
+\end{align*}
+Then we have $g$ is analytic at all $z$. Then for $r < 1$ and $ \overline{D}_r := \set{z \in \C \mid |z| \le r}$, by a corollary of the Maximum Modulus Principle, there is some $0 \neq z_r \in \overline{D}_r$ such that 
+\begin{align*}
+    |g(z)| \le \dfrac{|f(z_r)|}{|z_r|} =1,\text{ for all } z \in \overline{D}_r.
+\end{align*}
+Let $r \to 1$, we have $|g(z)|\le 1$ for all $z \in D$. Moreover as $|g(z)| = |f(z)|/|z|=1$ for some $z \in D$, $z \ne 0$, we deduce that $|g|$ attains its maximum on $D$. Then by the Maximum Modulus Principle, for all $z\in D$ we have $g(z) = \lambda$ in which $|\lambda| = 1$. Therefore, $f(z) = \lambda z$ for some $\lambda \in \C$ with $|\lambda| = 1$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that $f$ is holomorphic on the unit disk $D$ and $|f(z)|\le 1$ if $z\in D.$ Suppose also that $f$ has two fixed points in $D, f(\alpha)=\alpha, f(\beta)=\beta.$ Show that $f$ is the identity function.
+\begin{solution}
+Firstly we consider the case of $\alpha=0.$ Then by Schwarz Lemma, we have $f(z)=az$ for all $z\in D.$ Since $f(\beta)=\beta,$ we have $f$ is a rotation, i.e. $f(z)=e^{i\theta}z.$ By $f(\beta)=\beta$ again, we have $f(z)=z.$
+ 
+Next suppose that $\alpha\ne 0.$ Then consider the biholomorphic mapping Blaschke Factor of $\alpha$
+\begin{align*}
+    \psi_\alpha(z)&=\dfrac{z-\alpha}{1-\bar \alpha z}.
+\end{align*}
+Note that $|z-\alpha|<|1-\bar \alpha z|$ is equivalent to 
+\begin{align*}
+    |z-\alpha|^2<|1-\bar \alpha z|^2 &\iff (z-\alpha)(\bar z-\bar \alpha) < (1-\bar \alpha z)(1- \alpha \bar z) \\
+    &\iff z\bar z+\alpha \bar \alpha<1+\alpha z\bar \alpha\bar z \\
+    &\iff (|z|^2-1)(|\alpha|^2-1) > 0.
+\end{align*}
+The latter is always true, which implies that $\psi_\alpha$ maps the unit disk to itself. Then define $g=\psi\circ f\circ \psi^{-1}$. Then $g$ is holomorphic, $|g(z)|\le 1$ for all $z$ and since $f(\alpha)=\alpha,$ we have $g(0)=0.$ Moreover $g(\psi(\beta))=(\psi \circ f)(\beta)=\psi(f(\beta))=\psi(\beta).$ Therefore, $g(z)=z$ and thus $f(\psi^{-1}(z))=\psi^{-1}(z)$ for all $z\in D.$ Therefore, $f(z)=z$ for all $z\in D.$
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $\Omega$ is a bounded open set in the complex plane, $f$ is an analytic function in $\Omega$, and
+$$ \limsup_{n \to \infty} |f(z_n)| \leq M $$
+for every sequence $\{z_n\}$ in $\Omega$ which converges to a boundary point of $\Omega$. Prove that $|f(z)| \leq M$ for all $z \in \Omega$.
+\begin{solution}
+We define the function $g:\overline{\Omega} \ri \mathbb{C}$ by
+\begin{align*}
+    g(z) = \begin{cases}
+    f(z) &, z\in \Omega \\
+    M &, z\in \partial \Omega.
+    \end{cases}
+\end{align*}
+From this construction, we guarantee that:
+\begin{align*}
+    \limsup\limits_{n\ri \infty} |g(z_n)| \le \left|g(\overline{z})\right|,
+\end{align*}
+for every sequence $\{z_n\}$ in $\Omega$ converges to $\overline{z} \in \overline{\Omega}$. Then we show that $|g|$ reaches its supremum over $\overline{\Omega}$. Indeed, let $N:= \sup_{z\in \overline{\Omega}} |g(z)| = \max \left\{\sup_{z\in \Omega} |g(z)|;\ M\right\}$. If $\sup_{z\in \Omega} |g(z)| = \sup_{z\in \Omega}|f(z)| \le M$ then our proof completes. Otherwise, assume that $N= \sup_{z\in \Omega}|g(z)|$. By the definition of a supremum, one finds a sequence $\{z_n\} \subset \Omega \subset \overline{\Omega}$ with $\lim_{n\ri \infty} |g(z_n)| = N$. As $\overline{\Omega}$ is compact, there is a subsequence $\{z_{n_k}\}$ of $\{z_n\}$ with $z_{n_k} \xrightarrow{k \ri \infty} \overline{z} \in \overline{\Omega}$. Then by
+\begin{align*}
+    N = \lim_{k\ri\infty} \left|g(z_{n_k})\right| = \limsup_{k\ri\infty} \left|g(z_{n_k})\right| \le \left| g(\overline{z})\right| \le N,
+\end{align*}
+we conclude that $N= \left|g(\overline{z})
+\right|$. \\
+
+Our next goal is to prove that $\left| g \right|$ reaches its supremum $N$ (over $\overline{\Omega}$) at some point in $\pa \Omega$. Without loss of generality we may assume that $\overline{z}\in \Omega$. Let $D$ be the connected component of $\Omega$ that contains $\overline{z}$ (i.e. $D$ is the largest connected subset of $\Omega$ that contains $\overline{z}$). Consider any $z\in D$, we have $z$ also belongs to $\Omega$ open. Thus there is $r>0$ such that the open disk $D_r(z) \subset \Omega$. But since $D_r(z)$ is connected and containing $z$, $D_r(z)$ must be contained in the connected component $D$ ($D \ni z$). That means $D_r(z) \subset D$, and $D$ is an open set. As $D$ is open and connected, it is a domain in $\mathbb{C}$. The function $g$ is analytic in the domain $D\subset \Omega$ and $\left|g\right|$ reaches its local (actually, global) maximum at $\overline{z} \in D$, we deduce from the maximum modulus principle that $g$ is constant (with the value $g(\overline{z})$) throughout $D$. We prove later that $\pa D \subset \pa \Omega$; note that $\pa D \neq \emptyset$, since $D$ is a nonempty bounded open subset of $\C$. For any $u\in \pa D \subset \pa \Omega$, one finds a sequence $\{u_n\} \subset D \subset \Omega$ and $u_n \ri u$. Thus 
+\begin{align*}
+    N = \lim_{n\ri \infty} |g(u_n)| =  \limsup_{n\ri \infty} |g(u_n)| \le |g(u)| \le N,
+\end{align*}
+and $|g(u)| = N$. Since $u\in \pa \Omega$ and $|g(u)|=M$, we must have $M=N=\sup_{z\in \overline{\Omega}}|g(z)|$, and 
+\begin{align*}
+    |f(z)| = |g(z)| \le M \ \ \text{ for all } z\in \Omega.
+\end{align*}
+Now we finish the proof by verifying that: $\pa D \subset \pa \Omega$. Let $x\in \overline{D}$, and suppose that $x\in \Omega$ open. Then one finds $\rho >0$ and $D_{\rho}(x) \subset \Omega$. As the intersection of the open disk $D_{\rho}(x)$ and $D$ is non-empty (because $x\in \overline{D}$); and they are both connected, we deduce that $D_{\rho}(x) \cup D$ is also connected, and is contained in $\Omega$. Thus $D_{\rho}(x)\cup D \subset D$, and $D_{\rho}(x) \subset D$. Hence one has $x\in D$. That is, for any $x\in \overline{D}$ we have the implication:
+\begin{align*}
+    x\in \Omega \Longrightarrow x\in D.
+\end{align*}
+Therefore,
+\begin{align*}
+    \pa D = \overline{D} \setminus D \subset \overline{D} \setminus \Omega \subset \overline{\Omega} \setminus \Omega = \pa \Omega.
+\end{align*}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $D = \set{z \mid |z| < 1}$ and $\closure{D} = \set{z \mid |z| \leq 1}$. Suppose that $f: \closure{D} \setminus \{0\} \to \C$ is a continuous function that satisfies
+\begin{enumerate}
+    \item $f$ is analytic in $D \setminus \{0\}$;
+    \item $$ \limsup_{z \to 0} |f(z)| < \infty; $$ and
+    \item $f(z)$ is equal to a finite constant $c$ on the unit circle $|z| = 1$.
+\end{enumerate}
+Prove that $f$ is a constant function.
+\begin{solution}
+First, we observe from the second assumption that $z=0$ is a removable singularity of $f$. Indeed, assume that for all $r>0$ and all $\delta >0$, one finds $z \in D(0;r)\setminus \{0\}$ such that $|f(z)|> \delta$. Then for \begin{align*}
+    &r=1/2,\ \delta =2: \text{ find } 0\neq z_2 \in D(0;1/2) \text{ and } |f(z_2)|>2, \\
+    &r=1/3,\ \delta =3: \text{ find } 0\neq z_3 \in D(0;1/3) \text{ and } |f(z_3)|>3, \\
+    &\vdots
+\end{align*}
+Thus we have constructed a sequence $z_k \ri 0$ with $|f(z_k)| \ri +\infty$, which contradicts the fact that $\limsup_{z\ri 0} |f(z)| < \infty$. Hence there must be some $r>0$ and $M>0$ such that $|f(z)| \le M$ for all $z\in D(0;r)\setminus \{0\}$. As $f$ is analytic and bounded in the deleted neighborhood $0<|z|<r$ of $0$ and not analytic at $0$, the Riemann's theorem gives us that $z=0$ is a removable singularity of $f$. Therefore we have the representation:
+\begin{align*}
+    f(z) = \sum_{n=0}^{\infty} a_n z^n\ \ \ \text{in }\ \  0<|z|<1.
+\end{align*}
+Then if one sets 
+\begin{align*}
+    g(z) = \begin{cases}
+    f(z) &, z\in D\setminus \{0\}\\
+    a_0 &, z=0
+    \end{cases},
+\end{align*}
+$g$ is indeed analytic in $D$ and continuous in $\overline{D}$. Let $h(z):= g(z) - c$ for all $z\in \overline{D}$, we have $h=0$ on the circle $|z|=1$. If $h$ is constant in $D$ then it is also constant in $\overline{D}$ by its continuity, and we get our desired result. Otherwise we utilize a corollary of the Maximum Modulus Principle and see that for all $z\in \overline{D}$:
+\begin{align*}
+    |h(z)| \le |h(z_0)| \ \text{ for some }\ z_0 \text{ with } \ |z_0|=1. 
+\end{align*}
+And thus $h(z)=0$ in the whole $\overline{D}$ and we complete our proof here.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $f(z) = \sum_{n=0}^\infty a_n z^n$ where $\lim_{n \to \infty} |a_n|^{1/n} = 1$. Show that there exists a $\zeta \in \C$ with $|\zeta| = 1$ such that $f$ has no analytic continuation to $\{z : |z - \zeta| < \epsilon\}$ for any $\epsilon > 0$.
+\begin{solution}
+By the Cauchy-Hadamard theorem, the radius of convergence $R$ satisfies the equation
+\begin{align*}
+    \frac{1}{R} = \limsup_{n \to \infty} |a_n|^{1/n},
+\end{align*}
+so we have $R = 1$ in our case. In particular, $f$ is defined on $D = \set{z \mid |z| < 1}$.
+
+Suppose that no such $\zeta$ exists; in particular, $f(z)$ is defined on all of $\partial D$. For every $z \in \partial D$, there exists an $\epsilon_z > 0$ such that $f$ can be analytically continued to all of $B(z, \epsilon_z)$.
+
+By Lebesgue's Covering Lemma, there exists an $\epsilon > 0$ such that for every $z_0 \in \partial D$, $B(z_0, \epsilon) \subseteq B(z, \epsilon_z)$ for some $z \in \partial D$. Therefore, $f$ can be analytically continued to $D' = \set{z \mid |z| < 1 + \epsilon}$. But this would imply that $R \geq 1 + \epsilon > 1$, which is a contradiction.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose $u$ and $v$ are real-valued nonconstant harmonic functions defined on a domain $U$ in the complex plane and the product $uv$ is also harmonic on $U$. Prove that there exists a real number $t$ such that $u + itv$ is holomorphic on $U$.
+\begin{solution}
+Notice that
+\begin{align*}
+    (uv)_{xx} + (uv)_{yy} &= \brac{u_x v + u v_x}_x + \brac{u_y v + u v_y}_y \\
+    &= u_{xx} v + 2 u_x v_x + u v_{xx} + u_{yy} v + 2 u_y v_y + u v_{yy} \\
+    &= (u_{xx} + u_{yy})v + u(v_{xx} + v_{yy}) + 2(u_x v_x + u_y v_y)
+\end{align*}
+From the assumption that $u$, $v$ and $uv$ are harmonic, we can then deduce that
+$$ u_x v_x + u_y v_y = 0. $$
+In other words, at any point $z \in U$, the real vectors $(u_x(z), u_y(z))$ and $(v_x(z), v_y(z))$ are perpendicular. Therefore, at the points where $(v_x, v_y) \neq (0,0)$ (all points of $U$ except isolated ones, because $v_x - iv_y$ is analytic and not identically zero, $v$ being nonconstant), the vectors $(u_x(z), u_y(z))$ and $(v_y(z), -v_x(z))$ are collinear, so there exists a real-valued function $c(z)$ such that $(u_x, u_y) = c(z) (v_y, -v_x)$. We claim that $c$ is constant.
+
+By differentiating the defining relation(s) we get the following:
+\begin{align*}
+    u_{xx} &= c_x v_y + c v_{xy} \\
+    u_{yy} &= -c_y v_x - c v_{xy} \\
+    u_{xy} &= c_y v_y + c v_{yy} \\
+    u_{xy} &= -c_x v_x - c v_{xx}.
+\end{align*}
+It follows that
+\begin{align*}
+    0 &= u_{xy} - u_{xy} = c_y v_y + c v_{yy} - (-c_x v_x - c v_{xx}) = c_y v_y + c_x v_x, \\
+    0 &= u_{xx} + u_{yy} = c_x v_y + c v_{xy} - c_y v_x - c v_{xy} = c_x v_y - c_y v_x.
+\end{align*}
+In other words, the vector $(c_x, c_y)$ is perpendicular to $(v_x, v_y)$ as well as $(-v_y, v_x)$. Therefore $(c_x, c_y) = (0,0)$ for every $z \in U$.
+
+Notice that the Cauchy-Riemann equations for $u$ and $cv$ at $z$ can be expressed as the single equation
+$$ (u_x(z), u_y(z)) = ((cv)_y(z), -(cv)_x(z)) = c(v_y(z), -v_x(z)), $$
+so $u + itv$ is holomorphic on $U$ with $t = c$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $\Omega$ be a connected open subset of $\C.$ Suppose $u$ is harmonic and real-valued in $\Omega.$
+\begin{itemize}
+    \item[(a)] Show that $u_x - iu_y$ is analytic in $\Omega$. 
+    \item[(b)] If $u^2$ is also harmonic in $\Omega$, show that $u$ is constant in $\Omega$.
+\end{itemize}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] Since $u$ is harmonic, we have $u_{xx} + u_{yy} = 0$.
+    We simply check the Cauchy-Riemann equations:
+    \begin{align*}
+        (u_x)_x &= u_{xx} - \brac{u_{xx} + u_{yy}} = (-u_y)_y \\
+        (u_x)_y &= (u_y)_x = -(-u_y)_x.
+    \end{align*}
+    \item[(b)] Notice that
+    \begin{align*}
+        (u^2)_{xx} &= (2u \cdot u_x)_x = 2((u_x)^2 + u \cdot u_{xx}), \\
+        (u^2)_{yy} &= (2u \cdot u_y)_y = 2((u_y)^2 + u \cdot u_{yy}).
+    \end{align*}
+    Thus the assumption that $u^2$ is harmonic implies that
+    $$ 0 = (u^2)_{xx} + (u^2)_{yy} = 2((u_x)^2 + (u_y)^2 + u \cdot (u_{xx} + u_{yy})) = 2((u_x)^2 + (u_y)^2). $$
+    But $(u_x)^2$ and $(u_y)^2$ are squares of real numbers, so non-negative. Therefore we must have $(u_x)^2 = (u_y)^2 = 0$, which implies that $u_x = u_y = 0$, i.e. $u$ is constant.
+\end{enumerate}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Suppose that $f$ is a complex-valued function defined on $D=\set{z:|z|<1}$ and $g=f^2,\ h=f^3$ are analytic in $D.$ Show that $f$ is analytic in $D.$
+\begin{solution}
+Suppose that $f^2$ and $f^3$ have zeroes of order $n$ and $m$ at $z_0,$ we have $f(z)^2=(z-z_0)^n\varphi(z),f(z)^3=(z-z_0)^m\psi(z)$, where $\varphi,\psi$ are analytic and $\varphi(z_0)\ne 0,\psi(z_0)\ne 0.$ Then 
+\begin{align*}
+    (f(z))^6=(f(z)^2)^3=(z-z_0)^{3n}\varphi(z)^3
+\end{align*}
+and 
+\begin{align*}
+    (f(z))^6=(f(z)^3)^2=(z-z_0)^{2m}\psi(z)^2.
+\end{align*}
+Then 
+\begin{align*}
+    (z-z_0)^{3n-2m}=\dfrac{\psi(z)^2}{\varphi(z)^3}.
+\end{align*}
+Since $\psi^2/\varphi^3$ is not zero near $z_0,$ we must have $3n=2m.$ Then $m=\dfrac{3}{2}n>n$ and thus $f=f^3/f^2$ is analytic at $z_0.$ Therefore, $f$ is analytic.
+\end{solution}
+\end{problem}

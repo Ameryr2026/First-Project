@@ -1,0 +1,608 @@
+\section{Functions of several variables}\label{p:several-variables}
+\blurb{Differentiability, double integrals, the divergence theorem, and the implicit and inverse function theorems.}
+
+\begin{problem}
+Let $f : \R^2 \to \R$.
+\begin{enumerate}
+    \item[(a)] Define what it means for $f$ to be differentiable at the point $(1,1)$.
+    \item[(b)] Prove that if $f(x,y) = x^2 - y^2$ then $f$ is differentiable at the point $(1,1)$.
+\end{enumerate}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] $f$ is called differentiable at the point $(1,1)$ if there exists a $1 \times 2$ matrix $A$ such that
+    \begin{align*}
+        \lim_{(h_1,h_2) \to (0,0)} \dfrac{|f(1+h_1, 1+h_2) - f(1, 1) - A(h_1, h_2)|}{\sqrt{h_1^2 + h_2^2}} = 0.
+    \end{align*}
+    \item[(b)] Let $A = \begin{bmatrix} 2 & -2 \end{bmatrix}$. We have that 
+    \begin{align*}
+       \dfrac{|f(1+h_1, 1+h_2) - f(1, 1) - A(h_1, h_2)|}{\sqrt{h_1^2 + h_2^2}} 
+       &=\dfrac{|(1+h_1)^2 - (1+h_2)^2 - (2h_1-2h_2)|}{\sqrt{h_1^2 + h_2^2}}\\
+       &=\dfrac{|h_1^2 - h_2^2|}{\sqrt{h_1^2 + h_2^2}}\\
+       &\le \dfrac{|(h_1 - h_2)(h_1 + h_2)|}{\sqrt{\dfrac{(h_1 + h_2)^2}{2}}}\\
+       &=\sqrt{2} \cdot |h_1 - h_2| \to 0 \text{ as } (h_1, h_2) \to (0, 0).
+    \end{align*}
+\end{itemize}
+Therefore, $f$ is differentiable at $(1, 1)$. In the inequality above (where $h_1+h_2\neq 0$; when $h_1+h_2=0$ the quotient is $0$) we used that, by the AM-GM inequality, $2 h_1 h_2 \leq h_1^2 + h_2^2$, and therefore $(h_1 + h_2)^2 = h_1^2 + 2h_1h_2 + h_2^2 \leq 2(h_1^2 + h_2^2)$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+A careless student claims to have a proof of the following incorrect statement:
+\begin{center}
+    If $f: \R^2 \to \R$ is continuous in each variable separately, then $f$ is continuous.
+\end{center}
+The ``proof'' given is as follows. Let $(x_0, y_0)$ in $\R^2$. For any $(x,y)$ in $\R^2$,
+$$ |f(x,y) - f(x_0, y_0)| \leq |f(x,y) - f(x,y_0)| + |f(x,y_0) - f(x_0, y_0)|. $$
+There exist $\delta_1 > 0$ and $\delta_2 > 0$ such that, if $|y - y_0| < \delta_1$, then $|f(x,y) - f(x,y_0)| < \epsilon/2$, and if $|x - x_0| < \delta_2$, then $|f(x,y_0) - f(x_0,y_0)| < \epsilon/2$. Thus if $\delta = \min\{\delta_1, \delta_2\}$, $|x - x_0| < \delta$, and $|y - y_0| < \delta$, then $|f(x,y) - f(x_0, y_0)| < \epsilon$.
+\begin{enumerate}
+    \item[(a)] Show that the function defined by $f(x,y) = \frac{xy}{x^2 + y^2}$ for $(x,y) \neq (0,0)$ and $f(0,0) = 0$ is a counterexample to the student's statement.
+    \item[(b)] What is the error in the students's ``proof''?
+    \item[(c)] Find an added hypothesis that would make the student's statement correct and the outline of his ``proof'' valid.
+\end{enumerate}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] We will show that 
+    \begin{align*}
+        f(x,y) = \begin{cases}
+        \dfrac{xy}{x^2 + y^2} & (x,y) \ne (0,0),\\
+        0 & (x,y) = (0,0)
+        \end{cases}
+    \end{align*}
+    is separately continuous but not continuous. Fix $\bar x$. We have 
+    \begin{align*}
+        \lim_{y \to \bar y} \dfrac{\bar xy}{\bar x^2 + y^2} = \begin{cases}
+        0 & \bar x = 0, \\
+        \dfrac{\bar x\bar y}{\bar x^2 + \bar y^2} & \bar x \ne 0.
+        \end{cases} = f(\bar x,\bar y).
+    \end{align*}
+    Thus we see that $f$ is continuous in terms of $y$. Similarly, we can prove that $f$ is continuous in terms of $x$. But $f$ is not continuous, since $f(0,0) = 0$ and for $(x_n,y_n)=(1/n,1/n) \to (0,0)$, we have 
+    \begin{align*}
+        f(x_n, y_n) = \dfrac{1}{2}, \text{ for all } n \in \N.
+    \end{align*}
+    \item[(b)] The error is that the student does not fix $x$ and $y$ in the proof. That means, $\delta_1$ is not invariant for $y$ and $\delta_2$ is not invariant for $x$.
+    \item[(c)] Suppose that for $(x_0, y_0)$ fixed, for any $\epsilon > 0$, there is some $\delta_1, \delta_2 > 0$ such that 
+    \begin{align*}
+        |y - y_0| < \delta_1 \implies |f(x,y) - f(x,y_0)| < \epsilon, \text{ for all } x \in \R. \\
+        |x - x_0| < \delta_2 \implies |f(x,y) - f(x_0,y)| < \epsilon, \text{ for all } y \in \R.
+    \end{align*}
+    Then $f$ is continuous.
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $f(x,y)$ be a continuous function on the rectangle $R = [a_1, b_1] \times [a_2, b_2]$ in $\R^2$.
+\begin{enumerate}
+    \item[(a)] Let $F(y) = \int_{a_1}^{b_1} f(x,y) \,dx$. Prove that $F(y)$ is continuous on $[a_2, b_2]$.
+    \item[(b)] Give the definition of the area integral $\iint_R f(x,y) \,dA$ of $f$ over $R$.
+    \item[(c)] Using the notation above, prove iterated integrals formula; that is, prove that
+    $$ \iint_R f(x,y) \,dA = \int_{a_2}^{b_2} F(y) \,dy. $$
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] Consider $\overline{y}\in [a_2,b_2]$ and a sequence $y_n \xrightarrow{n\rightarrow\infty} \overline{y}$ in $[a_2,b_2]$. We aim to show that 
+    \begin{align*}
+        \displaystyle\int_{a_1}^{b_1} f(x,y_n)dx \xrightarrow{n\rightarrow\infty} \displaystyle\int_{a_1}^{b_1}f(x,\overline{y})dx
+    \end{align*}
+    with the help of the Lebesgue's Dominated Convergence Theorem. Notice here that $f$ is continuous on $R$ compact, hence $f$ is Riemann-integrable, Lebesgue-integrable on $R$ and those two integrals are equal. \\
+    First we check the convergence condition. For $x\in [a_1,b_1]$, since $y_n \rightarrow \overline{y}$ in $[a_2,b_2]$ we also have $(x,y_n) \xrightarrow{n\rightarrow\infty} (x,\overline{y})$ in $R=[a_1,b_1]\times [a_2,b_2]$. And from the fact that $f$ is continuous on $R$, we deduce that $f(x,y_n) \xrightarrow{n\rightarrow\infty} f(x,\overline{y})$ for any $x\in [a_1,b_1]$. \\
+    
+    Next, we check the dominated condition. As $f$ is continuous on $[a_1,b_1]\times [a_2,b_2]$, from the Extreme Value Theorem one can find $M>0$ such that
+    \begin{align*}
+        \left| f(x,y) \right| \le M,\ \forall (x,y) \in [a_1,b_1]\times [a_2,b_2].
+    \end{align*}
+    Thus $\left| f(x,y_n) \right| \le M,\ \forall x\in [a_1,b_1]$ and $\forall n\in\mathbb{N}$. Moreover, $\displaystyle\int_{a_1}^{b_1}Mdx = M(b_1-a_1) <\infty$. Therefore, from the Lebesgue's Dominated Convergence Theorem we deduce that $F(y_n) \xrightarrow{n\rightarrow\infty} F(\overline{y})$. That implies $F$ is continuous on $[a_2,b_2]$.
+    \item[(b)] Consider $P_i$ a partition of the interval $[a_i,b_i]$, $i=1,2$. Then $P=P_1 \times P_2$ is a partition of $R=[a_1,b_1]\times [a_2,b_2]$. The partition $P$ splits $R$ into finite sub-rectangles $A_k$, $k=1,2,...,n_P$. $S_k$ denotes the area of $A_k$. For any such $P$, we set
+    \begin{align*}
+        U(P,f) &:= \displaystyle\sum\limits_{k=1}^{n_P} S_k \max\limits_{x\in A_k}f(x),\\
+        L(P,f) &:= \displaystyle\sum\limits_{k=1}^{n_P} S_k \min\limits_{x\in A_k}f(x).
+    \end{align*}
+    Let $\mathcal{P}$ be the set of all partitions of $R$ and 
+    \begin{align*}
+        U(f) &:= \inf\limits_{P\in \mathcal{P}} U(P,f),\\
+        L(f) &:= \sup\limits_{P\in \mathcal{P}} L(P,f).
+    \end{align*}
+    As $f$ is continuous on $R$, we notice that:
+    \begin{enumerate}
+        \item[(i)] If $P,P'\in\mathcal{P}$ and $P\subset P'$ then 
+        \begin{align*}
+            L(P,f) \le L(P',f) \le U(P',f) \le U(P,f).
+        \end{align*}
+        As $P\subset P'$, a rectangle $A_k$ corresponding to $P$ is the union of some finite rectangles $A^j_k$ corresponding to $P'$. This implies
+        \begin{align*}
+            L(P,f) = \displaystyle\sum\limits_{k=1}^{n_P} S_k \min\limits_{x\in A_k}f(x) \le \displaystyle\sum\limits_{k=1}^{n_P} \left( \displaystyle\sum\limits_{j} S^j_k \min\limits_{x\in A^j_k}f(x) \right) = L(P',f).
+        \end{align*}
+        Similarly, we get the third inequality. The second inequality is directly implied from the definitions. 
+        \item[(ii)] $L(P,f) \le U(P',f)\ \ \forall P,P'\in\mathcal{P}$. Indeed, consider $P=P_1 \times P_2, P' = P'_1 \times P'_2 \in\mathcal{P}$ and $P'':=(P_1 \cup P'_1) \times (P_2 \cup P'_2)$. Thus $P'' \supset P'\cup P$. From (i) we obtain that 
+        \begin{align*}
+            L(P,f) \le L(P'',f) \le U(P'',f) \le U(P',f).
+        \end{align*}
+        \item[(iii)] $U(f) = L(f)$. Indeed, we will show that
+        \begin{align*}
+            \inf\limits_{P\in \mathcal{P}} U(P,f) = \sup\limits_{P\in \mathcal{P}} L(P,f).
+        \end{align*}
+        First, for every $P,P'\in\mathcal{P}$ we always have $U(P,f) \ge L(P',f)$. Hence $\inf\limits_{P\in\mathcal{P}} U(P,f) \ge L(P',f)$ for every $P'\in\mathcal{P}$.\\
+        
+        Next, for $\varepsilon >0$ we find $P'\in\mathcal{P}$ such that 
+        \begin{align*}
+            \inf\limits_{P\in\mathcal{P}} U(P,f) < L(P',f) + \varepsilon,
+        \end{align*}
+        equivalent to the existence of some  $P\in\mathcal{P}$ such that 
+        \begin{align*}
+            U(P,f) < L(P',f) + \varepsilon. 
+        \end{align*}
+        Since $f$ is continuous on the compact set $R=[a_1,b_1]\times [a_2,b_2]$, the Heine-Cantor theorem implies that $f$ is also uniformly continuous on $R$. Thus we find $\delta >0$ such that for every points $x,x' \in R$, we have the implication:
+        \begin{align*}
+            \left\| x - x' \right\| < \delta \Longrightarrow \left| f(x) - f(x') \right| < \dfrac{\varepsilon}{\mathrm{area}(R)}.
+        \end{align*}
+        By choosing $P=P'$ a partition of $R$ such that each sub-rectangle $A_k$ has sides of length at most $\dfrac{\delta}{2}$, we see that
+        \begin{align*}
+            \forall A_k \text{ and } \forall x,x' \in A_k: \left\| x-x' \right\| \le \dfrac{\delta}{\sqrt{2}} < \delta.
+        \end{align*}
+        Therefore,
+        \begin{align*}
+            U(P,f) - L(P,f) = \displaystyle\sum\limits_{k=1}^{n_P} S_k \big[ \max\limits_{x\in A_k} f(x) - \min\limits_{x\in A_k} f(x) \big] < \displaystyle\sum\limits_{k=1}^{n_P} S_k \dfrac{\varepsilon}{\mathrm{area}(R)} = \varepsilon. 
+        \end{align*}
+        Thus we have found $P,P'\in\mathcal{P}$ such that $U(P,f) < L(P',f) + \varepsilon$. 
+    \end{enumerate}
+    \textbf{Then, we define} 
+    \begin{align*}
+    \displaystyle\iint_{R} f(x,y)dA := U(f) = L(f).
+    \end{align*}
+    \item[(c)] Take arbitrary partitions $P_1 :=\left\{ a_1 = x_0 , x_1 ,... , x_n = b_1 \right\}$ of $[a_1,b_1]$ \\
+    and $P_2 := \left\{ a_2 = y_0 , y_1 , ... , y_m = b_2 \right\}$ of $[a_2,b_2]$. Then $P := P_1 \times P_2$ is a partition of $R$ into $n\times m$ sub-rectangles $A_{ij}$. For simplicity, we use the notations
+    \begin{align*}
+        \Delta x_i := x_i - x_{i-1}\ \ \ \Delta y_j := y_j - y_{j-1} \ \ \ m_{ij}:= \min\limits_{x\in A_{ij}} f(x) \ \ \ M_{ij}:= \max\limits_{x\in A_{ij}} f(x).
+    \end{align*}
+    Since $m_{ij} \le f(x,y) \le M_{ij}$ for every $(x,y) \in A_{ij}$, we deduce that 
+    \begin{align*}
+        m_{ij} \Delta x_i \le \displaystyle\int\limits_{x_{i-1}}^{x_i} f(x,y) dx \le M_{ij} \Delta x_i,\ \ \forall y\in [y_{j-1},y_j],\ \ \forall j =1,...,m,\ \ \forall i=1,...,n.
+    \end{align*}
+    Then taking the sum as $i$ runs from $1$ to $n$, it shows:
+    \begin{align*}
+        \displaystyle\sum\limits_{i=1}^n m_{ij} \Delta x_i \le \displaystyle\int\limits_{a_1}^{b_1} f(x,y) dx \le  \displaystyle\sum\limits_{i=1}^n M_{ij} \Delta x_i,\ \ \forall y\in [y_{j-1}, y_j],\ \ \forall j=1,...,m. 
+    \end{align*}
+    Therefore, again we get:
+    \begin{align*}
+        \left(  \displaystyle\sum\limits_{i=1}^n m_{ij} \Delta x_i \right)\Delta y_j \le \displaystyle\int\limits_{y_{j-1}}^{y_j}\displaystyle\int\limits_{a_1}^{b_1} f(x,y) dx dy \le  \left(  \displaystyle\sum\limits_{i=1}^n M_{ij} \Delta x_i \right) \Delta y_j,\ \ \forall j=1,...,m
+    \end{align*}
+    and thus
+    \begin{align*}
+        \displaystyle\sum\limits_{j=1}^m \displaystyle\sum\limits_{i=1}^n m_{ij} \Delta x_i \Delta y_j \le \displaystyle\int\limits_{a_2}^{b_2} \displaystyle\int\limits_{a_1}^{b_1} f(x,y) dx dy \le  \displaystyle\sum\limits_{j=1}^m \displaystyle\sum\limits_{i=1}^n M_{ij} \Delta x_i \Delta y_j.
+    \end{align*}
+    Recalling the definitions of $U(P,f)$ and $L(P,f)$, we deduce that 
+    \begin{align*}
+        L(P,f) \le \displaystyle\int\limits_{a_2}^{b_2} \displaystyle\int\limits_{a_1}^{b_1} f(x,y) dx dy \le U(P,f),\ \ \forall P\in \mathcal{P},
+    \end{align*}
+    and moreover, $L(f) \le \int\limits_{a_2}^{b_2} \int\limits_{a_1}^{b_1} f(x,y) dx dy \le U(f)$. As $\iint_{R} f(x,y) dA := U(f) = L(f)$, we conclude that 
+    \begin{align*}
+        \displaystyle\iint_{R} f(x,y) dA = \displaystyle\int\limits_{a_2}^{b_2} \displaystyle\int\limits_{a_1}^{b_1} f(x,y) dx dy = \displaystyle\int\limits_{a_2}^{b_2} F(y) dy.
+    \end{align*}
+\end{enumerate}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\label{prob:divergence}Let $\mathbf{F}: \mathbb{R}^2 \rightarrow \mathbb{R}^2$ be a continuous differentiable vector field. We write $\mathbf{F}(x,y) = \big( f(x,y), g(x,y)\big)$ and define the \textbf{divergence} of \textbf{F} as $\mathrm{div}\mathbf{F}=f_x (x,y) + g_y (x,y)$. For a bounded piecewise smooth domain $\Omega$ in $\mathbb{R}^2$, let $\partial\Omega$ denote its boundary.   
+\begin{itemize}
+    \item[(a)] If $\Omega=[a,b]\times [c,d]$, prove that 
+    \begin{align}\label{eq:div-rect}
+        \displaystyle\iint_{\Omega} \mathrm{div}\mathbf{F}(x,y)\ dx dy = \displaystyle\int_{\partial\Omega}\mathbf{F}\cdot \nu\ dS(x,y), 
+    \end{align}
+    where $\nu$ is the exterior normal to the boundary and $dS$ denotes the arc length element. 
+    \item[(b)] If $\Omega$ is the unit disk in $\mathbb{R}^2$, prove that 
+    \begin{align}\label{eq:div-disk}
+        \displaystyle\iint_{\Omega} \mathrm{div}\mathbf{F}(x,y)\ dxdy = \displaystyle\int_{\partial\Omega}\mathbf{F}\cdot \nu \ dS(x,y),
+    \end{align}
+    where $\nu$ is the exterior normal to $\partial\Omega$.
+\end{itemize}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] \quad 
+    \contourfig{rectangle}
+    \textbf{Recall.} When calculating $\displaystyle\int_{C}f(x,y)\ dS$ and $C$ is parameterized by 
+    \begin{align*}
+        x=x(t),\ y=y(t),\ a\le t\le b,
+    \end{align*}
+    we have that:
+    \begin{align*}
+        \displaystyle\int_{C}f(x,y)\ dS = \displaystyle\int_a^b f\big( x(t),y(t) \big) \sqrt{[x'(t)]^2+[y'(t)]^2} dt.
+    \end{align*}
+    As $\Omega = [a,b] \times [c,d]$, the RHS of \eqref{eq:div-rect} is computed through 4 integrals:
+    \begin{align*}
+        \displaystyle\int_{\partial\Omega}\mathbf{F}\cdot \nu\ dS(x,y) &= \displaystyle\int_{I_1}\mathbf{F}\cdot \nu\ dS + \displaystyle\int_{I_2}\mathbf{F}\cdot \nu\ dS + \displaystyle\int_{I_3}\mathbf{F}\cdot \nu\ dS + 
+        \displaystyle\int_{I_4}\mathbf{F}\cdot \nu\ dS \\
+        &= \displaystyle\int_{I_1}\mathbf{F}\cdot n_1 \ dS + \displaystyle\int_{I_2}\mathbf{F}\cdot n_2 \ dS + \displaystyle\int_{I_3}\mathbf{F}\cdot n_3\ dS + 
+        \displaystyle\int_{I_4}\mathbf{F}\cdot n_4\ dS \\
+        &= -\displaystyle\int_a^b g(x,c) \ dx + \displaystyle\int_c^d f(b,y) \ dy + \displaystyle\int_a^b g(x,d) \ dx -
+        \displaystyle\int_c^d f(a,y) dy.
+    \end{align*}
+    Besides, we also have 
+    \begin{align*}
+        &\displaystyle\iint_{\Omega} \mathrm{div}\mathbf{F}(x,y)\ dx dy =    \displaystyle\int_a^b \int_c^d \mathrm{div}\mathbf{F}(x,y)\ dx dy \\
+        &=\displaystyle\int_a^b \int_c^d f_x (x,y)\ dxdy + \displaystyle\int_a^b \int_c^d g_y (x,y) \ dxdy \\
+        &= \displaystyle\int_c^d \left( \int_a^b f_x (x,y) \ dx \right) dy + \displaystyle\int_a^b \left( \int_c^d g_y (x,y) \ dy \right) dx \\
+        &= \displaystyle\int_c^d \big[f(b,y) - f(a,y)\big] dy + \displaystyle\int_a^b \big[g(x,d) - g(x,c)\big] dx \\
+        &= \displaystyle\int_{\partial\Omega}\mathbf{F}\cdot \nu\ dS(x,y).
+    \end{align*}
+    \item[(b)] Suppose now that $\Omega = B_1$ which is the unit disk in $\R^2$. 
+    We can look at $\Omega$ as 
+    \begin{align*}
+    \Omega &= \left\{ (x,y)\in \R^2 \mid -1\le y \le 1, -\sqrt{1-y^2} \le x \le \sqrt{1-y^2}\right\}, \\
+    \Omega &= \left\{ (x,y)\in \R^2 \mid -1\le x \le 1, -\sqrt{1-x^2} \le y \le \sqrt{1-x^2} \right\}.
+    \end{align*}
+    First, we compute the LHS of \eqref{eq:div-disk}:
+    \begin{align*}
+        &\displaystyle\iint_{\Omega} \mathrm{div}\mathbf{F}(x,y)\ dxdy  \\
+        &= \displaystyle\iint_{\Omega} f_x (x,y)\ dxdy + \displaystyle\iint_{\Omega} g_y(x,y) \ dxdy \\
+        &= \displaystyle\int\limits_{-1}^1 \displaystyle\int\limits_{-\sqrt{1-y^2}}^{\sqrt{1-y^2}} f_x dxdy + \displaystyle\int\limits_{-1}^1 \displaystyle\int\limits_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} g_y dydx \\
+        &= \displaystyle\int\limits_{-1}^1 \left[ f\Big(\sqrt{1-y^2},y\Big) - f\Big( -\sqrt{1-y^2},y\Big) \right] dy + \displaystyle\int\limits_{-1}^1 \left[ g\Big(x,\sqrt{1-x^2}\Big) - g\Big(x, -\sqrt{1-x^2}\Big) \right] dx.
+    \end{align*}
+    To compute the RHS of \eqref{eq:div-disk}, first remark that the exterior unit vector to $\partial\Omega$ at $(x,y)$ is exactly $(x,y)$.
+    \contourfig{disknormal}
+    Thus 
+    \begin{align*}
+        \displaystyle\int_{\partial\Omega} \mathbf{F}\cdot \nu\ dS &= \displaystyle\int_{\partial\Omega} \left[xf(x,y) + yg(x,y)\right] dS \\
+        &= M_1 + M_2 + M_3 + M_4,
+    \end{align*}
+    where $M_1,M_2,M_3,M_4$ respectively are the line integrals on $I_1, I_2, I_3, I_4$:
+    \contourfig{quarters}
+    + Calculate $M_1$:
+    \begin{align*}
+        M_1 &= \displaystyle\int_{I_1} \left[xf(x,y) + yg(x,y)\right] dS \\
+        &= \displaystyle\int_{-1}^0 -\sqrt{1-y^2}\  f\Big( -\sqrt{1-y^2},y\Big)\dfrac{1}{\sqrt{1-y^2}} dy \\ 
+        &\hspace{3cm} + \displaystyle\int_{-1}^0 -\sqrt{1-x^2}\ g\Big(x, -\sqrt{1-x^2}\Big)\dfrac{1}{\sqrt{1-x^2}} dx.\\
+        &= \displaystyle\int_{-1}^0 - f\Big( -\sqrt{1-y^2},y\Big) dy + \displaystyle\int_{-1}^0 -g\Big(x, -\sqrt{1-x^2}\Big) dx.
+    \end{align*}
+    + Similarly, we have:
+    \begin{align*}
+        M_2 &= \displaystyle\int_{I_2} \left[xf(x,y) + yg(x,y)\right] dS \\
+        &= \displaystyle\int_{-1}^0  f\Big( \sqrt{1-y^2},y\Big) dy + \displaystyle\int_{0}^1 -g\Big(x, -\sqrt{1-x^2}\Big) dx,
+    \end{align*}
+    and 
+     \begin{align*}
+        M_3 &= \displaystyle\int_{I_3} \left[xf(x,y) + yg(x,y)\right] dS \\
+        &= \displaystyle\int_{0}^1 f\Big( \sqrt{1-y^2},y\Big) dy + \displaystyle\int_{0}^1 g\Big(x, \sqrt{1-x^2}\Big) dx,
+    \end{align*}
+    and 
+     \begin{align*}
+        M_4 &= \displaystyle\int_{I_4} \left[xf(x,y) + yg(x,y)\right] dS \\
+        &= \displaystyle\int_{0}^1  -f\Big( -\sqrt{1-y^2},y\Big) dy + \displaystyle\int_{-1}^0 g\Big(x, \sqrt{1-x^2}\Big) dx.
+    \end{align*}
+    The four equalities lead to:
+    \begin{align*}
+        &\displaystyle\int_{\partial\Omega}\mathbf{F}\cdot \nu\ dS \\
+        &= M_1 + M_2 + M_3 + M_4 \\
+        &= \displaystyle\int\limits_{-1}^1 \left[ f\Big(\sqrt{1-y^2},y\Big) - f\Big( -\sqrt{1-y^2},y\Big) \right] dy + \displaystyle\int\limits_{-1}^1 \left[ g\Big(x,\sqrt{1-x^2}\Big) - g\Big(x, -\sqrt{1-x^2}\Big) \right] dx \\
+        &= \displaystyle\iint_{\Omega}\mathrm{div}\mathbf{F}(x,y)\ dxdy.
+    \end{align*}
+\end{enumerate}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $\mathbf{F}: \mathbb{R}^2 \rightarrow \mathbb{R}^2$ be a continuous differentiable vector field. We write $\mathbf{F}(x,y) = \big( f(x,y), g(x,y)\big)$ and define the \textbf{divergence} of \textbf{F} as $\mathrm{div}\mathbf{F}=f_x (x,y) + g_y (x,y)$. For a bounded piecewise smooth domain $\Omega$ in $\mathbb{R}^2$, let $\partial\Omega$ denote its boundary.   
+\begin{itemize}
+    \item[(a)] Prove the divergence theorem in a square, that is, prove that if $\Omega = [a,b]\times [c,d]$,
+    \begin{align}\label{f-2020-6a}
+        \displaystyle\iint_{\Omega} \mathrm{div}\mathbf{F}(x,y)\ dx dy = \displaystyle\int_{\partial\Omega}\mathbf{F}\cdot \nu\ dS(x,y), 
+    \end{align}
+    where $\nu$ is the unit exterior normal to the boundary and $dS$ denotes the arc length element. 
+    \item[(b)] Given an $n\times n$ matrix $M$, use the divergence theorem in general dimensions to prove that for any $R>0$ 
+    \begin{align*}
+        \dfrac{1}{\left|B_R(0)\right|}\displaystyle\int_{B_R(0)} M x \cdot x \ dx = \dfrac{R^2}{n+2}\mathrm{trace}(M),
+    \end{align*}
+    where $\mathrm{trace}(M) = M_{11} + M_{22} + ... + M_{nn}$ is the trace of the square matrix $M$.
+\end{itemize}
+\begin{solution}
+\begin{itemize}
+    \item[(a)] This is part (a) of Problem~\ref{prob:divergence}, with the same proof.
+    \item[(b)] Let $g(x):= x \cdot x - R^2 \in \R$, $f(x) := Mx \in \R^n$ and $\mathbf{F}: \R^n \ri \R^n$ with $\mathbf{F}(x):= g(x)f(x)$ for all $x\in \R^n$. It is clear that $\mathbf{F}$ is continuous differentiable on $\R^n$, and 
+    \begin{align*}
+        \mathrm{div}\mathbf{F}(x,y) = \displaystyle\sum\limits_{i=1}^n \dfrac{\pa \left[ g(x)f(x) \right]_i}{\pa x_i} &= \displaystyle\sum\limits_{i=1}^n \left[ \dfrac{\pa g(x)}{\pa x_i}f_i(x) + \dfrac{\pa f_i (x)}{\pa x_i} g(x) \right] \\
+        &= \nabla g(x) \cdot f(x) + g(x) \mathrm{div}f(x) \\
+        &= 2x \cdot Mx + \big(x\cdot x - R^2\big) \mathrm{trace}(M).
+    \end{align*}
+    By using the divergence theorem in general dimensions for the function $\mathbf{F}$ and observing that $g$ (and thus $\mathbf{F}$) vanishes on the boundary of $B_R(0)$, one has:
+    \begin{align*}
+        \displaystyle\iint_{B_R(0)} \mathrm{div}\mathbf{F}(x,y)\ dxdy = 0,
+    \end{align*}
+    or 
+    \begin{align}
+        2\displaystyle\int_{B_R(0)} Mx \cdot x \ dx &= \mathrm{trace}(M) \displaystyle\int_{B_R(0)} \big( R^2 - x\cdot x \big) \ dx \notag \\
+        &= \mathrm{trace}(M) \left( R^2 \left|B_R(0)\right| - \displaystyle\int_{B_R(0)} x\cdot x \ dx \right). \label{eq:prob6-1}
+    \end{align}
+    $\bullet$ Now we proceed to calculate $I= \displaystyle\int_{B_R(0)} x\cdot x \ dx$. As usual when $n=2$, we use spherical coordinates $(r,\theta)\in [0,R]\times [0,2\pi]$ so that 
+    \begin{align*}
+        \begin{pmatrix}
+            x_1 \\ x_2
+        \end{pmatrix} 
+        = \begin{pmatrix}
+            r\cos\theta \\
+            r\sin\theta 
+        \end{pmatrix}
+        =: \psi_2 (\theta,r).
+    \end{align*}
+    For $n=3$ we let 
+    \begin{align*}
+        \begin{pmatrix}
+            x_1 \\ x_2 \\ x_3 
+        \end{pmatrix}
+        = 
+        \begin{pmatrix}
+            \psi_2 (\theta, r\sin\vp_1) \\
+            r\cos\vp_1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            r\sin\vp_1 \cos\theta \\
+            r\sin\vp_1 \sin\theta \\
+            r\cos\vp_1
+        \end{pmatrix}
+        =: \psi_3 (\theta, \vp_1, r).
+    \end{align*}
+    For $n=4$:
+    \begin{align*}
+        \begin{pmatrix}
+            x_1 \\ x_2 \\ x_3 \\ x_4
+        \end{pmatrix}
+        = 
+        \begin{pmatrix}
+            \psi_3 (\theta, \vp_1, r\sin\vp_2) \\
+            r\cos\vp_2
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            r\sin\vp_2 \sin\vp_1 \cos\theta \\
+            r\sin\vp_2 \sin\vp_1 \sin\theta \\
+            r\sin\vp_2\cos\vp_1 \\
+            r\cos\vp_2
+        \end{pmatrix}
+        =: \psi_4 (\theta, \vp_1, \vp_2, r).
+    \end{align*}
+    We continue to work inductively this way to define:
+    \begin{align*}
+        \begin{pmatrix}
+            x_1 \\ \vdots \\ x_n \\ x_{n+1}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \psi_n (\theta, \vp_1,..., \vp_{n-2}, r\sin\vp_{n-1}) \\
+            r\cos\vp_{n-1} 
+        \end{pmatrix}
+        =: \psi_{n+1} (\theta, \vp_1,...,\vp_{n-2},\vp_{n-1}, r).
+    \end{align*}
+    So, generally we have:
+    \begin{align*}
+        x_1 &= r\sin \vp_{n-2} ...\sin \vp_{2} \sin \vp_1 \sin \theta\\
+        x_2 &= r\sin \vp_{n-2} ... \sin \vp_2 \sin \vp_1 \cos \theta \\
+        x_3 &= r\sin \vp_{n-2} ... \sin \vp_2 \cos \vp_1 \\
+        \vdots \\
+        x_{n-2} &= r \sin \vp_{n-2} \sin \vp_{n-3} \cos \vp_{n-4} \\
+        x_{n-1} &= r\sin \vp_{n-2} \cos \vp_{n-3} \\
+        x_n &= r\cos \vp_{n-2},
+    \end{align*}
+    with $0 \le r \le R$, $0\le \vp_i \le \pi$ and $0\le \theta \le 2\pi$. The Jacobian determinant is known as $\Delta_{n+1} (\theta,\vp_1,...,\vp_{n-1},r) = \mathrm{det} \psi_{n+1}^{'} (\theta,\vp_1,...,\vp_{n-1},r) $. Inductively, we will show that:
+    \begin{align}\label{eq:prob6b-2}
+        \Delta_{n} (\theta,\vp_1,...,\vp_{n-2},r) = r^{n-1} \sin^{n-2}\vp_{n-2}...\sin^2 \vp_2 \sin^1 \vp_1 \sin^0 \theta  .
+    \end{align}
+    Indeed, let $\rho := r\sin\vp_{n-1}$ and write $\frac{\pa \psi_n}{\pa x}$ for $\frac{\pa \psi_n}{\pa x} (\theta, \vp_1,...,\vp_{n-2}, \rho)$, we have:
+    \begin{align*}
+        \Delta_{n+1} & (\theta,\vp_1,...,\vp_{n-1},r)  = \mathrm{det} \psi_{n+1}^{'} (\theta,\vp_1,...,\vp_{n-1},r) \\
+        &=\begin{vmatrix}
+        \dfrac{\pa \psi_n }{\pa \theta} &  \dfrac{\pa \psi_n }{\pa \vp_1} & \hdots & \dfrac{\pa \psi_n }{\pa \vp_{n-2}} &  \dfrac{\pa \psi_n }{\pa \rho} r\cos\vp_{n-1} &  \dfrac{\pa \psi_n }{\pa \rho} \sin\vp_{n-1} \\
+        0 & 0 & \hdots & 0 & -r\sin\vp_{n-1} & \cos\vp_{n-1}
+        \end{vmatrix} \\
+        &= r\cos^2 \vp_{n-1}\Delta_n (\theta,\vp_1,...,\vp_{n-2},\rho) + r\sin^2 \vp_{n-1} \Delta_n (\theta,\vp_1,...,\vp_{n-2},\rho)  \\
+        &= r \Delta_n (\theta,\vp_1,...,\vp_{n-2},\rho),
+    \end{align*}
+    with the determinant computed by expanding the last row. Starting with $\Delta_2 (\theta,r) = r$, it implies that:
+    \begin{align*}
+        \Delta_3 (\theta,\vp_1, r ) &= r \Delta_2 (\theta,r\sin\vp_1) = r^2 \sin \vp_1 \\
+        \Delta_4 (\theta,\vp_1, \vp_2,r ) &= r \Delta_3 (\theta,\vp_1,r\sin\vp_2) = r^3 \sin^2 \vp_2 \sin \vp_1 \\
+        \vdots \\
+        \Delta_{n} (\theta,\vp_1,...,\vp_{n-2},r) &= r^{n-1} \sin^{n-2}\vp_{n-2}...\sin^2 \vp_2 \sin \vp_1,
+    \end{align*}
+    and thus \eqref{eq:prob6b-2} is true. Then 
+    \begin{align*}
+        I = \displaystyle\int_{B_R(0)} x\cdot x\ dx =  \left(\displaystyle\int_0^R r^{n+1}\ dr \right) \left( \displaystyle\int_0^{2\pi} d\theta \right) \displaystyle\prod\limits_{i=1}^{n-2} \displaystyle\int_0^{\pi} \sin^{i} x \ dx.
+    \end{align*}
+    On the other hand, one also has 
+    \begin{align*}
+        \left| B_R(0) \right| = \displaystyle\int_{B_R(0)} dx = \left(\displaystyle\int_0^R r^{n-1}\ dr \right) \left( \displaystyle\int_0^{2\pi} d\theta \right) \displaystyle\prod\limits_{i=1}^{n-2} \displaystyle\int_0^{\pi} \sin^{i} x \ dx.
+    \end{align*}
+    And we deduce that:
+    \begin{align*}
+        I = |B_R(0)| \frac{\displaystyle\int_0^R r^{n+1}\ dr}{\displaystyle\int_0^R r^{n-1}\ dr} = \dfrac{n}{n+2} R^2 |B_R(0)|.
+    \end{align*}
+    Plugging this into \eqref{eq:prob6-1}, one receives:
+    \begin{align*}
+    2 \displaystyle\int_{B_R(0)} Mx \cdot x \ dx &= \mathrm{trace}(M) \left( R^2 |B_R(0)| - \dfrac{n}{n+2}R^2 |B_R(0)| \right) \\
+    &= \dfrac{2}{n+2} R^2 |B_R(0)|\mathrm{trace}(M),
+    \end{align*}
+    or 
+    \begin{align*}
+    \dfrac{1}{|B_R(0)|}\displaystyle\int_{B_R(0)} Mx \cdot x \ dx = \dfrac{R^2}{n+2}\mathrm{trace}(M).
+    \end{align*}
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{enumerate}
+    \item[(a)] State the Implicit Function Theorem for a continuously differentiable function $f:\mathbb{R}^{m+n} \rightarrow \mathbb{R}^{n}$.
+    \item[(b)] State the Inverse Function Theorem for a continuously differentiable function $f:\mathbb{R}^n \rightarrow \mathbb{R}^n$.
+    \item[(c)] Use the Implicit Function Theorem to prove the Inverse Function Theorem. 
+    \item[(d)] Let $g:\mathbb{R}\rightarrow\mathbb{R}$ be a continuously differentiable function satisfying $g(2)=1$ and $g'(2)\neq 0$. Prove that there exists a neighborhood $V$ of $1$ in $\mathbb{R}$ and a unique continuously differentiable function $f:V\rightarrow \mathbb{R}$ such that 
+    \begin{align*}
+        f(1)=2\ \  \text{ and }\ \  2xf(x) = 2f(x) - g(f(x)) +1.
+    \end{align*}
+\end{enumerate}
+\begin{solution}
+\begin{enumerate}
+    \item[(a)] \textbf{The Implicit Function Theorem:} Let $f: \R^{m}\times\R^n \to \R^n$ be a continuously differentiable function, and $(a,b)\in \R^m \times \R^n$. If $f(a,b) = 0$ and $\det Df(a,b) \ne 0$, where 
+    \begin{align*}
+        Df(x,y) := 
+        \begin{bmatrix}
+            \dfrac{\partial f_1}{\partial y_1}(x,y) & \dfrac{\partial f_1}{\partial y_2}(x,y) & \dots & \dfrac{\partial f_1}{\partial y_n}(x,y) \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \dfrac{\partial f_n}{\partial y_1}(x,y) & \dfrac{\partial f_n}{\partial y_2}(x,y) & \dots & \dfrac{\partial f_n}{\partial y_n}(x,y) 
+         \end{bmatrix},
+    \end{align*}
+    then there exist open subsets $A \subset \R^m$ containing $a,$ $B\subset \R^n$ containing $b$ and a unique continuously differentiable function $g:A\rightarrow B$ such that 
+    \begin{align*}
+        g(a) = b \ \ \text{ and } f(x,g(x)) = 0_{\R^n},\ \forall x\in A.
+    \end{align*}
+    \item[(b)] \textbf{The Inverse Function Theorem:} Let $f: \R^n \to \R^n$ is continuously differentiable and $a\in \R^n$. If $\det f'(a) \ne 0$, there exists open sets $U \subset \R^n$ containing $a$, $V$ containing $f(a)$ such that $f: U \to V$ is bijective and $f^{-1}: V \to U$ is also continuously differentiable, with derivatives given by the inverse matrices
+    \begin{align*}
+        (f^{-1})'(y) = \big[f'(f^{-1}(y))\big]^{-1}, \forall y \in V,
+    \end{align*}
+    \item[(c)] Let $f = (f_1, f_2, \ldots, f_n): \R^n \to \R^n$ be a continuously differentiable function and $a \in \R^n$ with $\det f'(a) \ne 0$. \\
+    
+    First, we prove that there exists an $r > 0$ such that $f$ is injective on $B(a,r)$, the ball with radius $r$ centered at $a$, by noticing that:
+    \begin{itemize}
+        \item Each $\dfrac{\partial f_i}{\partial x_j}$ $(1\le i,j \le n)$ is continuous on $\R^n$. Indeed, since $f=(f_1,f_2,\ldots,f_n)$ is continuously differentiable on $\R^n$, each $f_i^{'}$ $(i=1,2,\ldots,n)$ is continuous on $\R^n$. Besides, for $x,y\in \R^n$ we get:
+        \begin{align*}
+            \left\| f_i^{'} (x) - f_i^{'}(y) \right\| = \left[ \displaystyle\sum\limits_{j=1}^n\left( \dfrac{\partial f_i}{\partial x_j} (x) - \dfrac{\partial f_i}{\partial x_j} (y) \right)^2 \right]^{1/2}.
+        \end{align*}
+        Thus, for every $i=1,2,...,n$ the continuity of $f_i^{'}$ implies continuities of $\dfrac{\partial f_i}{\partial x_j}$, $j=1,2,...,n$.
+       
+        \item The map $d_1: \left(\R^n\right)^{n^2} \rightarrow M_n (\R),$ with 
+        \begin{align*}
+            d_1 \left(
+            a_{11},...,a_{1n},...,a_{nn}\right) 
+            =  
+            \begin{bmatrix}
+            \dfrac{\partial f_1}{\partial x_1}(a_{11}) & \dfrac{\partial f_1}{\partial x_2}(a_{12}) & \dots & \dfrac{\partial f_1}{\partial x_n}(a_{1n}) \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \dfrac{\partial f_n}{\partial x_1}(a_{n1}) & \dfrac{\partial f_n}{\partial x_2}(a_{n2}) & \dots & \dfrac{\partial f_n}{\partial x_n}(a_{nn}) 
+            \end{bmatrix},
+        \end{align*} 
+        is continuous. Indeed, from the previous point we see that for every $1\le i,j \le n$:
+        \begin{align*}
+            a_{ij} \mapsto \dfrac{\partial f_i }{\partial x_j} (a_{ij}) \text{ is continuous.}
+        \end{align*}
+        It deduces that $\left(
+            a_{11},...,a_{1n},...,a_{nn}\right) \mapsto \dfrac{\partial f_i }{\partial x_j} (a_{ij})$ is also continuous. In conclusion, $d_1$ is continuous.
+        \item The determinant map $d_2: M_n (\R) \rightarrow \R$, with $d_2 (B) = \mathrm{det}B$ is continuous. From the Leibniz formula, for $B=(b_{i,j}) \in M_n(\R)$ we have
+        \begin{align*}
+            \mathrm{det}B = \displaystyle\sum\limits_{\sigma\in S_n} \mathrm{sgn}(\sigma) \displaystyle\prod\limits_{i=1}^n b_{i,\sigma (i)}.
+        \end{align*}
+        Thus $d_2 (B) = \mathrm{det}B$ can be seen as a polynomial in $n^2$ variables $b_{1,1},b_{1,2},...,b_{n,n}$. Therefore $d_2$ is continuous on $M_n (\R)$. 
+    \end{itemize}
+    By setting $d:= d_2 \circ d_1$, we have $d: \left(\R^n\right)^{n^2} \rightarrow \R$ is continuous with 
+    \begin{align*}
+         d \left(
+            a_{11},...,a_{1n},...,a_{nn}\right) 
+            =  \mathrm{det}
+            \begin{bmatrix}
+            \dfrac{\partial f_1}{\partial x_1}(a_{11}) & \dfrac{\partial f_1}{\partial x_2}(a_{12}) & \dots & \dfrac{\partial f_1}{\partial x_n}(a_{1n}) \\
+            \vdots & \vdots & \ddots & \vdots \\
+            \dfrac{\partial f_n}{\partial x_1}(a_{n1}) & \dfrac{\partial f_n}{\partial x_2}(a_{n2}) & \dots & \dfrac{\partial f_n}{\partial x_n}(a_{nn}) 
+            \end{bmatrix}.
+    \end{align*}
+     Seeing that $d(a,...,a,...,a) = \mathrm{det}f'(a) \ne 0$ and $d$ is continuous, we find $\rho >0$ such that 
+     \begin{align*}
+        d(A) \ne 0 \text{ for any } A \in B\big( (a), \rho \big) \subset \left( \R^n \right)^{n^2}.
+     \end{align*}
+    Besides, notice that $A \in B\big( (a) , \rho \big)$ if each of its component (a vector in $\R^n$) belongs to $B\left( a, \dfrac{\rho}{n}\right)$. With $r:=\rho /n$, we conclude that 
+    \begin{align}\label{r}
+        d(A)\ne 0,\ \forall A\in \left(\R^n\right)^{n^2} \text{ s.t. } a_{ij} \in B(a,r).    
+    \end{align}
+    Let $u,v$ be distinct in $B(a,r)$. By employing the mean-value theorem in several variables to each component $f_i$ of $f$, we find $c_i$ in the open segment connecting $u$ and $v$ (thus, in $B(a,r)$) such that $f_i (v) - f_i (u) = f_i^{'}(c_i) \cdot (v-u)$. Hence
+    \begin{align*}
+        \begin{bmatrix}
+           f_1 (v) - f_1 (u) \\
+           f_2 (v) - f_2 (u) \\
+           \dots \\
+           f_n (v) - f_n (u) \\
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            \dfrac{\partial f_1}{\partial x_1}(c_1) & \dots & \dfrac{\partial f_1}{\partial x_n}(c_1) \\
+            \vdots & \ddots & \vdots \\
+            \dfrac{\partial f_n}{\partial x_1}(c_n) & \dots & \dfrac{\partial f_n}{\partial x_n}(c_n)
+        \end{bmatrix}
+        \begin{bmatrix}
+           v_1 - u_1 \\
+           v_2 - u_2 \\
+           \dots \\
+           v_n - u_n \\
+        \end{bmatrix}.
+    \end{align*}
+    Using \eqref{r} and the fact that all $c_i$, $i=1,2,...,n$ belong to $B(a,r)$, the matrix is invertible, and since $v-u\neq 0$ we deduce that $f(v)\ne f(u)$. Thus $f$ is injective on $B(a,r)$.    \\
+    
+    Secondly, we utilize the Implicit Function Theorem to prove the Inverse Function Theorem. Consider $F:\R^n \times \R^n \rightarrow \R^n$, given by $F(x,y)=f(y)-x$. Now we check the assumptions of the Implicit Function Theorem:
+    \begin{enumerate}
+        \item[i)] \textit{$F:\R^n \times \R^n \rightarrow \R^n$ is continuously differentiable?} Set $F^1, F^2: \R^n \times \R^n \rightarrow \R^n$ with 
+        \begin{align*}
+            F^1 (x,y) = f(y) \ \ \text{ and } F^2 (x,y) = x.
+        \end{align*}
+        Assume $f=(f_1,f_2,...,f_n)$ and $F^1 =\big( F^1_1, F^1_2,...,F^1_n \big)$. Thus $F^1_i (x,y) = f_i (y)$ for all $i=1,2,...,n$. Since $F^1$ is continuously differentiable if and only if each $F^1_i,i=1,2,...,n$ is continuously differentiable, we just need to check $F^1_1$. Consider $(\overline{x},\overline{y})\in \R^n \times \R^n$. As $f_1$ is differentiable at $\overline{y}$, for any $h\in\R^n$ we have
+        \begin{align}\label{inverse.1}
+            f_1(\overline{y}+h) - f_1(\overline{y}) = f_1^{'} (\overline{y}) \cdot h + \|h\|_{\R^n} \varphi(h),
+        \end{align}
+        where $\lim\limits_{h\rightarrow 0_{\R^n}}\varphi (h) =0_{\R}$.
+        For $k=(k_1,k_2)\in \R^n \times \R^n$ and choosing $h=k_2$, from \eqref{inverse.1} we get
+        \begin{align*}
+            F^1_1 (\overline{x}+k_1, \overline{y}+k_2) - F^1_1 (\overline{x},\overline{y}) = f_1^{'} (\overline{y}) \cdot k_2 + \|k_2\|_{\R^n}  \varphi (k_2),
+        \end{align*}
+        or 
+        \begin{align*}
+            F^1_1 \big((\overline{x},\overline{y})+k\big) - F^1_1 (\overline{x},\overline{y}) = \big(0_{\R^n},f_1^{'} (\overline{y})\big) \cdot k + \|k\|_{\R^n \times \R^n} \dfrac{\|k_2\|_{\R^n}}{\|k\|_{\R^n \times \R^n}}  \varphi (k_2).
+        \end{align*}
+        As $\dfrac{\|k_2\|_{\R^n}}{\|k\|_{\R^n \times \R^n}}  \varphi (k_2) \le \varphi (k_2) \rightarrow 0$ when $k\rightarrow 0_{\R^n \times \R^n}$, we see that $F^1_1$ is differentiable at $(\overline{x},\overline{y})$ and 
+        \begin{align*}
+            F^{1'}_{1} (\overline{x},\overline{y}) = \big(0_{\R^n},f_1^{'} (\overline{y})\big).
+        \end{align*}
+        For any sequence $(x_n,y_n) \rightarrow (\overline{x},\overline{y})$, we have $y_n \rightarrow \overline{y}$ and thus $f_1' (y_n) \rightarrow f_1' (\overline{y})$. Hence 
+        \begin{align*}
+            F^{1'}_{1}  (x_n,y_n) = \big(0_{\R^n},f_1^{'} (y_n)\big) \rightarrow (0_{\R^n}, f_1' (\overline{y}\big) = F_1^{1'}  (\overline{x}, \overline{y}).
+        \end{align*}
+        That deduces $F^1_1$ is continuously differentiable on $\R^n \times \R^n$. Similarly, we have 
+        \begin{align*}
+            F_1^{2'} (x,y) = \big( e_1 , 0_{\R^n} \big),
+        \end{align*}
+        which is continuous on $\R^n \times \R^n$.
+        \item[ii)] \textit{$F\big( f(a),a \big) =0$ and $\mathrm{\textup{det}}D_2 F\big( f(a),a \big) \ne 0$?} Since $F(x,y) =f(y)-x$, there holds
+        \begin{align*}
+            F\big( f(a),a \big) = f(a) - f(a) =0
+        \end{align*}
+        and 
+        \begin{align*}
+            \mathrm{det}D_2 F\big( f(a),a \big) = \mathrm{det}f'(a) \ne 0.
+        \end{align*}
+    \end{enumerate}
+    From the Implicit Function Theorem, there are open subsets $V\subset \R^n$ containing $f(a)$, $a\in U\subset\R^n$ and a unique continuously differentiable $g:V\rightarrow U$ such that 
+    \begin{align*}
+        g(f(a))=a \ \ \text{ and } F\big(x, g(x)\big) =0_{\R^n},\ \forall x\in V,
+    \end{align*}
+    or 
+    \begin{align}\label{fg}
+         g(f(a))=a \ \ \text{ and } f(g(x))=x,\ \forall x\in V.
+    \end{align}
+    With $\mathcal{U}:=U\cap f^{-1}(V) \cap B(a,r)$ an open set containing $a$, it is clear that $f$ is injective on $\mathcal{U}$. Putting $\mathcal{V}:= f(\mathcal{U})\subset V$, we see that $f:\mathcal{U}\rightarrow\mathcal{V}$ is bijective. Besides, \eqref{fg} implies $f(g(x)) = x,\ \forall x\in \mathcal{V}$. Combining with the bijectivity of $f$ on $\mathcal{U}$, one gets
+    \begin{align*}
+        g(x) = f^{-1}(x),\ \forall x\in \mathcal{V}.
+    \end{align*}
+    Hence $g=f^{-1}$ on $\mathcal{V}$. Moreover, $\mathcal{V}$ is open: by the uniqueness in the Implicit Function Theorem, for $x\in V$ the point $g(x)$ is the only point $y\in U$ with $f(y)=x$, so $\mathcal{V}=V\cap g^{-1}(\mathcal{U})$, which is open because $g$ is continuous. Taking derivatives of both sides of \eqref{fg} with respect to $x$ in $\mathcal{V}$, we arrive at
+    \begin{align*}
+        f'(g(x)) g'(x) = I,\ \forall x\in \mathcal{V}.
+    \end{align*}
+    Therefore $g'(x) = \big[f'(g(x))\big]^{-1},\ \forall x\in \mathcal{V}$.
+\item[(d)] Consider $h:\R^2 \rightarrow \R$, given by 
+\begin{align*}
+    h(x,y) = g(y) + (2x-2)y -1.
+\end{align*}
+We see that $h(1,2) = g(2) -1 = 0$, $\dfrac{\partial h}{\partial y} = g'(y) + 2x-2$ and $\dfrac{\partial h}{\partial y}(1,2) = g'(2) \ne 0$. Choosing $m=n=1$, $(a,b)=(1,2)$, we have got all the assumptions needed to use the Implicit Function Theorem. Utilizing it, we find an open neighborhood $V$ of $1$ and a unique continuously differentiable function $f:V\rightarrow\R$ such that 
+\begin{align*}
+    f(1)=2 \text{ and } h\big( x, f(x) \big) =0,\ \forall x\in V. 
+\end{align*}
+Notice that for every $x$ in $V$,
+\begin{align*}
+    h\big( x,f(x) \big) = 0 &\iff g\big( f(x) \big) + (2x-2)f(x) -1 = 0 \\
+    &\iff 2xf(x) = 2f(x) -g\big( f(x) \big) +1.
+\end{align*}
+\end{enumerate}
+\end{solution}
+\end{problem}

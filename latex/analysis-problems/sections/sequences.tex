@@ -1,0 +1,120 @@
+\section{Sequences and limits}\label{p:sequences}
+\blurb{Recursive sequences: bounded and monotone, then pass to the limit in the recursion.}
+
+\begin{problem}
+Suppose the sequence is defined recursively by $a_1 = 1$ and $$a_{n+1} = \sqrt{2a_n}$$. Show that this sequence converges and determine its limit.
+\begin{solution}
+Note that $a_n < 2$ for any $n$, we have $a_1=1<2$, suppose it is true for $a_n<2$, now for $a_{n+1} = \sqrt{2a_n} < \sqrt{2\cdot 2} = 2 $. In addition $$a_{n+1} - a_n= \sqrt{2a_n}  - a_n = \sqrt{a_n}(\sqrt{2} - \sqrt{a_n})>0$$
+    Thus, $a_n$ is bounded monotone squence so it is convergent assume $\lim a_n = L$. Since $a_n\geq a_1 = 1$, we have $L\geq 1>0$, so we may divide by $\sqrt{L}$: \[a_{n+1} = \sqrt{2a_n} \Rightarrow L = \sqrt{2L} \Rightarrow \sqrt{L} = \sqrt{2} \Rightarrow L=2\]
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $\set{x_n}$ be defined by $x_1=1$ and $x_{n+1}=\dfrac{1}{2}(x_n+\dfrac{2}{x_n})$ for $n=1,2,\ldots$ Show that $\set{x_n}$ converges and find its limit.
+\begin{solution}
+Firstly, it is obvious that $x_n>0$ for all $n.$ Then AM-GM inequality tells us $x_{n+1}\ge \sqrt{2}$ for all $n\in\mathbb{N}.$ Moreover,
+\begin{align*}
+    x_{n+1}-x_{n}=\dfrac{1}{2}(\dfrac{2}{x_n}-x_n)=\dfrac{2-x_n^2}{2x_n}\le 0,\text{ for all }n\ge 2.
+\end{align*}
+Then $\set{x_n}_{n\ge 2}$ is a decreasing sequence, bounded below by $\sqrt{2}$, so the limit exists. Suppose that the limit is $a>0$, we must have $a=\dfrac{1}{2}(a+\dfrac{2}{a}),$ or equivalently, $a=\sqrt{2}.$
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Let $x_0=1$ and $x_{n+1}=\sqrt{x_n+4}$ for $n\ge 0.$ Prove $\set{x_n}$ converges and find the limit.
+\begin{solution}
+By the construction of $\set{x_n}$ and $x_0=1$, it is obvious that $x_n\ge 0$ for all $n.$ Let $L=\dfrac{1+\sqrt{17}}{2}$, the positive root of $L^2=L+4$. We will prove that $x_n< L$ for all $n$ by induction. This holds for $n=0$ since $x_0=1$. Suppose that it holds for $n=k,$ i.e. $x_k< L,$ we have 
+\begin{align*}
+    x_{k+1}=\sqrt{x_k+4}< \sqrt{L+4}= L.
+\end{align*}
+Thus $x_n< L$ for all $n.$ We also have 
+\begin{align*}
+    x_{n+1}-x_n=\sqrt{x_n+4}-x_n=\dfrac{x_n+4-x_n^2}{\sqrt{x_n+4}+x_n}>0\text{ for all }n,
+\end{align*}
+because $x^2-x-4<0$ for $0\le x<L$. Then $\set{x_n}$ is increasing and bounded from above, so its limit exists. We denote $\lim x_n=a,$ we have $a=\sqrt{a+4}$ which gives $a=\dfrac{1+\sqrt{17}}{2}.$
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Assume a sequence $\{x_n\}_{n=1}^\infty$ is define recursively by $x_1 = 2 $ and 
+    \[x_{n+1} = x_n - \frac{(x_n)^3-x_n}{3(x_n)^2-1}\;\;\; \textup{for all } n\geq 1\]
+    \begin{itemize}
+        \item[(a)] Prove that $\{x_n\}$ is decreasing sequence for each $n,x_n\geq 1$; and
+        \item[(b)] Find $\lim_{n\to \infty} x_n$
+    \end{itemize}
+\begin{solution}
+We can write \[x_{n+1} = \frac{2x_n^3}{3x_n^2-1}\]
+    To show the sequence decreasing, we find 
+    \[\frac{x_{n+1}}{x_n} = \frac{3x_n^2-1 - x_n^2 +1 }{3x_n^2 -1} = \frac{2x_n^2}{3x_n^2-1} = \frac{2}{3 - \frac1{x_n^2}}\leq 1\]
+    Since $x_1=2$, we claim that $x_n\geq 1$, suppose $x_{n}\geq 1$ we want to $x_{n+1}\geq 1$ notice that the function
+    \[f(x) = \frac{2x^3}{3x^2-1}\Rightarrow f'(x) = \frac{6x^2(x^2-1)}{(3x^2-1)^2}\Rightarrow f'(x) >0\;\; for x\geq 1\]
+    And $f(1)=1$ but $x_n\geq 1$ so 
+    \[\frac{2x^3_n}{3x_n^2-1}\geq 1\]. So the sequence is decreasing and bounded so it is coverges. To find the limit, 
+    \[\lim x_{n+1} = \lim \frac{2x_n^3}{3x_n^2-1}\Rightarrow l = \frac{2l^3}{3l^2-1}\Rightarrow \frac{2l(l^2-1)}{3l^2-1}=0\]
+    But $l\ne 0, -1$ so $l=1$.
+\end{solution}
+\end{problem}
+
+\begin{problem}
+Assume that $B$ is a positive number. Let $\set{x_n}$ be defined by $x_1=1$ and 
+\begin{align*}
+    x_{n+1}=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}.
+\end{align*}
+Prove that $x_n\rightarrow \sqrt{B}.$
+\begin{solution}
+Note that 
+\begin{align}\label{2020.9.1.1}
+    x_{n+1}-x_n&=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}-x_n\nonumber\\
+    &=\dfrac{3Bx_n+x_n^3-3x_n^3-Bx_n}{3x_n^2+B}\nonumber\\
+    &=\dfrac{2Bx_n-2x_n^3}{3x_n^2+B}\nonumber\\
+    &=2x_n\dfrac{B-x_n^2}{3x_n^2+B}
+\end{align}
+and 
+\begin{align}\label{2020.9.1.2}
+    x_{n+1}-\sqrt{B}&=\dfrac{x_n(3B+x_n^2)}{3x_n^2+B}-\sqrt{B}\nonumber\\
+    &=\dfrac{3Bx_n+x_n^3-3x_n^2\sqrt{B}-B\sqrt{B}}{3x_n^2+B}\nonumber\\
+    &=\dfrac{(x_n-\sqrt{B})^3}{3x_n^2+B}.
+\end{align}
+From (\ref{2020.9.1.2}), by induction, if $1=x_1<\sqrt{B}$, we have $x_n<\sqrt{B}$ for all $n$ and if $1=x_1>\sqrt{B}$ then $x_n>\sqrt{B}$ for all $n$. We consider 3 cases.
+\begin{itemize}
+    \item[]Case 1. If $B=1$ then by (\ref{2020.9.1.2}), $x_n=1$ for all $n$, thus $x_n\rightarrow 1=\sqrt{B}.$
+    \item[]Case 2. If $B>1$ then by (\ref{2020.9.1.2}) $x_n<\sqrt{B}$ for all $n$. From (\ref{2020.9.1.1}), we have $x_{n+1}>x_n$ for all $n.$ Then $\lim x_n$ exists. We suppose that $\lim x_n=a.$ Then from (\ref{2020.9.1.2}), we have 
+    \begin{align*}
+        (a-\sqrt{B})(1-\dfrac{(a-\sqrt{B})^2}{3a^2+B})=0
+    \end{align*}
+    Then $a=\sqrt{B}$ or $(a-\sqrt{B})^2=3a^2+B$.  Since $a>0$ the latter means $a=-\sqrt{B}$, which is a contradiction. Therefore, $\lim x_n=\sqrt{B}.$
+    \item[] Case 3. If $B<1$ then by (\ref{2020.9.1.2}) $x_n>\sqrt{B}$ for all $n$. From (\ref{2020.9.1.1}), we have $x_{n+1}<x_n$ for all $n.$ Then $\lim x_n$ exists. We suppose that $\lim x_n=a\ge \sqrt{B}.$ Then from (\ref{2020.9.1.2}), we have 
+    \begin{align*}
+        (a-\sqrt{B})(1-\dfrac{(a-\sqrt{B})^2}{3a^2+B})=0
+    \end{align*}
+    Then $a=\sqrt{B}$ or $(a-\sqrt{B})^2=3a^2+B$.  Since $a>0$ the latter means $a=-\sqrt{B}$, which is a contradiction. Therefore, $\lim x_n=\sqrt{B}.$
+\end{itemize}
+\end{solution}
+\end{problem}
+
+\begin{problem}
+\begin{itemize}
+    \item [(a)] For each $n\in \N$, prove that 
+    \[\frac{1}{n+1} \leq \int_n^{n+1} \frac1x \; dx \leq \frac{1}{n}\]
+    \item[(b)] Define 
+    \[a_n = \sum_{k=1}^n \frac1k - \ln(n+1),\]
+    $n=1,2,\cdots $. Prove $a_n \to L$ for some number $L$ with $0\leq L \leq 1$. 
+\end{itemize}
+\begin{solution}
+a) By the definition of definite integrals using Riemann sums for any partition $P=\{x_1,\cdots ,x_k,x_{k+1}\}$ of $[n,n+1]$ we have 
+    \[\sum_{j=1}^{k} m_j \Delta x_j \leq \int_n^{n+1} \frac1x \; dx \leq \sum_{j=1}^k M_j \Delta x_j\]
+    Where $\displaystyle m_j = \min_{x\in[x_j,x_{j+1}] }\{f(x)\}, M_j = \max_{x\in [x_j,x_{j+1}]} \{f(x)\}, \Delta x_j = x_{j+1}-x_j$. So if we consider the partition $P=\{n,n+1\}$ we get $m_1 = \frac{1}{n+1}, M_1 = \frac{1}{n}$ hence 
+    \[\frac{1}{n+1} ( n+1-n) \leq \int_n^{n+1} \frac1x \; dx \leq \frac{1}{n} (n+1-n)\]
+    b) Summing the left inequality of a) for $k=1,\cdots,n$ and the right inequality of a) for $k=1,\cdots,n-1$, we get
+    \[\begin{array}{rcccl}
+    \displaystyle \left(\int_1^2 \frac1x +\cdots +\int_{n}^{n+1}\frac1x - \ln(n+1)\right)
+    &\leq&\displaystyle
+    \sum_{k=1}^n \frac1k - \ln(n+1) &\leq&\displaystyle \left(1 +\int_1^2 \frac1x +\cdots + \int_{n-1}^{n}\frac1x - \ln(n+1)\right) \\ \\
+     \displaystyle \left(\ln(n+1)-\ln(1) - \ln(n+1)\right)
+    &\leq&\displaystyle
+    \sum_{k=1}^n \frac1k - \ln(n+1) &\leq&\displaystyle \left(1 +\ln(n)-\ln(1) - \ln(n+1)\right) \\ \\
+    0 &\leq& \displaystyle  \sum_{k=1}^n \frac1k - \ln(n+1) &\leq& 1
+    \end{array}\]
+    so $a_n$ is bounded. If we take $a_{n+1}-a_n = \frac{1}{n+1} -\ln (n+2) + \ln(n+1) = \frac{1}{n+1}-\int_{n+1}^{n+2}\frac1x\; dx \geq 0$ by a), so it is increasing bounded sequence so it converges to $L\in [0,1]$
+\end{solution}
+\end{problem}
